@@ -20,6 +20,11 @@
     src: url(../fonts/Jaldi/Jaldi-Regular.ttf);
 }
 
+@font-face {
+    font-family: 'quicksand';
+    src: url(../fonts/Quiksand/Quicksand-VariableFont_wght.ttf);
+}
+
 a{
     text-decoration: none;
     color: white;
@@ -60,6 +65,7 @@ body{
     align-items: center;
     justify-content: space-around;
     font-family: 'inter';
+    border-bottom: 1px solid white;
 }
 #nav-bar #logo{
     width: 16%;
@@ -97,100 +103,42 @@ body{
 }
 /*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
 
-#background{ /*fundo da tela*/
-    display: flex;
-    flex-direction: column;
-    height: 91vh;
-    position: relative;
-    z-index: -100;
-    top: 0;
-    left: 0;
-
+.parent {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 8px;
+    padding: 3%;
 }
-#background .top {
-    background-image: url(../images/indexBackground.jpeg);
-    background-position: 0 70%;
-    background-size: cover;
-    height: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-family: 'julius';
     
-    /* Necessário para o pseudo-elemento se posicionar corretamente */
-    position: relative; 
-    z-index: 1;
-    color: white; 
-}
-#background .top::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    z-index: -1;
-}
-#background .top h1, 
-#background .top h2 {
-    position: relative;
-    z-index: 2;
-}
-#background .top h1{
-    font-size: 3em;
-    margin-top: 0.5%;
-}
-#background .top h2{
-    font-size: 1.5em;
-}
-#background .bottom{
-    background-color: #080808;
-    height: 50%;
+.div1 {
+    grid-column: span 2 / span 2;
+    grid-row: span 3 / span 3;
+    background-color: red;
+    height: 40vh;
+    border-radius: 16px;
+    display: flex;
 }
 
+.div2 {
+    grid-column: span 5 / span 5;
+    grid-row: span 2 / span 2;
+    grid-column-start: 1;
+    grid-row-start: 4;
+    background-color: blue;
+    border-radius: 16px;
+    display: flex;
+}
+
+.div3 {
+    grid-column: span 3 / span 3;
+    grid-row: span 3 / span 3;
+    grid-column-start: 3;
+    grid-row-start: 1;
+    background-color: green;
+    border-radius: 16px;
+    display: flex;
+}
+        
 /*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
 
-.container #cards{
-    position: absolute;;
-    z-index: 100;
-    top: 46%;
-    left: 0;
-    display: flex;
-    height: 40%;
-    width: 100%;;
-    justify-content: space-around;
-}
-
-.card{
-    background-color: #212121;
-    width: 16%;
-    border-radius: 18px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 0.5% ;
-    padding-bottom: 0.8%;
-}
-.card img{
-    width: 94%;
-    height: 44%;
-    border-radius: 18px ;
-    object-fit: cover;
-    margin-bottom: 5%;
-}
-.card h1{
-    color: #F5D696;
-    font-family: 'julius';
-    font-size: 1.8em;
-    margin-bottom: 5px;
-}
-.card p{
-    color: white;
-    font-family: 'inter';
-    font-size: 0.9em;
-    text-align: justify;
-    padding: 0 10px;
-    line-height: 2em;
-}

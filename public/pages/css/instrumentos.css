@@ -3,6 +3,7 @@
     padding: 0;
     -webkit-font-smoothing: antialiased;
     font-weight: normal;
+    overflow: hidden;
 }
 
 @font-face {
@@ -18,6 +19,11 @@
 @font-face {
     font-family: 'jaldi';
     src: url(../fonts/Jaldi/Jaldi-Regular.ttf);
+}
+
+@font-face {
+    font-family: 'quicksand';
+    src: url(../fonts/Quiksand/Quicksand-VariableFont_wght.ttf);
 }
 
 a{
@@ -60,6 +66,7 @@ body{
     align-items: center;
     justify-content: space-around;
     font-family: 'inter';
+    border-bottom: 1px solid white;
 }
 #nav-bar #logo{
     width: 16%;
@@ -96,101 +103,56 @@ body{
     outline: none;
 }
 /*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
-
-#background{ /*fundo da tela*/
+#cards{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.card{
+    border: 1px solid white;
     display: flex;
     flex-direction: column;
-    height: 91vh;
-    position: relative;
-    z-index: -100;
-    top: 0;
-    left: 0;
-
+    align-items: center;
+    width: 12vw;
+    height: 30vh;
+    border-radius: 16px;
+    margin: 4%;
+    background-color: #1A1A1A;
 }
-#background .top {
-    background-image: url(../images/indexBackground.jpeg);
-    background-position: 0 70%;
-    background-size: cover;
-    height: 50%;
+
+.imagem{
+    width: 100%;
+    height: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.card .imagem img{
+    object-fit: cover;
+    width: 80%;
+    height: 80%;
+    border-radius: 16px;
+    background-color: red;
+}
+
+.card .conteudo{
+    width: 100%;
+    height: 20%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-family: 'julius';
-    
-    /* Necessário para o pseudo-elemento se posicionar corretamente */
-    position: relative; 
-    z-index: 1;
-    color: white; 
+    font-size:x-large;
+    font-family: 'quicksand';
 }
-#background .top::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    z-index: -1;
-}
-#background .top h1, 
-#background .top h2 {
-    position: relative;
-    z-index: 2;
-}
-#background .top h1{
-    font-size: 3em;
-    margin-top: 0.5%;
-}
-#background .top h2{
-    font-size: 1.5em;
-}
-#background .bottom{
-    background-color: #080808;
-    height: 50%;
+
+.card .conteudo h3{
+    font-family: 'quicksand';
 }
 
 /*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
 
-.container #cards{
-    position: absolute;;
-    z-index: 100;
-    top: 46%;
-    left: 0;
-    display: flex;
-    height: 40%;
-    width: 100%;;
-    justify-content: space-around;
-}
-
-.card{
-    background-color: #212121;
-    width: 16%;
-    border-radius: 18px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 0.5% ;
-    padding-bottom: 0.8%;
-}
-.card img{
-    width: 94%;
-    height: 44%;
-    border-radius: 18px ;
-    object-fit: cover;
-    margin-bottom: 5%;
-}
-.card h1{
-    color: #F5D696;
-    font-family: 'julius';
-    font-size: 1.8em;
-    margin-bottom: 5px;
-}
-.card p{
-    color: white;
-    font-family: 'inter';
-    font-size: 0.9em;
-    text-align: justify;
-    padding: 0 10px;
-    line-height: 2em;
-}

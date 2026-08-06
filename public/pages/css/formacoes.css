@@ -20,11 +20,6 @@
     src: url(../fonts/Jaldi/Jaldi-Regular.ttf);
 }
 
-@font-face {
-    font-family: 'quicksand';
-    src: url(../fonts/Quiksand/Quicksand-VariableFont_wght.ttf);
-}
-
 a{
     text-decoration: none;
     color: white;
@@ -65,7 +60,6 @@ body{
     align-items: center;
     justify-content: space-around;
     font-family: 'inter';
-    border-bottom: 1px solid white;
 }
 #nav-bar #logo{
     width: 16%;
@@ -102,66 +96,3 @@ body{
     outline: none;
 }
 /*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
-
-.parent {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-    gap: 8px;
-    padding: 3%;
-}
-    
-.div1 {
-    grid-column: span 2 / span 2;
-    grid-row: span 3 / span 3;
-    background-color: #2E2E2E;
-    height: 40vh;
-    border-radius: 16px;
-    display: flex;
-}
-
-.div1 img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 16px;
-}
-
-
-.div2 {
-    grid-column: span 5 / span 5;
-    grid-row: span 2 / span 2;
-    grid-column-start: 1;
-    grid-row-start: 4;
-    background-color: #1E1E1E;
-    border-radius: 16px;
-    display: flex;
-}
-
-.div3 {
-    grid-column: span 3 / span 3;
-    grid-row: span 3 / span 3;
-    grid-column-start: 3;
-    grid-row-start: 1;
-    background-color: #1E1E1E;
-    border-radius: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.div3 h1{
-    font-family: 'julius';
-    font-size: 4rem;
-    margin-top: 2%;
-}
-
-.div3 p{
-    font-family: 'jaldi';
-    font-size: 1.5rem;
-    text-align: center;
-    padding: 2%;
-}
-        
-/*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
-

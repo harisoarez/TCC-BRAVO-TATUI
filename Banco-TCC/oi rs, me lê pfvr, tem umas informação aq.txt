@@ -1,0 +1,119 @@
+já iniciei o node no projeto e instalei os pacotes, organizei as pastas como eu entendi mais ou menos qeu vai ser, não sei se teria a necessediade de criar uma pasta frontend
+
+acho que ta faltando onfigurar o firebase tb, tem que ativar o authentication, o storage e baixar a chave pro back
+quando você for baixar a chave do firebase, baixa o arquivo e renomeia ele como firebase-admin.json e coloca na pasta backend
+depois tem que pegar a config pro front vai aparecer um bloco de código e ai ce guarda em algum lugar
+
+abre o mysq e cria o banco, a senha é 277353, vai no file, open sql script e seleciona o arquivo do banco.aql e aperta o raio
+
+falta criar a conexão com o mysql no database.js e a configuração do firebase no firebase.js
+
+como eu não tenho o banco que foi criado no firebase e não consegui fazer as configurações la nem pegar a chave eu não fiz isso pra conseguir rodar e ver se o servidor ta funcionando 
+
+mas ai quando você conseguir fazer isso, joga esses códigos no database.js, firebase.js e app.js só pra ver se roda, peguei esse código na IA mesmo rsrss mas acho que no final das contas ta certo mesmo, provavelmente não vai mudar muito o codigo
+
+
+database.js
+
+const mysql = require('mysql2/promise');
+require('dotenv').config();
+
+const pool = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME,
+});
+
+pool.getConnection()
+  .then(() => console.log('✅ MySQL conectado'))
+  .catch(err => console.error('❌ Erro MySQL:', err.message));
+
+module.exports = pool;
+
+
+
+firebase.js
+
+const admin = require('firebase-admin');
+const serviceAccount = require('../../firebase-admin.json');
+require('dotenv').config();
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET
+});
+
+console.log('✅ Firebase conectado');
+
+module.exports = admin;
+
+
+
+app.js
+
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+require('dotenv').config();
+
+// Inicia as conexões
+require('./src/config/database');
+require('./src/config/firebase');
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+// Serve os arquivos públicos (CSS, JS, imagens)
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Rotas das páginas HTML
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'src/views/login.html'));
+});
+app.get('/dashboard-aluno', (req, res) => {
+  res.sendFile(path.join(__dirname, 'src/views/dashboard-aluno.html'));
+});
+app.get('/dashboard-professor', (req, res) => {
+  res.sendFile(path.join(__dirname, 'src/views/dashboard-professor.html'));
+});
+app.get('/dashboard-admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'src/views/dashboard-admin.html'));
+});
+
+// Rota de teste
+app.get('/api', (req, res) => {
+  res.json({ mensagem: '🎵 API Instituto Bravo funcionando!' });
+});
+
+// Rotas da API (serão adicionadas depois)
+
+app.listen(process.env.PORT, () => {
+  console.log(`🚀 Servidor em http://localhost:${process.env.PORT}`);
+});
+
+
+
+
+depois de colar esses códigos tenta rodar o servidor
+no vs abre o terminal dentro do backend e roda 
+
+npm run dev
+
+
+se tudo der certo eu acho que é pra aparecer
+🚀 Servidor em http://localhost:3000
+✅ MySQL conectado
+✅ Firebase conectado
+
+
+depois disso abre o google e acessa 
+http://localhost:3000/api
+é pra aparecer isso aq { mensagem: '🎵 API Instituto Bravo funcionando!' }
+
+acho que é isso, que eu to sabendo ate o momento, depois disso tem que começar a fazer a parte do sistema de login com o firebase 
+
+
+VERDADE eu tb baixei o insomnia, é um programa pra testar o back sem precisar do front, tipo um simulador de tela, eu criei uma conta no meu email mas se você quiser deslogar e criar uma no seu sei la, acho que vai ser útil pra gente, eu espero pelo menos

@@ -1,0 +1,68 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+
+<main class="conteudo">
+    <div class="cabecalho-pagina">
+        <h1>Professores</h1>
+        <a href="/paginas/professores/novo" class="botao botao-primario">+ Novo Professor</a>
+    </div>
+
+    <table class="tabela-padrao">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Telefone</th>
+                <th>Instrumento</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% professores.forEach(function(professor) { %>
+                <tr>
+                    <td><%= professor.nome %></td>
+                    <td><%= professor.email %></td>
+                    <td><%= professor.telefone || '-' %></td>
+                    <td><%= professor.tipo_instrumento || '-' %></td>
+                    <td class="acoes">
+                        <a href="/paginas/professores/<%= professor.idprofessor %>/editar" class="botao botao-primario">Editar</a>
+                        <button
+                            type="button"
+                            class="botao botao-perigo"
+                            onclick="excluirProfessor(<%= professor.idprofessor %>)"
+                        >Excluir</button>
+                    </td>
+                </tr>
+            <% }); %>
+
+            <% if (professores.length === 0) { %>
+                <tr>
+                    <td colspan="5">Nenhum professor cadastrado ainda.</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</main>
+
+<script>
+    async function excluirProfessor(id) {
+        if (!confirm("Tem certeza que deseja excluir este professor?")) return;
+
+        const token = localStorage.getItem("authToken");
+
+        const resposta = await fetch(`/api/professores/${id}`, {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const dados = await resposta.json();
+
+        if (dados.sucesso) {
+            window.location.reload();
+        } else {
+            alert(dados.mensagem || "Erro ao excluir professor.");
+        }
+    }
+</script>
+
+<%- include('../partials/footer') %>

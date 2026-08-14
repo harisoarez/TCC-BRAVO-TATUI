@@ -1,0 +1,118 @@
+.cabecalho-pagina {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.aviso-somente-leitura {
+    font-size: 0.85rem;
+    color: #6b7280;
+    font-style: italic;
+}
+
+.kanban {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.kanban-coluna {
+    background-color: #eef0f6;
+    border-radius: 6px;
+    padding: 0.75rem;
+    min-height: 300px;
+}
+
+.kanban-coluna-titulo {
+    font-weight: bold;
+    margin-bottom: 0.75rem;
+    color: var(--cor-primaria);
+}
+
+.kanban-coluna-corpo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    min-height: 200px;
+}
+
+.kanban-card {
+    background-color: #fff;
+    border-radius: 6px;
+    padding: 0.6rem 0.8rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    font-size: 0.85rem;
+}
+
+.kanban-card[draggable="true"] {
+    cursor: grab;
+}
+
+.kanban-card.arrastando {
+    opacity: 0.4;
+}
+
+.kanban-card-instrumento {
+    color: var(--cor-secundaria);
+    font-size: 0.8rem;
+    margin: 0.2rem 0;
+}
+
+.kanban-card-info {
+    color: var(--cor-texto);
+}
+
+.kanban-card-excluir {
+    margin-top: 0.5rem;
+    background-color: #d9534f;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+}
+
+@media (max-width: 720px) {
+    .kanban {
+        grid-template-columns: 1fr;
+    }
+}
+
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.dashboard-card {
+    background-color: #fff;
+    border-radius: 6px;
+    padding: 1.25rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.dashboard-card-numero {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: var(--cor-primaria);
+}
+
+.dashboard-card-legenda {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+.dashboard-card-alerta .dashboard-card-numero {
+    color: #d9534f;
+}
+
+.dashboard-secao-titulo {
+    margin: 1.5rem 0 0.75rem;
+    color: var(--cor-primaria);
+}

@@ -1,0 +1,81 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+
+<main class="conteudo">
+    <h1><%= professor ? 'Editar Professor' : 'Novo Professor' %></h1>
+
+    <form id="form-professor" class="formulario">
+        <div class="campo">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" name="nome" value="<%= professor ? professor.nome : '' %>" required>
+        </div>
+
+        <div class="campo">
+            <label for="email">Email</label>
+            <input
+                type="email" id="email" name="email"
+                value="<%= professor ? professor.email : '' %>"
+                <%= professor ? 'readonly' : '' %>
+                required
+            >
+            <% if (professor) { %>
+                <small>O e-mail não pode ser alterado por aqui (é a identidade do usuário no Firebase).</small>
+            <% } %>
+        </div>
+
+        <div class="campo">
+            <label for="telefone">Telefone</label>
+            <input type="text" id="telefone" name="telefone" value="<%= professor ? (professor.telefone || '') : '' %>">
+        </div>
+
+        <div class="campo">
+            <label for="tipo_instrumento">Instrumento</label>
+            <input type="text" id="tipo_instrumento" name="tipo_instrumento" value="<%= professor ? (professor.tipo_instrumento || '') : '' %>">
+        </div>
+
+        <div class="campo">
+            <label for="CPF">CPF</label>
+            <input type="text" id="CPF" name="CPF" value="<%= professor ? (professor.CPF || '') : '' %>">
+        </div>
+
+        <div class="campo">
+            <label for="CNPJ">CNPJ (se emitir nota como pessoa jurídica)</label>
+            <input type="text" id="CNPJ" name="CNPJ" value="<%= professor ? (professor.CNPJ || '') : '' %>">
+        </div>
+
+        <button type="submit" class="botao botao-primario">Salvar</button>
+    </form>
+</main>
+
+<script>
+    const professorIdEdicao = <%= professor ? professor.idprofessor : 'null' %>;
+
+    document.getElementById("form-professor").addEventListener("submit", async function (evento) {
+        evento.preventDefault();
+
+        const dados = Object.fromEntries(new FormData(evento.target).entries());
+        const token = localStorage.getItem("authToken");
+
+        const url = professorIdEdicao ? `/api/professores/${professorIdEdicao}` : "/api/professores";
+        const metodo = professorIdEdicao ? "PUT" : "POST";
+
+        const resposta = await fetch(url, {
+            method: metodo,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(dados),
+        });
+
+        const resultado = await resposta.json();
+
+        if (resultado.sucesso) {
+            window.location.href = "/paginas/professores";
+        } else {
+            alert(resultado.mensagem || "Erro ao salvar professor.");
+        }
+    });
+</script>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,161 @@
+:root {
+    --cor-primaria: #2b3a67;
+    --cor-secundaria: #496ddb;
+    --cor-fundo: #f5f6fa;
+    --cor-texto: #1f2430;
+    --cor-borda: #dfe2ea;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ---------- Navbar ---------- */
+.navbar {
+    background-color: var(--cor-primaria);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 2rem;
+}
+
+.navbar-marca {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.navbar-logo {
+    height: 32px;
+}
+
+.navbar-menu {
+    display: flex;
+    list-style: none;
+    gap: 1.5rem;
+}
+
+.navbar-menu a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+.navbar-menu a:hover {
+    color: var(--cor-secundaria);
+}
+
+/* ---------- Conteúdo ---------- */
+.conteudo {
+    flex: 1;
+    padding: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.conteudo h1 {
+    margin-bottom: 1.5rem;
+    color: var(--cor-primaria);
+}
+
+/* ---------- Tabela padrão (reaproveitada em todos os módulos) ---------- */
+.tabela-padrao {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.tabela-padrao th,
+.tabela-padrao td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--cor-borda);
+    text-align: left;
+}
+
+.tabela-padrao th {
+    background-color: var(--cor-primaria);
+    color: #fff;
+}
+
+.tabela-padrao tr:hover {
+    background-color: #f0f2fa;
+}
+
+/* ---------- Botões ---------- */
+.botao {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    border: none;
+    cursor: pointer;
+}
+
+.botao-primario {
+    background-color: var(--cor-secundaria);
+    color: #fff;
+}
+
+.botao-perigo {
+    background-color: #d9534f;
+    color: #fff;
+}
+
+.acoes {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* ---------- Formulários (reaproveitado em todos os módulos) ---------- */
+.formulario {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    max-width: 600px;
+}
+
+.campo {
+    margin-bottom: 1rem;
+}
+
+.campo label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.campo input,
+.campo select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--cor-borda);
+    border-radius: 4px;
+}
+
+/* ---------- Rodapé ---------- */
+.footer {
+    background-color: var(--cor-primaria);
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.85rem;
+}

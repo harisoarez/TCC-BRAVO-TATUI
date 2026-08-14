@@ -1,0 +1,69 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+
+<main class="conteudo">
+    <h1>Dashboard</h1>
+
+    <div class="dashboard-cards">
+        <div class="dashboard-card">
+            <span class="dashboard-card-numero"><%= totalAlunos %></span>
+            <span class="dashboard-card-legenda">Alunos matriculados</span>
+        </div>
+        <div class="dashboard-card">
+            <span class="dashboard-card-numero"><%= totalProfessores %></span>
+            <span class="dashboard-card-legenda">Professores</span>
+        </div>
+        <div class="dashboard-card">
+            <span class="dashboard-card-numero"><%= aulasHoje %></span>
+            <span class="dashboard-card-legenda">Aulas hoje</span>
+        </div>
+        <div class="dashboard-card dashboard-card-alerta">
+            <span class="dashboard-card-numero">R$ <%= Number(recebimentosPendentes.total).toFixed(2) %></span>
+            <span class="dashboard-card-legenda"><%= recebimentosPendentes.quantidade %> recebimento(s) pendente(s)</span>
+        </div>
+        <div class="dashboard-card dashboard-card-alerta">
+            <span class="dashboard-card-numero">R$ <%= Number(pagamentosPendentes.total).toFixed(2) %></span>
+            <span class="dashboard-card-legenda"><%= pagamentosPendentes.quantidade %> pagamento(s) pendente(s)</span>
+        </div>
+    </div>
+
+    <h2 class="dashboard-secao-titulo">Próximas aulas</h2>
+    <table class="tabela-padrao">
+        <thead>
+            <tr><th>Data</th><th>Aluno</th><th>Professor</th><th>Sala</th></tr>
+        </thead>
+        <tbody>
+            <% proximasAulas.forEach(function(aula) { %>
+                <tr>
+                    <td><%= new Date(aula.data_aula).toLocaleString('pt-BR') %></td>
+                    <td><%= aula.aluno_nome %></td>
+                    <td><%= aula.professor_nome %></td>
+                    <td><%= aula.sala %></td>
+                </tr>
+            <% }); %>
+            <% if (proximasAulas.length === 0) { %>
+                <tr><td colspan="4">Nenhuma aula agendada.</td></tr>
+            <% } %>
+        </tbody>
+    </table>
+
+    <h2 class="dashboard-secao-titulo">Aniversariantes do mês</h2>
+    <table class="tabela-padrao">
+        <thead>
+            <tr><th>Nome</th><th>Data</th></tr>
+        </thead>
+        <tbody>
+            <% aniversariantes.forEach(function(pessoa) { %>
+                <tr>
+                    <td><%= pessoa.nome %></td>
+                    <td><%= new Date(pessoa.data_nascimento).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) %></td>
+                </tr>
+            <% }); %>
+            <% if (aniversariantes.length === 0) { %>
+                <tr><td colspan="2">Nenhum aniversariante este mês.</td></tr>
+            <% } %>
+        </tbody>
+    </table>
+</main>
+
+<%- include('../partials/footer') %>

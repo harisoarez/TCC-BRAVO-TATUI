@@ -6,18 +6,19 @@
 }
 
 @font-face {
-    font-family: 'julius';
-    src: url(../fonts/Julius_Sans_One/JuliusSansOne-Regular.ttf);
+    font-family: "julius";
+    src: url(../fonts/Julius_Sans_One/JuliusSansOne-Regular.ttf) format('truetype');
+    font-display: swap;
 }
 
 @font-face {
-    font-family: 'inter';
-    src: url(../fonts/Inter/Inter-VariableFont_opsz\,wght.ttf);
+    font-family: "inter";
+    src: url(../fonts/Inter/Inter-VariableFont_opsz,wght.ttf) format('truetype');
 }
 
 @font-face {
-    font-family: 'jaldi';
-    src: url(../fonts/Jaldi/Jaldi-Regular.ttf);
+    font-family: "jaldi";
+    src: url(../fonts/Jaldi/Jaldi-Regular.ttf) format('truetype');
 }
 
 a{
@@ -116,7 +117,7 @@ body{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-family: 'julius';
+    font-family: "julius";
     
     /* Necessário para o pseudo-elemento se posicionar corretamente */
     position: relative; 
@@ -163,6 +164,11 @@ body{
     justify-content: space-around;
 }
 
+.card:hover{
+    transform: scale(1.08);  
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+}
+
 .card{
     background-color: #212121;
     width: 16%;
@@ -172,6 +178,7 @@ body{
     align-items: center;
     padding-top: 0.5% ;
     padding-bottom: 0.8%;
+    transition: transform 0.4s ease-in-out, box-shadow 0.4s ease;
 }
 .card img{
     width: 94%;
@@ -181,16 +188,15 @@ body{
     margin-bottom: 5%;
 }
 .card h1{
-    color: #F5D696;
-    font-family: 'julius';
+    color: rgb(245, 214, 150);
+    font-family: "julius";
     font-size: 1.8em;
-    margin-bottom: 5px;
 }
+
 .card p{
-    color: white;
-    font-family: 'inter';
-    font-size: 0.9em;
+    font-family: "Jaldi";
+    line-height: 3vh;
+    font-size:small;
     text-align: justify;
-    padding: 0 10px;
-    line-height: 2em;
+    padding: 1.5vh;
 }

@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendário de Aulas - Instituto Bravo</title>
+    <link rel="stylesheet" href="../css/calendario.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="header">
+            <img src="../images/Instagram_icon.png" alt="Instagram" width="18px" style="margin-right:5px;">
+            <a href="https://www.instagram.com/bravo_tatui/" target="_blank">@bravo_tatui</a>
+        </div>
+
+        <div id="nav-bar">
+
+            <div id="logo">
+                <a href="./index.html">
+                    <img src="https://friocenterpescados.com.br/uploads/tilapia-inteira-eviscerada_1.jpg"
+                        alt="Bravo Tatuí">
+                </a>
+            </div>
+
+            <div id="nav-links">
+                <a href="./index.html">Início</a>
+                <a href="./formacoes.html">Bravo Tatuí</a>
+                <a href="./instrumentos.html">Instituto Bravo</a>
+            </div>
+
+            <div id="search">
+                <img src="../images/searchIcon.png" alt="Ícone de pesquisa">
+                <input type="text" placeholder="Pesquisar no site">
+            </div>
+
+        </div>
+
+
+        <main class="pagina">
+
+            <section class="cabecalho">
+
+                <div>
+                    <p class="categoria">ACADÊMICO</p>
+
+                    <h1>Calendário de aulas</h1>
+
+                    <p>
+                        Visualize e gerencie as aulas da escola.
+                    </p>
+                </div>
+
+                <button id="btnNovaAula" class="btn btn-principal" type="button">
+                    + Agendar aula
+                </button>
+
+            </section>
+
+            <section class="controles">
+
+                <div class="navegacao">
+
+                    <button id="btnAnterior" class="btn-navegacao" type="button">
+                        ‹
+                    </button>
+
+                    <button id="btnHoje" class="btn btn-secundario" type="button">
+                        Hoje
+                    </button>
+
+                    <button id="btnProximo" class="btn-navegacao" type="button">
+                        ›
+                    </button>
+
+                    <h2 id="tituloMes">
+                        Setembro 2026
+                    </h2>
+
+                </div>
+
+
+                <div class="filtros">
+
+                    <label>
+                        Professor
+
+                        <select id="filtroProfessor">
+
+                            <option value="todos">
+                                Todos
+                            </option>
+
+                            <option value="Carlos">
+                                Carlos
+                            </option>
+
+                            <option value="Mariana">
+                                Mariana
+                            </option>
+
+                        </select>
+
+                    </label>
+
+
+                    <label>
+                        Tipo
+
+                        <select id="filtroTipo">
+
+                            <option value="todos">
+                                Todos
+                            </option>
+
+                            <option value="normal">
+                                Normal
+                            </option>
+
+                            <option value="reposicao">
+                                Reposição
+                            </option>
+
+                            <option value="cancelada">
+                                Cancelada
+                            </option>
+
+                        </select>
+
+                    </label>
+
+                </div>
+
+            </section>
+
+            <section class="calendarios">
+
+                <div class="calendario-box">
+
+                    <div class="calendario-titulo">
+
+                        <div>
+                            <small>MÊS ATUAL</small>
+
+                            <h2 id="mesAtual">
+                                Setembro 2026
+                            </h2>
+                        </div>
+
+                        <span id="contadorAtual">
+                            0 aulas
+                        </span>
+
+                    </div>
+
+
+                    <div class="dias-semana">
+
+                        <div>Dom</div>
+                        <div>Seg</div>
+                        <div>Ter</div>
+                        <div>Qua</div>
+                        <div>Qui</div>
+                        <div>Sex</div>
+                        <div>Sáb</div>
+
+                    </div>
+
+
+                    <div id="gradeAtual" class="grade-calendario">
+                    </div>
+
+                </div>
+
+                <div class="calendario-box">
+
+                    <div class="calendario-titulo">
+
+                        <div>
+                            <small>PRÓXIMO MÊS</small>
+
+                            <h2 id="mesProximo">
+                                Outubro 2026
+                            </h2>
+                        </div>
+
+                        <span id="contadorProximo">
+                            0 aulas
+                        </span>
+
+                    </div>
+
+
+                    <div class="dias-semana">
+
+                        <div>Dom</div>
+                        <div>Seg</div>
+                        <div>Ter</div>
+                        <div>Qua</div>
+                        <div>Qui</div>
+                        <div>Sex</div>
+                        <div>Sáb</div>
+
+                    </div>
+
+
+                    <div id="gradeProximo" class="grade-calendario">
+                    </div>
+
+                </div>
+
+            </section>
+
+            <section class="agenda">
+
+                <div class="agenda-cabecalho">
+
+                    <div>
+
+                        <small>AGENDA DO DIA</small>
+
+                        <h2 id="tituloAgenda">
+                            Selecione um dia
+                        </h2>
+
+                        <p id="subtituloAgenda">
+                            Clique em um dia do calendário.
+                        </p>
+
+                    </div>
+
+
+                    <div class="legenda">
+
+                        <span>
+                            <i class="bolinha normal"></i>
+                            Normal
+                        </span>
+
+                        <span>
+                            <i class="bolinha reposicao"></i>
+                            Reposição
+                        </span>
+
+                        <span>
+                            <i class="bolinha cancelada"></i>
+                            Cancelada
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div id="agendaDia" class="agenda-dia">
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <div id="modalAgendar" class="modal-fundo oculto">
+
+        <div class="modal">
+
+            <div class="modal-cabecalho">
+
+                <div>
+
+                    <small>NOVA AULA</small>
+
+                    <h2>
+                        Agendar aula
+                    </h2>
+
+                </div>
+
+                <button id="btnFecharAgendamento" class="fechar" type="button">
+                    ×
+                </button>
+
+            </div>
+
+            <form id="formAula">
+
+                <div class="form-grid">
+
+                    <div class="campo">
+
+                        <label for="aluno">
+                            Aluno
+                        </label>
+
+                        <input id="aluno" type="text" placeholder="Nome do aluno" required>
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="professor">
+                            Professor
+                        </label>
+
+                        <input id="professor" type="text" placeholder="Nome do professor" required>
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="instrumento">
+                            Curso / Instrumento
+                        </label>
+
+                        <input id="instrumento" type="text" placeholder="Ex.: Piano" required>
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="sala">
+                            Sala
+                        </label>
+
+                        <input id="sala" type="number" min="1" placeholder="Número da sala" required>
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="dataAula">
+                            Data
+                        </label>
+
+                        <input id="dataAula" type="date" required>
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="horaAula">
+                            Horário
+                        </label>
+
+                        <input id="horaAula" type="time" required>
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="duracao">
+                            Duração
+                        </label>
+
+                        <select id="duracao">
+
+                            <option value="30">
+                                30 minutos
+                            </option>
+
+                            <option value="45">
+                                45 minutos
+                            </option>
+
+                            <option value="60" selected>
+                                60 minutos
+                            </option>
+
+                            <option value="90">
+                                90 minutos
+                            </option>
+
+                            <option value="120">
+                                120 minutos
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="tipoAula">
+                            Tipo de aula
+                        </label>
+
+                        <select id="tipoAula">
+
+                            <option value="normal">
+                                Normal
+                            </option>
+
+                            <option value="reposicao">
+                                Reposição
+                            </option>
+
+                            <option value="cancelada">
+                                Cancelada
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="campo campo-grande">
+
+                        <label for="observacoes">
+                            Observações
+                        </label>
+
+                        <textarea id="observacoes" rows="3" placeholder="Observações sobre a aula..."></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <div id="mensagemConflito" class="mensagem-conflito">
+                    A sala selecionada já possui uma aula neste horário.
+                </div>
+
+
+                <div class="modal-botoes">
+
+                    <button type="button" id="btnCancelarAgendamento" class="btn btn-secundario">
+                        Cancelar
+                    </button>
+
+                    <button type="submit" class="btn btn-principal">
+                        Agendar aula
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <div id="modalResumo" class="modal-fundo oculto">
+
+        <div class="modal">
+
+            <div class="modal-cabecalho">
+
+                <div>
+
+                    <small>DETALHES DA AULA</small>
+
+                    <h2 id="resumoTitulo">
+                        Aula
+                    </h2>
+
+                </div>
+
+                <button id="btnFecharResumo" class="fechar" type="button">
+                    ×
+                </button>
+
+            </div>
+
+            <div class="form-grid">
+
+                <div class="campo">
+
+                    <label>
+                        Aluno
+                    </label>
+
+                    <input id="resumoAluno" type="text" readonly>
+
+                </div>
+
+                <div class="campo">
+
+                    <label>
+                        Professor
+                    </label>
+
+                    <input id="resumoProfessor" type="text" readonly>
+
+                </div>
+
+                <div class="campo">
+
+                    <label>
+                        Curso / Instrumento
+                    </label>
+
+                    <input id="resumoInstrumento" type="text" readonly>
+
+                </div>
+
+                <div class="campo">
+
+                    <label>
+                        Sala
+                    </label>
+
+                    <input id="resumoSala" type="text" readonly>
+
+                </div>
+
+                <div class="campo">
+
+                    <label>
+                        Data
+                    </label>
+
+                    <input id="resumoData" type="text" readonly>
+
+                </div>
+
+                <div class="campo">
+
+                    <label>
+                        Horário
+                    </label>
+
+                    <input id="resumoHorario" type="text" readonly>
+
+                </div>
+
+                <div class="campo">
+
+                    <label>
+                        Duração
+                    </label>
+
+                    <input id="resumoDuracao" type="text" readonly>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label>
+                        Tipo
+                    </label>
+
+                    <input id="resumoTipo" type="text" readonly>
+
+                </div>
+
+
+                <div class="campo campo-grande">
+
+                    <label>
+                        Observações
+                    </label>
+
+                    <textarea id="resumoObservacoes" rows="3" readonly></textarea>
+
+                </div>
+
+            </div>
+
+
+            <div id="botoesAdmin" class="modal-botoes">
+
+                <button id="btnEditarAula" type="button" class="btn btn-principal">
+                    Editar aula
+                </button>
+
+                <button id="btnFecharResumo2" type="button" class="btn btn-secundario">
+                    Fechar
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div id="toast" class="toast"></div>
+
+
+    <script src="../script/calendario.js"></script>
+
+</body>
+
+</html>

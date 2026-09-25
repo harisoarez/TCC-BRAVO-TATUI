@@ -96,3 +96,24 @@ body{
     outline: none;
 }
 /*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
+.opcao{
+    height: 31vh;
+    display: flex;
+    align-items: center;
+    padding-left: 5%;
+    outline: blue 1px solid;
+}
+
+.opcao h1{
+    font-family: 'julius';
+    font-size: 2.5vw;
+    color: white;
+}
+
+.opcao h2{
+    font-family: 'jaldi';
+    font-size: 1vw;
+    color: white;
+}
+
+

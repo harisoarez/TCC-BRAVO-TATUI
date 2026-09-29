@@ -1,0 +1,141 @@
+*{
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    font-weight: normal;
+    overflow: hidden;
+}
+
+@font-face {
+    font-family: 'julius';
+    src: url(../fonts/Julius_Sans_One/JuliusSansOne-Regular.ttf);
+}
+
+@font-face {
+    font-family: 'inter';
+    src: url(../fonts/Inter/Inter-VariableFont_opsz\,wght.ttf);
+}
+
+@font-face {
+    font-family: 'jaldi';
+    src: url(../fonts/Jaldi/Jaldi-Regular.ttf);
+}
+
+a{
+    text-decoration: none;
+    color: white;
+    
+}
+
+body{
+    background-color: #080808;
+}
+
+.container{ /*tela inteira*/
+    height: 100%;
+    width: 100%;
+    position: relative;
+    color: white;
+    
+}
+
+/*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
+
+.container .header{ /*cabeçalho*/
+    background-color: #1A1A1A;
+    height: 3vh;
+    display: flex;
+    align-items: center;
+    padding-left: 2%;
+    font-family: 'inter';
+    font-size: small;
+}
+
+/*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
+
+#nav-bar{ /*barra de navegação*/
+    background-color: #080808;
+    height: 6vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    font-family: 'inter';
+    border-bottom: 1px solid white;
+}
+#nav-bar #logo{
+    width: 16%;
+}
+#nav-bar img{
+    width: 60px;
+}
+#nav-bar #nav-links{
+    width: 40%;
+    display: flex;
+    justify-content: space-evenly;
+}
+#nav-bar #search{
+    background-color: transparent;
+    height: 60%;
+    width: 16%;
+    border-radius: 30px;
+    display: flex;
+    border: 1px solid white;
+    padding-left: 20px;
+    align-items: center;
+    justify-content: space-between;
+}
+#nav-bar #search img{
+    width: 30px;
+    height: 30px;
+}
+#nav-bar #search input{
+    background-color: transparent;
+    border: none;
+    color: white;
+    width: 80%;
+    height: 100%;
+    outline: none;
+}
+/*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
+.conteudo{
+    display: flex;
+    height: 91vh;
+}
+
+.esquerda{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 2%;
+}
+
+.esquerda .nome{
+    border-bottom: 1px solid white;
+    padding: 2%;
+    margin-bottom: 2%;
+
+}
+
+.esquerda .nome h1{
+    font-family: 'julius';
+    font-size: 3vw;
+}
+
+.esquerda .descricao{
+    width: 40vw;
+    height:auto;
+    font-family: 'jaldi';
+    font-size: 1.5vw;
+}
+
+.direita{
+    width: 50%;
+    height: 100%;
+    padding-top: 2%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

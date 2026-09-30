@@ -1,14 +1,11 @@
 const express = require("express");
 const router = express.Router();
+const aulaController = require("../controllers/aulaController");
 
-const alunoController = require("../controllers/alunoController");
-const authFirebase = require("../middleware/authFirebase");
-const verificarPrimeiroAcesso = require("../middleware/verificarPrimeiroAcesso");
-
-router.post("/", authFirebase, verificarPrimeiroAcesso, alunoController.cadastrar);
-router.get("/", authFirebase, verificarPrimeiroAcesso, alunoController.listar);
-router.get("/:id", authFirebase, verificarPrimeiroAcesso, alunoController.buscarPorId);
-router.put("/:id", authFirebase, verificarPrimeiroAcesso, alunoController.atualizar);
-router.delete("/:id", authFirebase, verificarPrimeiroAcesso, alunoController.deletar);
+router.get("/", aulaController.listar);
+router.post("/", aulaController.cadastrar);
+router.patch("/:id/status", aulaController.moverStatus);
+router.put("/:id", aulaController.atualizar);
+router.delete("/:id", aulaController.deletar);
 
 module.exports = router;

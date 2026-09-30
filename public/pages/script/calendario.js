@@ -1,897 +1,216 @@
+// Estado do Calendário
 let dataAtual = new Date();
 let dataSelecionada = new Date();
+const usuarioAtivo = { tipo: 'admin' }; // 'admin' ou 'aluno'
 
-let aulaSelecionada = null;
-
-
-// Enquanto não temos o banco de dados,
-// as aulas ficam aqui para teste.
-
+// Base de testes usando 'titulo' ao invés de 'aluno'
 let aulas = [
-    {
-        id: 1,
-        nome: "Aula de teoria musical",
-        professores: ["Carlos", "Mariana"],
-        instrumentos: ["Piano", "Teoria Musical"],
-        sala: 1,
-        data: "2026-09-09",
-        hora: "09:00",
-        duracao: 60,
-        tipo: "normal",
-        observacoes: "..."
-    },
-
-    {
-        id: 2,
-        aluno: "Maria Oliveira",
-        professor: "Mariana",
-        instrumento: "Violão",
-        sala: 2,
-        data: "2026-09-09",
-        hora: "11:00",
-        duracao: 60,
-        tipo: "reposicao",
-        observacoes: "Reposição da aula anterior."
-    },
-
-    {
-        id: 3,
-        aluno: "Pedro Santos",
-        professor: "Carlos",
-        instrumento: "Piano",
-        sala: 1,
-        data: "2026-09-15",
-        hora: "14:00",
-        duracao: 60,
-        tipo: "cancelada",
-        observacoes: "Aula cancelada."
-    }
+    { id: 1, titulo: "Aula de Teoria Musical", professor: "Mariana", instrumento: "Violão", sala: 2, data: "2026-09-09", hora: "11:00", tipo: "reposicao", observacoes: "" },
+    { id: 2, titulo: "Prática de Escalas", professor: "Carlos", instrumento: "Piano", sala: 1, data: "2026-09-15", hora: "14:00", tipo: "cancelada", observacoes: "Falta do professor." },
+    { id: 3, titulo: "Iniciação à Bateria", professor: "Carlos", instrumento: "Bateria", sala: 3, data: "2026-09-29", hora: "09:00", tipo: "normal", observacoes: "" }
 ];
 
-const modalAgendar = document.getElementById("modalAgendar");
-const modalResumo = document.getElementById("modalResumo");
-const formAula = document.getElementById("formAula");
+document.addEventListener("DOMContentLoaded", () => {
+    // Configura Botão Agendar Aula para Admin
+    if (usuarioAtivo.tipo === 'admin') {
+        const btnNova = document.getElementById("btnNovaAula");
+        btnNova.classList.remove("oculto");
+        btnNova.addEventListener("click", abrirNovoAgendamento);
+    }
 
-document.addEventListener("DOMContentLoaded", function () {
+    // Configura Botões de Navegação
+    document.getElementById("btnAnterior").addEventListener("click", () => { dataAtual.setMonth(dataAtual.getMonth() - 1); renderizarCalendario(); });
+    document.getElementById("btnProximo").addEventListener("click", () => { dataAtual.setMonth(dataAtual.getMonth() + 1); renderizarCalendario(); });
+    
+    // Configura Submit do Form
+    document.getElementById("formAula").addEventListener("submit", salvarAula);
+    
+    // Configura Botão da Lixeira
+    document.getElementById("btnLixeira").addEventListener("click", () => {
+        fecharModal('modalFormulario');
+        document.getElementById('modalExcluir').classList.remove('oculto');
+    });
 
-    configurarBotoes();
-
-    atualizarCalendarios();
-
-    selecionarDia(new Date());
-
-    verificarAdmin();
-
+    renderizarCalendario();
+    renderizarAgendaDia(dataSelecionada);
 });
 
-function configurarBotoes() {
+// ================= RENDERIZAÇÃO =================
+function renderizarCalendario() {
+    const ano = dataAtual.getFullYear();
+    const mes = dataAtual.getMonth();
+    
+    document.getElementById("mesAtual").textContent = new Date(ano, mes).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+    
+    const primeiroDia = new Date(ano, mes, 1).getDay();
+    const ultimoDia = new Date(ano, mes + 1, 0).getDate();
+    
+    const grade = document.getElementById("gradeAtual");
+    let htmlDias = '';
 
-    document
-        .getElementById("btnNovaAula")
-        .addEventListener("click", abrirAgendamento);
+    for (let i = 0; i < primeiroDia; i++) htmlDias += `<div class="dia outro-mes"></div>`;
 
-    document
-        .getElementById("btnFecharAgendamento")
-        .addEventListener("click", fecharAgendamento);
+    for (let dia = 1; dia <= ultimoDia; dia++) {
+        const dataFormatada = `${ano}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+        const aulasDoDia = aulas.filter(a => a.data === dataFormatada);
+        const isSelecionado = dataFormatada === formatarData(dataSelecionada) ? 'selecionado' : '';
+        
+        const htmlAulas = aulasDoDia.slice(0, 3).map(aula => 
+            `<div class="mini-aula ${aula.tipo}" onclick="abrirResumo(${aula.id}, event)">${aula.hora} - ${aula.titulo}</div>`
+        ).join('');
 
-    document
-        .getElementById("btnCancelarAgendamento")
-        .addEventListener("click", fecharAgendamento);
-
-    document
-        .getElementById("btnFecharResumo")
-        .addEventListener("click", fecharResumo);
-
-    document
-        .getElementById("btnFecharResumo2")
-        .addEventListener("click", fecharResumo);
-
-    document
-        .getElementById("btnEditarAula")
-        .addEventListener("click", editarAula);
-
-    document
-        .getElementById("btnAnterior")
-        .addEventListener("click", mesAnterior);
-
-    document
-        .getElementById("btnProximo")
-        .addEventListener("click", mesProximo);
-
-    document
-        .getElementById("btnHoje")
-        .addEventListener("click", irParaHoje);
-
-    document
-        .getElementById("filtroProfessor")
-        .addEventListener("change", atualizarCalendarios);
-
-    document
-        .getElementById("filtroTipo")
-        .addEventListener("change", atualizarCalendarios);
-
-    formAula.addEventListener("submit", salvarAula);
-
-
-    modalAgendar.addEventListener("click", function (e) {
-
-        if (e.target === modalAgendar) {
-            fecharAgendamento();
-        }
-
-    });
-
-
-    modalResumo.addEventListener("click", function (e) {
-
-        if (e.target === modalResumo) {
-            fecharResumo();
-        }
-
-    });
-
+        htmlDias += `
+            <div class="dia ${isSelecionado}" onclick="selecionarDia('${dataFormatada}')">
+                <span class="numero-dia">${dia}</span>
+                ${htmlAulas}
+                ${aulasDoDia.length > 3 ? `<div class="mini-aula">... mais</div>` : ''}
+            </div>
+        `;
+    }
+    grade.innerHTML = htmlDias;
 }
 
-function verificarAdmin() {
-
-    const usuario = {
-        tipo: "admin"
-    };
-
-    if (usuario.tipo !== "admin") {
-        document.getElementById("botoesAdmin").style.display = "none";
-    }
-
-}
-
-function atualizarCalendarios() {
-
-    const mes = new Date(
-        dataAtual.getFullYear(),
-        dataAtual.getMonth(),
-        1
-    );
-
-    const proximo = new Date(
-        dataAtual.getFullYear(),
-        dataAtual.getMonth() + 1,
-        1
-    );
-
-    document.getElementById("tituloMes").textContent =
-        nomeMes(mes);
-
-    document.getElementById("mesAtual").textContent =
-        nomeMes(mes);
-
-    document.getElementById("mesProximo").textContent =
-        nomeMes(proximo);
-
-
-    criarCalendario(
-        mes,
-        document.getElementById("gradeAtual"),
-        "contadorAtual"
-    );
-
-    criarCalendario(
-        proximo,
-        document.getElementById("gradeProximo"),
-        "contadorProximo"
-    );
-
-}
-
-function criarCalendario(mes, grade, contador) {
-
-    grade.innerHTML = "";
-
-
-    const primeiroDia = new Date(
-        mes.getFullYear(),
-        mes.getMonth(),
-        1
-    );
-
-    const ultimoDia = new Date(
-        mes.getFullYear(),
-        mes.getMonth() + 1,
-        0
-    );
-
-    for (let i = primeiroDia.getDay() - 1; i >= 0; i--) {
-
-        const dia = new Date(
-            mes.getFullYear(),
-            mes.getMonth(),
-            -i
-        );
-
-        criarDia(grade, dia, true);
-
-    }
-
-    for (let i = 1; i <= ultimoDia.getDate(); i++) {
-
-        const dia = new Date(
-            mes.getFullYear(),
-            mes.getMonth(),
-            i
-        );
-
-        criarDia(grade, dia, false);
-
-    }
-
-    const total = grade.children.length;
-
-    const faltam = (7 - (total % 7)) % 7;
-
-
-    for (let i = 1; i <= faltam; i++) {
-
-        const dia = new Date(
-            mes.getFullYear(),
-            mes.getMonth() + 1,
-            i
-        );
-
-        criarDia(grade, dia, true);
-
-    }
-
-    const quantidade = aulasDoMes(mes).length;
-
-    document.getElementById(contador).textContent =
-        quantidade + (quantidade === 1 ? " aula" : " aulas");
-
-}
-
-function criarDia(grade, data, outroMes) {
-
-    const div = document.createElement("div");
-
-    div.className = "dia";
-
-
-    if (outroMes) {
-        div.classList.add("outro-mes");
-    }
-
-
-    if (mesmaData(data, new Date())) {
-        div.classList.add("hoje");
-    }
-
-
-    if (mesmaData(data, dataSelecionada)) {
-        div.classList.add("selecionado");
-    }
-
-
-    const numero = document.createElement("div");
-
-    numero.className = "numero-dia";
-    numero.textContent = data.getDate();
-
-    div.appendChild(numero);
-
-
-    const aulasDoDia = pegarAulasDoDia(data);
-
-
-    aulasDoDia.slice(0, 3).forEach(function (aula) {
-
-        const mini = document.createElement("div");
-
-        mini.className = "mini-aula " + aula.tipo;
-
-
-        const hora = document.createElement("span");
-
-        hora.className = "mini-hora";
-        hora.textContent = aula.hora;
-
-
-        const aluno = document.createElement("span");
-
-        aluno.className = "mini-aluno";
-        aluno.textContent = aula.aluno;
-
-
-        mini.appendChild(hora);
-        mini.appendChild(aluno);
-
-
-        mini.addEventListener("click", function (e) {
-
-            e.stopPropagation();
-
-            abrirResumo(aula);
-
-        });
-
-
-        div.appendChild(mini);
-
-    });
-
-
-    div.addEventListener("click", function () {
-        selecionarDia(data);
-    });
-
-
-    grade.appendChild(div);
-
-}
-
-function selecionarDia(data) {
-
-    dataSelecionada = new Date(data);
-
-    atualizarCalendarios();
-
-    atualizarAgenda();
-
-}
-
-function atualizarAgenda() {
-
-    const data = formatarData(dataSelecionada);
-
-    const aulasDoDia = pegarAulasDoDia(dataSelecionada);
-
-
-    document.getElementById("tituloAgenda").textContent =
-        dataSelecionada.toLocaleDateString("pt-BR", {
-            weekday: "long",
-            day: "numeric",
-            month: "long"
-        });
-
-
-    document.getElementById("subtituloAgenda").textContent =
-        aulasDoDia.length === 0
-            ? "Nenhuma aula agendada para este dia."
-            : "Aulas agendadas para este dia.";
-
-
+function renderizarAgendaDia(dataObj) {
+    const dataStr = formatarData(dataObj);
+    const aulasDoDia = aulas.filter(a => a.data === dataStr);
+    
+    document.getElementById("textoDataSelecionada").textContent = dataObj.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+    
     const agenda = document.getElementById("agendaDia");
-
-    agenda.innerHTML = "";
-
-
-    for (let hora = 7; hora <= 18; hora++) {
-
-        const linha = document.createElement("div");
-
-        linha.className = "linha-horario";
-
-
-        const horaTexto = document.createElement("div");
-
-        horaTexto.className = "hora";
-
-        horaTexto.textContent =
-            String(hora).padStart(2, "0") + ":00";
-
-
-        const slot = document.createElement("div");
-
-        slot.className = "slot";
-
-
-        aulasDoDia.forEach(function (aula) {
-
-            const inicio = minutos(aula.hora);
-
-            const fim = inicio + aula.duracao;
-
-            const horaInicio = hora * 60;
-            const horaFim = horaInicio + 60;
-
-
-            if (
-                inicio < horaFim &&
-                fim > horaInicio
-            ) {
-
-                const elemento = criarAula(aula);
-
-                slot.appendChild(elemento);
-
-            }
-
-        });
-
-
-        linha.appendChild(horaTexto);
-        linha.appendChild(slot);
-
-        agenda.appendChild(linha);
-
-    }
-
-}
-
-function criarAula(aula) {
-
-    const div = document.createElement("div");
-
-    div.className = "aula " + aula.tipo;
-
-
-    const nome = document.createElement("strong");
-
-    nome.textContent = aula.aluno;
-
-
-    const detalhes = document.createElement("span");
-
-    detalhes.textContent =
-        aula.instrumento +
-        " · Sala " +
-        aula.sala +
-        " · " +
-        aula.hora +
-        " · " +
-        aula.duracao +
-        " min";
-
-    div.appendChild(nome);
-    div.appendChild(detalhes);
-
-
-    div.addEventListener("click", function () {
-        abrirResumo(aula);
-    });
-
-    return div;
-
-}
-
-function abrirResumo(aula) {
-
-    aulaSelecionada = aula;
-
-
-    document.getElementById("resumoTitulo").textContent =
-        aula.instrumento;
-
-
-    document.getElementById("resumoAluno").textContent =
-        aula.aluno;
-
-    document.getElementById("resumoProfessor").textContent =
-        aula.professor;
-
-    document.getElementById("resumoInstrumento").textContent =
-        aula.instrumento;
-
-    document.getElementById("resumoSala").textContent =
-        "Sala " + aula.sala;
-
-    document.getElementById("resumoData").textContent =
-        dataBonita(aula.data);
-
-    document.getElementById("resumoHorario").textContent =
-        aula.hora;
-
-    document.getElementById("resumoDuracao").textContent =
-        aula.duracao + " minutos";
-
-    document.getElementById("resumoTipo").textContent =
-        nomeTipo(aula.tipo);
-
-    document.getElementById("resumoObservacoes").textContent =
-        aula.observacoes || "Nenhuma observação.";
-
-
-    modalResumo.classList.remove("oculto");
-
-}
-
-function fecharResumo() {
-
-    modalResumo.classList.add("oculto");
-
-    aulaSelecionada = null;
-
-}
-
-
-function abrirAgendamento() {
-
-    formAula.reset();
-
-    document.getElementById("dataAula").value =
-        formatarData(dataSelecionada);
-
-    document.getElementById("duracao").value = "60";
-    document.getElementById("tipoAula").value = "normal";
-
-    document
-        .getElementById("mensagemConflito")
-        .classList.remove("exibir");
-
-
-    delete formAula.dataset.editando;
-
-    modalAgendar.classList.remove("oculto");
-
-}
-
-function fecharAgendamento() {
-
-    modalAgendar.classList.add("oculto");
-
-}
-
-function editarAula() {
-
-    if (!aulaSelecionada) {
+    if (aulasDoDia.length === 0) {
+        agenda.innerHTML = `<p style="font-size: 13px; color: #999;">Nenhuma aula programada.</p>`;
         return;
     }
 
-
-    const aula = aulaSelecionada;
-
-
-    fecharResumo();
-
-
-    document.getElementById("aluno").value =
-        aula.aluno;
-
-    document.getElementById("professor").value =
-        aula.professor;
-
-    document.getElementById("instrumento").value =
-        aula.instrumento;
-
-    document.getElementById("sala").value =
-        aula.sala;
-
-    document.getElementById("dataAula").value =
-        aula.data;
-
-    document.getElementById("horaAula").value =
-        aula.hora;
-
-    document.getElementById("duracao").value =
-        aula.duracao;
-
-    document.getElementById("tipoAula").value =
-        aula.tipo;
-
-    document.getElementById("observacoes").value =
-        aula.observacoes || "";
-
-
-    formAula.dataset.editando = aula.id;
-
-    modalAgendar.classList.remove("oculto");
-
+    agenda.innerHTML = aulasDoDia.map(aula => `
+        <div class="evento-card ${aula.tipo}" onclick="abrirResumo(${aula.id}, null)">
+            <strong>${aula.hora} - ${aula.titulo}</strong>
+            <span>${aula.instrumento} | Sala ${aula.sala} | Prof: ${aula.professor}</span>
+        </div>
+    `).join('');
 }
 
+function selecionarDia(dataStr) {
+    const partes = dataStr.split('-');
+    dataSelecionada = new Date(partes[0], partes[1] - 1, partes[2]);
+    renderizarCalendario();
+    renderizarAgendaDia(dataSelecionada);
+}
+
+// ================= MODAIS E FORMULÁRIO =================
+function fecharModal(id) {
+    document.getElementById(id).classList.add("oculto");
+}
+
+// 1. Resumo da Aula (Adiciona ícone Lápis SVG se for admin)
+function abrirResumo(id, evento) {
+    if (evento) evento.stopPropagation();
+    const aula = aulas.find(a => a.id === id);
+    
+    // Ícone de Lápis Minimalista
+    const iconeLapis = `<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>`;
+    
+    document.getElementById("acoesResumo").innerHTML = usuarioAtivo.tipo === 'admin' 
+        ? `<button onclick="abrirEdicao(${aula.id})" class="btn-icon" title="Editar Aula">${iconeLapis}</button>` 
+        : '';
+        
+    document.getElementById("detalhesAulaConteudo").innerHTML = `
+        <p><strong>Título:</strong> ${aula.titulo}</p>
+        <p><strong>Instrumento:</strong> ${aula.instrumento}</p>
+        <p><strong>Professor:</strong> ${aula.professor}</p>
+        <p><strong>Data/Hora:</strong> ${aula.data.split('-').reverse().join('/')} às ${aula.hora}</p>
+        <p><strong>Sala:</strong> ${aula.sala}</p>
+        <p><strong>Tipo:</strong> <span style="text-transform: capitalize;">${aula.tipo}</span></p>
+        <p><strong>Observações:</strong> ${aula.observacoes || "Nenhuma."}</p>
+    `;
+    
+    document.getElementById("modalResumo").classList.remove("oculto");
+}
+
+// 2. Novo Agendamento
+function abrirNovoAgendamento() {
+    document.getElementById("formAula").reset();
+    document.getElementById("aulaId").value = "";
+    document.getElementById("formData").value = formatarData(dataSelecionada);
+    document.getElementById("tituloModalForm").textContent = "Agendar Nova Aula";
+    document.getElementById("btnLixeira").classList.add("oculto"); // Esconde Lixeira criando nova aula
+    
+    document.getElementById("modalFormulario").classList.remove("oculto");
+}
+
+// 3. Edição
+function abrirEdicao(id) {
+    fecharModal("modalResumo");
+    const aula = aulas.find(a => a.id === id);
+    
+    document.getElementById("aulaId").value = aula.id;
+    document.getElementById("formTitulo").value = aula.titulo;
+    document.getElementById("formProfessor").value = aula.professor;
+    document.getElementById("formInstrumento").value = aula.instrumento;
+    document.getElementById("formData").value = aula.data;
+    document.getElementById("formHora").value = aula.hora;
+    document.getElementById("formSala").value = aula.sala;
+    document.getElementById("formTipo").value = aula.tipo;
+    document.getElementById("formObs").value = aula.observacoes;
+    
+    document.getElementById("tituloModalForm").textContent = "Editar Aula";
+    document.getElementById("btnLixeira").classList.remove("oculto"); // Mostra Lixeira ao editar
+    
+    document.getElementById("modalFormulario").classList.remove("oculto");
+}
+
+// 4. Salvar (Criação e Edição)
 function salvarAula(e) {
-
     e.preventDefault();
-
-
-    const id = formAula.dataset.editando;
-
-
-    const novaAula = {
-
-        id: id
-            ? Number(id)
-            : proximoId(),
-
-        aluno: document.getElementById("aluno").value,
-
-        professor: document.getElementById("professor").value,
-
-        instrumento:
-            document.getElementById("instrumento").value,
-
-        sala:
-            Number(document.getElementById("sala").value),
-
-        data:
-            document.getElementById("dataAula").value,
-
-        hora:
-            document.getElementById("horaAula").value,
-
-        duracao:
-            Number(document.getElementById("duracao").value),
-
-        tipo:
-            document.getElementById("tipoAula").value,
-
-        observacoes:
-            document.getElementById("observacoes").value
-
+    const idAtual = document.getElementById("aulaId").value;
+    
+    const dadosForm = {
+        titulo: document.getElementById("formTitulo").value,
+        professor: document.getElementById("formProfessor").value,
+        instrumento: document.getElementById("formInstrumento").value,
+        data: document.getElementById("formData").value,
+        hora: document.getElementById("formHora").value,
+        sala: parseInt(document.getElementById("formSala").value),
+        tipo: document.getElementById("formTipo").value,
+        observacoes: document.getElementById("formObs").value
     };
 
-    if (salaOcupada(novaAula)) {
-
-        document
-            .getElementById("mensagemConflito")
-            .classList.add("exibir");
-
-        return;
-
+    if (idAtual) { // Editando
+        const index = aulas.findIndex(a => a.id == idAtual);
+        aulas[index] = { id: parseInt(idAtual), ...dadosForm };
+    } else { // Criando novo
+        const novoId = aulas.length ? Math.max(...aulas.map(a => a.id)) + 1 : 1;
+        aulas.push({ id: novoId, ...dadosForm });
     }
 
-    if (id) {
+    fecharModal("modalFormulario");
+    renderizarCalendario();
+    renderizarAgendaDia(dataSelecionada);
+}
 
-        const indice = aulas.findIndex(function (aula) {
-            return aula.id === Number(id);
-        });
+// 5. Exclusão Dinâmica
+function processarExclusao(acao) {
+    const idParaExcluir = document.getElementById("aulaId").value;
+    if (!idParaExcluir) return;
 
+    const certeza = confirm("Tem certeza que deseja aplicar esta alteração?");
+    if (!certeza) return;
 
-        if (indice !== -1) {
-            aulas[indice] = novaAula;
-        }
-
-        mostrarToast("Aula alterada.");
-
-    } else {
-
-        aulas.push(novaAula);
-
-        mostrarToast("Aula agendada.");
-
+    if (acao === 'cancelar') {
+        // Apenas marca como cancelada
+        const index = aulas.findIndex(a => a.id == idParaExcluir);
+        aulas[index].tipo = 'cancelada';
+    } else if (acao === 'apagar') {
+        // Exclui do Array completamente
+        aulas = aulas.filter(a => a.id != idParaExcluir);
     }
 
-    delete formAula.dataset.editando;
-
-    fecharAgendamento();
-
-    atualizarCalendarios();
-
-    selecionarDia(converterData(novaAula.data));
-
+    fecharModal("modalExcluir");
+    renderizarCalendario();
+    renderizarAgendaDia(dataSelecionada);
 }
 
-function salaOcupada(novaAula) {
-
-    return aulas.some(function (aula) {
-
-        if (aula.id === novaAula.id) {
-            return false;
-        }
-
-        if (aula.tipo === "cancelada") {
-            return false;
-        }
-
-        if (aula.data !== novaAula.data) {
-            return false;
-        }
-
-        if (aula.sala !== novaAula.sala) {
-            return false;
-        }
-
-
-        const inicio1 = minutos(aula.hora);
-        const fim1 = inicio1 + aula.duracao;
-
-        const inicio2 = minutos(novaAula.hora);
-        const fim2 = inicio2 + novaAula.duracao;
-
-
-        return (
-            inicio1 < fim2 &&
-            inicio2 < fim1
-        );
-
-    });
-
-}
-
-function mesAnterior() {
-
-    dataAtual.setMonth(dataAtual.getMonth() - 1);
-
-    atualizarCalendarios();
-
-}
-
-
-function mesProximo() {
-
-    dataAtual.setMonth(dataAtual.getMonth() + 1);
-
-    atualizarCalendarios();
-
-}
-
-
-function irParaHoje() {
-
-    const hoje = new Date();
-
-    dataAtual = new Date(
-        hoje.getFullYear(),
-        hoje.getMonth(),
-        1
-    );
-
-    selecionarDia(hoje);
-
-}
-
-function pegarAulasFiltradas() {
-
-    const professor =
-        document.getElementById("filtroProfessor").value;
-
-    const tipo =
-        document.getElementById("filtroTipo").value;
-
-
-    return aulas.filter(function (aula) {
-
-        const professorOk =
-            professor === "todos" ||
-            aula.professor === professor;
-
-        const tipoOk =
-            tipo === "todos" ||
-            aula.tipo === tipo;
-
-
-        return professorOk && tipoOk;
-
-    });
-
-}
-
-function pegarAulasDoDia(data) {
-
-    const dataTexto =
-        typeof data === "string"
-            ? data
-            : formatarData(data);
-
-
-    return pegarAulasFiltradas().filter(function (aula) {
-        return aula.data === dataTexto;
-    });
-
-}
-
-function aulasDoMes(mes) {
-
-    return pegarAulasFiltradas().filter(function (aula) {
-
-        const data = converterData(aula.data);
-
-        return (
-            data.getFullYear() === mes.getFullYear() &&
-            data.getMonth() === mes.getMonth()
-        );
-
-    });
-
-}
-
-function minutos(hora) {
-
-    const partes = hora.split(":");
-
-    return (
-        Number(partes[0]) * 60 +
-        Number(partes[1])
-    );
-
-}
-
+// ================= UTILIDADES =================
 function formatarData(data) {
-
-    return (
-        data.getFullYear() +
-        "-" +
-        String(data.getMonth() + 1).padStart(2, "0") +
-        "-" +
-        String(data.getDate()).padStart(2, "0")
-    );
-
-}
-
-function converterData(data) {
-
-    const partes = data.split("-");
-
-    return new Date(
-        Number(partes[0]),
-        Number(partes[1]) - 1,
-        Number(partes[2])
-    );
-
-}
-
-function dataBonita(data) {
-
-    return converterData(data).toLocaleDateString(
-        "pt-BR"
-    );
-
-}
-
-function mesmaData(a, b) {
-
-    return (
-        a.getFullYear() === b.getFullYear() &&
-        a.getMonth() === b.getMonth() &&
-        a.getDate() === b.getDate()
-    );
-
-}
-
-function nomeMes(data) {
-
-    return data.toLocaleDateString(
-        "pt-BR",
-        {
-            month: "long",
-            year: "numeric"
-        }
-    );
-
-}
-
-function nomeTipo(tipo) {
-
-    if (tipo === "normal") {
-        return "Aula normal";
-    }
-
-    if (tipo === "reposicao") {
-        return "Reposição";
-    }
-
-    if (tipo === "cancelada") {
-        return "Cancelada";
-    }
-
-    return tipo;
-
-}
-
-function proximoId() {
-
-    if (aulas.length === 0) {
-        return 1;
-    }
-
-    return Math.max(
-        ...aulas.map(function (aula) {
-            return aula.id;
-        })
-    ) + 1;
-
-}
-
-function mostrarToast(texto) {
-
-    const toast =
-        document.getElementById("toast");
-
-    toast.textContent = texto;
-
-    toast.classList.add("exibir");
-
-
-    setTimeout(function () {
-
-        toast.classList.remove("exibir");
-
-    }, 2000);
-
+    return `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}-${String(data.getDate()).padStart(2, '0')}`;
 }

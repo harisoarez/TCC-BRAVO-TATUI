@@ -4,7 +4,6 @@ const session = require("express-session");
 require("dotenv").config();
 
 require("./src/config/database");
-require("./src/config/firebase");
 
 const app = express();
 

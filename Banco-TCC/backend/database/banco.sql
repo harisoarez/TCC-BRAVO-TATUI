@@ -59,12 +59,15 @@ CREATE TABLE aluno_responsavel (
 
 CREATE TABLE aula (
   idaula INT PRIMARY KEY AUTO_INCREMENT,
+  titulo VARCHAR(100) NOT NULL,
+  instrumento VARCHAR(45) NOT NULL,
   professor_idprofessor INT NOT NULL,
-  aluno_idaluno INT NOT NULL,
-  sala INT,
+  aluno_idaluno INT NULL,
+  sala INT NOT NULL,
   data_aula DATETIME NOT NULL,
-  status ENUM('agendada','realizada','cancelada') DEFAULT 'agendada',
   duracao_minutos INT DEFAULT 60,
+  status ENUM('normal', 'reposicao', 'cancelada') DEFAULT 'normal',
+  observacoes TEXT,
   FOREIGN KEY (professor_idprofessor) 
     REFERENCES professor(idprofessor),
   FOREIGN KEY (aluno_idaluno) 

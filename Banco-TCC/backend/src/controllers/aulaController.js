@@ -1,167 +1,99 @@
 const aulaModel = require("../models/aulaModel");
 
-const STATUS_VALIDOS = ["agendada", "realizada", "cancelada"];
-
-async function cadastrar(req, res) {
-    const { professor_idprofessor, aluno_idaluno, sala, data_aula, duracao_minutos } = req.body;
-
-    if (!professor_idprofessor || !aluno_idaluno || !data_aula) {
-        return res.status(400).json({
-            sucesso: false,
-            mensagem: "Professor, aluno e data/hora da aula são obrigatórios.",
-        });
-    }
-
-    if (sala !== undefined && !aulaModel.SALAS_VALIDAS.includes(Number(sala))) {
-        return res.status(400).json({
-            sucesso: false,
-            mensagem: `Sala inválida. Salas disponíveis: ${aulaModel.SALAS_VALIDAS.join(", ")}.`,
-        });
-    }
-
-    try {
-        const idaula = await aulaModel.cadastrar({
-            professor_idprofessor,
-            aluno_idaluno,
-            sala,
-            data_aula,
-            duracao_minutos,
-        });
-
-        return res.status(201).json({
-            sucesso: true,
-            mensagem: "Aula cadastrada com sucesso!",
-            idaula,
-        });
-    } catch (error) {
-        console.error("Erro ao cadastrar aula:", error);
-        return res.status(500).json({
-            sucesso: false,
-            mensagem: "Erro ao cadastrar aula.",
-        });
-    }
-}
-
 async function listar(req, res) {
     try {
         const aulas = await aulaModel.buscarTodas();
-
-        return res.status(200).json({
-            sucesso: true,
-            aulas,
-        });
+        return res.status(200).json({ sucesso: true, aulas });
     } catch (error) {
-        return res.status(500).json({
-            sucesso: false,
-            mensagem: "Erro ao listar aulas.",
-        });
+        console.error("Erro ao listar aulas:", error);
+        return res.status(500).json({ sucesso: false, mensagem: "Erro ao buscar aulas." });
     }
 }
 
-async function moverStatus(req, res) {
-    const { id } = req.params;
-    const { status } = req.body;
-
-    if (!STATUS_VALIDOS.includes(status)) {
-        return res.status(400).json({
-            sucesso: false,
-            mensagem: `Status inválido. Use um de: ${STATUS_VALIDOS.join(", ")}.`,
-        });
-    }
-
+async function cadastrar(req, res) {
     try {
-        const aula = await aulaModel.buscarPorId(id);
+        const { titulo, instrumento, professor_idprofessor, sala, data, hora, tipo, observacoes } = req.body;
 
-        if (!aula) {
-            return res.status(404).json({
-                sucesso: false,
-                mensagem: "Aula não encontrada.",
-            });
+        if (!titulo || !instrumento || !professor_idprofessor || !sala || !data || !hora) {
+            return res.status(400).json({ sucesso: false, mensagem: "Campos obrigatórios não preenchidos." });
         }
 
-        await aulaModel.atualizarStatus(id, status);
+        const data_aula = `${data} ${hora}:00`;
+        const idAula = await aulaModel.inserir({
+            titulo,
+            instrumento,
+            professor_idprofessor,
+            sala,
+            data_aula,
+            status: tipo,
+            observacoes
+        });
 
-        return res.status(200).json({
-            sucesso: true,
-            mensagem: "Status da aula atualizado com sucesso!",
-        });
+        return res.status(201).json({ sucesso: true, mensagem: "Aula criada com sucesso!", idAula });
     } catch (error) {
-        return res.status(500).json({
-            sucesso: false,
-            mensagem: "Erro ao atualizar status da aula.",
-        });
+        console.error("Erro ao cadastrar aula:", error);
+        return res.status(500).json({ sucesso: false, mensagem: "Erro ao salvar aula." });
     }
 }
 
 async function atualizar(req, res) {
-    const { id } = req.params;
-    const { sala } = req.body;
-
-    if (sala !== undefined && !aulaModel.SALAS_VALIDAS.includes(Number(sala))) {
-        return res.status(400).json({
-            sucesso: false,
-            mensagem: `Sala inválida. Salas disponíveis: ${aulaModel.SALAS_VALIDAS.join(", ")}.`,
-        });
-    }
-
     try {
-        const aula = await aulaModel.buscarPorId(id);
+        const { id } = req.params;
+        const { titulo, instrumento, professor_idprofessor, sala, data, hora, tipo, observacoes } = req.body;
+        const data_aula = `${data} ${hora}:00`;
 
-        if (!aula) {
-            return res.status(404).json({
-                sucesso: false,
-                mensagem: "Aula não encontrada.",
-            });
-        }
-
-        await aulaModel.atualizar(id, req.body);
-
-        const aulaAtualizada = await aulaModel.buscarPorId(id);
-
-        return res.status(200).json({
-            sucesso: true,
-            mensagem: "Aula atualizada com sucesso!",
-            aula: aulaAtualizada,
+        const atualizado = await aulaModel.atualizar(id, {
+            titulo,
+            instrumento,
+            professor_idprofessor,
+            sala,
+            data_aula,
+            status: tipo,
+            observacoes
         });
+
+        if (!atualizado) return res.status(404).json({ sucesso: false, mensagem: "Aula não encontrada." });
+
+        return res.status(200).json({ sucesso: true, mensagem: "Aula atualizada com sucesso!" });
     } catch (error) {
-        return res.status(500).json({
-            sucesso: false,
-            mensagem: "Erro ao atualizar aula.",
-        });
+        console.error("Erro ao atualizar aula:", error);
+        return res.status(500).json({ sucesso: false, mensagem: "Erro ao atualizar aula." });
+    }
+}
+
+async function moverStatus(req, res) {
+    try {
+        const { id } = req.params;
+        const { status } = req.body; // 'cancelada', 'normal', etc.
+
+        const atualizado = await aulaModel.atualizarStatus(id, status);
+        if (!atualizado) return res.status(404).json({ sucesso: false, mensagem: "Aula não encontrada." });
+
+        return res.status(200).json({ sucesso: true, mensagem: "Status alterado com sucesso!" });
+    } catch (error) {
+        console.error("Erro ao alterar status:", error);
+        return res.status(500).json({ sucesso: false, mensagem: "Erro ao mudar status da aula." });
     }
 }
 
 async function deletar(req, res) {
-    const { id } = req.params;
-
     try {
-        const aula = await aulaModel.buscarPorId(id);
+        const { id } = req.params;
+        const removido = await aulaModel.excluir(id);
 
-        if (!aula) {
-            return res.status(404).json({
-                sucesso: false,
-                mensagem: "Aula não encontrada.",
-            });
-        }
+        if (!removido) return res.status(404).json({ sucesso: false, mensagem: "Aula não encontrada." });
 
-        await aulaModel.excluir(id);
-
-        return res.status(200).json({
-            sucesso: true,
-            mensagem: "Aula excluída com sucesso!",
-        });
+        return res.status(200).json({ sucesso: true, mensagem: "Aula excluída definitivamente!" });
     } catch (error) {
-        return res.status(500).json({
-            sucesso: false,
-            mensagem: "Erro ao excluir aula.",
-        });
+        console.error("Erro ao excluir aula:", error);
+        return res.status(500).json({ sucesso: false, mensagem: "Erro ao excluir aula." });
     }
 }
 
 module.exports = {
-    cadastrar,
     listar,
-    moverStatus,
+    cadastrar,
     atualizar,
-    deletar,
+    moverStatus,
+    deletar
 };

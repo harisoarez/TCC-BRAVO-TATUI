@@ -1,101 +1,84 @@
 const pool = require("../config/database");
 
-const SALAS_VALIDAS = [1, 2, 3, 4];
-
-const CAMPOS_SELECT = `
-    a.idaula, a.sala, a.data_aula, a.status, a.duracao_minutos,
-    p.idprofessor, up.nome AS professor_nome,
-    al.idaluno, ua.nome AS aluno_nome, ua.tipo_instrumento AS instrumento
-`;
-
-const JOINS = `
-    FROM aula a
-    JOIN professor p ON p.idprofessor = a.professor_idprofessor
-    JOIN usuario_login up ON up.id_usuario = p.usuario_login_id
-    JOIN aluno al ON al.idaluno = a.aluno_idaluno
-    JOIN usuario_login ua ON ua.id_usuario = al.usuario_login_id
-`;
-
-async function cadastrar(dadosAula) {
-    const { professor_idprofessor, aluno_idaluno, sala, data_aula, duracao_minutos } = dadosAula;
-
-    const [resultado] = await pool.query(
-        `INSERT INTO aula
-          (professor_idprofessor, aluno_idaluno, sala, data_aula, status, duracao_minutos)
-         VALUES (?, ?, ?, ?, 'agendada', ?)`,
-        [professor_idprofessor, aluno_idaluno, sala, data_aula, duracao_minutos || 60]
-    );
-
-    return resultado.insertId;
-}
-
 async function buscarTodas() {
-    const [linhas] = await pool.query(`SELECT ${CAMPOS_SELECT} ${JOINS} ORDER BY a.data_aula ASC`);
+    const sql = `
+        SELECT 
+            a.idaula AS id,
+            a.titulo,
+            a.instrumento,
+            p.idprofessor,
+            u.nome AS professor,
+            DATE_FORMAT(a.data_aula, '%Y-%m-%d') AS data,
+            DATE_FORMAT(a.data_aula, '%H:%i') AS hora,
+            a.duracao_minutos AS duracao,
+            a.sala,
+            a.status AS tipo,
+            a.observacoes
+        FROM aula a
+        JOIN professor p ON a.professor_idprofessor = p.idprofessor
+        JOIN usuario_login u ON p.usuario_login_id = u.id_usuario
+        ORDER BY a.data_aula ASC
+    `;
+    const [linhas] = await pool.query(sql);
     return linhas;
 }
 
-async function buscarPorId(idaula) {
-    const [linhas] = await pool.query(
-        `SELECT ${CAMPOS_SELECT} ${JOINS} WHERE a.idaula = ? LIMIT 1`,
-        [idaula]
-    );
-
-    return linhas[0] || null;
+async function inserir(dados) {
+    const { titulo, instrumento, professor_idprofessor, sala, data_aula, duracao_minutos, status, observacoes } = dados;
+    const sql = `
+        INSERT INTO aula 
+        (titulo, instrumento, professor_idprofessor, sala, data_aula, duracao_minutos, status, observacoes)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+    const [resultado] = await pool.query(sql, [
+        titulo,
+        instrumento,
+        professor_idprofessor,
+        sala,
+        data_aula,
+        duracao_minutos || 60,
+        status || 'normal',
+        observacoes || null
+    ]);
+    return resultado.insertId;
 }
 
-async function atualizarStatus(idaula, novoStatus) {
-    const [resultado] = await pool.query(
-        `UPDATE aula SET status = ? WHERE idaula = ?`,
-        [novoStatus, idaula]
-    );
-
+async function atualizar(id, dados) {
+    const { titulo, instrumento, professor_idprofessor, sala, data_aula, status, observacoes } = dados;
+    const sql = `
+        UPDATE aula 
+        SET titulo = ?, instrumento = ?, professor_idprofessor = ?, sala = ?, data_aula = ?, status = ?, observacoes = ?
+        WHERE idaula = ?
+    `;
+    const [resultado] = await pool.query(sql, [
+        titulo,
+        instrumento,
+        professor_idprofessor,
+        sala,
+        data_aula,
+        status,
+        observacoes,
+        id
+    ]);
     return resultado.affectedRows > 0;
 }
 
-async function atualizar(idaula, dados) {
-    const camposPermitidos = [
-        "professor_idprofessor",
-        "aluno_idaluno",
-        "sala",
-        "data_aula",
-        "duracao_minutos",
-    ];
-
-    const campos = [];
-    const valores = [];
-
-    for (const campo of camposPermitidos) {
-        if (dados[campo] !== undefined) {
-            campos.push(`${campo} = ?`);
-            valores.push(dados[campo]);
-        }
-    }
-
-    if (campos.length === 0) {
-        return false;
-    }
-
-    valores.push(idaula);
-
-    const [resultado] = await pool.query(
-        `UPDATE aula SET ${campos.join(", ")} WHERE idaula = ?`,
-        valores
-    );
-
+async function atualizarStatus(id, status) {
+    const sql = `UPDATE aula SET status = ? WHERE idaula = ?`;
+    const [resultado] = await pool.query(sql, [status, id]);
     return resultado.affectedRows > 0;
 }
 
-async function excluir(idaula) {
-    const [resultado] = await pool.query(`DELETE FROM aula WHERE idaula = ?`, [idaula]);
+async function excluir(id) {
+    const sql = `DELETE FROM aula WHERE idaula = ?`;
+    const [resultado] = await pool.query(sql, [id]);
     return resultado.affectedRows > 0;
 }
 
 module.exports = {
-    SALAS_VALIDAS,
-    cadastrar,
     buscarTodas,
-    buscarPorId,
-    atualizarStatus,
+    inserir,
     atualizar,
-    excluir,
+    atualizarStatus,
+    excluir
 };

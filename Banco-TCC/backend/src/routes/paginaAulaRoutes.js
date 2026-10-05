@@ -1,12 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-const paginaAulaController = require("../controllers/paginaAulaController");
-const verificarSessao = require("../middleware/verificarSessao");
-
-router.use(verificarSessao);
-
-router.get("/", paginaAulaController.paginaKanban);
-router.get("/novo", paginaAulaController.paginaFormCadastro);
+// Redireciona o antigo quadro de aulas para o Calendário oficial do sistema
+router.get("*", (req, res) => {
+    res.redirect("/site/calendario.html");
+});
 
 module.exports = router;

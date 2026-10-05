@@ -1,69 +1,795 @@
 <%- include('../partials/head') %>
 <%- include('../partials/navbar') %>
 
-<main class="conteudo">
-    <h1>Dashboard</h1>
+<main class="dashboard-container">
+    <!-- Header Executivo Estilo Databricks (Tema Claro) -->
+    <header class="databricks-header">
+        <div class="header-title-col">
+            <h1>
+                <span class="estrela">★</span> 
+                Dashboard Geral & Indicadores
+            </h1>
+            <p>Instituto Musical Bravo Tatuí • Gestão Acadêmica e Controle Operacional</p>
+        </div>
 
-    <div class="dashboard-cards">
-        <div class="dashboard-card">
-            <span class="dashboard-card-numero"><%= totalAlunos %></span>
-            <span class="dashboard-card-legenda">Alunos matriculados</span>
-        </div>
-        <div class="dashboard-card">
-            <span class="dashboard-card-numero"><%= totalProfessores %></span>
-            <span class="dashboard-card-legenda">Professores</span>
-        </div>
-        <div class="dashboard-card">
-            <span class="dashboard-card-numero"><%= aulasHoje %></span>
-            <span class="dashboard-card-legenda">Aulas hoje</span>
-        </div>
-        <div class="dashboard-card dashboard-card-alerta">
-            <span class="dashboard-card-numero">R$ <%= Number(recebimentosPendentes.total).toFixed(2) %></span>
-            <span class="dashboard-card-legenda"><%= recebimentosPendentes.quantidade %> recebimento(s) pendente(s)</span>
-        </div>
-        <div class="dashboard-card dashboard-card-alerta">
-            <span class="dashboard-card-numero">R$ <%= Number(pagamentosPendentes.total).toFixed(2) %></span>
-            <span class="dashboard-card-legenda"><%= pagamentosPendentes.quantidade %> pagamento(s) pendente(s)</span>
-        </div>
-    </div>
-
-    <h2 class="dashboard-secao-titulo">Próximas aulas</h2>
-    <table class="tabela-padrao">
-        <thead>
-            <tr><th>Data</th><th>Aluno</th><th>Professor</th><th>Sala</th></tr>
-        </thead>
-        <tbody>
-            <% proximasAulas.forEach(function(aula) { %>
-                <tr>
-                    <td><%= new Date(aula.data_aula).toLocaleString('pt-BR') %></td>
-                    <td><%= aula.aluno_nome %></td>
-                    <td><%= aula.professor_nome %></td>
-                    <td><%= aula.sala %></td>
-                </tr>
-            <% }); %>
-            <% if (proximasAulas.length === 0) { %>
-                <tr><td colspan="4">Nenhuma aula agendada.</td></tr>
+        <div class="header-meta-col">
+            <% if (isOwner) { %>
+                <span class="badge-modo-view owner">
+                    👑 Modo Owner: Acesso Executivo Completo
+                </span>
+            <% } else { %>
+                <span class="badge-modo-view admin">
+                    ⭐ Modo Administrador: Visão Operacional & Mensalidades
+                </span>
             <% } %>
-        </tbody>
-    </table>
+            <span class="header-timestamp">Atualizado agora</span>
+        </div>
+    </header>
 
-    <h2 class="dashboard-secao-titulo">Aniversariantes do mês</h2>
-    <table class="tabela-padrao">
-        <thead>
-            <tr><th>Nome</th><th>Data</th></tr>
-        </thead>
-        <tbody>
-            <% aniversariantes.forEach(function(pessoa) { %>
-                <tr>
-                    <td><%= pessoa.nome %></td>
-                    <td><%= new Date(pessoa.data_nascimento).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) %></td>
-                </tr>
+    <!-- Feedback de Sucesso se houver -->
+    <% if (locals.sucesso) { %>
+        <div style="background: #dcfce7; border: 1px solid #bbf7d0; color: #15803d; padding: 12px 18px; border-radius: 8px; font-size: 13.5px; font-weight: 600;">
+            ✓ Operação realizada com sucesso!
+        </div>
+    <% } %>
+
+    <!-- Cards de Métricas (KPIs) -->
+    <section class="kpi-grid">
+        <% if (isOwner && resumoFinanceiro) { %>
+            <!-- KPIs Financeiros EXCLUSIVOS DO OWNER -->
+            <div class="kpi-card destaque-verde">
+                <div class="kpi-header">
+                    <span class="kpi-label">Total Recebido (Mês Atual)</span>
+                    <span class="kpi-badge <%= resumoFinanceiro.variacaoPercentual >= 0 ? 'positivo' : 'alerta' %>">
+                        <%= resumoFinanceiro.variacaoPercentual >= 0 ? '+' : '' %><%= resumoFinanceiro.variacaoPercentual %>% vs mês ant.
+                    </span>
+                </div>
+                <div class="kpi-valor">R$ <%= Number(resumoFinanceiro.totalRecebidoMesAtual).toFixed(2) %></div>
+                <div class="kpi-subtexto"><%= resumoFinanceiro.qtdRecebidoMesAtual %> mensalidades liquidadas em Outubro</div>
+            </div>
+
+            <div class="kpi-card destaque-ouro">
+                <div class="kpi-header">
+                    <span class="kpi-label">Mensalidades a Receber</span>
+                    <span class="kpi-badge neutro">Aguardando</span>
+                </div>
+                <div class="kpi-valor">R$ <%= Number(resumoFinanceiro.totalPendente).toFixed(2) %></div>
+                <div class="kpi-subtexto"><%= resumoFinanceiro.qtdPendente %> alunos pendentes / em análise</div>
+            </div>
+
+            <div class="kpi-card destaque-vermelho">
+                <div class="kpi-header">
+                    <span class="kpi-label">Mensalidades Vencidas</span>
+                    <span class="kpi-badge alerta">Atenção</span>
+                </div>
+                <div class="kpi-valor">R$ <%= Number(resumoFinanceiro.totalVencido).toFixed(2) %></div>
+                <div class="kpi-subtexto"><%= resumoFinanceiro.qtdVencido %> mensalidades em atraso</div>
+            </div>
+
+            <div class="kpi-card destaque-azul">
+                <div class="kpi-header">
+                    <span class="kpi-label">Total de Alunos Matriculados</span>
+                    <span class="kpi-badge positivo"><%= totalProfessores %> professores</span>
+                </div>
+                <div class="kpi-valor"><%= totalAlunos %> alunos</div>
+                <div class="kpi-subtexto">Corpo discente do Instituto Bravo</div>
+            </div>
+        <% } else { %>
+            <!-- KPIs Operacionais para ADMINISTRADOR (SEM EXIBIÇÃO DE RECEBIMENTOS SOMADOS) -->
+            <div class="kpi-card destaque-verde">
+                <div class="kpi-header">
+                    <span class="kpi-label">Mensalidades em Dia</span>
+                    <span class="kpi-badge positivo">Regular</span>
+                </div>
+                <div class="kpi-valor"><%= totaisMensalidades.qtdPagos %> alunos</div>
+                <div class="kpi-subtexto">Pagamento do mês confirmado</div>
+            </div>
+
+            <div class="kpi-card destaque-ouro">
+                <div class="kpi-header">
+                    <span class="kpi-label">Aguardando Pagamento</span>
+                    <span class="kpi-badge neutro">Pendentes</span>
+                </div>
+                <div class="kpi-valor"><%= totaisMensalidades.qtdPendentes %> alunos</div>
+                <div class="kpi-subtexto">Vencimento próximo no mês</div>
+            </div>
+
+            <div class="kpi-card destaque-vermelho">
+                <div class="kpi-header">
+                    <span class="kpi-label">Mensalidades Vencidas</span>
+                    <span class="kpi-badge alerta">Cobrança</span>
+                </div>
+                <div class="kpi-valor"><%= totaisMensalidades.qtdVencidos %> alunos</div>
+                <div class="kpi-subtexto">Requer contato da secretaria</div>
+            </div>
+
+            <div class="kpi-card destaque-azul">
+                <div class="kpi-header">
+                    <span class="kpi-label">Aniversariantes do Mês</span>
+                    <span class="kpi-badge positivo">Festivo</span>
+                </div>
+                <div class="kpi-valor"><%= aniversariantes.length %> comemorações</div>
+                <div class="kpi-subtexto">Alunos celebrando em Outubro</div>
+            </div>
+        <% } %>
+    </section>
+
+    <!-- GRÁFICO EXECUTIVO COM "SOMBRINHA" DO MÊS PASSADO (VISÍVEL APENAS PARA O OWNER) -->
+    <% if (isOwner && dadosGraficos) { %>
+        <section class="grafico-card">
+            <div class="grafico-header">
+                <div class="grafico-titulo-box">
+                    <h2 id="graficoTitulo">📈 Resumo Financeiro & Comparativo com Mês Passado</h2>
+                    <p id="graficoSubtitulo">Acompanhe a curva de faturamento semanal com a <strong>sombrinha</strong> (área sombreada) do mês anterior para comparar o desempenho.</p>
+                </div>
+
+                <div class="grafico-controles">
+                    <div class="btn-grupo-toggle">
+                        <button type="button" class="btn-toggle ativo" id="btnToggleFinancas" onclick="alternarModoGrafico('financas')">
+                            💰 Finanças Totais
+                        </button>
+                        <button type="button" class="btn-toggle" id="btnToggleUsuarios" onclick="alternarModoGrafico('usuarios')">
+                            👥 Usuários Cadastrados
+                        </button>
+                    </div>
+
+                    <button type="button" class="btn-tipo-grafico" id="btnAlternarTipo" onclick="alternarTipoGrafico()" title="Alternar entre Linha de Área e Barras">
+                        📊 Mudar Tipo: <span id="labelTipoGrafico">Barras</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="grafico-legenda-sombrinha" id="boxLegendaSombrinha">
+                <div class="legenda-item">
+                    <span class="ponto-legenda ponto-atual"></span>
+                    <span><strong>Mês Atual (Outubro 2026):</strong> Linha Sólida</span>
+                </div>
+                <div class="legenda-item">
+                    <span class="ponto-legenda ponto-sombra"></span>
+                    <span><strong>Sombrinha do Mês Passado (Setembro 2026):</strong> Faixa Comparativa</span>
+                </div>
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="graficoExecutivoOwner"></canvas>
+            </div>
+        </section>
+
+        <!-- CONFIGURAÇÃO DE MENSALIDADES POR CURSO (EXCLUSIVO OWNER) -->
+        <section class="cursos-card">
+            <div class="secao-header">
+                <div>
+                    <h2>⚙️ Tabela de Mensalidades por Curso</h2>
+                    <p style="font-size: 13px; color: var(--text-secondary); margin-top: 3px;">
+                        Defina o valor base da mensalidade de cada curso. Os alunos vinculados assumirão automaticamente estes valores.
+                    </p>
+                </div>
+            </div>
+
+            <div class="cursos-grid">
+                <% cursos.forEach(function(c) { %>
+                    <div class="curso-item-box">
+                        <div class="curso-nome"><%= c.nome %></div>
+                        <div class="curso-valor-row">
+                            <span class="curso-preco">R$ <%= Number(c.valor_mensalidade).toFixed(2) %></span>
+                            <button type="button" class="btn-editar-curso" onclick="abrirModalEditarCurso('<%= c.idcurso %>', '<%= c.nome %>', '<%= Number(c.valor_mensalidade).toFixed(2) %>')">
+                                ✏️ Alterar
+                            </button>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </section>
+    <% } %>
+
+    <!-- SEÇÃO DE ANIVERSARIANTES DO MÊS (ADMIN E OWNER) -->
+    <section class="aniversariantes-card">
+        <div class="secao-header">
+            <h2>🎂 Aniversariantes do Mês de Outubro</h2>
+            <span style="font-size: 12.5px; color: var(--text-muted);"><%= aniversariantes.length %> alunos comemorando neste mês</span>
+        </div>
+
+        <div class="aniversariantes-grid">
+            <% aniversariantes.forEach(function(aluno) { %>
+                <div class="aniversariante-item">
+                    <div class="aniv-info">
+                        <div class="aniv-avatar">
+                            <% if (aluno.foto_url) { %>
+                                <img src="<%= aluno.foto_url %>" alt="<%= aluno.nome %>">
+                            <% } else { %>
+                                <%= aluno.nome.charAt(0) %>
+                            <% } %>
+                        </div>
+                        <div class="aniv-detalhes">
+                            <h4><%= aluno.nome %></h4>
+                            <p><%= aluno.curso || 'Aluno Matriculado' %></p>
+                        </div>
+                    </div>
+                    <div class="aniv-dia-badge">
+                        Dia <%= aluno.dia_aniversario %>
+                    </div>
+                </div>
             <% }); %>
+
             <% if (aniversariantes.length === 0) { %>
-                <tr><td colspan="2">Nenhum aniversariante este mês.</td></tr>
+                <div style="grid-column: 1 / -1; padding: 20px; text-align: center; color: var(--text-muted);">
+                    Nenhum aluno faz aniversário neste mês.
+                </div>
             <% } %>
-        </tbody>
-    </table>
+        </div>
+    </section>
+
+    <!-- GESTÃO DE MENSALIDADES DOS ALUNOS COM ANEXO DE COMPROVANTE (ADMIN E OWNER) -->
+    <section class="mensalidades-card">
+        <div class="mensalidades-header">
+            <div class="secao-header" style="margin-bottom: 0;">
+                <h2>💳 Mensalidades dos Alunos & Anexo de Comprovantes</h2>
+            </div>
+
+            <div class="tabs-mensalidades">
+                <button type="button" class="tab-btn ativo" onclick="filtrarTabela('todas', this)">
+                    Todas <span class="tab-badge"><%= totaisMensalidades.total %></span>
+                </button>
+                <button type="button" class="tab-btn" onclick="filtrarTabela('em_analise', this)">
+                    🔍 Em Análise <span class="tab-badge"><%= totaisMensalidades.qtdEmAnalise %></span>
+                </button>
+                <button type="button" class="tab-btn" onclick="filtrarTabela('pendente', this)">
+                    ⏳ Pendentes <span class="tab-badge"><%= totaisMensalidades.qtdPendentes %></span>
+                </button>
+                <button type="button" class="tab-btn" onclick="filtrarTabela('pago', this)">
+                    ✅ Pagas <span class="tab-badge"><%= totaisMensalidades.qtdPagos %></span>
+                </button>
+                <button type="button" class="tab-btn" onclick="filtrarTabela('atrasado', this)">
+                    ⚠️ Vencidas <span class="tab-badge"><%= totaisMensalidades.qtdVencidos %></span>
+                </button>
+            </div>
+        </div>
+
+        <div class="tabela-container">
+            <table class="tabela-mensalidades">
+                <thead>
+                    <tr>
+                        <th>Aluno</th>
+                        <th>Vencimento</th>
+                        <th>Valor</th>
+                        <th>Status</th>
+                        <th>Data de Pagamento</th>
+                        <th>Comprovante</th>
+                        <th style="text-align: right;">Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="corpoTabelaMensalidades">
+                    <% mensalidades.forEach(function(m) { %>
+                        <tr data-status="<%= m.status_parcela %>">
+                            <td>
+                                <span class="aluno-col-nome"><%= m.aluno_nome %></span>
+                                <span class="aluno-col-contato"><%= m.aluno_email %> • <%= m.aluno_telefone || "Sem telefone" %></span>
+                            </td>
+                            <td>
+                                <% 
+                                    const dataVenc = new Date(m.data_vencimento);
+                                    const vencFormatado = dataVenc.toLocaleDateString('pt-BR');
+                                %>
+                                <strong><%= vencFormatado %></strong>
+                            </td>
+                            <td>
+                                <strong>R$ <%= Number(m.valor).toFixed(2) %></strong>
+                            </td>
+                            <td>
+                                <% if (m.status_parcela === 'pago') { %>
+                                    <span class="status-pill pago">● Pago</span>
+                                <% } else if (m.status_parcela === 'em_analise') { %>
+                                    <span class="status-pill em_analise">⏳ Em Análise</span>
+                                <% } else if (m.status_parcela === 'pendente') { %>
+                                    <span class="status-pill pendente">⏳ Pendente</span>
+                                <% } else { %>
+                                    <span class="status-pill atrasado">⚠️ Vencido</span>
+                                <% } %>
+                            </td>
+                            <td>
+                                <% if (m.data_pagamento) { %>
+                                    <%= new Date(m.data_pagamento).toLocaleDateString('pt-BR') %> 
+                                    <small style="color: var(--text-muted);">(<%= m.forma_pagamento ? m.forma_pagamento.toUpperCase() : 'PIX' %>)</small>
+                                <% } else { %>
+                                    <span style="color: var(--text-muted);">—</span>
+                                <% } %>
+                            </td>
+                            <td>
+                                <% if (m.comprovante_url) { %>
+                                    <a href="<%= m.comprovante_url %>" target="_blank" class="link-ver-comprovante" title="Abrir Comprovante em nova guia">
+                                        📄 Ver Anexo
+                                    </a>
+                                <% } else { %>
+                                    <span style="color: var(--text-muted); font-size: 12px;">Sem comprovante</span>
+                                <% } %>
+                            </td>
+                            <td style="text-align: right;">
+                                <div style="display: inline-flex; gap: 6px;">
+                                    <% if (m.status_parcela === 'em_analise') { %>
+                                        <button type="button" class="btn-acao-comprovante btn-validar-alerta" 
+                                            onclick="abrirModalConfirmacaoComprovante('<%= m.id %>', '<%= m.aluno_nome %>', '<%= Number(m.valor).toFixed(2) %>', '<%= m.comprovante_url %>')">
+                                            ✓ Validar
+                                        </button>
+                                    <% } %>
+
+                                    <button type="button" class="btn-acao-comprovante" 
+                                        onclick="abrirModalPagamento('<%= m.id %>', '<%= m.aluno_nome %>', '<%= Number(m.valor).toFixed(2) %>', '<%= m.data_vencimento %>')">
+                                        📎 <%= m.status_parcela === 'pago' ? 'Substituir' : 'Anexar & Pagar' %>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    <% }); %>
+
+                    <% if (mensalidades.length === 0) { %>
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 25px; color: var(--text-muted);">
+                                Nenhuma mensalidade registrada.
+                            </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </section>
 </main>
 
+<!-- MODAL PARA EDITAR VALOR DA MENSALIDADE DO CURSO (OWNER) -->
+<div id="modalEditarCurso" class="modal-overlay oculto">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>Configurar Mensalidade do Curso</h3>
+            <button type="button" class="btn-fechar-modal" onclick="fecharModalEditarCurso()">&times;</button>
+        </div>
+
+        <form id="formEditarCurso">
+            <input type="hidden" id="modalIdCurso">
+
+            <div class="form-grupo">
+                <label>Curso / Instrumento</label>
+                <input type="text" id="modalNomeCurso" disabled style="opacity: 0.8; cursor: not-allowed; font-weight: 700;">
+            </div>
+
+            <div class="form-grupo">
+                <label for="modalValorCurso">Novo Valor da Mensalidade (R$)</label>
+                <input type="number" id="modalValorCurso" step="5" min="50" max="1000" required style="font-size: 16px; font-weight: 700;">
+                <small style="color: var(--text-muted); font-size: 11.5px;">
+                    Ao alterar, as mensalidades pendentes dos alunos deste curso serão recalculadas.
+                </small>
+            </div>
+
+            <button type="submit" id="btnSalvarValorCurso" class="btn-confirmar-pagamento">
+                Salvar Valor da Mensalidade
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL DE CONFIRMAÇÃO DE COMPROVANTE (ADMIN E OWNER) -->
+<div id="modalConfirmacaoComprovante" class="modal-overlay oculto">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>Validar Comprovante Enviado</h3>
+            <button type="button" class="btn-fechar-modal" onclick="fecharModalConfirmacaoComprovante()">&times;</button>
+        </div>
+
+        <div>
+            <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 12px;">
+                O aluno <strong id="confNomeAluno"></strong> enviou comprovante para o valor de <strong id="confValorAluno" style="color: var(--accent-gold);"></strong>.
+            </p>
+
+            <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 14px; text-align: center; margin-bottom: 18px;">
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">Anexo enviado:</p>
+                <a href="#" id="confLinkAnexo" target="_blank" class="link-ver-comprovante" style="font-size: 14px;">
+                    📄 Abrir Comprovante em Nova Guia ↗
+                </a>
+            </div>
+
+            <button type="button" id="btnExecutarConfirmacao" onclick="executarConfirmacaoComprovante()" class="btn-confirmar-pagamento" style="background: #16a34a;">
+                ✓ Confirmar Pagamento e Validar Mensalidade
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL PARA ANEXAR COMPROVANTE E REGISTRAR PAGAMENTO MANUAL -->
+<div id="modalAnexoComprovante" class="modal-overlay oculto">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>Registrar Pagamento de Mensalidade</h3>
+            <button type="button" class="btn-fechar-modal" onclick="fecharModalPagamento()">&times;</button>
+        </div>
+
+        <form id="formRegistrarPagamento" enctype="multipart/form-data">
+            <input type="hidden" id="modalIdRecebimento" name="idRecebimento">
+
+            <div class="form-grupo">
+                <label>Aluno</label>
+                <input type="text" id="modalNomeAluno" disabled style="opacity: 0.8; cursor: not-allowed;">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div class="form-grupo">
+                    <label>Valor</label>
+                    <input type="text" id="modalValorAluno" disabled style="opacity: 0.8; cursor: not-allowed;">
+                </div>
+                <div class="form-grupo">
+                    <label for="modalDataPagamento">Data do Pagamento</label>
+                    <input type="date" id="modalDataPagamento" name="dataPagamento" required>
+                </div>
+            </div>
+
+            <div class="form-grupo">
+                <label for="modalFormaPagamento">Forma de Pagamento</label>
+                <select id="modalFormaPagamento" name="formaPagamento">
+                    <option value="pix">Pix</option>
+                    <option value="cartao">Cartão de Crédito / Débito</option>
+                    <option value="boleto">Boleto Bancário</option>
+                    <option value="dinheiro">Dinheiro em Espécie</option>
+                </select>
+            </div>
+
+            <div class="form-grupo">
+                <label for="modalArquivoComprovante">Anexar Comprovante (Imagem ou PDF)</label>
+                <input type="file" id="modalArquivoComprovante" name="comprovante" accept="image/*,application/pdf">
+                <small style="color: var(--text-muted); font-size: 11px;">Formatos aceitos: JPG, PNG, WEBP ou PDF (até 5MB).</small>
+            </div>
+
+            <button type="submit" id="btnSalvarPagamentoModal" class="btn-confirmar-pagamento">
+                Confirmar Pagamento e Salvar Comprovante
+            </button>
+        </form>
+    </div>
+</div>
+
 <%- include('../partials/footer') %>
+
+<!-- SCRIPTS INTERATIVOS DO DASHBOARD (TEMA CLARO) -->
+<script>
+    function filtrarTabela(status, btn) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('ativo'));
+        if (btn) btn.classList.add('ativo');
+
+        const linhas = document.querySelectorAll('#corpoTabelaMensalidades tr');
+        linhas.forEach(linha => {
+            const linhaStatus = linha.getAttribute('data-status');
+            if (status === 'todas' || linhaStatus === status) {
+                linha.style.display = '';
+            } else {
+                linha.style.display = 'none';
+            }
+        });
+    }
+
+    // Modal Pagamento Manual
+    function abrirModalPagamento(id, nome, valor, vencimento) {
+        document.getElementById('modalIdRecebimento').value = id;
+        document.getElementById('modalNomeAluno').value = nome;
+        document.getElementById('modalValorAluno').value = 'R$ ' + valor;
+        const hoje = new Date().toISOString().split('T')[0];
+        document.getElementById('modalDataPagamento').value = hoje;
+        document.getElementById('modalAnexoComprovante').classList.remove('oculto');
+    }
+
+    function fecharModalPagamento() {
+        document.getElementById('modalAnexoComprovante').classList.add('oculto');
+    }
+
+    document.getElementById('formRegistrarPagamento').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('btnSalvarPagamentoModal');
+        btn.disabled = true;
+        btn.textContent = 'Enviando comprovante...';
+
+        const token = localStorage.getItem('authToken');
+        const formData = new FormData(this);
+
+        try {
+            const resp = await fetch('/paginas/dashboard/registrar-pagamento', {
+                method: 'POST',
+                headers: token ? { Authorization: 'Bearer ' + token } : {},
+                body: formData,
+            });
+            const dados = await resp.json();
+
+            if (dados.sucesso) {
+                alert('✓ Pagamento e comprovante registrados com sucesso!');
+                window.location.reload();
+            } else {
+                alert('Erro: ' + (dados.mensagem || 'Falha ao registrar pagamento.'));
+            }
+        } catch (err) {
+            alert('Erro de conexão ao enviar comprovante.');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = 'Confirmar Pagamento e Salvar Comprovante';
+        }
+    });
+
+    // Modal Editar Curso
+    function abrirModalEditarCurso(id, nome, valor) {
+        document.getElementById('modalIdCurso').value = id;
+        document.getElementById('modalNomeCurso').value = nome;
+        document.getElementById('modalValorCurso').value = valor;
+        document.getElementById('modalEditarCurso').classList.remove('oculto');
+    }
+
+    function fecharModalEditarCurso() {
+        document.getElementById('modalEditarCurso').classList.add('oculto');
+    }
+
+    const formCurso = document.getElementById('formEditarCurso');
+    if (formCurso) {
+        formCurso.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const idcurso = document.getElementById('modalIdCurso').value;
+            const novoValor = document.getElementById('modalValorCurso').value;
+            const btn = document.getElementById('btnSalvarValorCurso');
+            const token = localStorage.getItem('authToken');
+
+            btn.disabled = true;
+            btn.textContent = 'Salvando valor...';
+
+            try {
+                const resp = await fetch('/paginas/dashboard/curso/atualizar', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        ...(token ? { Authorization: 'Bearer ' + token } : {})
+                    },
+                    body: JSON.stringify({ idcurso, novoValor }),
+                });
+                const dados = await resp.json();
+
+                if (dados.sucesso) {
+                    alert('✓ ' + dados.mensagem);
+                    window.location.reload();
+                } else {
+                    alert('Erro: ' + (dados.mensagem || 'Falha ao atualizar curso.'));
+                }
+            } catch (err) {
+                alert('Erro de conexão ao salvar curso.');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Salvar Valor da Mensalidade';
+            }
+        });
+    }
+
+    // Modal Confirmar Comprovante
+    let idRecebimentoConfirmando = null;
+
+    function abrirModalConfirmacaoComprovante(id, nome, valor, anexoUrl) {
+        idRecebimentoConfirmando = id;
+        document.getElementById('confNomeAluno').textContent = nome;
+        document.getElementById('confValorAluno').textContent = 'R$ ' + valor;
+        document.getElementById('confLinkAnexo').href = anexoUrl || '#';
+        document.getElementById('modalConfirmacaoComprovante').classList.remove('oculto');
+    }
+
+    function fecharModalConfirmacaoComprovante() {
+        document.getElementById('modalConfirmacaoComprovante').classList.add('oculto');
+        idRecebimentoConfirmando = null;
+    }
+
+    async function executarConfirmacaoComprovante() {
+        if (!idRecebimentoConfirmando) return;
+        const btn = document.getElementById('btnExecutarConfirmacao');
+        const token = localStorage.getItem('authToken');
+        btn.disabled = true;
+        btn.textContent = 'Confirmando pagamento...';
+
+        try {
+            const resp = await fetch('/paginas/dashboard/confirmar-comprovante', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    ...(token ? { Authorization: 'Bearer ' + token } : {})
+                },
+                body: JSON.stringify({ idRecebimento: idRecebimentoConfirmando }),
+            });
+            const dados = await resp.json();
+
+            if (dados.sucesso) {
+                alert('✓ ' + dados.mensagem);
+                window.location.reload();
+            } else {
+                alert('Erro: ' + (dados.mensagem || 'Falha ao confirmar pagamento.'));
+            }
+        } catch (err) {
+            alert('Erro de conexão ao validar pagamento.');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = '✓ Confirmar Pagamento e Validar Mensalidade';
+        }
+    }
+
+    <% if (isOwner && dadosGraficos) { %>
+    // ================================================================
+    // GRÁFICO EXECUTIVO DO OWNER (TEMA CLARO DATABRICKS)
+    // ================================================================
+    const dadosGraficoFinanceiro = <%- JSON.stringify(dadosGraficos.financeiro) %>;
+    const dadosGraficoUsuarios = <%- JSON.stringify(dadosGraficos.usuarios) %>;
+
+    let chartInstance = null;
+    let modoAtual = 'financas';
+    let tipoGrafico = 'line';
+
+    function renderizarGrafico() {
+        const ctx = document.getElementById('graficoExecutivoOwner').getContext('2d');
+        if (chartInstance) {
+            chartInstance.destroy();
+        }
+
+        if (modoAtual === 'financas') {
+            document.getElementById('boxLegendaSombrinha').style.display = 'flex';
+            document.getElementById('graficoTitulo').textContent = '📈 Resumo Financeiro & Comparativo com Mês Passado';
+            document.getElementById('graficoSubtitulo').innerHTML = 'Acompanhe a curva de recebimentos semanais com a <strong>sombrinha</strong> (área preenchida) do mês anterior para comparar o faturamento.';
+
+            if (tipoGrafico === 'line') {
+                chartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: dadosGraficoFinanceiro.labels,
+                        datasets: [
+                            // 1. A SOMBRINHA DO MÊS PASSADO
+                            {
+                                label: 'Sombrinha: Mês Passado (Setembro 2026)',
+                                data: dadosGraficoFinanceiro.mesAnterior,
+                                borderColor: 'rgba(100, 116, 139, 0.7)',
+                                backgroundColor: 'rgba(148, 163, 184, 0.25)',
+                                borderDash: [6, 4],
+                                borderWidth: 2,
+                                fill: true,
+                                tension: 0.35,
+                                pointRadius: 4,
+                                pointBackgroundColor: '#64748b',
+                            },
+                            // 2. MÊS ATUAL
+                            {
+                                label: 'Mês Atual (Outubro 2026)',
+                                data: dadosGraficoFinanceiro.mesAtual,
+                                borderColor: '#b45309',
+                                backgroundColor: 'rgba(245, 158, 11, 0.15)',
+                                borderWidth: 3.5,
+                                fill: false,
+                                tension: 0.35,
+                                pointRadius: 6,
+                                pointHoverRadius: 8,
+                                pointBackgroundColor: '#d97706',
+                                pointBorderColor: '#ffffff',
+                                pointBorderWidth: 2,
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: { mode: 'index', intersect: false },
+                        plugins: {
+                            legend: {
+                                labels: { color: '#334155', font: { family: 'Inter', size: 12, weight: '600' } }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(c) {
+                                        return c.dataset.label + ': R$ ' + Number(c.raw).toFixed(2);
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { color: 'rgba(226, 232, 240, 0.8)' },
+                                ticks: { color: '#64748b', font: { weight: '600' } }
+                            },
+                            y: {
+                                grid: { color: 'rgba(226, 232, 240, 0.8)' },
+                                ticks: {
+                                    color: '#64748b',
+                                    font: { weight: '600' },
+                                    callback: function(v) { return 'R$ ' + v; }
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                chartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: dadosGraficoFinanceiro.labels,
+                        datasets: [
+                            {
+                                label: 'Mês Passado (Setembro)',
+                                data: dadosGraficoFinanceiro.mesAnterior,
+                                backgroundColor: 'rgba(148, 163, 184, 0.5)',
+                                borderColor: '#94a3b8',
+                                borderWidth: 1,
+                                borderRadius: 6,
+                            },
+                            {
+                                label: 'Mês Atual (Outubro)',
+                                data: dadosGraficoFinanceiro.mesAtual,
+                                backgroundColor: '#d97706',
+                                borderColor: '#b45309',
+                                borderWidth: 1,
+                                borderRadius: 6,
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { labels: { color: '#334155', font: { weight: '600' } } },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(c) { return c.dataset.label + ': R$ ' + Number(c.raw).toFixed(2); }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: { grid: { color: 'rgba(226, 232, 240, 0.8)' }, ticks: { color: '#64748b', font: { weight: '600' } } },
+                            y: { grid: { color: 'rgba(226, 232, 240, 0.8)' }, ticks: { color: '#64748b', callback: v => 'R$ ' + v } }
+                        }
+                    }
+                });
+            }
+        } else {
+            // MODO USUÁRIOS CADASTRADOS
+            document.getElementById('boxLegendaSombrinha').style.display = 'none';
+            document.getElementById('graficoTitulo').textContent = '👥 Evolução de Usuários Cadastrados';
+            document.getElementById('graficoSubtitulo').textContent = 'Visualização do crescimento da base de alunos e usuários cadastrados no Instituto ao longo dos últimos meses.';
+
+            chartInstance = new Chart(ctx, {
+                type: tipoGrafico === 'line' ? 'line' : 'bar',
+                data: {
+                    labels: dadosGraficoUsuarios.labels,
+                    datasets: [{
+                        label: 'Novos Cadastros',
+                        data: dadosGraficoUsuarios.valores,
+                        borderColor: '#0284c7',
+                        backgroundColor: tipoGrafico === 'line' ? 'rgba(2, 132, 199, 0.15)' : '#0284c7',
+                        fill: tipoGrafico === 'line',
+                        borderWidth: 3,
+                        borderRadius: 6,
+                        tension: 0.35,
+                        pointBackgroundColor: '#0284c7',
+                        pointRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#334155', font: { weight: '600' } } }
+                    },
+                    scales: {
+                        x: { grid: { color: 'rgba(226, 232, 240, 0.8)' }, ticks: { color: '#64748b', font: { weight: '600' } } },
+                        y: { 
+                            grid: { color: 'rgba(226, 232, 240, 0.8)' },
+                            ticks: { color: '#64748b', stepSize: 1, font: { weight: '600' } } 
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    function alternarModoGrafico(modo) {
+        modoAtual = modo;
+        document.getElementById('btnToggleFinancas').classList.toggle('ativo', modo === 'financas');
+        document.getElementById('btnToggleUsuarios').classList.toggle('ativo', modo === 'usuarios');
+        renderizarGrafico();
+    }
+
+    function alternarTipoGrafico() {
+        tipoGrafico = (tipoGrafico === 'line') ? 'bar' : 'line';
+        document.getElementById('labelTipoGrafico').textContent = (tipoGrafico === 'line') ? 'Barras' : 'Linha com Sombra';
+        renderizarGrafico();
+    }
+
+    document.addEventListener('DOMContentLoaded', renderizarGrafico);
+    <% } %>
+</script>

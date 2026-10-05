@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Instituto Musical Bravo Tatuí</title>
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/login.css">
+</head>
+<body>
+    <div class="header">
+        <span>Instituto Musical Bravo Tatuí</span>
+        <a href="https://www.instagram.com/bravo_tatui/" target="_blank" style="margin-left: auto;">@bravo_tatui</a>
+    </div>
+
+    <div id="nav-bar">
+        <div class="logo">
+            <a href="./index.html">BRAVO TATUÍ</a>
+        </div>
+        <div class="nav-links">
+            <a href="./index.html">Início</a>
+            <a href="./formacoes.html">Bravo Tatuí</a>
+            <a href="./instrumentos.html">Aulas no IMBT</a>
+            <a href="./calendario.html">Calendário</a>
+            <a href="./login.html" class="active">Login</a>
+        </div>
+    </div>
+
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div class="login-header">
+                <h1>PORTAL BRAVO</h1>
+                <p>Acesse com seu e-mail e senha cadastrados</p>
+            </div>
+
+            <div id="mensagemFeedback" class="mensagem-feedback"></div>
+
+            <form id="formLogin">
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" placeholder="seuemail@exemplo.com" required autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" placeholder="••••••••" required autocomplete="current-password">
+                </div>
+
+                <button type="submit" id="btnSubmitLogin" class="btn-login">Entrar</button>
+            </form>
+
+            <div style="margin-top: 15px; text-align: center;">
+                <a href="#" onclick="abrirRecuperarSenha(event)" style="font-size: 12px; color: #8c97ad; text-decoration: underline;">Esqueceu sua senha?</a>
+            </div>
+
+            <!-- Botões Rápidos para Avaliação do TCC -->
+            <div class="demo-box">
+                <span>Contas de Teste (Clique para preencher):</span>
+                <div class="demo-buttons">
+                    <button type="button" class="btn-demo" style="border-color:#F5D696; color:#F5D696; font-weight:700;" onclick="preencherDemo('owner')">👑 Owner</button>
+                    <button type="button" class="btn-demo" onclick="preencherDemo('admin')">⭐ Admin</button>
+                    <button type="button" class="btn-demo" onclick="preencherDemo('aluno')">🎓 Aluno</button>
+                    <button type="button" class="btn-demo" onclick="preencherDemo('professor')">🎻 Professor</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Primeiro Acesso (Troca Obrigatória de Senha - 8 a 20 caracteres) -->
+    <div id="modalPrimeiroAcesso" class="modal-overlay oculto">
+        <div class="modal-content">
+            <h2>Primeiro Acesso</h2>
+            <p>Por motivos de segurança, altere sua senha temporária para continuar (entre 8 e 20 caracteres).</p>
+            <form id="formPrimeiroAcesso">
+                <div class="form-group">
+                    <label for="novaSenha">Nova Senha (de 8 a 20 caracteres)</label>
+                    <input type="password" id="novaSenha" required minlength="8" maxlength="20" placeholder="••••••••">
+                </div>
+                <div class="form-group">
+                    <label for="confirmarSenha">Confirme a Nova Senha</label>
+                    <input type="password" id="confirmarSenha" required minlength="8" maxlength="20" placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn-login">Salvar Nova Senha</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Recuperação de Senha -->
+    <div id="modalRecuperar" class="modal-overlay oculto">
+        <div class="modal-content">
+            <h2>Recuperar Senha</h2>
+            <p>Informe o e-mail cadastrado para receber instruções de redefinição.</p>
+            <form id="formRecuperar">
+                <div class="form-group">
+                    <label for="emailRecuperar">E-mail</label>
+                    <input type="email" id="emailRecuperar" required>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                    <button type="button" class="btn-demo" style="flex: 1;" onclick="fecharModalRecuperar()">Cancelar</button>
+                    <button type="submit" class="btn-login" style="flex: 2; margin-top: 0;">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../script/navbar.js"></script>
+    <script src="../script/login.js"></script>
+</body>
+</html>

@@ -449,3 +449,77 @@ body {
 .btn-secundario:hover {
     border-color: var(--text-main);
 }
+
+/* Badges e Botões de Usuário na Barra */
+.badge-usuario {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: #1e2538;
+    color: #cbd5e1;
+    border: 1px solid #334155;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.badge-usuario.admin {
+    background: rgba(245, 214, 150, 0.15);
+    color: #F5D696;
+    border-color: #F5D696;
+    font-weight: 600;
+}
+
+.badge-usuario.aluno {
+    background: rgba(59, 130, 246, 0.15);
+    color: #93c5fd;
+    border-color: #3b82f6;
+}
+
+.badge-usuario.professor {
+    background: rgba(16, 185, 129, 0.15);
+    color: #6ee7b7;
+    border-color: #10b981;
+}
+
+.btn-nav-auth {
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    background: #F5D696;
+    color: #111;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.2s;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-nav-auth:hover {
+    background: #e2c178;
+}
+
+.btn-nav-sair {
+    background: transparent;
+    color: #9ca3af;
+    border: 1px solid #374151;
+}
+
+.btn-nav-sair:hover {
+    background: #1f2937;
+    color: #ef4444;
+    border-color: #ef4444;
+}
+
+.aviso-modo-leitura {
+    background: #eff6ff;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

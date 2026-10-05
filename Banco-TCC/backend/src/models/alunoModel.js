@@ -51,7 +51,6 @@ async function buscarTodos() {
         a.endereco_cep, 
         a.data_nascimento, 
         a.usuario_login_id,
-        u.firebase_uid,
         u.nome,
         u.email,
         u.telefone,
@@ -72,7 +71,7 @@ async function buscarTodos() {
 async function buscarPorId(idaluno) {
     const [linhas] = await pool.query(
         `SELECT a.idaluno, a.CPF, a.endereco_rua, a.endereco_numero, a.endereco_bairro, a.endereco_cidade, a.endereco_cep, a.data_nascimento, 
-        u.id_usuario, u.firebase_uid, u.tipo_usuario, u.email, u.nome, u.telefone, u.tipo_instrumento, u.autorizacao_imagem, u.foto_url, u.data_cadastro, u.ultimo_acesso, u.primeiro_acesso
+        u.id_usuario, u.tipo_usuario, u.email, u.nome, u.telefone, u.tipo_instrumento, u.autorizacao_imagem, u.foto_url, u.data_cadastro, u.ultimo_acesso, u.primeiro_acesso
         FROM aluno a
         JOIN usuario_login u ON u.id_usuario = a.usuario_login_id
         WHERE a.idaluno = ?

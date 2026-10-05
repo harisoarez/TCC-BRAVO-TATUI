@@ -1,0 +1,11 @@
+{
+  "name": "tcc-bravo-tatui-root",
+  "version": "1.0.0",
+  "description": "Instituto Musical Bravo Tatuí - Root Runner",
+  "scripts": {
+    "start": "npm --prefix Banco-TCC/backend start",
+    "dev": "npm --prefix Banco-TCC/backend run dev",
+    "seed": "npm --prefix Banco-TCC/backend run seed",
+    "install:backend": "npm --prefix Banco-TCC/backend install"
+  }
+}

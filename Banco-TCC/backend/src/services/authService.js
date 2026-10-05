@@ -1,81 +1,107 @@
-const { auth } = require("../config/firebase");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const usuarioModel = require("../models/usuarioModel");
-const { enviarEmailCadastrado, enviarEmailRecuperacaoSenha } = require("./emailService");
+const { enviarEmailRecuperacaoSenha } = require("./emailService");
 
-async function login(firebaseUid) {
-  const usuario = await usuarioModel.buscarPorFirebaseUID(firebaseUid);
+const JWT_SECRET = process.env.JWT_SECRET || "instituto-bravo-segredo-jwt-2026";
 
-  if (!usuario) {
-    const erro = new Error("Usuário não encontrado no sistema.");
-    erro.status = 404;
-    throw erro;
-  }
+async function login(email, senha) {
+    if (!email || !senha) {
+        const erro = new Error("Email e senha são obrigatórios.");
+        erro.status = 400;
+        throw erro;
+    }
 
-  await usuarioModel.atualizarUltimoAcesso(firebaseUid);
+    const usuario = await usuarioModel.buscarPorEmail(email);
 
-  return {
-    ...usuario,
-    primeiroAcesso: Boolean(usuario.primeiro_acesso),
-  };
+    if (!usuario) {
+        const erro = new Error("Email ou senha incorretos.");
+        erro.status = 401;
+        throw erro;
+    }
+
+    const senhaCorreta = await bcrypt.compare(senha, usuario.senha);
+    if (!senhaCorreta) {
+        const erro = new Error("Email ou senha incorretos.");
+        erro.status = 401;
+        throw erro;
+    }
+
+    await usuarioModel.atualizarUltimoAcesso(usuario.id_usuario);
+
+    const payload = {
+        id_usuario: usuario.id_usuario,
+        email: usuario.email,
+        nome: usuario.nome,
+        tipo_usuario: usuario.tipo_usuario,
+        primeiro_acesso: Boolean(usuario.primeiro_acesso),
+    };
+
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "8h" });
+
+    const { senha: _, ...dadosUsuario } = usuario;
+
+    return {
+        token,
+        usuario: {
+            ...dadosUsuario,
+            primeiroAcesso: Boolean(usuario.primeiro_acesso),
+        },
+    };
 }
 
+async function trocarSenhaPrimeiroAcesso(idUsuario, novaSenha) {
+    const usuario = await usuarioModel.buscarPorId(idUsuario);
 
-async function trocarSenhaPrimeiroAcesso(firebaseUid, novaSenha) {
-  const usuario = await usuarioModel.buscarPorFirebaseUID(firebaseUid);
+    if (!usuario) {
+        const erro = new Error("Usuário não encontrado no sistema.");
+        erro.status = 404;
+        throw erro;
+    }
 
-  if (!usuario) {
-    const erro = new Error("Usuário não encontrado no sistema.");
-    erro.status = 404;
-    throw erro;
-  }
+    if (!usuario.primeiro_acesso) {
+        const erro = new Error("Este usuário já concluiu o primeiro acesso.");
+        erro.status = 400;
+        throw erro;
+    }
 
-  if (!usuario.primeiro_acesso) {
-    const erro = new Error("Este usuário já concluiu o primeiro acesso.");
-    erro.status = 400;
-    throw erro;
-  }
+    const hashNovaSenha = await bcrypt.hash(novaSenha, 10);
+    await usuarioModel.atualizarSenha(idUsuario, hashNovaSenha);
 
-  await auth.updateUser(firebaseUid, { password: novaSenha });
-  await usuarioModel.marcarPrimeiroAcessoConcluido(firebaseUid);
-
-  return true;
+    return true;
 }
 
-
-async function logout(firebaseUid) {
-  const usuario = await usuarioModel.buscarPorFirebaseUID(firebaseUid);
-
-  if (!usuario) {
-    const erro = new Error("Usuário não encontrado no sistema.");
-    erro.status = 404;
-    throw erro;
-  }
-
-  await auth.revokeRefreshTokens(firebaseUid);
-
-  return true;
+async function logout(idUsuario) {
+    return true;
 }
 
-async function solicitarRecuperacaoSenha(emailAluno) {
-  const usuario = await usuarioModel.buscarPorEmail(emailAluno);
+async function solicitarRecuperacaoSenha(email) {
+    const usuario = await usuarioModel.buscarPorEmail(email);
 
-  if (!usuario) {
-    return;  //Ignora emails não cadastrados para não expor informações do sistema
-  }
+    if (!usuario) {
+        // Ignora emails não cadastrados para não expor informações do sistema
+        return;
+    }
 
-  const actionCodeSettings = {
-    url: `${process.env.FRONTEND_URL}/recuperar-senha`,
-    handleCodeInApp: true,
-  }
+    const resetToken = jwt.sign(
+        { id_usuario: usuario.id_usuario, email: usuario.email, acao: "reset_senha" },
+        JWT_SECRET,
+        { expiresIn: "1h" }
+    );
 
-  const link = await auth.generatePasswordResetLink(emailAluno, actionCodeSettings);
+    const baseUrl = process.env.FRONTEND_URL || `http://localhost:${process.env.PORT || 3000}`;
+    const link = `${baseUrl}/recuperar-senha?token=${resetToken}`;
 
-  await enviarEmailRecuperacaoSenha(emailAluno, usuario.nome, link);
+    try {
+        await enviarEmailRecuperacaoSenha(email, usuario.nome, link);
+    } catch (err) {
+        console.error("Falha ao enviar email de recuperação:", err.message);
+    }
 }
 
 module.exports = {
-  login,
-  trocarSenhaPrimeiroAcesso,
-  logout,
-  solicitarRecuperacaoSenha
+    login,
+    trocarSenhaPrimeiroAcesso,
+    logout,
+    solicitarRecuperacaoSenha,
 };

@@ -1,16 +1,19 @@
 :root {
-    --cor-primaria: #2b3a67;
-    --cor-secundaria: #496ddb;
-    --cor-fundo: #f5f6fa;
-    --cor-texto: #1f2430;
-    --cor-borda: #dfe2ea;
+    --cor-primaria: #0b0d13;
+    --cor-secundaria: #F5D696;
+    --cor-fundo: #080a0f;
+    --cor-card: #0f172a;
+    --cor-texto: #f8fafc;
+    --cor-texto-mutado: #94a3b8;
+    --cor-borda: #1e293b;
+    --cor-borda-foco: #F5D696;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Segoe UI", Arial, sans-serif;
+    font-family: "inter", "Segoe UI", Arial, sans-serif;
 }
 
 body {
@@ -21,141 +24,140 @@ body {
     min-height: 100vh;
 }
 
-/* ---------- Navbar ---------- */
-.navbar {
-    background-color: var(--cor-primaria);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.75rem 2rem;
-}
-
-.navbar-marca {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: bold;
-    font-size: 1.1rem;
-}
-
-.navbar-logo {
-    height: 32px;
-}
-
-.navbar-menu {
-    display: flex;
-    list-style: none;
-    gap: 1.5rem;
-}
-
-.navbar-menu a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 0.95rem;
-}
-
-.navbar-menu a:hover {
-    color: var(--cor-secundaria);
-}
-
 /* ---------- Conteúdo ---------- */
 .conteudo {
     flex: 1;
-    padding: 2rem;
-    max-width: 1100px;
+    padding: 2.5rem 2rem;
+    max-width: 1200px;
     margin: 0 auto;
     width: 100%;
 }
 
-.conteudo h1 {
-    margin-bottom: 1.5rem;
-    color: var(--cor-primaria);
+.cabecalho-pagina {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
 }
 
-/* ---------- Tabela padrão (reaproveitada em todos os módulos) ---------- */
+.cabecalho-pagina h1,
+.conteudo h1 {
+    font-size: 1.8rem;
+    color: #ffffff;
+    font-family: "julius", serif;
+    letter-spacing: 1px;
+}
+
+/* ---------- Tabela padrão ---------- */
 .tabela-padrao {
     width: 100%;
     border-collapse: collapse;
-    background-color: #fff;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    background-color: var(--cor-card);
+    border: 1px solid var(--cor-borda);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
 }
 
 .tabela-padrao th,
 .tabela-padrao td {
-    padding: 0.75rem 1rem;
+    padding: 0.9rem 1.2rem;
     border-bottom: 1px solid var(--cor-borda);
     text-align: left;
+    font-size: 0.92rem;
 }
 
 .tabela-padrao th {
-    background-color: var(--cor-primaria);
-    color: #fff;
+    background-color: #0b0f19;
+    color: var(--cor-secundaria);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
 }
 
 .tabela-padrao tr:hover {
-    background-color: #f0f2fa;
+    background-color: rgba(30, 41, 59, 0.5);
 }
 
 /* ---------- Botões ---------- */
 .botao {
     display: inline-block;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
+    padding: 0.55rem 1.1rem;
+    border-radius: 6px;
     text-decoration: none;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
+    font-weight: 600;
     border: none;
     cursor: pointer;
+    transition: all 0.2s;
 }
 
 .botao-primario {
     background-color: var(--cor-secundaria);
-    color: #fff;
+    color: #0b0d13;
+}
+
+.botao-primario:hover {
+    background-color: #fde68a;
+    transform: translateY(-1px);
 }
 
 .botao-perigo {
-    background-color: #d9534f;
-    color: #fff;
+    background-color: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #f87171;
+}
+
+.botao-perigo:hover {
+    background-color: #ef4444;
+    color: #ffffff;
 }
 
 .acoes {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.6rem;
 }
 
-/* ---------- Formulários (reaproveitado em todos os módulos) ---------- */
+/* ---------- Formulários ---------- */
 .formulario {
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 6px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-    max-width: 600px;
+    background-color: var(--cor-card);
+    padding: 2.2rem;
+    border-radius: 12px;
+    border: 1px solid var(--cor-borda);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    max-width: 650px;
+    margin-top: 1rem;
 }
 
 .campo {
-    margin-bottom: 1rem;
+    margin-bottom: 1.2rem;
 }
 
 .campo label {
     display: block;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.4rem;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
+    color: #cbd5e1;
 }
 
 .campo input,
-.campo select {
+.campo select,
+.campo textarea {
     width: 100%;
-    padding: 0.5rem;
+    padding: 0.65rem 0.9rem;
     border: 1px solid var(--cor-borda);
-    border-radius: 4px;
+    border-radius: 6px;
+    background-color: #090d16;
+    color: #ffffff;
+    font-size: 0.92rem;
+    outline: none;
 }
 
-/* ---------- Rodapé ---------- */
-.footer {
-    background-color: var(--cor-primaria);
-    color: #fff;
-    text-align: center;
-    padding: 1rem;
-    font-size: 0.85rem;
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+    border-color: var(--cor-borda-foco);
+    box-shadow: 0 0 0 2px rgba(245, 214, 150, 0.2);
 }

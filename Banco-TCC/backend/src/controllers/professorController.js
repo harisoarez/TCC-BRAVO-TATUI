@@ -1,5 +1,5 @@
+const bcrypt = require("bcryptjs");
 const pool = require("../config/database");
-const { auth } = require("../config/firebase");
 const usuarioModel = require("../models/usuarioModel");
 const professorModel = require("../models/professorModel");
 const gerarSenhaTemporaria = require("../utils/gerarSenha");
@@ -25,22 +25,24 @@ async function cadastrar(req, res) {
     }
 
     const conexao = await pool.getConnection();
-    let firebaseUidCriado = null;
 
     try {
-        const senhaTemporaria = gerarSenhaTemporaria();
+        const usuarioExistente = await usuarioModel.buscarPorEmail(email);
+        if (usuarioExistente) {
+            conexao.release();
+            return res.status(409).json({
+                sucesso: false,
+                mensagem: "Já existe um usuário cadastrado com este e-mail.",
+            });
+        }
 
-        const usuarioFirebase = await auth.createUser({
-            email,
-            password: senhaTemporaria,
-            displayName: nome,
-        });
-        firebaseUidCriado = usuarioFirebase.uid;
+        const senhaTemporaria = gerarSenhaTemporaria();
+        const senhaHash = await bcrypt.hash(senhaTemporaria, 10);
 
         await conexao.beginTransaction();
 
         const idUsuario = await usuarioModel.inserir(conexao, {
-            firebase_uid: firebaseUidCriado,
+            senha: senhaHash,
             tipo_usuario: "professor",
             email,
             nome,
@@ -48,6 +50,7 @@ async function cadastrar(req, res) {
             tipo_instrumento,
             autorizacao_imagem,
             foto_url,
+            primeiro_acesso: 1,
         });
 
         const idProfessor = await professorModel.cadastrar(conexao, {
@@ -58,27 +61,20 @@ async function cadastrar(req, res) {
 
         await conexao.commit();
 
-        await enviarEmailCadastroProfessor(email, nome, senhaTemporaria);
+        try {
+            await enviarEmailCadastroProfessor(email, nome, senhaTemporaria);
+        } catch (emailErr) {
+            console.error("Aviso: Falha ao enviar e-mail de boas-vindas para o professor:", emailErr.message);
+        }
 
         return res.status(201).json({
             sucesso: true,
             mensagem: "Professor cadastrado com sucesso!",
             idProfessor,
+            senhaTemporaria, // Facilitador em ambiente de desenvolvimento/testes
         });
     } catch (error) {
         await conexao.rollback();
-
-        if (firebaseUidCriado) {
-            try {
-                await auth.deleteUser(firebaseUidCriado);
-            } catch (erroFirebase) {
-                console.error(
-                    `Falha ao reverter usuário Firebase órfão (uid: ${firebaseUidCriado}):`,
-                    erroFirebase
-                );
-            }
-        }
-
         console.error("Erro ao cadastrar professor:", error);
 
         return res.status(500).json({
@@ -130,10 +126,6 @@ async function buscarPorId(req, res) {
     }
 }
 
-/**
- * Não permite alterar e-mail aqui: é a identidade do usuário no
- * Firebase Authentication. Se o corpo enviar "email", é ignorado.
- */
 async function atualizar(req, res) {
     const { id } = req.params;
     const conexao = await pool.getConnection();
@@ -189,8 +181,6 @@ async function deletar(req, res) {
             });
         }
 
-        const firebaseUidParaRemover = professorExistente.firebase_uid;
-
         await conexao.beginTransaction();
 
         await professorModel.removerDependencias(conexao, id);
@@ -198,15 +188,6 @@ async function deletar(req, res) {
         await usuarioModel.excluir(conexao, professorExistente.id_usuario);
 
         await conexao.commit();
-
-        try {
-            await auth.deleteUser(firebaseUidParaRemover);
-        } catch (erroFirebase) {
-            console.error(
-                `Professor ${id} removido do banco, mas falhou ao remover do Firebase (uid: ${firebaseUidParaRemover}):`,
-                erroFirebase
-            );
-        }
 
         return res.status(200).json({
             sucesso: true,

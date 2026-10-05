@@ -1,0 +1,449 @@
+/* ================================================================
+   INSTITUTO BRAVO TATUÍ - NAVBAR GLOBAL E CONTROLE DE USUÁRIOS
+   ================================================================ */
+
+#nav-bar {
+    background-color: #0b0d13;
+    border-bottom: 1px solid #1c2233;
+    min-height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    font-family: 'inter', sans-serif;
+}
+
+/* Logo com o símbolo de rascunho (Tilápia) */
+#nav-bar .logo-container {
+    display: flex;
+    align-items: center;
+}
+
+#nav-bar .logo-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+}
+
+#nav-bar .logo-tilapia {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #F5D696;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 0 8px rgba(245, 214, 150, 0.3);
+}
+
+#nav-bar .logo-tilapia:hover {
+    transform: scale(1.06);
+}
+
+#nav-bar .logo-text {
+    font-family: 'julius', serif;
+    font-weight: bold;
+    color: #F5D696;
+    font-size: 19px;
+    letter-spacing: 1.5px;
+}
+
+/* Links de Navegação Centrais */
+#nav-bar .nav-links-center {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+#nav-bar .nav-links-center a {
+    color: #d1d5db;
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 500;
+    transition: color 0.2s, transform 0.1s;
+    padding: 6px 10px;
+    border-radius: 6px;
+}
+
+#nav-bar .nav-links-center a:hover {
+    color: #F5D696;
+}
+
+#nav-bar .nav-links-center a.link-ativo {
+    color: #F5D696;
+    font-weight: 700;
+    background: rgba(245, 214, 150, 0.1);
+}
+
+/* Botão especial do Calendário (Apenas para logados) */
+#nav-bar .nav-link-calendario {
+    background: rgba(245, 214, 150, 0.15) !important;
+    border: 1px solid rgba(245, 214, 150, 0.4) !important;
+    color: #F5D696 !important;
+    font-weight: 600 !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#nav-bar .nav-link-calendario:hover {
+    background: rgba(245, 214, 150, 0.28) !important;
+    box-shadow: 0 0 10px rgba(245, 214, 150, 0.25);
+}
+
+/* Área de Usuário no Canto Superior Direito */
+#nav-bar .nav-user-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Estado DESLOGADO: Ícone cinza de pessoa + Botão Entrar */
+.user-guest-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar-guest {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #1f2937;
+    border: 2px solid #4b5563;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+}
+
+.btn-entrar-nav {
+    background: #F5D696;
+    color: #0d111b;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 7px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.1s;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-entrar-nav:hover {
+    background: #e2c178;
+    transform: translateY(-1px);
+}
+
+/* Estado LOGADO */
+.user-logged-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Botão Adicionar Conta (Owner / Admin) */
+.btn-nav-adicionar-conta {
+    background: #1e293b;
+    color: #f1f5f9;
+    border: 1px solid #334155;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s;
+}
+
+.btn-nav-adicionar-conta:hover {
+    background: #2e3b52;
+    border-color: #F5D696;
+    color: #F5D696;
+}
+
+/* Avatar com Borda por Cargo */
+.avatar-perfil {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #111827;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+}
+
+/* BORDAS REQUISITADAS PELO USUÁRIO:
+   - Owner: borda PRETA (com realce de contraste)
+   - Admin: borda AMARELA
+   - Normal: borda AZUL CLARO
+*/
+.avatar-perfil.borda-owner {
+    border: 3.5px solid #000000 !important;
+    background: #0f172a;
+    box-shadow: 0 0 0 1.5px #64748b, 0 0 10px rgba(0, 0, 0, 0.8);
+    color: #ffffff;
+}
+
+.avatar-perfil.borda-admin {
+    border: 3.5px solid #facc15 !important; /* Amarelo */
+    background: #1c1917;
+    box-shadow: 0 0 8px rgba(250, 204, 21, 0.4);
+    color: #facc15;
+}
+
+.avatar-perfil.borda-normal {
+    border: 3.5px solid #38bdf8 !important; /* Azul Claro */
+    background: #082f49;
+    box-shadow: 0 0 8px rgba(56, 189, 248, 0.35);
+    color: #38bdf8;
+}
+
+/* Textos e Badges do Usuário */
+.user-info-col {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.user-nome-texto {
+    font-size: 13px;
+    font-weight: 700;
+    color: #f9fafb;
+    max-width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-badge-cargo {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.user-badge-cargo.owner {
+    color: #ffffff;
+    text-shadow: 0 0 4px #000;
+}
+
+.user-badge-cargo.admin {
+    color: #facc15;
+}
+
+.user-badge-cargo.normal {
+    color: #38bdf8;
+}
+
+/* Botão Sair */
+.btn-nav-sair-logout {
+    background: transparent;
+    color: #9ca3af;
+    border: 1px solid #374151;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-nav-sair-logout:hover {
+    background: #1f2937;
+    color: #ef4444;
+    border-color: #ef4444;
+}
+
+/* ================================================================
+   MODAL DE CADASTRO DE CONTAS (OWNER / ADMIN)
+   ================================================================ */
+.modal-overlay-conta {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.modal-overlay-conta.oculto {
+    display: none !important;
+}
+
+.modal-card-conta {
+    background: #111827;
+    border: 1px solid #1f293d;
+    border-radius: 12px;
+    width: 92%;
+    max-width: 480px;
+    padding: 26px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+    color: #f9fafb;
+    font-family: 'inter', sans-serif;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header-conta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #1f293d;
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+}
+
+.modal-header-conta h2 {
+    font-size: 18px;
+    color: #F5D696;
+    margin: 0;
+}
+
+.btn-fechar-modal-conta {
+    background: none;
+    border: none;
+    color: #9ca3af;
+    font-size: 24px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.btn-fechar-modal-conta:hover {
+    color: #ffffff;
+}
+
+.form-grupo-conta {
+    margin-bottom: 14px;
+}
+
+.form-grupo-conta label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #cbd5e1;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-grupo-conta input,
+.form-grupo-conta select {
+    width: 100%;
+    padding: 10px 12px;
+    background: #0b0f19;
+    border: 1px solid #28344e;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 13.5px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.form-grupo-conta input:focus,
+.form-grupo-conta select:focus {
+    border-color: #F5D696;
+}
+
+/* Área de Senha Automática */
+.box-senha-gerada {
+    background: #090d16;
+    border: 1px solid #1f2a40;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 6px;
+}
+
+.linha-senha {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.input-senha-gerada {
+    flex: 1;
+    font-family: monospace;
+    font-size: 14px !important;
+    font-weight: 700;
+    color: #F5D696 !important;
+    background: #05080e !important;
+    letter-spacing: 1px;
+}
+
+.btn-acao-senha {
+    background: #1e293b;
+    color: #e2e8f0;
+    border: 1px solid #334155;
+    padding: 9px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+
+.btn-acao-senha:hover {
+    background: #334155;
+    color: #ffffff;
+}
+
+.aviso-envio-manual {
+    font-size: 11.5px;
+    color: #94a3b8;
+    margin-top: 8px;
+    line-height: 1.4;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.btn-submit-criar-conta {
+    width: 100%;
+    padding: 12px;
+    background: #F5D696;
+    color: #0b0d13;
+    font-weight: 700;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 14px;
+    transition: background 0.2s;
+}
+
+.btn-submit-criar-conta:hover {
+    background: #e2c178;
+}
+
+.feedback-criar-conta {
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    margin-bottom: 12px;
+    display: none;
+}
+
+.feedback-criar-conta.erro {
+    display: block;
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid #ef4444;
+    color: #fca5a5;
+}
+
+.feedback-criar-conta.sucesso {
+    display: block;
+    background: rgba(34, 197, 94, 0.15);
+    border: 1px solid #22c55e;
+    color: #86efac;
+}

@@ -1,21 +1,33 @@
-const { auth } = require("../config/firebase");
-const authService = require('../services/authService');
+const authService = require("../services/authService");
 
 async function login(req, res) {
     try {
-        const firebaseUid = req.user.uid;
-        const usuario = await authService.login(firebaseUid);
+        const { email, senha } = req.body;
+
+        if (!email || !senha) {
+            return res.status(400).json({
+                sucesso: false,
+                mensagem: "Informe email e senha para entrar.",
+            });
+        }
+
+        const resultado = await authService.login(email, senha);
+
+        // Se houver sessão configurada, armazena para rotas SSR
+        if (req.session) {
+            req.session.usuario = resultado.usuario;
+        }
 
         return res.status(200).json({
             sucesso: true,
-            mensagem: 'Login realizado com sucesso!',
-            usuario
+            mensagem: "Login realizado com sucesso!",
+            token: resultado.token,
+            usuario: resultado.usuario,
         });
-
     } catch (error) {
         return res.status(error.status || 500).json({
             sucesso: false,
-            mensagem: error.message || 'Erro ao realizar login.'
+            mensagem: error.message || "Erro ao realizar login.",
         });
     }
 }
@@ -30,10 +42,10 @@ async function trocarSenhaPrimeiroAcesso(req, res) {
         });
     }
 
-    if (novaSenha.length < 6) {
+    if (novaSenha.length < 8 || novaSenha.length > 20) {
         return res.status(400).json({
             sucesso: false,
-            mensagem: "A nova senha deve ter pelo menos 6 caracteres.",
+            mensagem: "A nova senha deve ter no mínimo 8 e no máximo 20 caracteres.",
         });
     }
 
@@ -45,8 +57,12 @@ async function trocarSenhaPrimeiroAcesso(req, res) {
     }
 
     try {
-        const firebaseUid = req.user.uid;
-        await authService.trocarSenhaPrimeiroAcesso(firebaseUid, novaSenha);
+        const idUsuario = req.user.id_usuario;
+        await authService.trocarSenhaPrimeiroAcesso(idUsuario, novaSenha);
+
+        if (req.session && req.session.usuario) {
+            req.session.usuario.primeiroAcesso = false;
+        }
 
         return res.status(200).json({
             sucesso: true,
@@ -55,15 +71,16 @@ async function trocarSenhaPrimeiroAcesso(req, res) {
     } catch (error) {
         return res.status(error.status || 500).json({
             sucesso: false,
-            mensagem: error.message || "Erro ao trocar a senha."
+            mensagem: error.message || "Erro ao trocar a senha.",
         });
     }
 }
 
 async function logout(req, res) {
     try {
-        const firebaseUid = req.user.uid;
-        await authService.logout(firebaseUid);
+        if (req.session) {
+            req.session.destroy();
+        }
 
         return res.status(200).json({
             sucesso: true,
@@ -72,25 +89,25 @@ async function logout(req, res) {
     } catch (error) {
         return res.status(error.status || 500).json({
             sucesso: false,
-            mensagem: error.message || "Erro ao realizar logout."
+            mensagem: error.message || "Erro ao realizar logout.",
         });
     }
 }
 
 async function solicitarRecuperacaoSenha(req, res) {
-    const { emailAluno } = req.body;
+    const email = req.body.email || req.body.emailAluno;
 
-    if (!emailAluno) {
+    if (!email) {
         return res.status(400).json({
             sucesso: false,
-            mensagem: "Informe o email do aluno para a recuperação da senha.",
+            mensagem: "Informe o email para a recuperação da senha.",
         });
     }
 
     try {
-        await authService.solicitarRecuperacaoSenha(emailAluno);
+        await authService.solicitarRecuperacaoSenha(email);
     } catch (error) {
-        console.error("Erro ao solicitar recuperação de senha:", error);  
+        console.error("Erro ao solicitar recuperação de senha:", error);
     }
 
     return res.status(200).json({
@@ -103,5 +120,5 @@ module.exports = {
     login,
     trocarSenhaPrimeiroAcesso,
     logout,
-    solicitarRecuperacaoSenha
+    solicitarRecuperacaoSenha,
 };

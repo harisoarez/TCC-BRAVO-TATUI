@@ -1,0 +1,709 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+
+<main class="dashboard-container">
+    <header class="databricks-header">
+        <div class="header-title-col">
+            <h1>
+                <span class="estrela">👥</span>
+                Gestão de Usuários
+            </h1>
+            <p>Controle unificado de Administradores, Professores e Alunos Matriculados</p>
+        </div>
+
+        <div class="header-meta-col">
+            <% if (isOwner) { %>
+                <span class="badge-modo-view owner">👑 Owner: Permissão Total de Descontos</span>
+            <% } else { %>
+                <span class="badge-modo-view admin">⭐ Administrador: Verificação de Comprovantes</span>
+            <% } %>
+        </div>
+    </header>
+
+    <!-- Tabs para alternar entre Administradores, Professores e Alunos -->
+    <div style="display: flex; gap: 10px; border-bottom: 2px solid var(--border-color); padding-bottom: 12px;">
+        <button type="button" class="tab-btn ativo" id="tabBtnAlunos" onclick="trocarAbaUsuarios('alunos')">
+            🎓 Alunos Matriculados <span class="tab-badge"><%= alunos.length %></span>
+        </button>
+        <button type="button" class="tab-btn" id="tabBtnProfessores" onclick="trocarAbaUsuarios('professores')">
+            🎻 Professores <span class="tab-badge"><%= professores.length %></span>
+        </button>
+        <button type="button" class="tab-btn" id="tabBtnAdmins" onclick="trocarAbaUsuarios('admins')">
+            ⭐ Administradores <span class="tab-badge"><%= administradores.length %></span>
+        </button>
+    </div>
+
+    <!-- 1. TABELA DE ALUNOS -->
+    <section class="mensalidades-card" id="secaoAlunos">
+        <div class="secao-header">
+            <h2>🎓 Lista de Alunos</h2>
+            <span style="font-size: 13px; color: var(--text-muted);">
+                <%= isOwner ? 'Você pode atribuir descontos individuais (%) e validar pagamentos.' : 'Você pode verificar comprovantes e consultar históricos de mensalidade.' %>
+            </span>
+        </div>
+
+        <div class="tabela-container">
+            <table class="tabela-mensalidades">
+                <thead>
+                    <tr>
+                        <th>Aluno</th>
+                        <th>Curso</th>
+                        <th>Mensalidade Base</th>
+                        <th>Desconto</th>
+                        <th>Valor Final</th>
+                        <th>Status Atual</th>
+                        <th>Comprovante</th>
+                        <th style="text-align: right;">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% alunos.forEach(function(al) { %>
+                        <tr>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div class="aniv-avatar" style="width: 32px; height: 32px; font-size: 12px;">
+                                        <%= al.nome.charAt(0) %>
+                                    </div>
+                                    <div>
+                                        <strong style="color: var(--text-primary);"><%= al.nome %></strong>
+                                        <div style="font-size: 11px; color: var(--text-muted);"><%= al.email %> • <%= al.telefone || "Sem telefone" %></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span style="font-weight: 700; color: var(--text-primary);"><%= al.curso || 'Piano' %></span>
+                            </td>
+                            <td>
+                                R$ <%= Number(al.valor_base).toFixed(2) %>
+                            </td>
+                            <td>
+                                <% if (Number(al.desconto_porcentagem) > 0) { %>
+                                    <span style="background: #fef3c7; color: #92400e; padding: 2px 7px; border-radius: 6px; font-weight: 700; font-size: 11.5px;">
+                                        <%= al.desconto_porcentagem %>% OFF
+                                    </span>
+                                <% } else { %>
+                                    <span style="color: var(--text-muted); font-size: 12px;">Sem desconto</span>
+                                <% } %>
+                            </td>
+                            <td>
+                                <strong style="color: var(--accent-gold); font-size: 14px;">
+                                    R$ <%= Number(al.valor_cobrado).toFixed(2) %>
+                                </strong>
+                            </td>
+                            <td>
+                                <% if (al.status_mes_atual === 'pago') { %>
+                                    <span class="status-pill pago">● Pago</span>
+                                <% } else if (al.status_mes_atual === 'em_analise') { %>
+                                    <span class="status-pill em_analise">⏳ Em Análise</span>
+                                <% } else if (al.status_mes_atual === 'atrasado') { %>
+                                    <span class="status-pill atrasado">⚠️ Vencido</span>
+                                <% } else { %>
+                                    <span class="status-pill pendente">⏳ Pendente</span>
+                                <% } %>
+                            </td>
+                            <td>
+                                <% if (al.comprovante_url) { %>
+                                    <a href="<%= al.comprovante_url %>" target="_blank" class="link-ver-comprovante" title="Ver Comprovante enviado">
+                                        📄 Ver Anexo
+                                    </a>
+                                <% } else { %>
+                                    <span style="color: var(--text-muted); font-size: 12px;">Nenhum anexo</span>
+                                <% } %>
+                            </td>
+                            <td style="text-align: right;">
+                                <div style="display: inline-flex; gap: 6px;">
+                                    <% if (al.status_mes_atual === 'em_analise' && al.id_recebimento_atual) { %>
+                                        <button type="button" class="btn-acao-comprovante btn-validar-alerta" 
+                                            onclick="abrirModalValidacao('<%= al.id_recebimento_atual %>', '<%= al.nome %>', '<%= Number(al.valor_cobrado).toFixed(2) %>', '<%= al.comprovante_url %>')">
+                                            ✓ Validar Comprovante
+                                        </button>
+                                    <% } %>
+
+                                    <% if (isOwner) { %>
+                                        <button type="button" class="btn-acao-comprovante" 
+                                            onclick="abrirModalCurso('<%= al.idaluno %>', '<%= al.nome %>', '<%= al.curso || 'Piano' %>')"
+                                            title="Editar Curso / Matrícula do Aluno">
+                                            🎓 Mudar Curso
+                                        </button>
+                                        <button type="button" class="btn-acao-comprovante" 
+                                            onclick="abrirModalDesconto('<%= al.idaluno %>', '<%= al.nome %>', '<%= al.desconto_porcentagem %>')"
+                                            title="Atribuir Desconto Individual">
+                                            🏷️ Desconto
+                                        </button>
+                                    <% } %>
+
+                                    <button type="button" class="btn-acao-comprovante" 
+                                        onclick="abrirHistoricoAluno('<%= al.idaluno %>', '<%= al.nome %>')"
+                                        title="Ver histórico de mensalidades de meses anteriores">
+                                        📜 Histórico
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 2. TABELA DE PROFESSORES -->
+    <section class="mensalidades-card oculto" id="secaoProfessores">
+        <div class="secao-header">
+            <h2>🎻 Corpo Docente (Professores)</h2>
+            <span style="font-size: 13px; color: var(--text-muted);"><%= professores.length %> professores cadastrados</span>
+        </div>
+
+        <div class="tabela-container">
+            <table class="tabela-mensalidades">
+                <thead>
+                    <tr>
+                        <th>Professor</th>
+                        <th>E-mail</th>
+                        <th>Telefone</th>
+                        <th>Instrumento / Especialidade</th>
+                        <th>Data de Cadastro</th>
+                        <% if (isOwner) { %>
+                            <th style="text-align: right;">Ações</th>
+                        <% } %>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% professores.forEach(function(p) { %>
+                        <tr>
+                            <td>
+                                <strong style="color: var(--text-primary);"><%= p.nome %></strong>
+                                <% if (p.descricao) { %>
+                                    <div style="font-size: 11px; color: var(--text-muted);"><%= p.descricao %></div>
+                                <% } %>
+                            </td>
+                            <td><%= p.email %></td>
+                            <td><%= p.telefone || "—" %></td>
+                            <td>
+                                <span style="background: #e0f2fe; color: #0369a1; padding: 3px 8px; border-radius: 6px; font-weight: 600; font-size: 12px;">
+                                    <%= p.tipo_instrumento || "Geral" %>
+                                </span>
+                            </td>
+                            <td><%= new Date(p.data_cadastro).toLocaleDateString('pt-BR') %></td>
+                            <% if (isOwner) { %>
+                                <td style="text-align: right;">
+                                    <button type="button" class="btn-acao-comprovante" 
+                                        onclick="abrirModalEspecialidade('<%= p.idprofessor || p.id_usuario %>', '<%= p.nome %>', '<%= p.tipo_instrumento || 'Piano' %>')"
+                                        title="Editar Especialidade / Instrumento do Professor">
+                                        ✏️ Especialidade
+                                    </button>
+                                </td>
+                            <% } %>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 3. TABELA DE ADMINISTRADORES -->
+    <section class="mensalidades-card oculto" id="secaoAdmins">
+        <div class="secao-header">
+            <h2>⭐ Equipe Administrativa</h2>
+            <span style="font-size: 13px; color: var(--text-muted);"><%= administradores.length %> gestores cadastrados</span>
+        </div>
+
+        <div class="tabela-container">
+            <table class="tabela-mensalidades">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>E-mail</th>
+                        <th>Telefone</th>
+                        <th>CPF</th>
+                        <th>Cargo</th>
+                        <th>Cadastro</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% administradores.forEach(function(adm) { %>
+                        <tr>
+                            <td>
+                                <strong style="color: var(--text-primary);"><%= adm.nome %></strong>
+                                <% if (adm.descricao) { %>
+                                    <div style="font-size: 11px; color: var(--text-muted);"><%= adm.descricao %></div>
+                                <% } %>
+                            </td>
+                            <td><%= adm.email %></td>
+                            <td><%= adm.telefone || "—" %></td>
+                            <td><%= adm.cpf || "—" %></td>
+                            <td>
+                                <% if (adm.tipo_usuario === 'owner') { %>
+                                    <span style="background: #0f172a; color: #ffffff; padding: 3px 8px; border-radius: 6px; font-weight: 700; font-size: 12px;">
+                                        👑 Owner (Proprietário)
+                                    </span>
+                                <% } else { %>
+                                    <span style="background: #fef3c7; color: #92400e; padding: 3px 8px; border-radius: 6px; font-weight: 700; font-size: 12px;">
+                                        ⭐ Administrador
+                                    </span>
+                                <% } %>
+                            </td>
+                            <td><%= new Date(adm.data_cadastro).toLocaleDateString('pt-BR') %></td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<!-- MODAL DE ATRIBUIÇÃO DE DESCONTO (EXCLUSIVO OWNER) -->
+<div id="modalDescontoOwner" class="modal-overlay oculto">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>Atribuir Desconto de Aluno</h3>
+            <button type="button" class="btn-fechar-modal" onclick="fecharModalDesconto()">&times;</button>
+        </div>
+
+        <form id="formAtribuirDesconto">
+            <input type="hidden" id="modalDescontoIdAluno">
+
+            <div class="form-grupo">
+                <label>Aluno</label>
+                <input type="text" id="modalDescontoNomeAluno" disabled style="opacity: 0.8; cursor: not-allowed;">
+            </div>
+
+            <div class="form-grupo">
+                <label for="modalDescontoPorcentagem">Porcentagem de Desconto (%)</label>
+                <div style="display: flex; gap: 8px;">
+                    <input type="number" id="modalDescontoPorcentagem" min="0" max="100" step="5" required style="font-size: 16px; font-weight: 700;">
+                    <span style="display: flex; align-items: center; font-weight: 700; color: var(--text-secondary);">%</span>
+                </div>
+                <small style="color: var(--text-muted); font-size: 11.5px;">
+                    Ex: 10% para desconto familiar, 50% meia bolsa ou 100% bolsa integral.
+                </small>
+            </div>
+
+            <button type="submit" id="btnSalvarDesconto" class="btn-confirmar-pagamento">
+                Salvar Desconto
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL PARA O OWNER MUDAR O CURSO DO ALUNO -->
+<div id="modalEditarCursoAluno" class="modal-overlay oculto">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>Alterar Curso / Matrícula do Aluno</h3>
+            <button type="button" class="btn-fechar-modal" onclick="fecharModalCurso()">&times;</button>
+        </div>
+
+        <form id="formMudarCursoAluno">
+            <input type="hidden" id="cursoModalIdAluno">
+
+            <div class="form-grupo">
+                <label>Aluno</label>
+                <input type="text" id="cursoModalNomeAluno" disabled style="opacity: 0.85; cursor: not-allowed; font-weight: 700;">
+            </div>
+
+            <div class="form-grupo">
+                <label for="cursoModalSelectCurso">Novo Curso Matriculado</label>
+                <select id="cursoModalSelectCurso" required style="font-size: 15px; font-weight: 600;">
+                    <% cursos.forEach(function(c) { %>
+                        <option value="<%= c.nome %>"><%= c.nome %> (Mensalidade Base: R$ <%= Number(c.valor_mensalidade).toFixed(2) %>)</option>
+                    <% }); %>
+                </select>
+                <small style="color: var(--text-muted); font-size: 11.5px;">
+                    Ao alterar o curso, a mensalidade base será ajustada e o desconto do aluno continuará sendo aplicado.
+                </small>
+            </div>
+
+            <button type="submit" id="btnSalvarCursoAluno" class="btn-confirmar-pagamento">
+                Salvar Novo Curso
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL PARA O OWNER MUDAR A ESPECIALIDADE DO PROFESSOR -->
+<div id="modalEditarEspecialidadeProfessor" class="modal-overlay oculto">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>Alterar Especialidade do Professor</h3>
+            <button type="button" class="btn-fechar-modal" onclick="fecharModalEspecialidade()">&times;</button>
+        </div>
+
+        <form id="formMudarEspecialidadeProfessor">
+            <input type="hidden" id="espModalIdProfessor">
+
+            <div class="form-grupo">
+                <label>Professor</label>
+                <input type="text" id="espModalNomeProfessor" disabled style="opacity: 0.85; cursor: not-allowed; font-weight: 700;">
+            </div>
+
+            <div class="form-grupo">
+                <label for="espModalSelectEspecialidade">Instrumento / Área de Atuação</label>
+                <select id="espModalSelectEspecialidade" required style="font-size: 15px; font-weight: 600;">
+                    <% cursos.forEach(function(c) { %>
+                        <option value="<%= c.nome %>"><%= c.nome %></option>
+                    <% }); %>
+                    <option value="Piano & Teclado">Piano & Teclado</option>
+                    <option value="Violão & Cordas">Violão & Cordas</option>
+                    <option value="Violino & Viola">Violino & Viola</option>
+                    <option value="Canto & Técnica Vocal">Canto & Técnica Vocal</option>
+                    <option value="Percussão & Bateria">Percussão & Bateria</option>
+                    <option value="Madeiras & Sopros">Madeiras & Sopros</option>
+                    <option value="Teoria Musical Avançada">Teoria Musical Avançada</option>
+                </select>
+            </div>
+
+            <button type="submit" id="btnSalvarEspecialidade" class="btn-confirmar-pagamento">
+                Salvar Especialidade
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL DE HISTÓRICO DE MENSALIDADES (ADMIN E OWNER) -->
+<div id="modalHistoricoAluno" class="modal-overlay oculto">
+    <div class="modal-card" style="max-width: 650px;">
+        <div class="modal-header">
+            <div>
+                <h3 id="modalHistoricoTitulo">Histórico de Mensalidades</h3>
+                <p id="modalHistoricoSubtitulo" style="font-size: 12.5px; color: var(--text-muted); margin-top: 3px;"></p>
+            </div>
+            <button type="button" class="btn-fechar-modal" onclick="fecharModalHistorico()">&times;</button>
+        </div>
+
+        <div id="corpoHistoricoModal" style="max-height: 380px; overflow-y: auto;">
+            <p style="text-align: center; color: var(--text-muted); padding: 20px;">Carregando histórico...</p>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL DE VALIDAÇÃO DE COMPROVANTE (PEDIDO DE VERIFICAÇÃO) -->
+<div id="modalValidacaoComprovante" class="modal-overlay oculto">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>Validar Comprovante Enviado</h3>
+            <button type="button" class="btn-fechar-modal" onclick="fecharModalValidacao()">&times;</button>
+        </div>
+
+        <div>
+            <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 12px;">
+                O aluno <strong id="valNomeAluno"></strong> enviou o comprovante referente ao valor de <strong id="valValorAluno" style="color: var(--accent-gold);"></strong>.
+            </p>
+
+            <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 14px; text-align: center; margin-bottom: 18px;">
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">Anexo enviado pelo aluno:</p>
+                <a href="#" id="valLinkComprovante" target="_blank" class="link-ver-comprovante" style="font-size: 14px;">
+                    📄 Abrir Comprovante em Nova Guia ↗
+                </a>
+            </div>
+
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
+                Após conferir o valor no extrato bancário do Instituto Bravo, clique no botão abaixo para aprovar a mensalidade.
+            </p>
+
+            <button type="button" id="btnConfirmarValidacao" onclick="confirmarComprovanteAtual()" class="btn-confirmar-pagamento" style="background: #16a34a;">
+                ✓ Confirmar Pagamento e Validar Mensalidade
+            </button>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>
+
+<script>
+    function trocarAbaUsuarios(aba) {
+        document.getElementById('secaoAlunos').classList.toggle('oculto', aba !== 'alunos');
+        document.getElementById('secaoProfessores').classList.toggle('oculto', aba !== 'professores');
+        document.getElementById('secaoAdmins').classList.toggle('oculto', aba !== 'admins');
+
+        document.getElementById('tabBtnAlunos').classList.toggle('ativo', aba === 'alunos');
+        document.getElementById('tabBtnProfessores').classList.toggle('ativo', aba === 'professores');
+        document.getElementById('tabBtnAdmins').classList.toggle('ativo', aba === 'admins');
+    }
+
+    // Modal Desconto
+    function abrirModalDesconto(id, nome, descontoAtual) {
+        document.getElementById('modalDescontoIdAluno').value = id;
+        document.getElementById('modalDescontoNomeAluno').value = nome;
+        document.getElementById('modalDescontoPorcentagem').value = parseFloat(descontoAtual) || 0;
+        document.getElementById('modalDescontoOwner').classList.remove('oculto');
+    }
+
+    function fecharModalDesconto() {
+        document.getElementById('modalDescontoOwner').classList.add('oculto');
+    }
+
+    document.getElementById('formAtribuirDesconto').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const id = document.getElementById('modalDescontoIdAluno').value;
+        const desconto = document.getElementById('modalDescontoPorcentagem').value;
+        const btn = document.getElementById('btnSalvarDesconto');
+        const token = localStorage.getItem('authToken');
+
+        btn.disabled = true;
+        btn.textContent = 'Aplicando desconto...';
+
+        try {
+            const resp = await fetch(`/paginas/usuarios/aluno/${id}/desconto`, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    ...(token ? { Authorization: 'Bearer ' + token } : {})
+                },
+                body: JSON.stringify({ desconto }),
+            });
+            const dados = await resp.json();
+
+            if (dados.sucesso) {
+                alert('✓ ' + dados.mensagem);
+                window.location.reload();
+            } else {
+                alert('Erro: ' + (dados.mensagem || 'Falha ao salvar desconto.'));
+            }
+        } catch (err) {
+            alert('Erro de conexão ao salvar desconto.');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = 'Salvar Desconto';
+        }
+    });
+
+    // Modal Mudar Curso do Aluno (Owner)
+    function abrirModalCurso(id, nome, cursoAtual) {
+        document.getElementById('cursoModalIdAluno').value = id;
+        document.getElementById('cursoModalNomeAluno').value = nome;
+        const select = document.getElementById('cursoModalSelectCurso');
+        if (select) {
+            for (let i = 0; i < select.options.length; i++) {
+                if (select.options[i].value === cursoAtual) {
+                    select.selectedIndex = i;
+                    break;
+                }
+            }
+        }
+        document.getElementById('modalEditarCursoAluno').classList.remove('oculto');
+    }
+
+    function fecharModalCurso() {
+        document.getElementById('modalEditarCursoAluno').classList.add('oculto');
+    }
+
+    const formCursoAluno = document.getElementById('formMudarCursoAluno');
+    if (formCursoAluno) {
+        formCursoAluno.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const id = document.getElementById('cursoModalIdAluno').value;
+            const curso = document.getElementById('cursoModalSelectCurso').value;
+            const btn = document.getElementById('btnSalvarCursoAluno');
+            const token = localStorage.getItem('authToken');
+
+            btn.disabled = true;
+            btn.textContent = 'Salvando curso...';
+
+            try {
+                const resp = await fetch(`/paginas/usuarios/aluno/${id}/curso`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        ...(token ? { Authorization: 'Bearer ' + token } : {})
+                    },
+                    body: JSON.stringify({ curso }),
+                });
+                const dados = await resp.json();
+
+                if (dados.sucesso) {
+                    alert('✓ ' + dados.mensagem);
+                    window.location.reload();
+                } else {
+                    alert('Erro: ' + (dados.mensagem || 'Falha ao alterar curso do aluno.'));
+                }
+            } catch (err) {
+                alert('Erro de conexão ao salvar curso.');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Salvar Novo Curso';
+            }
+        });
+    }
+
+    // Modal Mudar Especialidade do Professor (Owner)
+    function abrirModalEspecialidade(id, nome, espAtual) {
+        document.getElementById('espModalIdProfessor').value = id;
+        document.getElementById('espModalNomeProfessor').value = nome;
+        const select = document.getElementById('espModalSelectEspecialidade');
+        if (select) {
+            let found = false;
+            for (let i = 0; i < select.options.length; i++) {
+                if (select.options[i].value === espAtual) {
+                    select.selectedIndex = i;
+                    found = true;
+                    break;
+                }
+            }
+            if (!found && espAtual) {
+                const opt = new Option(espAtual, espAtual, true, true);
+                select.add(opt);
+            }
+        }
+        document.getElementById('modalEditarEspecialidadeProfessor').classList.remove('oculto');
+    }
+
+    function fecharModalEspecialidade() {
+        document.getElementById('modalEditarEspecialidadeProfessor').classList.add('oculto');
+    }
+
+    const formEspProfessor = document.getElementById('formMudarEspecialidadeProfessor');
+    if (formEspProfessor) {
+        formEspProfessor.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const id = document.getElementById('espModalIdProfessor').value;
+            const especialidade = document.getElementById('espModalSelectEspecialidade').value;
+            const btn = document.getElementById('btnSalvarEspecialidade');
+            const token = localStorage.getItem('authToken');
+
+            btn.disabled = true;
+            btn.textContent = 'Salvando especialidade...';
+
+            try {
+                const resp = await fetch(`/paginas/usuarios/professor/${id}/especialidade`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        ...(token ? { Authorization: 'Bearer ' + token } : {})
+                    },
+                    body: JSON.stringify({ especialidade }),
+                });
+                const dados = await resp.json();
+
+                if (dados.sucesso) {
+                    alert('✓ ' + dados.mensagem);
+                    window.location.reload();
+                } else {
+                    alert('Erro: ' + (dados.mensagem || 'Falha ao alterar especialidade.'));
+                }
+            } catch (err) {
+                alert('Erro de conexão ao salvar especialidade.');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Salvar Especialidade';
+            }
+        });
+    }
+
+    // Modal Histórico
+    async function abrirHistoricoAluno(id, nome) {
+        document.getElementById('modalHistoricoTitulo').textContent = 'Histórico: ' + nome;
+        document.getElementById('corpoHistoricoModal').innerHTML = '<p style="text-align:center; padding:20px; color:var(--text-muted);">Buscando histórico...</p>';
+        document.getElementById('modalHistoricoAluno').classList.remove('oculto');
+
+        try {
+            const token = localStorage.getItem('authToken');
+            const resp = await fetch(`/paginas/usuarios/aluno/${id}/historico`, {
+                headers: token ? { Authorization: 'Bearer ' + token } : {}
+            });
+            const res = await resp.json();
+
+            if (res.sucesso && res.dados) {
+                const al = res.dados.aluno;
+                document.getElementById('modalHistoricoSubtitulo').textContent = `Curso: ${al.curso || 'Piano'} • Desconto: ${al.desconto_porcentagem || 0}%`;
+
+                const mens = res.dados.mensalidades;
+                if (mens.length === 0) {
+                    document.getElementById('corpoHistoricoModal').innerHTML = '<p style="text-align:center; padding:20px; color:var(--text-muted);">Nenhuma mensalidade registrada para este aluno.</p>';
+                    return;
+                }
+
+                let html = `
+                    <table class="tabela-mensalidades" style="font-size:12.5px;">
+                        <thead>
+                            <tr>
+                                <th>Mês / Ref</th>
+                                <th>Vencimento</th>
+                                <th>Valor</th>
+                                <th>Status</th>
+                                <th>Pago em</th>
+                                <th>Anexo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+
+                mens.forEach(m => {
+                    const statusClass = m.status_parcela === 'pago' ? 'pago' : (m.status_parcela === 'em_analise' ? 'em_analise' : (m.status_parcela === 'atrasado' ? 'atrasado' : 'pendente'));
+                    const statusLabel = m.status_parcela === 'pago' ? 'Pago' : (m.status_parcela === 'em_analise' ? 'Em Análise' : (m.status_parcela === 'atrasado' ? 'Vencido' : 'Pendente'));
+                    const venc = m.data_vencimento ? new Date(m.data_vencimento).toLocaleDateString('pt-BR') : '—';
+                    const pag = m.data_pagamento ? new Date(m.data_pagamento).toLocaleDateString('pt-BR') : '—';
+                    const anexo = m.comprovante_url ? `<a href="${m.comprovante_url}" target="_blank" class="link-ver-comprovante">Ver</a>` : '<span style="color:#94a3b8;">—</span>';
+
+                    html += `
+                        <tr>
+                            <td><strong>${m.mes_referencia || 'Geral'}</strong></td>
+                            <td>${venc}</td>
+                            <td><strong>R$ ${Number(m.valor).toFixed(2)}</strong></td>
+                            <td><span class="status-pill ${statusClass}">${statusLabel}</span></td>
+                            <td>${pag}</td>
+                            <td>${anexo}</td>
+                        </tr>
+                    `;
+                });
+
+                html += '</tbody></table>';
+                document.getElementById('corpoHistoricoModal').innerHTML = html;
+            }
+        } catch (err) {
+            document.getElementById('corpoHistoricoModal').innerHTML = '<p style="text-align:center; color:#dc2626; padding:20px;">Erro ao carregar histórico.</p>';
+        }
+    }
+
+    function fecharModalHistorico() {
+        document.getElementById('modalHistoricoAluno').classList.add('oculto');
+    }
+
+    // Modal Validação de Comprovante
+    let idRecebimentoValidando = null;
+
+    function abrirModalValidacao(id, nome, valor, anexoUrl) {
+        idRecebimentoValidando = id;
+        document.getElementById('valNomeAluno').textContent = nome;
+        document.getElementById('valValorAluno').textContent = 'R$ ' + valor;
+        const link = document.getElementById('valLinkComprovante');
+        link.href = anexoUrl || '#';
+        document.getElementById('modalValidacaoComprovante').classList.remove('oculto');
+    }
+
+    function fecharModalValidacao() {
+        document.getElementById('modalValidacaoComprovante').classList.add('oculto');
+        idRecebimentoValidando = null;
+    }
+
+    async function confirmarComprovanteAtual() {
+        if (!idRecebimentoValidando) return;
+        const btn = document.getElementById('btnConfirmarValidacao');
+        btn.disabled = true;
+        btn.textContent = 'Validando pagamento...';
+
+        try {
+            const token = localStorage.getItem('authToken');
+            const resp = await fetch('/paginas/dashboard/confirmar-comprovante', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    ...(token ? { Authorization: 'Bearer ' + token } : {})
+                },
+                body: JSON.stringify({ idRecebimento: idRecebimentoValidando }),
+            });
+            const dados = await resp.json();
+
+            if (dados.sucesso) {
+                alert('✓ ' + dados.mensagem);
+                window.location.reload();
+            } else {
+                alert('Erro: ' + (dados.mensagem || 'Falha ao validar comprovante.'));
+            }
+        } catch (err) {
+            alert('Erro de conexão ao validar comprovante.');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = '✓ Confirmar Pagamento e Validar Mensalidade';
+        }
+    }
+</script>

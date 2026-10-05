@@ -1,0 +1,143 @@
+<%- include('../partials/head') %>
+<link rel="stylesheet" href="/views/aulas/kanbam.css">
+<%- include('../partials/navbar') %>
+
+<main class="conteudo">
+    <div class="cabecalho-pagina">
+        <div>
+            <h1>Quadro de Aulas</h1>
+            <% if (!souAdmin) { %>
+                <span class="aviso-somente-leitura">Modo visualização (apenas leitura)</span>
+            <% } %>
+        </div>
+        <% if (souAdmin) { %>
+            <a href="/paginas/aulas/novo" class="botao botao-primario">+ Agendar Aula</a>
+        <% } %>
+    </div>
+
+    <div class="kanban">
+        <!-- Coluna: Aulas Normais -->
+        <div class="kanban-coluna" data-status="normal">
+            <div class="kanban-coluna-titulo">
+                Aulas Regulares (<%= aulas.filter(a => a.tipo === 'normal').length %>)
+            </div>
+            <div class="kanban-coluna-corpo" id="coluna-normal">
+                <% aulas.filter(a => a.tipo === 'normal').forEach(function(aula) { %>
+                    <div class="kanban-card" data-id="<%= aula.id %>">
+                        <strong><%= aula.hora %> - <%= aula.titulo %></strong>
+                        <div class="kanban-card-instrumento"><%= aula.instrumento %> | Sala <%= aula.sala %></div>
+                        <div class="kanban-card-info">
+                            Prof: <%= aula.professor %><br>
+                            Data: <%= aula.data %>
+                        </div>
+                        <% if (souAdmin) { %>
+                            <div style="margin-top: 8px; display: flex; gap: 5px;">
+                                <button type="button" class="botao" style="font-size: 11px; padding: 3px 6px;" onclick="alterarStatus(<%= aula.id %>, 'reposicao')">Mover p/ Reposição</button>
+                                <button type="button" class="kanban-card-excluir" onclick="alterarStatus(<%= aula.id %>, 'cancelada')">Cancelar</button>
+                            </div>
+                        <% } %>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+
+        <!-- Coluna: Reposições -->
+        <div class="kanban-coluna" data-status="reposicao">
+            <div class="kanban-coluna-titulo" style="color: #d97706;">
+                Reposições (<%= aulas.filter(a => a.tipo === 'reposicao').length %>)
+            </div>
+            <div class="kanban-coluna-corpo" id="coluna-reposicao">
+                <% aulas.filter(a => a.tipo === 'reposicao').forEach(function(aula) { %>
+                    <div class="kanban-card" data-id="<%= aula.id %>" style="border-left: 4px solid #d97706;">
+                        <strong><%= aula.hora %> - <%= aula.titulo %></strong>
+                        <div class="kanban-card-instrumento"><%= aula.instrumento %> | Sala <%= aula.sala %></div>
+                        <div class="kanban-card-info">
+                            Prof: <%= aula.professor %><br>
+                            Data: <%= aula.data %>
+                        </div>
+                        <% if (souAdmin) { %>
+                            <div style="margin-top: 8px; display: flex; gap: 5px;">
+                                <button type="button" class="botao" style="font-size: 11px; padding: 3px 6px;" onclick="alterarStatus(<%= aula.id %>, 'normal')">Mover p/ Regular</button>
+                                <button type="button" class="kanban-card-excluir" onclick="alterarStatus(<%= aula.id %>, 'cancelada')">Cancelar</button>
+                            </div>
+                        <% } %>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+
+        <!-- Coluna: Canceladas -->
+        <div class="kanban-coluna" data-status="cancelada">
+            <div class="kanban-coluna-titulo" style="color: #dc2626;">
+                Canceladas (<%= aulas.filter(a => a.tipo === 'cancelada').length %>)
+            </div>
+            <div class="kanban-coluna-corpo" id="coluna-cancelada">
+                <% aulas.filter(a => a.tipo === 'cancelada').forEach(function(aula) { %>
+                    <div class="kanban-card" data-id="<%= aula.id %>" style="opacity: 0.7; border-left: 4px solid #dc2626;">
+                        <strong><%= aula.hora %> - <%= aula.titulo %></strong>
+                        <div class="kanban-card-instrumento"><%= aula.instrumento %> | Sala <%= aula.sala %></div>
+                        <div class="kanban-card-info">
+                            Prof: <%= aula.professor %><br>
+                            Data: <%= aula.data %>
+                        </div>
+                        <% if (souAdmin) { %>
+                            <div style="margin-top: 8px; display: flex; gap: 5px;">
+                                <button type="button" class="botao" style="font-size: 11px; padding: 3px 6px;" onclick="alterarStatus(<%= aula.id %>, 'normal')">Reativar</button>
+                                <button type="button" class="kanban-card-excluir" onclick="excluirAula(<%= aula.id %>)">Excluir</button>
+                            </div>
+                        <% } %>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+    </div>
+</main>
+
+<% if (souAdmin) { %>
+<script>
+    async function alterarStatus(id, status) {
+        const token = localStorage.getItem("authToken");
+        try {
+            const resp = await fetch(`/api/aulas/${id}/status`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({ status })
+            });
+            const dados = await resp.json();
+            if (dados.sucesso) {
+                window.location.reload();
+            } else {
+                alert(dados.mensagem || "Erro ao alterar status.");
+            }
+        } catch (e) {
+            alert("Erro de comunicação com o servidor.");
+        }
+    }
+
+    async function excluirAula(id) {
+        if (!confirm("Deseja realmente excluir esta aula definitivamente?")) return;
+        const token = localStorage.getItem("authToken");
+        try {
+            const resp = await fetch(`/api/aulas/${id}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            const dados = await resp.json();
+            if (dados.sucesso) {
+                window.location.reload();
+            } else {
+                alert(dados.mensagem || "Erro ao excluir aula.");
+            }
+        } catch (e) {
+            alert("Erro ao excluir aula.");
+        }
+    }
+</script>
+<% } %>
+
+<%- include('../partials/footer') %>

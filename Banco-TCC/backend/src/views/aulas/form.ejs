@@ -1,0 +1,110 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+
+<main class="conteudo">
+    <h1><%= titulo %></h1>
+
+    <form id="form-aula" class="formulario">
+        <div class="campo">
+            <label for="titulo">Título / Identificador da Aula</label>
+            <input type="text" id="titulo" name="titulo" placeholder="Ex: Aula de Violino - Individual" required>
+        </div>
+
+        <div class="campo">
+            <label for="instrumento">Instrumento</label>
+            <input type="text" id="instrumento" name="instrumento" placeholder="Ex: Violino, Piano, Canto..." required>
+        </div>
+
+        <div class="campo">
+            <label for="professor_idprofessor">Professor Responsável</label>
+            <select id="professor_idprofessor" name="professor_idprofessor" required>
+                <option value="">Selecione um professor</option>
+                <% professores.forEach(function(prof) { %>
+                    <option value="<%= prof.idprofessor %>"><%= prof.nome %> (<%= prof.tipo_instrumento || 'Geral' %>)</option>
+                <% }); %>
+            </select>
+        </div>
+
+        <div class="campo">
+            <label for="aluno_idaluno">Aluno (opcional)</label>
+            <select id="aluno_idaluno" name="aluno_idaluno">
+                <option value="">Nenhum aluno vinculado / Aula em Grupo</option>
+                <% alunos.forEach(function(aluno) { %>
+                    <option value="<%= aluno.idaluno %>"><%= aluno.nome %></option>
+                <% }); %>
+            </select>
+        </div>
+
+        <div class="campo">
+            <label for="sala">Sala de Aula</label>
+            <select id="sala" name="sala" required>
+                <% salas.forEach(function(s) { %>
+                    <option value="<%= s %>">Sala <%= s %></option>
+                <% }); %>
+            </select>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="campo">
+                <label for="data">Data</label>
+                <input type="date" id="data" name="data" required>
+            </div>
+            <div class="campo">
+                <label for="hora">Horário (HH:MM)</label>
+                <input type="time" id="hora" name="hora" required>
+            </div>
+        </div>
+
+        <div class="campo">
+            <label for="tipo">Status / Modalidade</label>
+            <select id="tipo" name="tipo">
+                <option value="normal">Normal (Regular)</option>
+                <option value="reposicao">Reposição</option>
+                <option value="cancelada">Cancelada</option>
+            </select>
+        </div>
+
+        <div class="campo">
+            <label for="observacoes">Observações</label>
+            <textarea id="observacoes" name="observacoes" rows="3" placeholder="Informações adicionais, repertório, etc."></textarea>
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+            <button type="submit" class="botao botao-primario">Salvar Agendamento</button>
+            <a href="/paginas/aulas" class="botao" style="background: #9ca3af; color: #fff;">Cancelar</a>
+        </div>
+    </form>
+</main>
+
+<script>
+    document.getElementById("form-aula").addEventListener("submit", async function(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const corpo = Object.fromEntries(formData.entries());
+
+        const token = localStorage.getItem("authToken");
+
+        try {
+            const resp = await fetch("/api/aulas", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify(corpo)
+            });
+
+            const dados = await resp.json();
+            if (dados.sucesso) {
+                alert("Aula agendada com sucesso!");
+                window.location.href = "/paginas/aulas";
+            } else {
+                alert(dados.mensagem || "Erro ao agendar aula.");
+            }
+        } catch (err) {
+            alert("Erro de comunicação com o servidor.");
+        }
+    });
+</script>
+
+<%- include('../partials/footer') %>

@@ -2,13 +2,17 @@ const express = require("express");
 const router = express.Router();
 
 const professorController = require("../controllers/professorController");
-const authFirebase = require("../middleware/authFirebase");
+const authMiddleware = require("../middleware/authMiddleware");
 const verificarPrimeiroAcesso = require("../middleware/verificarPrimeiroAcesso");
+const verificarAdmin = require("../middleware/verificarAdmin");
 
-router.post("/", authFirebase, verificarPrimeiroAcesso, professorController.cadastrar);
-router.get("/", authFirebase, verificarPrimeiroAcesso, professorController.listar);
-router.get("/:id", authFirebase, verificarPrimeiroAcesso, professorController.buscarPorId);
-router.put("/:id", authFirebase, verificarPrimeiroAcesso, professorController.atualizar);
-router.delete("/:id", authFirebase, verificarPrimeiroAcesso, professorController.deletar);
+// Listagem e consulta de professores
+router.get("/", professorController.listar);
+router.get("/:id", professorController.buscarPorId);
+
+// Apenas administradores podem cadastrar, alterar e remover professores
+router.post("/", authMiddleware, verificarPrimeiroAcesso, verificarAdmin, professorController.cadastrar);
+router.put("/:id", authMiddleware, verificarPrimeiroAcesso, verificarAdmin, professorController.atualizar);
+router.delete("/:id", authMiddleware, verificarPrimeiroAcesso, verificarAdmin, professorController.deletar);
 
 module.exports = router;

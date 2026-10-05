@@ -2,24 +2,22 @@ const express = require("express");
 const router = express.Router();
 
 const loginController = require("../controllers/loginController");
-const authFirebase = require("../middleware/authFirebase");
+const authMiddleware = require("../middleware/authMiddleware");
 
-router.post("/login", authFirebase, loginController.login);
+// Rota pública de login (retorna JWT e dados do usuário)
+router.post("/login", loginController.login);
 
+// Rota autenticada para troca de senha no primeiro acesso
 router.post(
-  "/login/primeiro-acesso",
-  authFirebase,
-  loginController.trocarSenhaPrimeiroAcesso
+    "/login/primeiro-acesso",
+    authMiddleware,
+    loginController.trocarSenhaPrimeiroAcesso
 );
 
-router.post("/logout", authFirebase, loginController.logout);
+// Rota de logout
+router.post("/logout", authMiddleware, loginController.logout);
 
+// Rota de solicitação de recuperação de senha
 router.post("/login/recuperar-senha", loginController.solicitarRecuperacaoSenha);
-
-/* router.post('/logout', authFirebase, loginController.logout);
-
-router.post('/primeiro-acesso', authFirebase, loginController.trocarSenhaPrimeiroAcesso);
-
-router.post('/recuperar-senha', loginController.recuperarSenha); */
 
 module.exports = router;

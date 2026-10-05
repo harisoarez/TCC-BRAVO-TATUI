@@ -27,7 +27,7 @@ async function buscarTodos() {
 async function buscarPorId(idprofessor) {
     const [linhas] = await pool.query(
         `SELECT p.idprofessor, p.CNPJ, p.CPF,
-                u.id_usuario, u.firebase_uid, u.tipo_usuario, u.email, u.nome, u.telefone,
+                u.id_usuario, u.tipo_usuario, u.email, u.nome, u.telefone,
                 u.tipo_instrumento, u.autorizacao_imagem, u.foto_url,
                 u.data_cadastro, u.ultimo_acesso, u.primeiro_acesso
            FROM professor p

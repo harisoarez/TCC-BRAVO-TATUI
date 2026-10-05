@@ -59,7 +59,8 @@ async function listarRecebimentos(req, res) {
 
 async function listarMeusRecebimentos(req, res) {
     try {
-        const usuario = await usuarioModel.buscarPorFirebaseUID(req.user.uid);
+        const idUsuario = req.user.id_usuario;
+        const usuario = await usuarioModel.buscarPorId(idUsuario);
 
         if (!usuario || usuario.tipo_usuario !== "aluno") {
             return res.status(403).json({
@@ -205,7 +206,8 @@ async function listarPagamentos(req, res) {
 
 async function listarMeusPagamentos(req, res) {
     try {
-        const usuario = await usuarioModel.buscarPorFirebaseUID(req.user.uid);
+        const idUsuario = req.user.id_usuario;
+        const usuario = await usuarioModel.buscarPorId(idUsuario);
 
         if (!usuario || usuario.tipo_usuario !== "professor") {
             return res.status(403).json({

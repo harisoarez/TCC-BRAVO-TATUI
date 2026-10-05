@@ -1,5 +1,13 @@
-function ehAdmin(firebaseUid) {
-    return Boolean(process.env.ADMIN_FIREBASE_UID) && firebaseUid === process.env.ADMIN_FIREBASE_UID;
+function ehAdmin(usuario) {
+    if (!usuario) return false;
+    const tipo = typeof usuario === "string" ? usuario : usuario.tipo_usuario;
+    return tipo === "admin" || tipo === "owner";
 }
 
-module.exports = { ehAdmin };
+function ehOwner(usuario) {
+    if (!usuario) return false;
+    const tipo = typeof usuario === "string" ? usuario : usuario.tipo_usuario;
+    return tipo === "owner";
+}
+
+module.exports = { ehAdmin, ehOwner };

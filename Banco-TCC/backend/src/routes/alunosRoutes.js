@@ -1,11 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const aulaController = require("../controllers/aulaController");
 
-router.get("/", aulaController.listar);
-router.post("/", aulaController.cadastrar);
-router.patch("/:id/status", aulaController.moverStatus);
-router.put("/:id", aulaController.atualizar);
-router.delete("/:id", aulaController.deletar);
+const alunoController = require("../controllers/alunoController");
+const authMiddleware = require("../middleware/authMiddleware");
+const verificarPrimeiroAcesso = require("../middleware/verificarPrimeiroAcesso");
+const verificarAdmin = require("../middleware/verificarAdmin");
+
+router.get("/", authMiddleware, verificarPrimeiroAcesso, alunoController.listar);
+router.get("/:id", authMiddleware, verificarPrimeiroAcesso, alunoController.buscarPorId);
+router.post("/", authMiddleware, verificarPrimeiroAcesso, verificarAdmin, alunoController.cadastrar);
+router.put("/:id", authMiddleware, verificarPrimeiroAcesso, verificarAdmin, alunoController.atualizar);
+router.delete("/:id", authMiddleware, verificarPrimeiroAcesso, verificarAdmin, alunoController.deletar);
 
 module.exports = router;

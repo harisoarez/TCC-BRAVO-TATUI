@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendário de Aulas - Instituto Bravo</title>
+    <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/calendario.css">
 </head>
 
@@ -12,14 +13,19 @@
     <!-- Navbar Original -->
     <div id="nav-bar">
         <div id="logo">
-            <a href="./index.html">
-                <img src="https://friocenterpescados.com.br/uploads/tilapia-inteira-eviscerada_1.jpg" alt="Bravo Tatuí">
+            <a href="./index.html" style="font-family: 'julius', serif; font-weight: bold; color: #F5D696; font-size: 18px; text-decoration: none; letter-spacing: 1px;">
+                BRAVO TATUÍ
             </a>
         </div>
         <div id="nav-links">
             <a href="./index.html">Início</a>
             <a href="./formacoes.html">Bravo Tatuí</a>
-            <a href="./instrumentos.html">Instituto Bravo</a>
+            <a href="./instrumentos.html">Aulas no IMBT</a>
+            <a href="./calendario.html" style="color: #F5D696; font-weight: bold;">Calendário</a>
+            <a href="http://localhost:3000/paginas/dashboard" id="linkPainelAdmin" class="oculto">Painel Admin</a>
+        </div>
+        <div id="areaAuthNav" style="display: flex; align-items: center; gap: 10px;">
+            <a href="./login.html" class="btn-nav-auth">Entrar / Login</a>
         </div>
     </div>
 
@@ -27,6 +33,7 @@
     <div class="dashboard-container">
         <!-- Calendário Principal -->
         <main class="calendar-main">
+            <div id="bannerModo" class="aviso-modo-leitura oculto"></div>
             <header class="calendar-header">
                 <div class="mes-nav">
                     <button id="btnAnterior">&lsaquo;</button>
@@ -104,7 +111,9 @@
                 </div>
                 <div class="campo">
                     <label>Professor</label>
-                    <input type="text" id="formProfessor" required>
+                    <select id="formProfessor" required>
+                        <option value="">Selecione o Professor</option>
+                    </select>
                 </div>
                 <div class="campo">
                     <label>Instrumento</label>
@@ -163,6 +172,7 @@
         </div>
     </div>
 
+    <script src="../script/navbar.js"></script>
     <script src="../script/calendario.js"></script>
 </body>
 

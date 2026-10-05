@@ -2,11 +2,11 @@ const express = require("express");
 const router = express.Router();
 
 const responsavelController = require("../controllers/responsavelController");
-const authFirebase = require("../middleware/authFirebase");
+const authMiddleware = require("../middleware/authMiddleware");
 const verificarPrimeiroAcesso = require("../middleware/verificarPrimeiroAcesso");
 const verificarAdmin = require("../middleware/verificarAdmin");
 
-router.use(authFirebase, verificarPrimeiroAcesso, verificarAdmin);
+router.use(authMiddleware, verificarPrimeiroAcesso, verificarAdmin);
 
 router.post("/", responsavelController.cadastrar);
 router.get("/", responsavelController.listar);

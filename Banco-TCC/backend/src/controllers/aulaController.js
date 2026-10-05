@@ -1,4 +1,27 @@
 const aulaModel = require("../models/aulaModel");
+const professorModel = require("../models/professorModel");
+
+async function resolverIdProfessor(valorProfessor) {
+    if (!valorProfessor) return 1;
+
+    const idNumerico = parseInt(valorProfessor, 10);
+    if (!isNaN(idNumerico) && idNumerico > 0) {
+        return idNumerico;
+    }
+
+    try {
+        const professores = await professorModel.buscarTodos();
+        const encontrado = professores.find(p =>
+            p.nome && p.nome.toLowerCase().includes(String(valorProfessor).toLowerCase().trim())
+        );
+        if (encontrado) return encontrado.idprofessor;
+        if (professores.length > 0) return professores[0].idprofessor;
+    } catch (e) {
+        console.error("Aviso ao buscar professores:", e.message);
+    }
+
+    return 1;
+}
 
 async function listar(req, res) {
     try {
@@ -12,44 +35,50 @@ async function listar(req, res) {
 
 async function cadastrar(req, res) {
     try {
-        const { titulo, instrumento, professor_idprofessor, sala, data, hora, tipo, observacoes } = req.body;
+        const { titulo, instrumento, professor, professor_idprofessor, aluno_idaluno, sala, data, hora, tipo, observacoes } = req.body;
 
-        if (!titulo || !instrumento || !professor_idprofessor || !sala || !data || !hora) {
+        if (!titulo || !instrumento || !sala || !data || !hora) {
             return res.status(400).json({ sucesso: false, mensagem: "Campos obrigatórios não preenchidos." });
         }
 
+        const idProfessor = await resolverIdProfessor(professor_idprofessor || professor);
         const data_aula = `${data} ${hora}:00`;
+
         const idAula = await aulaModel.inserir({
             titulo,
             instrumento,
-            professor_idprofessor,
-            sala,
+            professor_idprofessor: idProfessor,
+            aluno_idaluno: aluno_idaluno ? parseInt(aluno_idaluno, 10) : null,
+            sala: parseInt(sala, 10),
             data_aula,
-            status: tipo,
-            observacoes
+            status: tipo || "normal",
+            observacoes: observacoes || ""
         });
 
         return res.status(201).json({ sucesso: true, mensagem: "Aula criada com sucesso!", idAula });
     } catch (error) {
         console.error("Erro ao cadastrar aula:", error);
-        return res.status(500).json({ sucesso: false, mensagem: "Erro ao salvar aula." });
+        return res.status(500).json({ sucesso: false, mensagem: "Erro ao salvar aula no banco de dados." });
     }
 }
 
 async function atualizar(req, res) {
     try {
         const { id } = req.params;
-        const { titulo, instrumento, professor_idprofessor, sala, data, hora, tipo, observacoes } = req.body;
+        const { titulo, instrumento, professor, professor_idprofessor, aluno_idaluno, sala, data, hora, tipo, observacoes } = req.body;
+
+        const idProfessor = await resolverIdProfessor(professor_idprofessor || professor);
         const data_aula = `${data} ${hora}:00`;
 
         const atualizado = await aulaModel.atualizar(id, {
             titulo,
             instrumento,
-            professor_idprofessor,
-            sala,
+            professor_idprofessor: idProfessor,
+            aluno_idaluno: aluno_idaluno ? parseInt(aluno_idaluno, 10) : null,
+            sala: parseInt(sala, 10),
             data_aula,
-            status: tipo,
-            observacoes
+            status: tipo || "normal",
+            observacoes: observacoes || ""
         });
 
         if (!atualizado) return res.status(404).json({ sucesso: false, mensagem: "Aula não encontrada." });
@@ -64,7 +93,12 @@ async function atualizar(req, res) {
 async function moverStatus(req, res) {
     try {
         const { id } = req.params;
-        const { status } = req.body; // 'cancelada', 'normal', etc.
+        const { status } = req.body; // 'cancelada', 'normal', 'reposicao'
+
+        const statusValidos = ["normal", "reposicao", "cancelada"];
+        if (!statusValidos.includes(status)) {
+            return res.status(400).json({ sucesso: false, mensagem: "Status inválido." });
+        }
 
         const atualizado = await aulaModel.atualizarStatus(id, status);
         if (!atualizado) return res.status(404).json({ sucesso: false, mensagem: "Aula não encontrada." });

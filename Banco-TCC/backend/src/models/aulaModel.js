@@ -6,8 +6,10 @@ async function buscarTodas() {
             a.idaula AS id,
             a.titulo,
             a.instrumento,
-            p.idprofessor,
-            u.nome AS professor,
+            a.professor_idprofessor,
+            a.aluno_idaluno,
+            COALESCE(u.nome, 'Professor Geral') AS professor,
+            COALESCE(ualuno.nome, 'Não vinculado') AS aluno_nome,
             DATE_FORMAT(a.data_aula, '%Y-%m-%d') AS data,
             DATE_FORMAT(a.data_aula, '%H:%i') AS hora,
             a.duracao_minutos AS duracao,
@@ -15,8 +17,10 @@ async function buscarTodas() {
             a.status AS tipo,
             a.observacoes
         FROM aula a
-        JOIN professor p ON a.professor_idprofessor = p.idprofessor
-        JOIN usuario_login u ON p.usuario_login_id = u.id_usuario
+        LEFT JOIN professor p ON a.professor_idprofessor = p.idprofessor
+        LEFT JOIN usuario_login u ON p.usuario_login_id = u.id_usuario
+        LEFT JOIN aluno al ON a.aluno_idaluno = al.idaluno
+        LEFT JOIN usuario_login ualuno ON al.usuario_login_id = ualuno.id_usuario
         ORDER BY a.data_aula ASC
     `;
     const [linhas] = await pool.query(sql);
@@ -24,16 +28,17 @@ async function buscarTodas() {
 }
 
 async function inserir(dados) {
-    const { titulo, instrumento, professor_idprofessor, sala, data_aula, duracao_minutos, status, observacoes } = dados;
+    const { titulo, instrumento, professor_idprofessor, aluno_idaluno, sala, data_aula, duracao_minutos, status, observacoes } = dados;
     const sql = `
         INSERT INTO aula 
-        (titulo, instrumento, professor_idprofessor, sala, data_aula, duracao_minutos, status, observacoes)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        (titulo, instrumento, professor_idprofessor, aluno_idaluno, sala, data_aula, duracao_minutos, status, observacoes)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     const [resultado] = await pool.query(sql, [
         titulo,
         instrumento,
         professor_idprofessor,
+        aluno_idaluno || null,
         sala,
         data_aula,
         duracao_minutos || 60,
@@ -44,16 +49,17 @@ async function inserir(dados) {
 }
 
 async function atualizar(id, dados) {
-    const { titulo, instrumento, professor_idprofessor, sala, data_aula, status, observacoes } = dados;
+    const { titulo, instrumento, professor_idprofessor, aluno_idaluno, sala, data_aula, status, observacoes } = dados;
     const sql = `
         UPDATE aula 
-        SET titulo = ?, instrumento = ?, professor_idprofessor = ?, sala = ?, data_aula = ?, status = ?, observacoes = ?
+        SET titulo = ?, instrumento = ?, professor_idprofessor = ?, aluno_idaluno = ?, sala = ?, data_aula = ?, status = ?, observacoes = ?
         WHERE idaula = ?
     `;
     const [resultado] = await pool.query(sql, [
         titulo,
         instrumento,
         professor_idprofessor,
+        aluno_idaluno || null,
         sala,
         data_aula,
         status,

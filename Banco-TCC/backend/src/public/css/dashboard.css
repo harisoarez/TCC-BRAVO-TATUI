@@ -1,0 +1,1044 @@
+/* ================================================================
+   INSTITUTO MUSICAL BRAVO TATUÍ - DASHBOARD EXECUTIVO EM TEMA CLARO
+   INSPIRADO NO DESIGN MODERNO DE BI (DATABRICKS)
+   ================================================================ */
+
+:root {
+    --bg-base: #f8fafc;
+    --bg-card: #ffffff;
+    --bg-card-subtle: #f1f5f9;
+    --bg-card-hover: #f8fafc;
+    --border-color: #e2e8f0;
+    --border-subtle: #cbd5e1;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --accent-gold: #b45309;
+    --accent-gold-light: #F5D696;
+    --accent-blue: #0284c7;
+    --accent-purple: #7c3aed;
+    --accent-green: #16a34a;
+    --accent-red: #dc2626;
+    --accent-yellow: #ca8a04;
+    --font-heading: 'julius', 'Cinzel', serif;
+    --font-body: 'inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ================================================================
+   NAVBAR DO PAINEL (IDENTIDADE VISUAL PADRONIZADA COM O SITE)
+   ================================================================ */
+.painel-navbar {
+    background-color: #0b0d13;
+    border-bottom: 1px solid #1c2233;
+    min-height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 3%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.painel-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.btn-painel-voltar {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(245, 214, 150, 0.08);
+    border: 1px solid rgba(245, 214, 150, 0.3);
+    color: var(--accent-gold-light);
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.btn-painel-voltar:hover {
+    background: rgba(245, 214, 150, 0.2);
+    border-color: var(--accent-gold-light);
+    transform: translateX(-3px);
+}
+
+.painel-logo-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.painel-logo-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.painel-logo-tilapia {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--accent-gold-light);
+    box-shadow: 0 0 8px rgba(245, 214, 150, 0.3);
+}
+
+.painel-logo-texto {
+    font-family: var(--font-heading);
+    font-weight: bold;
+    color: var(--accent-gold-light);
+    font-size: 18px;
+    letter-spacing: 1.5px;
+}
+
+.painel-badge-tag {
+    background: #1e293b;
+    color: #94a3b8;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 3px 7px;
+    border-radius: 4px;
+    border: 1px solid #334155;
+}
+
+.painel-nav-center {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.painel-nav-link {
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.painel-nav-link:hover {
+    color: var(--accent-gold-light);
+    background: rgba(245, 214, 150, 0.08);
+}
+
+.painel-nav-link.link-ativo {
+    color: var(--accent-gold-light);
+    font-weight: 700;
+    background: rgba(245, 214, 150, 0.15);
+}
+
+.painel-nav-link.link-calendario {
+    border: 1px solid rgba(245, 214, 150, 0.3);
+    color: var(--accent-gold-light);
+}
+
+/* Área Direita de Usuário */
+.painel-nav-right {
+    display: flex;
+    align-items: center;
+}
+
+.painel-user-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.painel-avatar-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    outline: none;
+}
+
+.painel-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #111827;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+    transition: transform 0.15s;
+}
+
+.painel-avatar:hover {
+    transform: scale(1.06);
+}
+
+.painel-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Bordas solicitadas */
+.painel-avatar.borda-owner {
+    border: 3.5px solid #000000 !important;
+    background: #0f172a;
+    box-shadow: 0 0 0 1.5px #64748b, 0 0 10px rgba(0, 0, 0, 0.8);
+    color: #ffffff;
+}
+
+.painel-avatar.borda-admin {
+    border: 3.5px solid #facc15 !important;
+    background: #1c1917;
+    box-shadow: 0 0 8px rgba(250, 204, 21, 0.4);
+    color: #facc15;
+}
+
+.painel-avatar.borda-normal {
+    border: 3.5px solid #38bdf8 !important;
+    background: #082f49;
+    box-shadow: 0 0 8px rgba(56, 189, 248, 0.35);
+    color: #38bdf8;
+}
+
+.painel-user-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    cursor: pointer;
+}
+
+.painel-user-nome {
+    font-size: 13px;
+    font-weight: 700;
+    color: #f8fafc;
+}
+
+.painel-user-cargo {
+    font-size: 10.5px;
+    font-weight: 600;
+}
+
+.painel-user-cargo.cargo-owner { color: #f8fafc; }
+.painel-user-cargo.cargo-admin { color: #facc15; }
+.painel-user-cargo.cargo-normal { color: #38bdf8; }
+
+.btn-painel-sair {
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #cbd5e1;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.btn-painel-sair:hover {
+    background: #dc2626;
+    border-color: #dc2626;
+    color: #ffffff;
+}
+
+/* ================================================================
+   ESTRUTURA PRINCIPAL DO DASHBOARD (TEMA CLARO DATABRICKS)
+   ================================================================ */
+.dashboard-container {
+    max-width: 1400px;
+    width: 95%;
+    margin: 25px auto 50px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Header Databricks Claro */
+.databricks-header {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 22px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 6px 16px rgba(0, 0, 0, 0.03);
+}
+
+.header-title-col h1 {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    letter-spacing: -0.5px;
+}
+
+.header-title-col h1 span.estrela {
+    color: #eab308;
+    font-size: 20px;
+}
+
+.header-title-col p {
+    color: var(--text-secondary);
+    font-size: 13.5px;
+    margin-top: 4px;
+}
+
+.header-meta-col {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.badge-modo-view {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.badge-modo-view.owner {
+    background: #fef3c7;
+    border: 1px solid #fde68a;
+    color: #92400e;
+}
+
+.badge-modo-view.admin {
+    background: #e0f2fe;
+    border: 1px solid #bae6fd;
+    color: #0369a1;
+}
+
+.header-timestamp {
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+/* ================================================================
+   CARDS DE MÉTRICAS (KPIs) - TEMA CLARO
+   ================================================================ */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+}
+
+.kpi-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 10px rgba(0, 0, 0, 0.02);
+    position: relative;
+    overflow: hidden;
+}
+
+.kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+}
+
+.kpi-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--border-subtle);
+}
+
+.kpi-card.destaque-verde::before { background: var(--accent-green); }
+.kpi-card.destaque-ouro::before { background: #f59e0b; }
+.kpi-card.destaque-azul::before { background: var(--accent-blue); }
+.kpi-card.destaque-vermelho::before { background: var(--accent-red); }
+
+.kpi-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.kpi-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.kpi-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+.kpi-badge.positivo {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.kpi-badge.neutro {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.kpi-badge.alerta {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.kpi-valor {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+}
+
+.kpi-subtexto {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    margin-top: 8px;
+}
+
+/* ================================================================
+   SEÇÃO DO GRÁFICO BI COM SOMBRINHA (EXCLUSIVO OWNER)
+   ================================================================ */
+.grafico-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05), 0 8px 20px rgba(0, 0, 0, 0.03);
+}
+
+.grafico-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.grafico-titulo-box h2 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.grafico-titulo-box p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 3px;
+}
+
+.grafico-controles {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-grupo-toggle {
+    display: inline-flex;
+    background: #f1f5f9;
+    padding: 3px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.btn-toggle {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-toggle.ativo {
+    background: #ffffff;
+    color: #0f172a;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.btn-tipo-grafico {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.btn-tipo-grafico:hover {
+    border-color: #94a3b8;
+    color: #0f172a;
+}
+
+.grafico-legenda-sombrinha {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 14px;
+    padding: 8px 14px;
+    background: #f8fafc;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    width: fit-content;
+}
+
+.legenda-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ponto-legenda {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+}
+
+.ponto-atual { background: #b45309; }
+.ponto-sombra { background: rgba(148, 163, 184, 0.4); border: 1px dashed #64748b; }
+
+.canvas-container {
+    position: relative;
+    height: 330px;
+    width: 100%;
+}
+
+/* ================================================================
+   CONFIGURAÇÃO DE CURSOS E MENSALIDADES (EXCLUSIVO OWNER)
+   ================================================================ */
+.cursos-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.cursos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+    margin-top: 14px;
+}
+
+.curso-item-box {
+    background: #f8fafc;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+    transition: all 0.2s;
+}
+
+.curso-item-box:hover {
+    border-color: #cbd5e1;
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.curso-nome {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.curso-valor-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.curso-preco {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--accent-gold);
+}
+
+.btn-editar-curso {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.btn-editar-curso:hover {
+    background: #f1f5f9;
+    color: #0f172a;
+    border-color: #94a3b8;
+}
+
+/* ================================================================
+   ANIVERSARIANTES DO MÊS - TEMA CLARO
+   ================================================================ */
+.aniversariantes-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 22px 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.secao-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.secao-header h2 {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.aniversariantes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+}
+
+.aniversariante-item {
+    background: #f8fafc;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s;
+}
+
+.aniversariante-item:hover {
+    border-color: #cbd5e1;
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.aniv-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.aniv-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #fef3c7;
+    border: 2px solid #fde68a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #92400e;
+    font-size: 14px;
+    overflow: hidden;
+}
+
+.aniv-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.aniv-detalhes h4 {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.aniv-detalhes p {
+    font-size: 11.5px;
+    color: var(--text-muted);
+}
+
+.aniv-dia-badge {
+    background: #fef3c7;
+    border: 1px solid #fde68a;
+    color: #92400e;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 8px;
+}
+
+/* ================================================================
+   GESTÃO DE MENSALIDADES - TEMA CLARO
+   ================================================================ */
+.mensalidades-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.mensalidades-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.tabs-mensalidades {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    background: #f8fafc;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 7px 16px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.tab-btn:hover {
+    color: #0f172a;
+    background: #f1f5f9;
+}
+
+.tab-btn.ativo {
+    background: #0f172a;
+    border-color: #0f172a;
+    color: #ffffff;
+}
+
+.tab-badge {
+    background: rgba(0, 0, 0, 0.08);
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-size: 11px;
+}
+
+.tab-btn.ativo .tab-badge {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Tabela de Mensalidades */
+.tabela-container {
+    overflow-x: auto;
+}
+
+.tabela-mensalidades {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    text-align: left;
+}
+
+.tabela-mensalidades thead tr {
+    background: #f8fafc;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.tabela-mensalidades th {
+    padding: 12px 14px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+}
+
+.tabela-mensalidades tbody tr {
+    border-bottom: 1px solid #f1f5f9;
+    transition: background 0.15s;
+}
+
+.tabela-mensalidades tbody tr:hover {
+    background: #f8fafc;
+}
+
+.tabela-mensalidades td {
+    padding: 14px;
+    color: var(--text-primary);
+    vertical-align: middle;
+}
+
+.aluno-col-nome {
+    font-weight: 700;
+    color: var(--text-primary);
+    display: block;
+}
+
+.aluno-col-contato {
+    font-size: 11.5px;
+    color: var(--text-muted);
+}
+
+/* Badges de Status da Mensalidade */
+.status-pill {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.status-pill.pago {
+    background: #dcfce7;
+    color: #15803d;
+    border: 1px solid #bbf7d0;
+}
+
+.status-pill.em_analise {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+    animation: pulseGlow 1.5s infinite alternate;
+}
+
+@keyframes pulseGlow {
+    from { box-shadow: 0 0 2px rgba(234, 179, 8, 0.4); }
+    to { box-shadow: 0 0 8px rgba(234, 179, 8, 0.8); }
+}
+
+.status-pill.pendente {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+}
+
+.status-pill.atrasado {
+    background: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+}
+
+.btn-acao-comprovante {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.btn-acao-comprovante:hover {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+}
+
+.btn-validar-alerta {
+    background: #fef3c7 !important;
+    border: 1px solid #f59e0b !important;
+    color: #92400e !important;
+    font-weight: 700 !important;
+}
+
+.btn-validar-alerta:hover {
+    background: #fde68a !important;
+}
+
+.link-ver-comprovante {
+    color: var(--accent-blue);
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: underline;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.link-ver-comprovante:hover {
+    color: #0369a1;
+}
+
+/* ================================================================
+   MODAIS - TEMA CLARO
+   ================================================================ */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.modal-overlay.oculto { display: none; }
+
+.modal-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    width: 90%;
+    max-width: 500px;
+    padding: 26px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.modal-header h3 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.btn-fechar-modal {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 24px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.btn-fechar-modal:hover { color: #0f172a; }
+
+.form-grupo {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-grupo label {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.form-grupo input,
+.form-grupo select,
+.form-grupo textarea {
+    background: #f8fafc;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 9px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    outline: none;
+}
+
+.form-grupo input:focus,
+.form-grupo select:focus,
+.form-grupo textarea:focus {
+    border-color: #0f172a;
+    background: #ffffff;
+}
+
+.btn-confirmar-pagamento {
+    width: 100%;
+    background: #0f172a;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 11px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    margin-top: 8px;
+}
+
+.btn-confirmar-pagamento:hover {
+    background: #1e293b;
+    transform: translateY(-1px);
+}
+
+.footer {
+    background: #ffffff;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-size: 12px;
+    text-align: center;
+    padding: 20px;
+    margin-top: auto;
+}

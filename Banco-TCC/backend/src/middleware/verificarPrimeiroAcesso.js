@@ -1,10 +1,17 @@
-const usuarioModel = require('../models/usuarioModel');
-    
+const usuarioModel = require("../models/usuarioModel");
+
 async function verificarPrimeiroAcesso(req, res, next) {
-    const { uid } = req.user;
+    const idUsuario = req.user?.id_usuario;
+
+    if (!idUsuario) {
+        return res.status(401).json({
+            sucesso: false,
+            mensagem: "Usuário não autenticado.",
+        });
+    }
 
     try {
-        const usuario = await usuarioModel.buscarPorFirebaseUID(uid);
+        const usuario = await usuarioModel.buscarPorId(idUsuario);
 
         if (!usuario) {
             return res.status(404).json({
@@ -16,8 +23,7 @@ async function verificarPrimeiroAcesso(req, res, next) {
         if (usuario.primeiro_acesso) {
             return res.status(403).json({
                 sucesso: false,
-                mensagem:
-                    "É necessário trocar a senha temporária antes de continuar.",
+                mensagem: "É necessário trocar a senha temporária antes de continuar.",
                 primeiroAcesso: true,
             });
         }

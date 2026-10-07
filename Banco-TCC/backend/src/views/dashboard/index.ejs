@@ -15,11 +15,11 @@
         <div class="header-meta-col">
             <% if (isOwner) { %>
                 <span class="badge-modo-view owner">
-                    👑 Modo Owner: Acesso Executivo Completo
+                    Modo Owner: Acesso Executivo Completo
                 </span>
             <% } else { %>
                 <span class="badge-modo-view admin">
-                    ⭐ Modo Administrador: Visão Operacional & Mensalidades
+                    Modo Administrador: Visão Operacional & Mensalidades
                 </span>
             <% } %>
             <span class="header-timestamp">Atualizado agora</span>
@@ -119,22 +119,22 @@
         <section class="grafico-card">
             <div class="grafico-header">
                 <div class="grafico-titulo-box">
-                    <h2 id="graficoTitulo">📈 Resumo Financeiro & Comparativo com Mês Passado</h2>
+                    <h2 id="graficoTitulo">Resumo Financeiro & Comparativo com Mês Passado</h2>
                     <p id="graficoSubtitulo">Acompanhe a curva de faturamento semanal com a <strong>sombrinha</strong> (área sombreada) do mês anterior para comparar o desempenho.</p>
                 </div>
 
                 <div class="grafico-controles">
                     <div class="btn-grupo-toggle">
                         <button type="button" class="btn-toggle ativo" id="btnToggleFinancas" onclick="alternarModoGrafico('financas')">
-                            💰 Finanças Totais
+                            Finanças Totais
                         </button>
                         <button type="button" class="btn-toggle" id="btnToggleUsuarios" onclick="alternarModoGrafico('usuarios')">
-                            👥 Usuários Cadastrados
+                            Usuários Cadastrados
                         </button>
                     </div>
 
                     <button type="button" class="btn-tipo-grafico" id="btnAlternarTipo" onclick="alternarTipoGrafico()" title="Alternar entre Linha de Área e Barras">
-                        📊 Mudar Tipo: <span id="labelTipoGrafico">Barras</span>
+                        Mudar Tipo: <span id="labelTipoGrafico">Barras</span>
                     </button>
                 </div>
             </div>
@@ -159,7 +159,7 @@
         <section class="cursos-card">
             <div class="secao-header">
                 <div>
-                    <h2>⚙️ Tabela de Mensalidades por Curso</h2>
+                    <h2>Tabela de Mensalidades por Curso</h2>
                     <p style="font-size: 13px; color: var(--text-secondary); margin-top: 3px;">
                         Defina o valor base da mensalidade de cada curso. Os alunos vinculados assumirão automaticamente estes valores.
                     </p>
@@ -173,7 +173,7 @@
                         <div class="curso-valor-row">
                             <span class="curso-preco">R$ <%= Number(c.valor_mensalidade).toFixed(2) %></span>
                             <button type="button" class="btn-editar-curso" onclick="abrirModalEditarCurso('<%= c.idcurso %>', '<%= c.nome %>', '<%= Number(c.valor_mensalidade).toFixed(2) %>')">
-                                ✏️ Alterar
+                                Alterar
                             </button>
                         </div>
                     </div>
@@ -185,7 +185,7 @@
     <!-- SEÇÃO DE ANIVERSARIANTES DO MÊS (ADMIN E OWNER) -->
     <section class="aniversariantes-card">
         <div class="secao-header">
-            <h2>🎂 Aniversariantes do Mês de Outubro</h2>
+            <h2>Aniversariantes do Mês de Outubro</h2>
             <span style="font-size: 12.5px; color: var(--text-muted);"><%= aniversariantes.length %> alunos comemorando neste mês</span>
         </div>
 
@@ -223,7 +223,7 @@
     <section class="mensalidades-card">
         <div class="mensalidades-header">
             <div class="secao-header" style="margin-bottom: 0;">
-                <h2>💳 Mensalidades dos Alunos & Anexo de Comprovantes</h2>
+                <h2>Mensalidades dos Alunos & Anexo de Comprovantes</h2>
             </div>
 
             <div class="tabs-mensalidades">
@@ -231,16 +231,16 @@
                     Todas <span class="tab-badge"><%= totaisMensalidades.total %></span>
                 </button>
                 <button type="button" class="tab-btn" onclick="filtrarTabela('em_analise', this)">
-                    🔍 Em Análise <span class="tab-badge"><%= totaisMensalidades.qtdEmAnalise %></span>
+                    Em Análise <span class="tab-badge"><%= totaisMensalidades.qtdEmAnalise %></span>
                 </button>
                 <button type="button" class="tab-btn" onclick="filtrarTabela('pendente', this)">
-                    ⏳ Pendentes <span class="tab-badge"><%= totaisMensalidades.qtdPendentes %></span>
+                    Pendentes <span class="tab-badge"><%= totaisMensalidades.qtdPendentes %></span>
                 </button>
                 <button type="button" class="tab-btn" onclick="filtrarTabela('pago', this)">
-                    ✅ Pagas <span class="tab-badge"><%= totaisMensalidades.qtdPagos %></span>
+                    Pagas <span class="tab-badge"><%= totaisMensalidades.qtdPagos %></span>
                 </button>
                 <button type="button" class="tab-btn" onclick="filtrarTabela('atrasado', this)">
-                    ⚠️ Vencidas <span class="tab-badge"><%= totaisMensalidades.qtdVencidos %></span>
+                    Vencidas <span class="tab-badge"><%= totaisMensalidades.qtdVencidos %></span>
                 </button>
             </div>
         </div>
@@ -269,7 +269,7 @@
                                 <% 
                                     const dataVenc = new Date(m.data_vencimento);
                                     const vencFormatado = dataVenc.toLocaleDateString('pt-BR');
-                                %>
+                                    %>
                                 <strong><%= vencFormatado %></strong>
                             </td>
                             <td>
@@ -279,11 +279,11 @@
                                 <% if (m.status_parcela === 'pago') { %>
                                     <span class="status-pill pago">● Pago</span>
                                 <% } else if (m.status_parcela === 'em_analise') { %>
-                                    <span class="status-pill em_analise">⏳ Em Análise</span>
+                                    <span class="status-pill em_analise">Em Análise</span>
                                 <% } else if (m.status_parcela === 'pendente') { %>
-                                    <span class="status-pill pendente">⏳ Pendente</span>
+                                    <span class="status-pill pendente">Pendente</span>
                                 <% } else { %>
-                                    <span class="status-pill atrasado">⚠️ Vencido</span>
+                                    <span class="status-pill atrasado">Vencido</span>
                                 <% } %>
                             </td>
                             <td>
@@ -297,7 +297,7 @@
                             <td>
                                 <% if (m.comprovante_url) { %>
                                     <a href="<%= m.comprovante_url %>" target="_blank" class="link-ver-comprovante" title="Abrir Comprovante em nova guia">
-                                        📄 Ver Anexo
+                                        Ver Anexo
                                     </a>
                                 <% } else { %>
                                     <span style="color: var(--text-muted); font-size: 12px;">Sem comprovante</span>
@@ -308,13 +308,13 @@
                                     <% if (m.status_parcela === 'em_analise') { %>
                                         <button type="button" class="btn-acao-comprovante btn-validar-alerta" 
                                             onclick="abrirModalConfirmacaoComprovante('<%= m.id %>', '<%= m.aluno_nome %>', '<%= Number(m.valor).toFixed(2) %>', '<%= m.comprovante_url %>')">
-                                            ✓ Validar
+                                            Validar
                                         </button>
                                     <% } %>
 
                                     <button type="button" class="btn-acao-comprovante" 
                                         onclick="abrirModalPagamento('<%= m.id %>', '<%= m.aluno_nome %>', '<%= Number(m.valor).toFixed(2) %>', '<%= m.data_vencimento %>')">
-                                        📎 <%= m.status_parcela === 'pago' ? 'Substituir' : 'Anexar & Pagar' %>
+                                        <%= m.status_parcela === 'pago' ? 'Substituir' : 'Anexar & Pagar' %>
                                     </button>
                                 </div>
                             </td>
@@ -378,15 +378,15 @@
                 O aluno <strong id="confNomeAluno"></strong> enviou comprovante para o valor de <strong id="confValorAluno" style="color: var(--accent-gold);"></strong>.
             </p>
 
-            <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 14px; text-align: center; margin-bottom: 18px;">
+            <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 14px; text-align: center; margin-bottom: 18px;">
                 <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">Anexo enviado:</p>
                 <a href="#" id="confLinkAnexo" target="_blank" class="link-ver-comprovante" style="font-size: 14px;">
-                    📄 Abrir Comprovante em Nova Guia ↗
+                    Abrir Comprovante em Nova Guia ↗
                 </a>
             </div>
 
             <button type="button" id="btnExecutarConfirmacao" onclick="executarConfirmacaoComprovante()" class="btn-confirmar-pagamento" style="background: #16a34a;">
-                ✓ Confirmar Pagamento e Validar Mensalidade
+                Confirmar Pagamento e Validar Mensalidade
             </button>
         </div>
     </div>

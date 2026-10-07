@@ -154,49 +154,63 @@ body{
 /*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
 
 .container #cards{
-    position: absolute;;
+    position: absolute;
     z-index: 100;
-    top: 46%;
-    left: 0;
+    top: 45%;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
-    height: 40%;
-    width: 100%;;
-    justify-content: space-around;
+    height: auto;
+    width: 90%;
+    max-width: 1050px;
+    justify-content: center;
+    gap: 28px;
+    box-sizing: border-box;
 }
 
 .card:hover{
-    transform: scale(1.08);  
-    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+    transform: translateY(-6px) scale(1.02);  
+    box-shadow: 0 12px 28px rgba(212, 175, 55, 0.3);
 }
 
 .card{
     background-color: #212121;
-    width: 16%;
-    border-radius: 18px;
+    width: 255px;
+    max-width: 275px;
+    min-height: 350px;
+    border-radius: 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 0.5% ;
-    padding-bottom: 0.8%;
-    transition: transform 0.4s ease-in-out, box-shadow 0.4s ease;
+    padding: 14px 14px 20px 14px;
+    box-sizing: border-box;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
+
 .card img{
-    width: 94%;
-    height: 44%;
-    border-radius: 18px ;
+    width: 100%;
+    height: 135px;
+    border-radius: 12px;
     object-fit: cover;
-    margin-bottom: 5%;
+    margin-bottom: 12px;
+    display: block;
 }
+
 .card h1{
     color: rgb(245, 214, 150);
     font-family: "julius";
-    font-size: 1.8em;
+    font-size: 1.35em;
+    text-align: center;
+    margin-bottom: 8px;
 }
 
 .card p{
-    font-family: "Jaldi";
-    line-height: 3vh;
-    font-size:small;
-    text-align: justify;
-    padding: 1.5vh;
+    font-family: "Jaldi", sans-serif;
+    line-height: 1.45;
+    font-size: 13.5px;
+    text-align: center;
+    padding: 0 4px;
+    color: #e5e7eb;
+    margin-top: auto;
 }

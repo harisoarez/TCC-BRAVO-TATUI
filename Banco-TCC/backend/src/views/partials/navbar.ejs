@@ -27,20 +27,20 @@
 
         <% if (!isAluno) { %>
             <a href="/paginas/dashboard" class="painel-nav-link <%= (locals.titulo && locals.titulo.includes('Dashboard')) ? 'link-ativo' : '' %>">
-                📊 Dashboard
+                Dashboard
             </a>
 
             <a href="/paginas/usuarios" class="painel-nav-link <%= (locals.titulo && locals.titulo.includes('Usuários')) ? 'link-ativo' : '' %>">
-                👥 Usuários
+                Usuários
             </a>
         <% } else { %>
             <a href="/paginas/matricula" class="painel-nav-link <%= (locals.titulo && locals.titulo.includes('Matrícula')) ? 'link-ativo' : '' %>">
-                🎓 Minha Matrícula
+                Minha Matrícula
             </a>
         <% } %>
 
         <a href="/site/calendario.html" class="painel-nav-link link-calendario" title="Abrir Calendário de Aulas">
-            📅 Calendário
+            Calendário
         </a>
     </div>
 
@@ -50,13 +50,13 @@
             let rotuloCargo = 'Aluno';
             if (isOwner) {
                 classeBorda = 'borda-owner';
-                rotuloCargo = '👑 Owner';
+                rotuloCargo = 'Owner';
             } else if (tipo === 'admin') {
                 classeBorda = 'borda-admin';
-                rotuloCargo = '⭐ Admin';
+                rotuloCargo = 'Admin';
             } else if (tipo === 'professor') {
                 classeBorda = 'borda-admin';
-                rotuloCargo = '🎻 Professor';
+                rotuloCargo = 'Professor';
             }
             const nomeExibicao = (u.nome || 'Usuário').split(' ')[0];
         %>
@@ -76,7 +76,7 @@
                 <span class="painel-user-nome"><%= nomeExibicao %></span>
                 <span class="painel-user-cargo <%= isOwner ? 'cargo-owner' : (tipo === 'admin' ? 'cargo-admin' : 'cargo-normal') %>"><%= rotuloCargo %></span>
             </div>
-            <a href="/site/login.html" onclick="localStorage.clear();" class="btn-painel-sair" title="Encerrar Sessão">
+            <a href="/logout" onclick="localStorage.removeItem('authToken'); localStorage.removeItem('usuario'); sessionStorage.clear();" class="btn-painel-sair" title="Encerrar Sessão">
                 Sair
             </a>
         </div>
@@ -132,6 +132,37 @@
 </div>
 
 <script>
+    (function() {
+        // Sincroniza token se foi passado na URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const tokenQuery = urlParams.get('token');
+        if (tokenQuery) {
+            localStorage.setItem('authToken', tokenQuery);
+        }
+
+        // Sincroniza usuário ativo da sessão no localStorage
+        <% if (locals.usuario) { %>
+            const usuarioSessao = <%- JSON.stringify(locals.usuario) %>;
+            try {
+                const uAtual = JSON.parse(localStorage.getItem('usuario') || '{}');
+                if (uAtual.email !== usuarioSessao.email || uAtual.tipo_usuario !== usuarioSessao.tipo_usuario) {
+                    localStorage.setItem('usuario', JSON.stringify({
+                        id_usuario: usuarioSessao.id_usuario,
+                        nome: usuarioSessao.nome,
+                        email: usuarioSessao.email,
+                        tipo_usuario: usuarioSessao.tipo_usuario,
+                        tipo: usuarioSessao.tipo_usuario,
+                        foto_url: usuarioSessao.foto_url || '',
+                        descricao: usuarioSessao.descricao || '',
+                        telefone: usuarioSessao.telefone || ''
+                    }));
+                }
+            } catch(e) {
+                localStorage.setItem('usuario', JSON.stringify(usuarioSessao));
+            }
+        <% } %>
+    })();
+
     function abrirModalPerfilGlobal() {
         document.getElementById('modalPerfilGlobal').classList.remove('oculto');
     }
@@ -159,6 +190,15 @@
             const dados = await resp.json();
 
             if (dados.sucesso) {
+                try {
+                    const uAtual = JSON.parse(localStorage.getItem('usuario') || '{}');
+                    if (dados.fotoUrl) uAtual.foto_url = dados.fotoUrl;
+                    if (dados.descricao !== undefined) uAtual.descricao = dados.descricao;
+                    const tel = document.getElementById('campoTelefonePerfil').value;
+                    if (tel) uAtual.telefone = tel;
+                    localStorage.setItem('usuario', JSON.stringify(uAtual));
+                } catch(e) {}
+
                 alert('✓ Perfil atualizado com sucesso!');
                 window.location.reload();
             } else {

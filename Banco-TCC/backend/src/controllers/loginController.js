@@ -79,13 +79,19 @@ async function trocarSenhaPrimeiroAcesso(req, res) {
 async function logout(req, res) {
     try {
         if (req.session) {
-            req.session.destroy();
+            req.session.destroy(() => {});
+        }
+        res.clearCookie("connect.sid", { path: "/" });
+
+        const querJson = req.xhr || req.headers.accept?.includes("application/json") || req.method === "POST";
+        if (querJson) {
+            return res.status(200).json({
+                sucesso: true,
+                mensagem: "Logout realizado com sucesso!",
+            });
         }
 
-        return res.status(200).json({
-            sucesso: true,
-            mensagem: "Logout realizado com sucesso!",
-        });
+        return res.redirect("/site/login.html");
     } catch (error) {
         return res.status(error.status || 500).json({
             sucesso: false,
@@ -93,6 +99,7 @@ async function logout(req, res) {
         });
     }
 }
+
 
 async function solicitarRecuperacaoSenha(req, res) {
     const email = req.body.email || req.body.emailAluno;

@@ -4,7 +4,7 @@ const { ehOwner, ehAdmin } = require("../utils/admin");
 
 async function criarConta(req, res) {
     try {
-        const { nome, cpf, email, telefone, senha, tipo_usuario } = req.body;
+        const { nome, cpf, email, telefone, senha, tipo_usuario, data_nascimento } = req.body;
         const usuarioLogado = req.user;
 
         if (!email || !senha) {
@@ -98,10 +98,11 @@ async function criarConta(req, res) {
 
             // Se for conta de usuário normal / aluno, vincula na tabela aluno
             if (tipoFinal === "normal" || tipoFinal === "aluno") {
+                const dataNascFinal = (data_nascimento && data_nascimento.trim() !== "") ? data_nascimento.trim() : "2000-01-01";
                 await conexao.query(
                     `INSERT INTO aluno (CPF, data_nascimento, usuario_login_id)
-                     VALUES (?, '2000-01-01', ?)`,
-                    [cpfLimpo || `SEM_CPF_${idUsuario}`, idUsuario]
+                     VALUES (?, ?, ?)`,
+                    [cpfLimpo || `SEM_CPF_${idUsuario}`, dataNascFinal, idUsuario]
                 );
             }
 

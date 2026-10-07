@@ -58,6 +58,13 @@ app.get("/login", (req, res) => {
 app.get("/calendario", (req, res) => {
     res.redirect("/site/calendario.html");
 });
+app.get("/logout", (req, res) => {
+    if (req.session) {
+        req.session.destroy(() => {});
+    }
+    res.clearCookie("connect.sid", { path: "/" });
+    res.redirect("/site/login.html");
+});
 
 // Rotas da API REST
 const loginRoutes = require("./src/routes/loginRoutes");

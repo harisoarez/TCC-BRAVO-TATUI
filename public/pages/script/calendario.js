@@ -2,13 +2,31 @@
 // Instituto Musical Bravo Tatuí - Calendário Integrado com API & Auth
 // ================================================================
 
-const API_BASE = window.location.origin.startsWith("http") ? "" : "http://localhost:3000";
+const API_BASE = (window.location.port === "3000" || (!window.location.port && window.location.protocol === "http:")) ? "" : "http://localhost:3000";
 
 let dataAtual = new Date();
 let dataSelecionada = new Date();
 let usuarioAtivo = { tipo: "visitante" };
 let token = null;
 let listaProfessores = [];
+
+function decodificarToken(token) {
+    if (!token) return null;
+    try {
+        const partes = token.split(".");
+        if (partes.length !== 3) return null;
+        const payloadBase64 = partes[1].replace(/-/g, "+").replace(/_/g, "/");
+        const jsonStr = decodeURIComponent(
+            atob(payloadBase64)
+                .split("")
+                .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+                .join("")
+        );
+        return JSON.parse(jsonStr);
+    } catch (e) {
+        return null;
+    }
+}
 
 // Base de aulas (inicia vazia e carrega do banco de dados via API)
 let aulas = [];
@@ -33,27 +51,28 @@ function isPrivilegiado() {
 
 function inicializarAutenticacao() {
     token = localStorage.getItem("authToken");
-    const usuarioSalvo = localStorage.getItem("usuario");
-
-    if (!token || !usuarioSalvo) {
+    if (!token) {
         alert("Acesso restrito: faça login para acessar o calendário.");
         window.location.href = "./login.html";
         return false;
     }
 
+    const payload = decodificarToken(token);
+    let u = {};
     try {
-        const u = JSON.parse(usuarioSalvo);
-        usuarioAtivo = {
-            id: u.id_usuario,
-            nome: u.nome || "Usuário",
-            email: u.email,
-            tipo: (u.tipo_usuario || "normal").toLowerCase(),
-        };
-    } catch (e) {
-        alert("Sessão inválida. Faça login novamente.");
-        window.location.href = "./login.html";
-        return false;
-    }
+        const usuarioSalvo = localStorage.getItem("usuario");
+        if (usuarioSalvo) u = JSON.parse(usuarioSalvo);
+    } catch (e) {}
+
+    const tipoFinal = (payload?.tipo_usuario || u.tipo_usuario || u.tipo || "normal").toLowerCase();
+    usuarioAtivo = {
+        id: payload?.id_usuario || u.id_usuario || u.id,
+        nome: payload?.nome || u.nome || "Usuário",
+        email: payload?.email || u.email || "",
+        tipo: tipoFinal,
+        tipo_usuario: tipoFinal,
+        foto_url: u.foto_url || "",
+    };
 
     renderizarAreaUsuario();
     aplicarPermissoesUI();
@@ -69,9 +88,11 @@ function renderizarAreaUsuario() {
 
     if (usuarioAtivo.tipo !== "visitante") {
         const rotulos = {
-            admin: "👑 Administrador",
-            professor: "🎻 Professor",
-            aluno: "🎓 Aluno",
+            owner: "Owner",
+            admin: "Administrador",
+            professor: "Professor",
+            aluno: "Aluno",
+            normal: "Aluno",
         };
         const rotulo = rotulos[usuarioAtivo.tipo] || usuarioAtivo.tipo;
 
@@ -82,8 +103,11 @@ function renderizarAreaUsuario() {
             <button type="button" class="btn-nav-auth btn-nav-sair" onclick="fazerLogout()">Sair</button>
         `;
 
-        if (usuarioAtivo.tipo === "admin" && linkAdmin) {
+        if ((usuarioAtivo.tipo === "admin" || usuarioAtivo.tipo === "owner") && linkAdmin) {
             linkAdmin.classList.remove("oculto");
+            if (token) {
+                linkAdmin.href = `${API_BASE || 'http://localhost:3000'}/paginas/dashboard?token=${encodeURIComponent(token)}`;
+            }
         }
     } else {
         areaNav.innerHTML = `
@@ -96,7 +120,7 @@ function renderizarAreaUsuario() {
     if (bannerModo) {
         bannerModo.classList.remove("oculto");
         if (isPrivilegiado()) {
-            const rotulo = usuarioAtivo.tipo === "owner" ? "👑 Modo Owner (Proprietário)" : "⭐ Modo Administrador";
+            const rotulo = usuarioAtivo.tipo === "owner" ? "Modo Owner (Proprietário)" : "Modo Administrador";
             bannerModo.innerHTML = `
                 <span><strong>${rotulo}:</strong> Você tem permissão total para agendar, editar e cancelar aulas.</span>
             `;
@@ -105,7 +129,7 @@ function renderizarAreaUsuario() {
             bannerModo.style.color = "#854d0e";
         } else {
             bannerModo.innerHTML = `
-                <span>👁️ <strong>Modo de Visualização:</strong> Você está visualizando a grade de aulas em modo somente leitura. Apenas a administração pode agendar ou alterar horários.</span>
+                <span><strong>Modo de Visualização:</strong> Você está visualizando a grade de aulas em modo somente leitura. Apenas a administração pode agendar ou alterar horários.</span>
             `;
             bannerModo.style.background = "#eff6ff";
             bannerModo.style.borderColor = "#bfdbfe";
@@ -126,11 +150,15 @@ function aplicarPermissoesUI() {
     }
 }
 
-function fazerLogout() {
+async function fazerLogout() {
+    try {
+        await fetch(`${API_BASE || 'http://localhost:3000'}/api/logout`, { credentials: "include" });
+    } catch (e) {}
     localStorage.removeItem("authToken");
     localStorage.removeItem("usuario");
+    sessionStorage.clear();
     alert("Você saiu da sua conta.");
-    window.location.reload();
+    window.location.href = "./login.html";
 }
 
 // ================= CARREGAMENTO DE DADOS DA API =================

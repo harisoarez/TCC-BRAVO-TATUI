@@ -5,7 +5,6 @@
     <header class="databricks-header">
         <div class="header-title-col">
             <h1>
-                <span class="estrela">👥</span>
                 Gestão de Usuários
             </h1>
             <p>Controle unificado de Administradores, Professores e Alunos Matriculados</p>
@@ -13,9 +12,9 @@
 
         <div class="header-meta-col">
             <% if (isOwner) { %>
-                <span class="badge-modo-view owner">👑 Owner: Permissão Total de Descontos</span>
+                <span class="badge-modo-view owner">Owner: Permissão Total de Descontos</span>
             <% } else { %>
-                <span class="badge-modo-view admin">⭐ Administrador: Verificação de Comprovantes</span>
+                <span class="badge-modo-view admin">Administrador: Verificação de Comprovantes</span>
             <% } %>
         </div>
     </header>
@@ -23,20 +22,20 @@
     <!-- Tabs para alternar entre Administradores, Professores e Alunos -->
     <div style="display: flex; gap: 10px; border-bottom: 2px solid var(--border-color); padding-bottom: 12px;">
         <button type="button" class="tab-btn ativo" id="tabBtnAlunos" onclick="trocarAbaUsuarios('alunos')">
-            🎓 Alunos Matriculados <span class="tab-badge"><%= alunos.length %></span>
+            Alunos Matriculados <span class="tab-badge"><%= alunos.length %></span>
         </button>
         <button type="button" class="tab-btn" id="tabBtnProfessores" onclick="trocarAbaUsuarios('professores')">
-            🎻 Professores <span class="tab-badge"><%= professores.length %></span>
+            Professores <span class="tab-badge"><%= professores.length %></span>
         </button>
         <button type="button" class="tab-btn" id="tabBtnAdmins" onclick="trocarAbaUsuarios('admins')">
-            ⭐ Administradores <span class="tab-badge"><%= administradores.length %></span>
+            Administradores <span class="tab-badge"><%= administradores.length %></span>
         </button>
     </div>
 
     <!-- 1. TABELA DE ALUNOS -->
     <section class="mensalidades-card" id="secaoAlunos">
         <div class="secao-header">
-            <h2>🎓 Lista de Alunos</h2>
+            <h2>Lista de Alunos</h2>
             <span style="font-size: 13px; color: var(--text-muted);">
                 <%= isOwner ? 'Você pode atribuir descontos individuais (%) e validar pagamentos.' : 'Você pode verificar comprovantes e consultar históricos de mensalidade.' %>
             </span>
@@ -94,17 +93,17 @@
                                 <% if (al.status_mes_atual === 'pago') { %>
                                     <span class="status-pill pago">● Pago</span>
                                 <% } else if (al.status_mes_atual === 'em_analise') { %>
-                                    <span class="status-pill em_analise">⏳ Em Análise</span>
+                                    <span class="status-pill em_analise">Em Análise</span>
                                 <% } else if (al.status_mes_atual === 'atrasado') { %>
-                                    <span class="status-pill atrasado">⚠️ Vencido</span>
+                                    <span class="status-pill atrasado">Vencido</span>
                                 <% } else { %>
-                                    <span class="status-pill pendente">⏳ Pendente</span>
+                                    <span class="status-pill pendente">Pendente</span>
                                 <% } %>
                             </td>
                             <td>
                                 <% if (al.comprovante_url) { %>
                                     <a href="<%= al.comprovante_url %>" target="_blank" class="link-ver-comprovante" title="Ver Comprovante enviado">
-                                        📄 Ver Anexo
+                                        Ver Anexo
                                     </a>
                                 <% } else { %>
                                     <span style="color: var(--text-muted); font-size: 12px;">Nenhum anexo</span>
@@ -115,7 +114,7 @@
                                     <% if (al.status_mes_atual === 'em_analise' && al.id_recebimento_atual) { %>
                                         <button type="button" class="btn-acao-comprovante btn-validar-alerta" 
                                             onclick="abrirModalValidacao('<%= al.id_recebimento_atual %>', '<%= al.nome %>', '<%= Number(al.valor_cobrado).toFixed(2) %>', '<%= al.comprovante_url %>')">
-                                            ✓ Validar Comprovante
+                                            Validar Comprovante
                                         </button>
                                     <% } %>
 
@@ -123,19 +122,19 @@
                                         <button type="button" class="btn-acao-comprovante" 
                                             onclick="abrirModalCurso('<%= al.idaluno %>', '<%= al.nome %>', '<%= al.curso || 'Piano' %>')"
                                             title="Editar Curso / Matrícula do Aluno">
-                                            🎓 Mudar Curso
+                                            Mudar Curso
                                         </button>
                                         <button type="button" class="btn-acao-comprovante" 
                                             onclick="abrirModalDesconto('<%= al.idaluno %>', '<%= al.nome %>', '<%= al.desconto_porcentagem %>')"
                                             title="Atribuir Desconto Individual">
-                                            🏷️ Desconto
+                                            Desconto
                                         </button>
                                     <% } %>
 
                                     <button type="button" class="btn-acao-comprovante" 
                                         onclick="abrirHistoricoAluno('<%= al.idaluno %>', '<%= al.nome %>')"
                                         title="Ver histórico de mensalidades de meses anteriores">
-                                        📜 Histórico
+                                        Histórico
                                     </button>
                                 </div>
                             </td>
@@ -149,7 +148,7 @@
     <!-- 2. TABELA DE PROFESSORES -->
     <section class="mensalidades-card oculto" id="secaoProfessores">
         <div class="secao-header">
-            <h2>🎻 Corpo Docente (Professores)</h2>
+            <h2>Corpo Docente (Professores)</h2>
             <span style="font-size: 13px; color: var(--text-muted);"><%= professores.length %> professores cadastrados</span>
         </div>
 
@@ -189,7 +188,7 @@
                                     <button type="button" class="btn-acao-comprovante" 
                                         onclick="abrirModalEspecialidade('<%= p.idprofessor || p.id_usuario %>', '<%= p.nome %>', '<%= p.tipo_instrumento || 'Piano' %>')"
                                         title="Editar Especialidade / Instrumento do Professor">
-                                        ✏️ Especialidade
+                                        Especialidade
                                     </button>
                                 </td>
                             <% } %>
@@ -203,7 +202,7 @@
     <!-- 3. TABELA DE ADMINISTRADORES -->
     <section class="mensalidades-card oculto" id="secaoAdmins">
         <div class="secao-header">
-            <h2>⭐ Equipe Administrativa</h2>
+            <h2>Equipe Administrativa</h2>
             <span style="font-size: 13px; color: var(--text-muted);"><%= administradores.length %> gestores cadastrados</span>
         </div>
 
@@ -234,11 +233,11 @@
                             <td>
                                 <% if (adm.tipo_usuario === 'owner') { %>
                                     <span style="background: #0f172a; color: #ffffff; padding: 3px 8px; border-radius: 6px; font-weight: 700; font-size: 12px;">
-                                        👑 Owner (Proprietário)
+                                        Owner (Proprietário)
                                     </span>
                                 <% } else { %>
                                     <span style="background: #fef3c7; color: #92400e; padding: 3px 8px; border-radius: 6px; font-weight: 700; font-size: 12px;">
-                                        ⭐ Administrador
+                                        Administrador
                                     </span>
                                 <% } %>
                             </td>
@@ -392,7 +391,7 @@
             <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 14px; text-align: center; margin-bottom: 18px;">
                 <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">Anexo enviado pelo aluno:</p>
                 <a href="#" id="valLinkComprovante" target="_blank" class="link-ver-comprovante" style="font-size: 14px;">
-                    📄 Abrir Comprovante em Nova Guia ↗
+                    Abrir Comprovante em Nova Guia ↗
                 </a>
             </div>
 
@@ -401,7 +400,7 @@
             </p>
 
             <button type="button" id="btnConfirmarValidacao" onclick="confirmarComprovanteAtual()" class="btn-confirmar-pagamento" style="background: #16a34a;">
-                ✓ Confirmar Pagamento e Validar Mensalidade
+                Confirmar Pagamento e Validar Mensalidade
             </button>
         </div>
     </div>

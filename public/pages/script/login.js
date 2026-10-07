@@ -1,5 +1,5 @@
-// Detecta a URL base da API (se aberto via file:// aponta para localhost:3000)
-const API_BASE = window.location.origin.startsWith("http") ? "" : "http://localhost:3000";
+// Detecta a URL base da API (se aberto via Live Server na porta 5500 ou file:// aponta para localhost:3000)
+const API_BASE = (window.location.port === "3000" || (!window.location.port && window.location.protocol === "http:")) ? "" : "http://localhost:3000";
 
 let tokenTemporario = null;
 
@@ -48,8 +48,20 @@ document.getElementById("formLogin").addEventListener("submit", async (e) => {
         const dados = await resposta.json();
 
         if (dados.sucesso) {
+            localStorage.removeItem("authToken");
+            localStorage.removeItem("usuario");
+            sessionStorage.clear();
+
+            const usuarioFormatado = {
+                ...dados.usuario,
+                id: dados.usuario.id_usuario,
+                id_usuario: dados.usuario.id_usuario,
+                tipo: dados.usuario.tipo_usuario || dados.usuario.tipo,
+                tipo_usuario: dados.usuario.tipo_usuario || dados.usuario.tipo,
+            };
+
             localStorage.setItem("authToken", dados.token);
-            localStorage.setItem("usuario", JSON.stringify(dados.usuario));
+            localStorage.setItem("usuario", JSON.stringify(usuarioFormatado));
 
             if (dados.usuario.primeiroAcesso) {
                 tokenTemporario = dados.token;

@@ -14,8 +14,8 @@ router.post(
     loginController.trocarSenhaPrimeiroAcesso
 );
 
-// Rota de logout
-router.post("/logout", authMiddleware, loginController.logout);
+// Rota de logout irrestrita (destrói sessão e limpa cookies)
+router.all("/logout", loginController.logout);
 
 // Rota de solicitação de recuperação de senha
 router.post("/login/recuperar-senha", loginController.solicitarRecuperacaoSenha);

@@ -3,10 +3,10 @@
 
 <main class="dashboard-container">
     <% if (!matricula || !matricula.aluno) { %>
-        <div style="background:#ffffff; padding:40px; border-radius:14px; text-align:center; border:1px solid var(--border-color);">
+        <div style="background:#0f172a; padding:40px; border-radius:18px 18px 18px 48px; border:2px solid #000000; text-align:center;">
             <h2>Acesso à Matrícula</h2>
             <p style="color: var(--text-muted); margin-top: 10px;">Nenhum registro de matrícula associado a esta conta.</p>
-            <a href="/paginas/dashboard" style="display:inline-block; margin-top:20px; padding:10px 20px; background:#0f172a; color:#fff; border-radius:8px; text-decoration:none;">Ir para o Dashboard</a>
+            <a href="/paginas/dashboard" style="display:inline-block; margin-top:20px; padding:10px 20px; background:#F5D696; color:#000; font-weight:700; border-radius:8px; text-decoration:none;">Ir para o Dashboard</a>
         </div>
     <% } else { 
         const al = matricula.aluno;
@@ -19,14 +19,14 @@
     <header class="databricks-header">
         <div class="header-title-col">
             <h1>
-                <span class="estrela">🎓</span>
+                <span class="estrela">★</span>
                 Minha Matrícula • <%= al.nome %>
             </h1>
             <p>Curso: <strong><%= al.curso || 'Piano' %></strong> • Instituto Musical Bravo Tatuí</p>
         </div>
 
         <div class="header-meta-col">
-            <span class="badge-modo-view admin" style="background:#f1f5f9; color:#0f172a; border-color:#cbd5e1;">
+            <span class="badge-modo-view admin" style="background:#1e293b; color:#38bdf8; border-color:#38bdf8;">
                 Matrícula Ativa
             </span>
         </div>
@@ -35,41 +35,41 @@
     <!-- CARD DA MENSALIDADE DO MÊS ATUAL -->
     <section class="mensalidades-card">
         <div class="secao-header">
-            <h2>💳 Mensalidade de Outubro 2026</h2>
+            <h2>Mensalidade de Outubro 2026</h2>
             <% if (statusAtual === 'pago') { %>
                 <span class="status-pill pago">● Pagamento Confirmado</span>
             <% } else if (statusAtual === 'em_analise') { %>
-                <span class="status-pill em_analise">⏳ Comprovante em Análise</span>
+                <span class="status-pill em_analise">Comprovante em Análise</span>
             <% } else if (statusAtual === 'atrasado') { %>
-                <span class="status-pill atrasado">⚠️ Mensalidade Vencida</span>
+                <span class="status-pill atrasado">Mensalidade Vencida</span>
             <% } else { %>
-                <span class="status-pill pendente">⏳ Aguardando Pagamento</span>
+                <span class="status-pill pendente">Aguardando Pagamento</span>
             <% } %>
         </div>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 20px 0;">
-            <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 16px;">
+            <div style="background: #1e293b; border: 1.5px solid #000000; border-radius: 12px; padding: 16px;">
                 <span style="font-size: 11.5px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Mensalidade do Curso</span>
                 <div style="font-size: 20px; font-weight: 800; color: var(--text-primary); margin-top: 4px;">
                     R$ <%= Number(matricula.valorBase).toFixed(2) %>
                 </div>
             </div>
 
-            <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 16px;">
+            <div style="background: #1e293b; border: 1.5px solid #000000; border-radius: 12px; padding: 16px;">
                 <span style="font-size: 11.5px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Desconto Especial (Owner)</span>
-                <div style="font-size: 20px; font-weight: 800; color: #16a34a; margin-top: 4px;">
+                <div style="font-size: 20px; font-weight: 800; color: #4ade80; margin-top: 4px;">
                     <%= matricula.desconto > 0 ? `${matricula.desconto}% OFF` : 'Sem desconto' %>
                 </div>
             </div>
 
-            <div style="background: #fef3c7; border: 1px solid #fde68a; border-radius: 10px; padding: 16px;">
-                <span style="font-size: 11.5px; font-weight: 700; color: #92400e; text-transform: uppercase;">Valor Exato a Pagar</span>
-                <div style="font-size: 24px; font-weight: 800; color: #92400e; margin-top: 4px;">
+            <div style="background: rgba(245, 214, 150, 0.12); border: 1.5px solid #F5D696; border-radius: 12px; padding: 16px;">
+                <span style="font-size: 11.5px; font-weight: 700; color: #F5D696; text-transform: uppercase;">Valor Exato a Pagar</span>
+                <div style="font-size: 24px; font-weight: 800; color: #F5D696; margin-top: 4px;">
                     R$ <%= valorExato %>
                 </div>
             </div>
 
-            <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 16px;">
+            <div style="background: #1e293b; border: 1.5px solid #000000; border-radius: 12px; padding: 16px;">
                 <span style="font-size: 11.5px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Vencimento</span>
                 <div style="font-size: 20px; font-weight: 800; color: var(--text-primary); margin-top: 4px;">
                     <%= dataVencFormatada %>
@@ -79,46 +79,46 @@
 
         <!-- MENSAGEM CONFORME O STATUS -->
         <% if (statusAtual === 'pago') { %>
-            <div style="background: #dcfce7; border: 1px solid #bbf7d0; border-radius: 10px; padding: 20px; text-align: center;">
-                <h3 style="color: #15803d; font-size: 17px; font-weight: 800;">✓ Mensalidade de Outubro Liquidada!</h3>
-                <p style="color: #166534; font-size: 13.5px; margin-top: 6px;">Seu pagamento foi conferido e validado com sucesso pela administração.</p>
+            <div style="background: rgba(34, 197, 94, 0.12); border: 1.5px solid #22c55e; border-radius: 12px; padding: 20px; text-align: center;">
+                <h3 style="color: #4ade80; font-size: 17px; font-weight: 800;">Mensalidade de Outubro Liquidada</h3>
+                <p style="color: #86efac; font-size: 13.5px; margin-top: 6px;">Seu pagamento foi conferido e validado com sucesso pela administração.</p>
                 <% if (mensAtual && mensAtual.comprovante_url) { %>
                     <a href="<%= mensAtual.comprovante_url %>" target="_blank" class="link-ver-comprovante" style="display:inline-block; margin-top:12px; font-size:13.5px;">
-                        📄 Visualizar Meu Comprovante Aprovado ↗
+                        Visualizar Meu Comprovante Aprovado ↗
                     </a>
                 <% } %>
             </div>
 
         <% } else if (statusAtual === 'em_analise') { %>
-            <div style="background: #fef3c7; border: 1px solid #fde68a; border-radius: 10px; padding: 20px; text-align: center;">
-                <h3 style="color: #92400e; font-size: 17px; font-weight: 800;">⏳ Comprovante Enviado com Sucesso!</h3>
-                <p style="color: #b45309; font-size: 13.5px; margin-top: 6px;">
+            <div style="background: rgba(245, 158, 11, 0.12); border: 1.5px solid #f59e0b; border-radius: 12px; padding: 20px; text-align: center;">
+                <h3 style="color: #fbbf24; font-size: 17px; font-weight: 800;">Comprovante Enviado com Sucesso</h3>
+                <p style="color: #fde68a; font-size: 13.5px; margin-top: 6px;">
                     Seu comprovante foi enviado e está em análise. A equipe administrativa irá verificar o recebimento e confirmar sua mensalidade em breve.
                 </p>
                 <div style="display: flex; justify-content: center; gap: 10px; align-items: center; margin-top: 14px; flex-wrap: wrap;">
                     <% if (mensAtual && mensAtual.comprovante_url) { %>
                         <a href="<%= mensAtual.comprovante_url %>" target="_blank" class="link-ver-comprovante" style="font-size:13.5px;">
-                            📄 Visualizar Comprovante Enviado ↗
+                            Visualizar Comprovante Enviado ↗
                         </a>
                     <% } %>
-                    <button type="button" class="btn-acao-comprovante" onclick="document.getElementById('blocoSubstituirComprovante').classList.toggle('oculto')" style="font-size: 13px; padding: 7px 14px; background: #92400e; color: #fff;">
-                        🔄 Substituir Comprovante
+                    <button type="button" class="btn-acao-comprovante" onclick="document.getElementById('blocoSubstituirComprovante').classList.toggle('oculto')" style="font-size: 13px; padding: 7px 14px; background: #d97706; color: #fff;">
+                        Substituir Comprovante
                     </button>
                 </div>
 
                 <!-- BLOCO PARA SUBSTITUIR COMPROVANTE -->
-                <div id="blocoSubstituirComprovante" class="oculto" style="margin-top: 18px; padding-top: 18px; border-top: 1px dashed #fde68a; text-align: left; max-width: 500px; margin-left: auto; margin-right: auto;">
+                <div id="blocoSubstituirComprovante" class="oculto" style="margin-top: 18px; padding-top: 18px; border-top: 1px dashed rgba(245, 158, 11, 0.4); text-align: left; max-width: 500px; margin-left: auto; margin-right: auto;">
                     <form id="formSubstituirComprovanteAluno" enctype="multipart/form-data">
                         <input type="hidden" name="idRecebimento" value="<%= mensAtual ? mensAtual.idfinanceiroRecebimento : '' %>">
 
                         <div class="form-grupo">
-                            <label for="campoSubstituirArquivo" style="color: #92400e; font-weight: 700;">Selecione o Novo Comprovante para Substituição</label>
+                            <label for="campoSubstituirArquivo" style="color: #fbbf24; font-weight: 700;">Selecione o Novo Comprovante para Substituição</label>
                             <input type="file" id="campoSubstituirArquivo" name="comprovante" accept="image/*,application/pdf" required>
-                            <small style="color: #b45309; font-size: 11.5px;">Formatos aceitos: JPG, PNG, WEBP ou PDF (até 5MB).</small>
+                            <small style="color: #fde68a; font-size: 11.5px;">Formatos aceitos: JPG, PNG, WEBP ou PDF (até 5MB).</small>
                         </div>
 
-                        <button type="submit" id="btnSubstituirComprovanteAluno" class="btn-confirmar-pagamento" style="background: #92400e; margin-top: 8px;">
-                            📤 Enviar Novo Comprovante e Atualizar
+                        <button type="submit" id="btnSubstituirComprovanteAluno" class="btn-confirmar-pagamento" style="background: #d97706; margin-top: 8px;">
+                            Enviar Novo Comprovante e Atualizar
                         </button>
                     </form>
                 </div>
@@ -126,19 +126,19 @@
 
         <% } else { %>
             <!-- PENDENTE OU ATRASADO: ALERTA E FORMULÁRIO DE ENVIO -->
-            <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+            <div style="background: #0f172a; border: 2px solid #000000; border-radius: 14px; padding: 24px; box-shadow: 0 4px 14px rgba(0,0,0,0.3);">
                 <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; margin-bottom: 20px;">
                     <div>
-                        <h3 style="font-size: 16px; font-weight: 800; color: #dc2626;">
-                            ⚠️ Pagamento Pendente - Vencimento <%= dataVencFormatada %>
+                        <h3 style="font-size: 16px; font-weight: 800; color: #ef4444;">
+                            Pagamento Pendente - Vencimento <%= dataVencFormatada %>
                         </h3>
                         <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">
-                            Efetue a transferência no valor exato de <strong>R$ <%= valorExato %></strong> e anexe o comprovante abaixo.
+                            Efetue a transferência no valor exato de <strong style="color: #F5D696;">R$ <%= valorExato %></strong> e anexe o comprovante abaixo.
                         </p>
                     </div>
 
-                    <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 8px 14px; font-size: 12.5px;">
-                        <strong>Chave Pix Oficial:</strong> <code>pix@institutobravo.com.br</code>
+                    <div style="background: #1e293b; border: 1.5px solid #000000; border-radius: 8px; padding: 8px 14px; font-size: 12.5px; color: #F5D696;">
+                        <strong>Chave Pix Oficial:</strong> <code style="color: #ffffff;">pix@institutobravo.com.br</code>
                     </div>
                 </div>
 
@@ -146,15 +146,15 @@
                     <input type="hidden" name="idRecebimento" value="<%= mensAtual ? mensAtual.idfinanceiroRecebimento : '' %>">
 
                     <div class="form-grupo">
-                        <label for="campoArquivoAluno">Anexar Comprovante de Pagamento (Imagem ou PDF)</label>
+                        <label for="campoArquivoAluno" style="color: #ffffff; font-weight: 700;">Anexar Comprovante de Pagamento (Imagem ou PDF)</label>
                         <input type="file" id="campoArquivoAluno" name="comprovante" accept="image/*,application/pdf" required>
                         <small style="color: var(--text-muted); font-size: 11.5px;">
                             Tire uma foto ou anexe o comprovante gerado pelo seu banco (PNG, JPG, PDF até 5MB).
                         </small>
                     </div>
 
-                    <button type="submit" id="btnEnviarComprovanteAluno" class="btn-confirmar-pagamento" style="background: #0f172a; margin-top: 10px;">
-                        📤 Enviar Comprovante para Verificação da Administração
+                    <button type="submit" id="btnEnviarComprovanteAluno" class="btn-confirmar-pagamento" style="background: #F5D696; color: #000000; font-weight: 800; margin-top: 10px;">
+                        Enviar Comprovante para Verificação
                     </button>
                 </form>
             </div>
@@ -164,7 +164,7 @@
     <!-- HISTÓRICO DE MENSALIDADES ANTERIORES -->
     <section class="mensalidades-card">
         <div class="secao-header">
-            <h2>📜 Histórico de Pagamentos</h2>
+            <h2>Histórico de Pagamentos</h2>
             <span style="font-size: 12.5px; color: var(--text-muted);">Mensalidades anteriores e comprovantes arquivados</span>
         </div>
 
@@ -190,18 +190,18 @@
                                 <% if (m.status_parcela === 'pago') { %>
                                     <span class="status-pill pago">● Pago</span>
                                 <% } else if (m.status_parcela === 'em_analise') { %>
-                                    <span class="status-pill em_analise">⏳ Em Análise</span>
+                                    <span class="status-pill em_analise">Em Análise</span>
                                 <% } else if (m.status_parcela === 'atrasado') { %>
-                                    <span class="status-pill atrasado">⚠️ Vencido</span>
+                                    <span class="status-pill atrasado">Vencido</span>
                                 <% } else { %>
-                                    <span class="status-pill pendente">⏳ Pendente</span>
+                                    <span class="status-pill pendente">Pendente</span>
                                 <% } %>
                             </td>
                             <td><%= m.data_pagamento ? new Date(m.data_pagamento).toLocaleDateString('pt-BR') : '—' %></td>
                             <td>
                                 <% if (m.comprovante_url) { %>
                                     <a href="<%= m.comprovante_url %>" target="_blank" class="link-ver-comprovante">
-                                        📄 Ver Anexo
+                                        Ver Anexo
                                     </a>
                                 <% } else { %>
                                     <span style="color: var(--text-muted); font-size: 12px;">—</span>

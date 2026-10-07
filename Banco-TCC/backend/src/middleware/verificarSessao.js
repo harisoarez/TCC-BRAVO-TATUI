@@ -3,25 +3,21 @@ const jwt = require("jsonwebtoken");
 function verificarSessao(req, res, next) {
     const segredo = process.env.JWT_SECRET || "instituto-bravo-segredo-jwt-2026";
 
-    // 1. Se já existir sessão ativa via express-session
-    if (req.session && req.session.usuario) {
-        return next();
-    }
-
-    // 2. Se foi enviado token via Query Param (?token=...)
+    // 1. Se foi enviado token via Query Param (?token=...)
     const tokenQuery = req.query.token;
     if (tokenQuery) {
         try {
             const decodificado = jwt.verify(tokenQuery, segredo);
             if (!req.session) req.session = {};
             req.session.usuario = decodificado;
+            res.locals.usuario = decodificado;
             return next();
         } catch (erro) {
             // Token inválido na query
         }
     }
 
-    // 3. Se foi enviado token via cabeçalho Authorization (Bearer token)
+    // 2. Se foi enviado token via cabeçalho Authorization (Bearer token)
     const authHeader = req.headers.authorization;
     if (authHeader && authHeader.startsWith("Bearer ")) {
         const token = authHeader.replace("Bearer ", "").trim();
@@ -29,10 +25,17 @@ function verificarSessao(req, res, next) {
             const decodificado = jwt.verify(token, segredo);
             if (!req.session) req.session = {};
             req.session.usuario = decodificado;
+            res.locals.usuario = decodificado;
             return next();
         } catch (erro) {
             // Token inválido no header
         }
+    }
+
+    // 3. Se já existir sessão ativa via express-session
+    if (req.session && req.session.usuario) {
+        res.locals.usuario = req.session.usuario;
+        return next();
     }
 
     // 4. Caso não autenticado

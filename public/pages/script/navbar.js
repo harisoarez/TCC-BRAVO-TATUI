@@ -3,27 +3,54 @@
 // ================================================================
 
 (function () {
-    const API_BASE = window.location.origin.startsWith("http") ? "" : "http://localhost:3000";
+    const API_BASE = (window.location.port === "3000" || (!window.location.port && window.location.protocol === "http:")) ? "" : "http://localhost:3000";
 
-    function obterUsuarioLogado() {
-        const token = localStorage.getItem("authToken");
-        const usuarioJson = localStorage.getItem("usuario");
-
-        if (!token || !usuarioJson) return null;
-
+    function decodificarToken(token) {
+        if (!token) return null;
         try {
-            const u = JSON.parse(usuarioJson);
-            const tipo = (u.tipo_usuario || "normal").toLowerCase();
-            return {
-                id: u.id_usuario,
-                nome: u.nome || "Usuário",
-                email: u.email,
-                tipo: tipo, // 'owner', 'admin', 'normal', 'aluno', 'professor'
-                token: token,
-            };
+            const partes = token.split(".");
+            if (partes.length !== 3) return null;
+            const payloadBase64 = partes[1].replace(/-/g, "+").replace(/_/g, "/");
+            const jsonStr = decodeURIComponent(
+                atob(payloadBase64)
+                    .split("")
+                    .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+                    .join("")
+            );
+            return JSON.parse(jsonStr);
         } catch (e) {
             return null;
         }
+    }
+
+    function obterUsuarioLogado() {
+        const token = localStorage.getItem("authToken");
+        if (!token) return null;
+
+        const payload = decodificarToken(token);
+        let u = {};
+        try {
+            const usuarioJson = localStorage.getItem("usuario");
+            if (usuarioJson) u = JSON.parse(usuarioJson);
+        } catch (e) {}
+
+        const tipoFinal = (payload?.tipo_usuario || u.tipo_usuario || u.tipo || "normal").toLowerCase();
+        const nomeFinal = payload?.nome || u.nome || "Usuário";
+        const emailFinal = payload?.email || u.email || "";
+        const idFinal = payload?.id_usuario || u.id_usuario || u.id;
+
+        return {
+            id: idFinal,
+            id_usuario: idFinal,
+            nome: nomeFinal,
+            email: emailFinal,
+            tipo: tipoFinal,
+            tipo_usuario: tipoFinal,
+            foto_url: u.foto_url || "",
+            descricao: u.descricao || "",
+            telefone: u.telefone || "",
+            token: token,
+        };
     }
 
     function inicializarNavbar() {
@@ -50,23 +77,23 @@
             </div>
         `;
 
-        // 2. Links Centrais
+        // 2. Links Centrais (Sem Emojis nos Botões da Navbar)
         // REGRA CRÍTICA: Não é possível ver o botão de acessar o calendário para pessoas não logadas!
         const linkCalendarioHtml = usuario ? `
             <a href="./calendario.html" class="nav-link-calendario ${isCalendario ? 'link-ativo' : ''}">
-                📅 Calendário
+                Calendário
             </a>
         ` : "";
 
         const linkPainelAdminHtml = (usuario && (usuario.tipo === "admin" || usuario.tipo === "owner")) ? `
             <a href="${API_BASE || 'http://localhost:3000'}/paginas/dashboard?token=${encodeURIComponent(usuario.token)}" style="color: #F5D696; font-weight:600;">
-                📊 Painel
+                Painel
             </a>
         ` : "";
 
         const linkMatriculaHtml = (usuario && (usuario.tipo === "aluno" || usuario.tipo === "normal")) ? `
             <a href="${API_BASE || 'http://localhost:3000'}/paginas/matricula?token=${encodeURIComponent(usuario.token)}" style="color: #38bdf8; font-weight:600;">
-                🎓 Matrícula
+                Matrícula
             </a>
         ` : "";
 
@@ -99,9 +126,10 @@
                 </div>
             `;
         } else {
-            // LOGADO: Borda colorida por tipo de usuário:
+            // LOGADO: Borda colorida por tipo de usuário (Sem Emojis nos Badges):
             // Owner = Borda Preta
             // Admin = Borda Amarela
+            // Professor = Borda Amarela
             // Normal / Aluno = Borda Azul Claro
             let classeBorda = "borda-normal";
             let rotuloCargo = "Aluno";
@@ -109,15 +137,15 @@
 
             if (usuario.tipo === "owner") {
                 classeBorda = "borda-owner";
-                rotuloCargo = "👑 Owner";
+                rotuloCargo = "Owner";
                 badgeClass = "owner";
             } else if (usuario.tipo === "admin") {
                 classeBorda = "borda-admin";
-                rotuloCargo = "⭐ Admin";
+                rotuloCargo = "Admin";
                 badgeClass = "admin";
             } else if (usuario.tipo === "professor") {
                 classeBorda = "borda-admin";
-                rotuloCargo = "🎻 Professor";
+                rotuloCargo = "Professor";
                 badgeClass = "admin";
             }
 
@@ -233,6 +261,12 @@
                         </div>
                     </div>
 
+                    <div class="form-grupo-conta" id="grupoDataNascConta">
+                        <label for="campoDataNascimento">Data de Nascimento (Aluno)</label>
+                        <input type="date" id="campoDataNascimento">
+                        <small style="color: #94a3b8; font-size: 11px;">Usada para registro de aniversariantes e controle acadêmico do aluno.</small>
+                    </div>
+
                     ${campoTipoUsuario}
 
                     <div class="form-grupo-conta">
@@ -240,11 +274,10 @@
                         <div class="box-senha-gerada">
                             <div class="linha-senha">
                                 <input type="text" id="campoSenhaGerada" class="input-senha-gerada" readonly required>
-                                <button type="button" class="btn-acao-senha" onclick="window.gerarNovaSenha()">⚡ Gerar Outra</button>
-                                <button type="button" id="btnCopiarSenha" class="btn-acao-senha" onclick="window.copiarSenhaGerada()">📋 Copiar</button>
+                                <button type="button" class="btn-acao-senha" onclick="window.gerarNovaSenha()">Gerar Outra</button>
+                                <button type="button" id="btnCopiarSenha" class="btn-acao-senha" onclick="window.copiarSenhaGerada()">Copiar</button>
                             </div>
                             <div class="aviso-envio-manual">
-                                <span>⚠️</span>
                                 <span>Copie e envie esta senha para o aluno manualmente. No primeiro acesso, o usuário deverá trocá-la (mín. 8 e máx. 20 caracteres).</span>
                             </div>
                         </div>
@@ -339,6 +372,7 @@
         const email = document.getElementById("campoNovoEmail").value.trim();
         const cpf = document.getElementById("campoNovoCPF").value.trim();
         const telefone = document.getElementById("campoNovoTel").value.trim();
+        const data_nascimento = document.getElementById("campoDataNascimento") ? document.getElementById("campoDataNascimento").value : null;
         const tipo_usuario = document.getElementById("campoNovoTipo").value;
         const senha = document.getElementById("campoSenhaGerada").value;
 
@@ -352,7 +386,7 @@
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({ nome, cpf, email, telefone, tipo_usuario, senha }),
+                body: JSON.stringify({ nome, cpf, email, telefone, data_nascimento, tipo_usuario, senha }),
             });
 
             const dados = await resp.json();
@@ -392,9 +426,9 @@
         modalDiv.style.cssText = "position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); display:none; align-items:center; justify-content:center; z-index:99999;";
 
         let rotuloCargo = "Aluno";
-        if (usuarioLogado.tipo === "owner") rotuloCargo = "👑 Owner";
-        else if (usuarioLogado.tipo === "admin") rotuloCargo = "⭐ Administrador";
-        else if (usuarioLogado.tipo === "professor") rotuloCargo = "🎻 Professor";
+        if (usuarioLogado.tipo === "owner") rotuloCargo = "Owner";
+        else if (usuarioLogado.tipo === "admin") rotuloCargo = "Administrador";
+        else if (usuarioLogado.tipo === "professor") rotuloCargo = "Professor";
 
         const fotoSrc = usuarioLogado.foto_url || "";
         const placeholderAvatar = fotoSrc ? `
@@ -491,7 +525,20 @@
                         if (dados.descricao !== undefined) usuarioLogado.descricao = dados.descricao;
                         const novoTel = document.getElementById("campoSiteTelefone").value;
                         if (novoTel) usuarioLogado.telefone = novoTel;
-                        localStorage.setItem("usuario", JSON.stringify(usuarioLogado));
+
+                        // Salva preservando estritamente id_usuario e tipo_usuario
+                        const dadosSalvar = {
+                            id_usuario: usuarioLogado.id_usuario || usuarioLogado.id,
+                            id: usuarioLogado.id_usuario || usuarioLogado.id,
+                            nome: usuarioLogado.nome,
+                            email: usuarioLogado.email,
+                            tipo_usuario: usuarioLogado.tipo_usuario || usuarioLogado.tipo,
+                            tipo: usuarioLogado.tipo,
+                            foto_url: usuarioLogado.foto_url,
+                            descricao: usuarioLogado.descricao,
+                            telefone: usuarioLogado.telefone,
+                        };
+                        localStorage.setItem("usuario", JSON.stringify(dadosSalvar));
 
                         setTimeout(() => {
                             window.location.reload();
@@ -515,9 +562,13 @@
         }
     }
 
-    window.fazerLogoutNav = function () {
+    window.fazerLogoutNav = async function () {
+        try {
+            await fetch(`${API_BASE || 'http://localhost:3000'}/api/logout`, { credentials: "include" });
+        } catch (e) {}
         localStorage.removeItem("authToken");
         localStorage.removeItem("usuario");
+        sessionStorage.clear();
         alert("Sessão finalizada.");
         window.location.href = "./login.html";
     };

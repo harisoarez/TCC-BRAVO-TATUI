@@ -59,7 +59,9 @@ body{
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
+    padding: 0 2%;
+    box-sizing: border-box;
     font-family: 'inter';
 }
 #nav-bar #logo{
@@ -162,9 +164,9 @@ body{
     display: flex;
     height: auto;
     width: 90%;
-    max-width: 1050px;
+    max-width: 1150px;
     justify-content: center;
-    gap: 28px;
+    gap: 90px;
     box-sizing: border-box;
 }
 
@@ -207,10 +209,15 @@ body{
 
 .card p{
     font-family: "Jaldi", sans-serif;
-    line-height: 1.45;
-    font-size: 13.5px;
-    text-align: center;
+    line-height: 1.4;
+    font-size: 16px;
+    text-align: justify;
+    text-align-last: center;
+    -moz-text-align-last: center;
     padding: 0 4px;
     color: #e5e7eb;
-    margin-top: auto;
+    margin-top: 4px;
+    margin-bottom: auto;
+    width: 100%;
+    box-sizing: border-box;
 }

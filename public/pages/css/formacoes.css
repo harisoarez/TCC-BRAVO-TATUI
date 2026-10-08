@@ -58,9 +58,10 @@ body{
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
+    padding: 0 2%;
+    box-sizing: border-box;
     font-family: 'inter';
-    
 }
 #nav-bar #logo{
     width: 16%;
@@ -102,6 +103,14 @@ body{
     display: flex;
     align-items: center;
     padding-left: 5%;
+    cursor: pointer;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), filter 0.25s ease, padding-left 0.25s ease;
+}
+
+.opcao:hover{
+    transform: translateX(8px);
+    filter: brightness(1.18);
+    padding-left: 5.5%;
 }
 
 .opcao h1{

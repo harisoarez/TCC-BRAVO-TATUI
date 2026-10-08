@@ -71,7 +71,7 @@ async function cadastrar(req, res) {
             sucesso: true,
             mensagem: "Professor cadastrado com sucesso!",
             idProfessor,
-            senhaTemporaria, // Facilitador em ambiente de desenvolvimento/testes
+            senhaTemporaria, 
         });
     } catch (error) {
         await conexao.rollback();

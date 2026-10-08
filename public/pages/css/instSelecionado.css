@@ -63,7 +63,9 @@ body{
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
+    padding: 0 2%;
+    box-sizing: border-box;
     font-family: 'inter';
     border-bottom: 1px solid white;
 }

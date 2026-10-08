@@ -1,0 +1,594 @@
+/* ================================================================
+   COFFEE BRAVO - CARDÁPIO COM PALETA MARROM CAFÉ ELEGANTE
+   (Botões do CRUD preservam suas cores funcionais operacionais)
+   ================================================================ */
+
+@font-face {
+    font-family: "julius";
+    src: url(../fonts/Julius_Sans_One/JuliusSansOne-Regular.ttf) format('truetype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "inter";
+    src: url(../fonts/Inter/Inter-VariableFont_opsz,wght.ttf) format('truetype');
+}
+
+:root {
+    /* Paleta Marrom Café & Caramelo */
+    --cafe-fundo-principal: #180f0a;       /* Marrom café torrado ultra escuro */
+    --cafe-fundo-card: #24160f;            /* Marrom chocolate nobre */
+    --cafe-fundo-card-hover: #2b1b13;      /* Marrom café aveludado */
+    --cafe-borda-sutil: #42291b;           /* Borda marrom grão de café */
+    --cafe-borda-destaque: #7a4624;        /* Marrom caramelo queimado */
+    --cafe-borda-hover: #a26033;           /* Caramelo tostado vivo */
+    --cafe-hero-bg-1: #3e2415;             /* Marrom avelã aquecido */
+    --cafe-hero-bg-2: #24140b;             /* Marrom café intermediário */
+    --cafe-hero-bg-3: #180f0a;             /* Base do hero */
+    --cafe-input-bg: #1e110a;              /* Fundo de inputs e caixas */
+    --cafe-tab-inativo: #26160e;           /* Abas inativas */
+    --cafe-tab-ativo-1: #7c4421;           /* Gradiente aba ativa */
+    --cafe-tab-ativo-2: #9e592c;
+    --cafe-texto-principal: #faebd7;       /* Antique white / creme suave */
+    --cafe-texto-secundario: #cbb29e;      /* Café com leite */
+    --cafe-texto-muted: #967a65;           /* Tons terrosos suaves */
+    --cafe-ouro-caramelo: #e4b87e;         /* Dourado caramelo */
+    --cafe-ouro-suave: #d4a373;            /* Caramelo macio */
+    --cafe-preco: #e8bd84;                 /* Preço em tom caramelo cremoso */
+    --cafe-destaque-bg: #8d4318;           /* Selo de destaque da casa */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'inter', sans-serif;
+}
+
+body {
+    background-color: var(--cafe-fundo-principal);
+    color: var(--cafe-texto-principal);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.cardapio-container {
+    width: 100%;
+    flex: 1;
+    background-color: var(--cafe-fundo-principal);
+}
+
+/* Header superior */
+.header-top {
+    background-color: #21140d;
+    border-bottom: 1px solid var(--cafe-borda-sutil);
+    height: 3.5vh;
+    min-height: 28px;
+    display: flex;
+    align-items: center;
+    padding-left: 2%;
+    font-size: 13px;
+    color: var(--cafe-texto-secundario);
+}
+
+.header-top a {
+    color: var(--cafe-texto-secundario);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.header-top a:hover {
+    color: var(--cafe-ouro-caramelo);
+}
+
+/* Hero Banner em Paleta Marrom Café */
+.cardapio-hero {
+    position: relative;
+    padding: 60px 4% 45px 4%;
+    background: radial-gradient(circle at 50% 15%, var(--cafe-hero-bg-1) 0%, var(--cafe-hero-bg-2) 65%, var(--cafe-hero-bg-3) 100%);
+    border-bottom: 1px solid var(--cafe-borda-sutil);
+    text-align: center;
+    overflow: hidden;
+}
+
+.cardapio-hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(rgba(228, 184, 126, 0.08) 1px, transparent 1px);
+    background-size: 26px 26px;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.hero-tag {
+    display: inline-block;
+    padding: 5px 16px;
+    background: rgba(162, 96, 51, 0.18);
+    border: 1px solid rgba(228, 184, 126, 0.35);
+    border-radius: 20px;
+    color: var(--cafe-ouro-caramelo);
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.hero-title {
+    font-family: 'julius', serif;
+    font-size: 44px;
+    font-weight: 700;
+    color: #fff4e6;
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+    text-shadow: 0 4px 22px rgba(162, 96, 51, 0.4);
+}
+
+.hero-subtitle {
+    font-size: 16px;
+    color: var(--cafe-texto-secundario);
+    max-width: 680px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Barra do Administrador em Marrom Café Nobre */
+.admin-toolbar-cardapio {
+    background: linear-gradient(90deg, #2a180e, #201108);
+    border: 1px solid var(--cafe-borda-destaque);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    max-width: 1200px;
+    margin: -25px auto 25px auto;
+    padding: 14px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.admin-info-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin-tag-pill {
+    background: #d4a373;
+    color: #1a0e06;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.admin-info-texto {
+    font-size: 13.5px;
+    color: var(--cafe-texto-principal);
+    font-weight: 600;
+}
+
+.admin-toolbar-acoes {
+    display: flex;
+    gap: 10px;
+}
+
+/* ========================================================
+   BOTÕES DO CRUD (PRESERVADOS CONFORME INSTRUÇÃO DO USUÁRIO)
+   ======================================================== */
+.btn-admin-add {
+    background: #F5D696;
+    color: #0b0d13;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-admin-add:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(245, 214, 150, 0.4);
+}
+
+.btn-admin-painel {
+    background: #1e293b;
+    color: #F5D696;
+    border: 1px solid rgba(245, 214, 150, 0.3);
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 13px;
+    text-decoration: none;
+    transition: background 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-admin-painel:hover {
+    background: #334155;
+}
+
+/* Área de Filtros e Busca em Paleta Marrom */
+.cardapio-controles {
+    max-width: 1200px;
+    margin: 25px auto 30px auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.categorias-tabs {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scrollbar-width: thin;
+}
+
+.categoria-tab-btn {
+    background: var(--cafe-tab-inativo);
+    color: var(--cafe-texto-secundario);
+    border: 1px solid var(--cafe-borda-sutil);
+    padding: 9px 18px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.categoria-tab-btn:hover {
+    color: var(--cafe-texto-principal);
+    border-color: var(--cafe-borda-destaque);
+    background: #301c12;
+}
+
+.categoria-tab-btn.ativo {
+    background: linear-gradient(135deg, var(--cafe-tab-ativo-1), var(--cafe-tab-ativo-2));
+    color: #fff9f0;
+    border-color: var(--cafe-borda-hover);
+    font-weight: 700;
+    box-shadow: 0 3px 12px rgba(124, 68, 33, 0.5);
+}
+
+.busca-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.campo-busca-box {
+    display: flex;
+    align-items: center;
+    background: var(--cafe-input-bg);
+    border: 1px solid var(--cafe-borda-sutil);
+    border-radius: 8px;
+    padding: 0 14px;
+    width: 100%;
+    max-width: 380px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.campo-busca-box:focus-within {
+    border-color: var(--cafe-ouro-suave);
+    box-shadow: 0 0 10px rgba(212, 163, 115, 0.2);
+}
+
+.campo-busca-box input {
+    background: transparent;
+    border: none;
+    color: var(--cafe-texto-principal);
+    padding: 10px 10px 10px 6px;
+    width: 100%;
+    outline: none;
+    font-size: 13.5px;
+}
+
+.campo-busca-box input::placeholder {
+    color: var(--cafe-texto-muted);
+}
+
+.total-itens-contador {
+    font-size: 13px;
+    color: var(--cafe-texto-muted);
+}
+
+/* Grid de Produtos */
+.grid-produtos {
+    max-width: 1200px;
+    margin: 0 auto 60px auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 24px;
+}
+
+/* Card de Produto em Marrom Café */
+.produto-card {
+    background: var(--cafe-fundo-card);
+    border: 1px solid var(--cafe-borda-sutil);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.22s, box-shadow 0.22s, border-color 0.22s;
+    position: relative;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+.produto-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.55), 0 0 14px rgba(162, 96, 51, 0.25);
+    border-color: var(--cafe-borda-hover);
+    background: var(--cafe-fundo-card-hover);
+}
+
+.produto-card.esgotado {
+    opacity: 0.65;
+    filter: grayscale(0.2);
+}
+
+.produto-imagem-box {
+    width: 100%;
+    height: 190px;
+    background: #190e07;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.produto-imagem-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.produto-card:hover .produto-imagem-box img {
+    transform: scale(1.05);
+}
+
+.produto-imagem-placeholder {
+    font-size: 48px;
+    color: var(--cafe-ouro-suave);
+    opacity: 0.8;
+}
+
+/* Badges sobre a foto */
+.badge-destaque {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--cafe-destaque-bg);
+    color: #fff6ed;
+    border: 1px solid rgba(245, 214, 150, 0.4);
+    font-size: 11px;
+    font-weight: 800;
+    padding: 3px 9px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.badge-status {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.badge-status.disponivel {
+    background: rgba(34, 197, 94, 0.9);
+    color: #ffffff;
+}
+
+.badge-status.esgotado {
+    background: rgba(239, 68, 68, 0.9);
+    color: #ffffff;
+}
+
+/* Detalhes do Produto */
+.produto-info {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.produto-categoria-tag {
+    font-size: 11.5px;
+    color: var(--cafe-ouro-suave);
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+}
+
+.produto-nome {
+    font-size: 16.5px;
+    font-weight: 700;
+    color: var(--cafe-texto-principal);
+    margin-bottom: 6px;
+    line-height: 1.3;
+}
+
+.produto-descricao {
+    font-size: 12.5px;
+    color: var(--cafe-texto-secundario);
+    line-height: 1.45;
+    margin-bottom: 16px;
+    flex: 1;
+}
+
+.produto-rodape {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--cafe-borda-sutil);
+    padding-top: 12px;
+    margin-top: auto;
+}
+
+.produto-preco {
+    font-size: 18.5px;
+    font-weight: 800;
+    color: var(--cafe-preco);
+    letter-spacing: 0.5px;
+}
+
+.produto-preco-prefixo {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--cafe-texto-muted);
+    margin-right: 2px;
+}
+
+/* ========================================================
+   AÇÕES DO CRUD NO CARD (PRESERVADAS AS CORES OPERACIONAIS)
+   ======================================================== */
+.admin-card-acoes {
+    border-top: 1px dashed var(--cafe-borda-destaque);
+    background: rgba(42, 24, 14, 0.5);
+    padding: 10px 14px;
+    display: flex;
+    gap: 6px;
+    justify-content: space-between;
+}
+
+.btn-card-admin {
+    padding: 5px 9px;
+    border-radius: 5px;
+    font-size: 11.5px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: background 0.15s;
+}
+
+.btn-card-editar {
+    background: #1e293b;
+    color: #F5D696;
+    border: 1px solid rgba(245, 214, 150, 0.3);
+}
+
+.btn-card-status {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.btn-card-status.esgot {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.btn-card-excluir {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Modais em Marrom Café */
+.modal-overlay-public {
+    position: fixed;
+    inset: 0;
+    background: rgba(18, 10, 6, 0.85);
+    backdrop-filter: blur(2px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    padding: 20px;
+}
+
+.modal-card-public {
+    background: #24150d;
+    border: 1px solid var(--cafe-borda-destaque);
+    color: var(--cafe-texto-principal);
+    width: 100%;
+    max-width: 520px;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Estado vazio */
+.estado-vazio {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 50px 20px;
+    background: var(--cafe-fundo-card);
+    border-radius: 12px;
+    border: 1px dashed var(--cafe-borda-destaque);
+}
+
+.estado-vazio h3 {
+    font-size: 18px;
+    color: var(--cafe-ouro-caramelo);
+    margin-bottom: 8px;
+}
+
+.estado-vazio p {
+    color: var(--cafe-texto-secundario);
+    font-size: 13.5px;
+}
+
+/* Rodapé em Marrom Café */
+.footer-cardapio {
+    background-color: #140b07;
+    border-top: 1px solid var(--cafe-borda-sutil);
+    padding: 24px 20px;
+    text-align: center;
+    color: var(--cafe-texto-muted);
+    font-size: 13px;
+    margin-top: auto;
+}
+
+.footer-cardapio a {
+    color: var(--cafe-ouro-caramelo);
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 32px;
+    }
+    .admin-toolbar-cardapio {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .grid-produtos {
+        grid-template-columns: 1fr;
+    }
+}

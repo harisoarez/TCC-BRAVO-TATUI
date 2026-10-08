@@ -1,0 +1,486 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+
+<main class="dashboard-container">
+    <header class="databricks-header">
+        <div class="header-title-col">
+            <h1>
+                <span class="estrela">🎻</span> 
+                Gestão de Instrumentos Musicais
+            </h1>
+            <p>Instituto Musical Bravo Tatuí • Controle de instrumentos para aulas no IMBT e formações personalizadas de eventos</p>
+        </div>
+
+        <div class="header-meta-col" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <a href="/site/instrumentos.html" target="_blank" class="btn-visualizar-site" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; background: #1e293b; color: #F5D696; border: 1px solid rgba(245, 214, 150, 0.3); border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 600;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                Ver no Site Institucional
+            </a>
+            <button type="button" onclick="abrirModalNovoInstrumento()" class="btn-novo-item" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: #F5D696; color: #0b0d13; border: none; border-radius: 6px; font-size: 13.5px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 8px rgba(245, 214, 150, 0.3);">
+                + Novo Instrumento
+            </button>
+        </div>
+    </header>
+
+    <!-- Feedback de Sucesso ou Erro -->
+    <% if (sucesso) { %>
+        <div style="background: #dcfce7; border: 1px solid #bbf7d0; color: #15803d; padding: 12px 18px; border-radius: 8px; font-size: 13.5px; font-weight: 600; margin-bottom: 20px;">
+            ✓ <%= sucesso %>
+        </div>
+    <% } %>
+    <% if (erro) { %>
+        <div style="background: #fee2e2; border: 1px solid #fecaca; color: #b91c1c; padding: 12px 18px; border-radius: 8px; font-size: 13.5px; font-weight: 600; margin-bottom: 20px;">
+            ✕ <%= erro %>
+        </div>
+    <% } %>
+
+    <!-- Cards de Métricas / KPIs de Instrumentos -->
+    <section class="kpi-grid">
+        <div class="kpi-card destaque-ouro">
+            <div class="kpi-header">
+                <span class="kpi-label">Total Cadastrado</span>
+                <span class="kpi-badge neutro"><%= estatisticas.totalCategorias %> categorias</span>
+            </div>
+            <div class="kpi-valor"><%= estatisticas.totalGeral %> instrumentos</div>
+            <div class="kpi-subtexto">Acervo geral do Instituto Bravo</div>
+        </div>
+
+        <div class="kpi-card destaque-verde">
+            <div class="kpi-header">
+                <span class="kpi-label">Aulas no IMBT</span>
+                <span class="kpi-badge positivo">Pedagógico</span>
+            </div>
+            <div class="kpi-valor"><%= estatisticas.totalAulas %> cursos</div>
+            <div class="kpi-subtexto">Disponíveis para matrícula e aulas</div>
+        </div>
+
+        <div class="kpi-card destaque-azul">
+            <div class="kpi-header">
+                <span class="kpi-label">Formações & Eventos</span>
+                <span class="kpi-badge positivo">Orquestra & Casamentos</span>
+            </div>
+            <div class="kpi-valor"><%= estatisticas.totalEventos %> instrumentos</div>
+            <div class="kpi-subtexto">Disponíveis no "Faça do seu jeito"</div>
+        </div>
+
+        <div class="kpi-card destaque-vermelho">
+            <div class="kpi-header">
+                <span class="kpi-label">Categorias Ativas</span>
+                <span class="kpi-badge neutro">Naipes</span>
+            </div>
+            <div class="kpi-valor"><%= estatisticas.totalCategorias %> naipes</div>
+            <div class="kpi-subtexto">Cordas, Metais, Madeiras, Teclas, Percussão</div>
+        </div>
+    </section>
+
+    <!-- Barra de Filtros e Busca Rápida -->
+    <section class="mensalidades-card" style="margin-top: 24px;">
+        <div class="secao-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <div>
+                <h2>Catálogo de Instrumentos</h2>
+                <span style="font-size: 13px; color: var(--text-muted);">
+                    Gerencie os instrumentos ensinados no IMBT e selecionáveis em eventos. Clique nos botões de status para ativar ou pausar.
+                </span>
+            </div>
+
+            <!-- Controles de Filtro -->
+            <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                <input type="text" id="filtroBusca" placeholder="Pesquisar por instrumento ou naipe..." onkeyup="filtrarTabela()" style="padding: 8px 14px; border: 1px solid var(--border-color); border-radius: 6px; background: #111520; color: #fff; font-size: 13px; width: 260px;">
+
+                <select id="filtroCategoria" onchange="filtrarTabela()" style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 6px; background: #111520; color: #fff; font-size: 13px;">
+                    <option value="">Todas as Categorias</option>
+                    <% categorias.forEach(function(cat) { %>
+                        <option value="<%= cat %>"><%= cat %></option>
+                    <% }); %>
+                </select>
+
+                <select id="filtroModalidade" onchange="filtrarTabela()" style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 6px; background: #111520; color: #fff; font-size: 13px;">
+                    <option value="">Todas as Modalidades</option>
+                    <option value="aulas">Apenas Aulas no IMBT</option>
+                    <option value="eventos">Apenas Formações/Eventos</option>
+                    <option value="ativos">Apenas Ativos</option>
+                    <option value="inativos">Apenas Inativos</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Tabela de Instrumentos -->
+        <div class="tabela-container" style="margin-top: 16px; overflow-x: auto;">
+            <table class="tabela-mensalidades" id="tabelaInstrumentos">
+                <thead>
+                    <tr>
+                        <th style="width: 60px;">Foto</th>
+                        <th>Instrumento</th>
+                        <th>Categoria / Naipe</th>
+                        <th style="text-align: center;">Aulas IMBT</th>
+                        <th style="text-align: center;">Formações</th>
+                        <th style="text-align: center;">Status</th>
+                        <th style="text-align: right;">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (instrumentos.length === 0) { %>
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                                Nenhum instrumento cadastrado no momento. Clique em "+ Novo Instrumento" acima para cadastrar.
+                            </td>
+                        </tr>
+                    <% } %>
+
+                    <% instrumentos.forEach(function(inst) { %>
+                        <tr class="linha-instrumento" 
+                            data-categoria="<%= inst.categoria %>" 
+                            data-aulas="<%= inst.disponivel_aulas %>"
+                            data-eventos="<%= inst.disponivel_eventos %>"
+                            data-ativo="<%= inst.ativo %>">
+                            <!-- Foto -->
+                            <td>
+                                <div style="width: 44px; height: 44px; border-radius: 8px; overflow: hidden; background: #1e293b; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255, 255, 255, 0.1);">
+                                    <% if (inst.imagem_url) { %>
+                                        <img src="<%= inst.imagem_url %>" alt="<%= inst.nome %>" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                        <span style="font-size: 20px; display: none;"><%= inst.icone || '🎻' %></span>
+                                    <% } else { %>
+                                        <span style="font-size: 20px;"><%= inst.icone || '🎻' %></span>
+                                    <% } %>
+                                </div>
+                            </td>
+
+                            <!-- Nome & Descrição -->
+                            <td>
+                                <div style="display: flex; flex-direction: column;">
+                                    <div style="display: flex; align-items: center; gap: 6px;">
+                                        <span style="font-size: 16px;"><%= inst.icone || '🎻' %></span>
+                                        <strong style="color: #fff; font-size: 14px;"><%= inst.nome %></strong>
+                                    </div>
+                                    <span style="font-size: 12px; color: var(--text-muted); max-width: 320px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px;">
+                                        <%= inst.descricao || 'Sem descrição cadastrada.' %>
+                                    </span>
+                                </div>
+                            </td>
+
+                            <!-- Categoria -->
+                            <td>
+                                <span class="kpi-badge neutro" style="font-size: 12px; font-weight: 500;">
+                                    <%= inst.categoria %>
+                                </span>
+                            </td>
+
+                            <!-- Disponível para Aulas -->
+                            <td style="text-align: center;">
+                                <form action="/paginas/instrumentos/status/<%= inst.id_instrumento %>" method="POST" style="display: inline;">
+                                    <input type="hidden" name="campo" value="disponivel_aulas">
+                                    <button type="submit" class="kpi-badge <%= inst.disponivel_aulas ? 'positivo' : 'neutro' %>" style="border: none; cursor: pointer; padding: 4px 10px;" title="Clique para alternar disponibilidade para aulas">
+                                        <%= inst.disponivel_aulas ? '✓ Sim (Ativo)' : '✕ Não' %>
+                                    </button>
+                                </form>
+                            </td>
+
+                            <!-- Disponível para Formações -->
+                            <td style="text-align: center;">
+                                <form action="/paginas/instrumentos/status/<%= inst.id_instrumento %>" method="POST" style="display: inline;">
+                                    <input type="hidden" name="campo" value="disponivel_eventos">
+                                    <button type="submit" class="kpi-badge <%= inst.disponivel_eventos ? 'positivo' : 'neutro' %>" style="border: none; cursor: pointer; padding: 4px 10px;" title="Clique para alternar disponibilidade para eventos">
+                                        <%= inst.disponivel_eventos ? '✓ Sim (Ativo)' : '✕ Não' %>
+                                    </button>
+                                </form>
+                            </td>
+
+                            <!-- Status Geral (Ativo/Inativo) -->
+                            <td style="text-align: center;">
+                                <form action="/paginas/instrumentos/status/<%= inst.id_instrumento %>" method="POST" style="display: inline;">
+                                    <input type="hidden" name="campo" value="ativo">
+                                    <button type="submit" class="kpi-badge <%= inst.ativo ? 'positivo' : 'alerta' %>" style="border: none; cursor: pointer; padding: 4px 10px;" title="Clique para ativar/desativar">
+                                        <%= inst.ativo ? '● Ativo' : '○ Inativo' %>
+                                    </button>
+                                </form>
+                            </td>
+
+                            <!-- Ações -->
+                            <td style="text-align: right; white-space: nowrap;">
+                                <div style="display: inline-flex; gap: 8px; align-items: center;">
+                                    <a href="/site/instSelecionado.html?id=<%= inst.id_instrumento %>" target="_blank" class="btn-acao-tabela" style="padding: 6px 10px; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: 600;" title="Ver página individual do instrumento">
+                                        👁️ Ver
+                                    </a>
+
+                                    <button type="button" 
+                                            onclick='abrirModalEditarInstrumento(<%= JSON.stringify(inst).replace(/\'/g, "&#39;") %>)' 
+                                            class="btn-acao-tabela" 
+                                            style="padding: 6px 10px; background: rgba(245, 214, 150, 0.15); color: #F5D696; border: 1px solid rgba(245, 214, 150, 0.3); border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;"
+                                            title="Editar dados deste instrumento">
+                                        ✏️ Editar
+                                    </button>
+
+                                    <button type="button" 
+                                            onclick="confirmarExclusao(<%= inst.id_instrumento %>, '<%= inst.nome.replace(/\'/g, "\\\'") %>')" 
+                                            class="btn-acao-tabela" 
+                                            style="padding: 6px 10px; background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;"
+                                            title="Excluir instrumento">
+                                        🗑️ Excluir
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<!-- ============================================================== -->
+<!-- MODAL: CADASTRAR / EDITAR INSTRUMENTO MUSICAL                 -->
+<!-- ============================================================== -->
+<div id="modalInstrumento" class="modal-overlay oculto" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 9999; display: none; align-items: center; justify-content: center; backdrop-filter: blur(6px);">
+    <div class="modal-card" style="background: #111520; border: 1px solid rgba(245, 214, 150, 0.3); border-radius: 12px; width: 95%; max-width: 620px; max-height: 90vh; overflow-y: auto; padding: 26px; box-shadow: 0 20px 50px rgba(0,0,0,0.6); color: #fff;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 14px;">
+            <h3 id="modalInstrumentoTitulo" style="margin: 0; font-family: 'julius', serif; font-size: 18px; color: #F5D696; letter-spacing: 1px;">
+                Adicionar Novo Instrumento
+            </h3>
+            <button type="button" onclick="fecharModalInstrumento()" style="background: none; border: none; font-size: 26px; color: #94a3b8; cursor: pointer; line-height: 1;">&times;</button>
+        </div>
+
+        <form id="formInstrumento" method="POST" action="/paginas/instrumentos/criar" enctype="multipart/form-data">
+            <input type="hidden" id="instCampoId" name="id">
+
+            <!-- Linha 1: Nome e Ícone -->
+            <div style="display: grid; grid-template-columns: 2.5fr 1fr; gap: 14px; margin-bottom: 16px;">
+                <div>
+                    <label for="instCampoNome" style="display: block; font-size: 12.5px; font-weight: 600; color: #cbd5e1; margin-bottom: 6px;">Nome do Instrumento *</label>
+                    <input type="text" id="instCampoNome" name="nome" placeholder="Ex: Violino, Piano, Saxofone..." required style="width: 100%; padding: 9px 12px; background: #07090e; border: 1px solid var(--border-color); border-radius: 6px; color: #fff; font-size: 13.5px; box-sizing: border-box;">
+                </div>
+
+                <div>
+                    <label for="instCampoIcone" style="display: block; font-size: 12.5px; font-weight: 600; color: #cbd5e1; margin-bottom: 6px;">Ícone / Emoji</label>
+                    <input type="text" id="instCampoIcone" name="icone" placeholder="🎻, 🎹, 🎷" value="🎻" style="width: 100%; padding: 9px 12px; background: #07090e; border: 1px solid var(--border-color); border-radius: 6px; color: #fff; font-size: 15px; text-align: center; box-sizing: border-box;">
+                </div>
+            </div>
+
+            <!-- Linha 2: Categoria / Naipe -->
+            <div style="margin-bottom: 16px;">
+                <label for="instCampoCategoria" style="display: block; font-size: 12.5px; font-weight: 600; color: #cbd5e1; margin-bottom: 6px;">Categoria / Naipe Musical *</label>
+                <select id="instCampoCategoria" name="categoria" onchange="verificarCategoriaNova(this.value)" style="width: 100%; padding: 9px 12px; background: #07090e; border: 1px solid var(--border-color); border-radius: 6px; color: #fff; font-size: 13.5px; box-sizing: border-box;">
+                    <option value="Cordas de Arco & Harpa">Cordas de Arco & Harpa</option>
+                    <option value="Teclas & Harmonia">Teclas & Harmonia</option>
+                    <option value="Sopros (Metais & Madeiras)">Sopros (Metais & Madeiras)</option>
+                    <option value="Percussão & Ritmo">Percussão & Ritmo</option>
+                    <option value="Vozes & Coral">Vozes & Coral</option>
+                    <option value="__nova__">+ Criar Nova Categoria...</option>
+                </select>
+
+                <div id="boxCategoriaNova" style="display: none; margin-top: 8px;">
+                    <input type="text" id="instCampoCategoriaNova" name="categoria_nova" placeholder="Digite o nome da nova categoria..." style="width: 100%; padding: 8px 12px; background: #07090e; border: 1px solid #F5D696; border-radius: 6px; color: #fff; font-size: 13px; box-sizing: border-box;">
+                </div>
+            </div>
+
+            <!-- Linha 3: Foto do Instrumento (Upload ou URL) -->
+            <div style="margin-bottom: 16px;">
+                <label style="display: block; font-size: 12.5px; font-weight: 600; color: #cbd5e1; margin-bottom: 6px;">Foto do Instrumento</label>
+                
+                <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 12px;">
+                    <div style="margin-bottom: 10px;">
+                        <span style="font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 4px;">Enviar arquivo de imagem do computador:</span>
+                        <input type="file" id="instCampoArquivo" name="imagem" accept="image/*" style="width: 100%; font-size: 12.5px; color: #94a3b8;">
+                    </div>
+
+                    <div>
+                        <span style="font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 4px;">Ou insira uma URL da imagem na web:</span>
+                        <input type="text" id="instCampoImagemUrl" name="imagem_url" placeholder="https://exemplo.com/foto-instrumento.jpg" style="width: 100%; padding: 7px 10px; background: #07090e; border: 1px solid var(--border-color); border-radius: 6px; color: #fff; font-size: 12.5px; box-sizing: border-box;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Linha 4: Descrição Detalhada -->
+            <div style="margin-bottom: 18px;">
+                <label for="instCampoDescricao" style="display: block; font-size: 12.5px; font-weight: 600; color: #cbd5e1; margin-bottom: 6px;">Descrição / Detalhes Pedagógicos e Musicais</label>
+                <textarea id="instCampoDescricao" name="descricao" rows="4" placeholder="Descreva as características do instrumento, repertório trabalhado nas aulas ou importância em eventos..." style="width: 100%; padding: 10px 12px; background: #07090e; border: 1px solid var(--border-color); border-radius: 6px; color: #fff; font-size: 13px; box-sizing: border-box; resize: vertical;"></textarea>
+            </div>
+
+            <!-- Linha 5: Opções de Exibição e Modalidades -->
+            <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 14px; margin-bottom: 22px;">
+                <span style="display: block; font-size: 12.5px; font-weight: 700; color: #F5D696; margin-bottom: 10px;">Modalidades de Disponibilidade</span>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 10px;">
+                    <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer;">
+                        <input type="checkbox" id="instCampoAulas" name="disponivel_aulas" value="1" checked style="width: 16px; height: 16px; accent-color: #F5D696;">
+                        <span>Disponível para Aulas no IMBT</span>
+                    </label>
+
+                    <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer;">
+                        <input type="checkbox" id="instCampoEventos" name="disponivel_eventos" value="1" checked style="width: 16px; height: 16px; accent-color: #F5D696;">
+                        <span>Disponível para Formações / Eventos</span>
+                    </label>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer;">
+                        <input type="checkbox" id="instCampoAtivo" name="ativo" value="1" checked style="width: 16px; height: 16px; accent-color: #22c55e;">
+                        <span>Instrumento Ativo (Visível no Site)</span>
+                    </label>
+
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <label for="instCampoOrdem" style="font-size: 12px; color: var(--text-muted); white-space: nowrap;">Ordem de exibição:</label>
+                        <input type="number" id="instCampoOrdem" name="ordem" value="0" style="width: 60px; padding: 4px 6px; background: #07090e; border: 1px solid var(--border-color); border-radius: 4px; color: #fff; font-size: 12px; text-align: center;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botões de Ação do Modal -->
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" onclick="fecharModalInstrumento()" style="padding: 10px 18px; background: #1e293b; color: #cbd5e1; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer;">
+                    Cancelar
+                </button>
+                <button type="submit" id="btnSalvarInstrumento" style="padding: 10px 22px; background: #F5D696; color: #07090e; border: none; border-radius: 6px; font-size: 13.5px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 10px rgba(245, 214, 150, 0.3);">
+                    Salvar Instrumento
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ============================================================== -->
+<!-- MODAL: CONFIRMAR EXCLUSÃO DE INSTRUMENTO                       -->
+<!-- ============================================================== -->
+<div id="modalExclusao" class="modal-overlay oculto" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 9999; display: none; align-items: center; justify-content: center; backdrop-filter: blur(6px);">
+    <div class="modal-card" style="background: #111520; border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 12px; width: 90%; max-width: 440px; padding: 24px; color: #fff; box-shadow: 0 20px 40px rgba(0,0,0,0.6);">
+        <h3 style="margin-top: 0; color: #f87171; font-size: 17px; display: flex; align-items: center; gap: 8px;">
+            <span>⚠️</span> Excluir Instrumento
+        </h3>
+        <p style="font-size: 13.5px; color: #cbd5e1; line-height: 1.5; margin: 14px 0 20px 0;">
+            Tem certeza que deseja excluir o instrumento <strong id="nomeInstrumentoExcluir" style="color: #fff;"></strong>? Esta ação não pode ser desfeita.
+        </p>
+
+        <form id="formExcluirInstrumento" method="POST" action="">
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" onclick="fecharModalExclusao()" style="padding: 9px 16px; background: #1e293b; color: #cbd5e1; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer;">
+                    Cancelar
+                </button>
+                <button type="submit" style="padding: 9px 18px; background: #dc2626; color: #fff; border: none; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer;">
+                    Sim, Excluir
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>
+
+<script>
+    // Filtros de Tabela
+    function filtrarTabela() {
+        const termo = document.getElementById("filtroBusca").value.toLowerCase().trim();
+        const categoria = document.getElementById("filtroCategoria").value;
+        const modalidade = document.getElementById("filtroModalidade").value;
+        const linhas = document.querySelectorAll(".linha-instrumento");
+
+        linhas.forEach(linha => {
+            const textoLinha = linha.textContent.toLowerCase();
+            const catLinha = linha.getAttribute("data-categoria");
+            const aulasLinha = linha.getAttribute("data-aulas") === "1";
+            const eventosLinha = linha.getAttribute("data-eventos") === "1";
+            const ativoLinha = linha.getAttribute("data-ativo") === "1";
+
+            const bateBusca = !termo || textoLinha.includes(termo);
+            const bateCategoria = !categoria || catLinha === categoria;
+
+            let bateModalidade = true;
+            if (modalidade === "aulas") bateModalidade = aulasLinha;
+            else if (modalidade === "eventos") bateModalidade = eventosLinha;
+            else if (modalidade === "ativos") bateModalidade = ativoLinha;
+            else if (modalidade === "inativos") bateModalidade = !ativoLinha;
+
+            if (bateBusca && bateCategoria && bateModalidade) {
+                linha.style.display = "";
+            } else {
+                linha.style.display = "none";
+            }
+        });
+    }
+
+    function verificarCategoriaNova(valor) {
+        const box = document.getElementById("boxCategoriaNova");
+        const input = document.getElementById("instCampoCategoriaNova");
+        if (valor === "__nova__") {
+            box.style.display = "block";
+            input.required = true;
+            input.focus();
+        } else {
+            box.style.display = "none";
+            input.required = false;
+        }
+    }
+
+    // Modal de Criar
+    function abrirModalNovoInstrumento() {
+        document.getElementById("modalInstrumentoTitulo").textContent = "Adicionar Novo Instrumento";
+        document.getElementById("formInstrumento").action = "/paginas/instrumentos/criar";
+        document.getElementById("formInstrumento").reset();
+        document.getElementById("instCampoId").value = "";
+        document.getElementById("boxCategoriaNova").style.display = "none";
+        document.getElementById("instCampoAulas").checked = true;
+        document.getElementById("instCampoEventos").checked = true;
+        document.getElementById("instCampoAtivo").checked = true;
+        document.getElementById("instCampoOrdem").value = 0;
+
+        const modal = document.getElementById("modalInstrumento");
+        modal.classList.remove("oculto");
+        modal.style.display = "flex";
+    }
+
+    // Modal de Editar
+    function abrirModalEditarInstrumento(inst) {
+        document.getElementById("modalInstrumentoTitulo").textContent = "Editar Instrumento: " + inst.nome;
+        document.getElementById("formInstrumento").action = "/paginas/instrumentos/editar/" + inst.id_instrumento;
+        document.getElementById("instCampoId").value = inst.id_instrumento;
+        document.getElementById("instCampoNome").value = inst.nome || "";
+        document.getElementById("instCampoIcone").value = inst.icone || "🎻";
+        document.getElementById("instCampoImagemUrl").value = inst.imagem_url || "";
+        document.getElementById("instCampoDescricao").value = inst.descricao || "";
+        document.getElementById("instCampoOrdem").value = inst.ordem || 0;
+
+        document.getElementById("instCampoAulas").checked = inst.disponivel_aulas == 1;
+        document.getElementById("instCampoEventos").checked = inst.disponivel_eventos == 1;
+        document.getElementById("instCampoAtivo").checked = inst.ativo == 1;
+
+        const selectCat = document.getElementById("instCampoCategoria");
+        let achou = false;
+        for (let i = 0; i < selectCat.options.length; i++) {
+            if (selectCat.options[i].value === inst.categoria) {
+                selectCat.selectedIndex = i;
+                achou = true;
+                break;
+            }
+        }
+        if (!achou) {
+            selectCat.value = "__nova__";
+            document.getElementById("boxCategoriaNova").style.display = "block";
+            document.getElementById("instCampoCategoriaNova").value = inst.categoria || "";
+        } else {
+            document.getElementById("boxCategoriaNova").style.display = "none";
+        }
+
+        const modal = document.getElementById("modalInstrumento");
+        modal.classList.remove("oculto");
+        modal.style.display = "flex";
+    }
+
+    function fecharModalInstrumento() {
+        const modal = document.getElementById("modalInstrumento");
+        modal.classList.add("oculto");
+        modal.style.display = "none";
+    }
+
+    // Modal de Exclusão
+    function confirmarExclusao(id, nome) {
+        document.getElementById("nomeInstrumentoExcluir").textContent = nome;
+        document.getElementById("formExcluirInstrumento").action = "/paginas/instrumentos/excluir/" + id;
+        const modal = document.getElementById("modalExclusao");
+        modal.classList.remove("oculto");
+        modal.style.display = "flex";
+    }
+
+    function fecharModalExclusao() {
+        const modal = document.getElementById("modalExclusao");
+        modal.classList.add("oculto");
+        modal.style.display = "none";
+    }
+</script>

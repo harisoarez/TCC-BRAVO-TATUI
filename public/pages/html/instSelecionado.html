@@ -3,9 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bravo Tatuí</title>
+    <title>Instrumento | Instituto Bravo Tatuí</title>
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/instSelecionado.css">
+    <style>
+        .barra-voltar-inst {
+            padding: 14px 3%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .btn-voltar-inst {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #94a3b8;
+            font-family: 'inter', sans-serif;
+            font-size: 13.5px;
+            text-decoration: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.2s ease;
+        }
+        .btn-voltar-inst:hover {
+            color: #F5D696;
+            border-color: #F5D696;
+            background: rgba(245, 214, 150, 0.1);
+            transform: translateX(-3px);
+        }
+        .btn-matricular-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #F5D696;
+            color: #080808;
+            font-family: 'inter', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-top: 18px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 14px rgba(245, 214, 150, 0.25);
+        }
+        .btn-matricular-cta:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 214, 150, 0.4);
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -20,7 +69,7 @@
             <div id="nav-links">
                 <a href="./index.html">Início</a>
                 <a href="./formacoes.html">Bravo Tatuí</a>
-                <a href="./instrumentos.html">Aulas no IMBT</a>
+                <a href="./instrumentos.html" style="color: #F5D696;">Aulas no IMBT</a>
                 <a href="./calendario.html">Calendário</a>
                 <a href="./login.html" style="color: #F5D696; font-weight: 500;">Login</a>
             </div>
@@ -29,20 +78,37 @@
                 <input type="text" placeholder="Pesquisar no site">
             </div>
         </div>
+
+        <div class="barra-voltar-inst">
+            <a href="./instrumentos.html" class="btn-voltar-inst">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                <span>Voltar aos Instrumentos</span>
+            </a>
+        </div>
         
         <div class="parent">
             <div class="div1">
-                <img src="../images/instSelecionado.png" alt="Imagem do Instagram">
+                <img src="../images/instSelecionado.png" alt="Imagem do Instrumento">
             </div>
-            <div class="div2">
-
+            <div class="div2" style="padding: 24px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+                <h3 style="font-family: 'julius', serif; color: #F5D696; font-size: 1.5rem; margin-bottom: 8px;">Deseja Aprender a Tocar?</h3>
+                <p style="font-family: 'jaldi', sans-serif; font-size: 1.2rem; color: #cbd5e1; max-width: 600px; margin-bottom: 12px;">
+                    Matricule-se no Instituto Musical Bravo Tatuí com professores graduados, salas acústicas climatizadas e metodologia de excelência.
+                </p>
+                <a href="https://wa.me/5515998127021?text=Ol%C3%A1!%20Gostaria%20de%20informa%C3%A7%C3%B5es%20sobre%20aulas%20de%20m%C3%BAsica%20no%20IMBT." target="_blank" class="btn-matricular-cta">
+                    <span>Quero me Matricular / Falar no WhatsApp</span>
+                </a>
             </div>
-            <div class="div3">
-                    <h1>Piano</h1>
-                    <p>O piano é um instrumento musical de teclado muito versátil, utilizado em diversos estilos como música clássica, pop e jazz. Ele possui normalmente 88 teclas e funciona por meio de um mecanismo em que, ao pressionar uma tecla, um martelo interno atinge cordas que vibram e produzem o som. Pode ser encontrado em versões como o piano de cauda e o piano vertical, e se destaca por permitir tocar diferentes intensidades e combinar melodia e acompanhamento ao mesmo tempo.</p>
+            <div class="div3" style="padding: 20px; text-align: center;">
+                <h1>Piano</h1>
+                <p>O piano é um instrumento musical de teclado muito versátil, utilizado em diversos estilos como música clássica, pop e jazz. Ele possui normalmente 88 teclas e funciona por meio de um mecanismo em que, ao pressionar uma tecla, um martelo interno atinge cordas que vibram e produzem o som. Pode ser encontrado em versões como o piano de cauda e o piano vertical, e se destaca por permitir tocar diferentes intensidades e combinar melodia e acompanhamento ao mesmo tempo.</p>
             </div>
         </div> 
     </div>
     <script src="../script/navbar.js"></script>
+    <script src="../script/instSelecionado.js"></script>
 </body>
 </html>

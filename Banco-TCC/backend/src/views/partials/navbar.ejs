@@ -33,9 +33,21 @@
             <a href="/paginas/usuarios" class="painel-nav-link <%= (locals.titulo && locals.titulo.includes('Usuários')) ? 'link-ativo' : '' %>">
                 Usuários
             </a>
+
+            <a href="/paginas/cardapio" class="painel-nav-link <%= (locals.titulo && locals.titulo.includes('Cardápio')) ? 'link-ativo' : '' %>">
+                Cardápio Coffee
+            </a>
+
+            <a href="/paginas/instrumentos" class="painel-nav-link <%= (locals.titulo && locals.titulo.includes('Instrumentos')) ? 'link-ativo' : '' %>">
+                Instrumentos
+            </a>
         <% } else { %>
             <a href="/paginas/matricula" class="painel-nav-link <%= (locals.titulo && locals.titulo.includes('Matrícula')) ? 'link-ativo' : '' %>">
                 Minha Matrícula
+            </a>
+
+            <a href="/site/cardapio.html" class="painel-nav-link" title="Cardápio do Coffee Bravo">
+                Cardápio Coffee
             </a>
         <% } %>
 

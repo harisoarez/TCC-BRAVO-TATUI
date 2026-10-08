@@ -1,11 +1,27 @@
-*{
-    margin: 0;
-    padding: 0;
-    -webkit-font-smoothing: antialiased;
-    font-weight: normal;
-    overflow: hidden;
+/* ================================================================
+   INSTITUTO MUSICAL BRAVO TATUÍ - CSS DA FORMAÇÃO SELECIONADA
+   Design sofisticado, harmonização dinâmica de cores e responsividade
+   ================================================================ */
+
+:root {
+    --formation-color: #A4ADE5;
+    --formation-glow: rgba(164, 173, 229, 0.22);
+    --formation-border: rgba(164, 173, 229, 0.38);
+    --formation-badge-bg: rgba(164, 173, 229, 0.12);
+    --formation-light-overlay: rgba(164, 173, 229, 0.05);
+
+    --bg-dark: #07070a;
+    --card-bg: rgba(18, 18, 24, 0.72);
+    --card-border: rgba(255, 255, 255, 0.08);
+    --card-hover-border: rgba(255, 255, 255, 0.18);
+    
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --gold-bravo: #F5D696;
 }
 
+/* 1. Fontes Oficiais do Instituto Bravo Tatuí */
 @font-face {
     font-family: 'julius';
     src: url(../fonts/Julius_Sans_One/JuliusSansOne-Regular.ttf);
@@ -21,121 +37,1051 @@
     src: url(../fonts/Jaldi/Jaldi-Regular.ttf);
 }
 
-a{
-    text-decoration: none;
-    color: white;
-    
+/* 2. Reset Básico & Estrutura */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
 }
 
-body{
-    background-color: #080808;
-}
-
-.container{ /*tela inteira*/
-    height: 100%;
-    width: 100%;
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: 'inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
     position: relative;
-    color: white;
-    
+    line-height: 1.5;
 }
 
-/*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+}
 
-.container .header{ /*cabeçalho*/
-    background-color: #1A1A1A;
-    height: 3vh;
+/* 3. Cabeçalho Superior Instagram (Padrão do Site) */
+.header {
+    background-color: #141419;
+    height: 32px;
     display: flex;
     align-items: center;
-    padding-left: 2%;
-    font-family: 'inter';
-    font-size: small;
+    padding: 0 3%;
+    font-family: 'inter', sans-serif;
+    font-size: 12px;
+    color: #94a3b8;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    z-index: 100;
+    position: relative;
 }
 
-/*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
-
-#nav-bar{ /*barra de navegação*/
-    background-color: #080808;
-    height: 6vh;
-    display: flex;
-    flex-direction: row;
+.header a {
+    color: #94a3b8;
+    display: inline-flex;
     align-items: center;
-    justify-content: space-around;
-    font-family: 'inter';
-    border-bottom: 1px solid white;
 }
-#nav-bar #logo{
-    width: 16%;
+
+.header a:hover {
+    color: #ffffff;
 }
-#nav-bar img{
-    width: 60px;
+
+/* 4. Container Principal & Ambient Lighting */
+.page-container {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 24px 24px 60px 24px;
+    position: relative;
+    z-index: 1;
 }
-#nav-bar #nav-links{
-    width: 40%;
+
+.ambient-glow {
+    position: fixed;
+    top: -150px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 900px;
+    height: 550px;
+    background: radial-gradient(ellipse at center, var(--formation-glow) 0%, rgba(7, 7, 10, 0) 70%);
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(60px);
+    opacity: 0.85;
+    transition: background 0.6s ease;
+}
+
+/* 5. Breadcrumbs (Topo Limpo, Sem Redundância) */
+.nav-breadcrumbs {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
-#nav-bar #search{
-    background-color: transparent;
-    height: 60%;
-    width: 16%;
+
+.btn-voltar {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-muted);
+    font-size: 13.5px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: all 0.25s ease;
+}
+
+.btn-voltar:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--formation-border);
+    transform: translateX(-3px);
+}
+
+.breadcrumb-trail {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+}
+
+.trail-muted {
+    color: var(--text-muted);
+}
+
+.breadcrumb-current {
+    font-family: 'julius', serif;
+    font-size: 14px;
+    letter-spacing: 0.8px;
+    color: var(--formation-color);
+    font-weight: 600;
+}
+
+/* 6. Hero Header da Formação */
+.formation-hero {
+    margin-bottom: 36px;
+    text-align: left;
+}
+
+.formation-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--formation-badge-bg);
+    border: 1px solid var(--formation-border);
+    color: var(--formation-color);
+    padding: 5px 14px;
     border-radius: 30px;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 10px var(--formation-glow);
+}
+
+.badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--formation-color);
+    box-shadow: 0 0 8px var(--formation-color);
+}
+
+.formation-title {
+    font-family: 'julius', serif;
+    font-size: clamp(34px, 4vw, 52px);
+    letter-spacing: 2px;
+    color: #ffffff;
+    margin-bottom: 10px;
+    line-height: 1.15;
+}
+
+.formation-title .destaque {
+    color: var(--formation-color);
+    text-shadow: 0 0 25px var(--formation-glow);
+    transition: color 0.4s ease;
+}
+
+.formation-subtitle {
+    font-family: 'jaldi', sans-serif;
+    font-size: 20px;
+    color: var(--text-secondary);
+    max-width: 800px;
+}
+
+/* 7. Grid de Conteúdo (2 Colunas) */
+.formation-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 28px;
+    margin-bottom: 50px;
+}
+
+.grid-left,
+.grid-right {
     display: flex;
-    border: 1px solid white;
-    padding-left: 20px;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* 8. Cards Estilo Glassmorphism */
+.card-glass {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 26px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.25s ease;
+}
+
+.card-glass:hover {
+    border-color: var(--formation-border);
+    box-shadow: 0 10px 35px var(--formation-glow);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding-bottom: 12px;
+}
+
+.section-icon {
+    font-size: 20px;
+    filter: drop-shadow(0 0 8px var(--formation-glow));
+}
+
+.section-header h2 {
+    font-family: 'julius', serif;
+    font-size: 18px;
+    letter-spacing: 1px;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.section-sub {
+    display: block;
+    font-family: 'inter', sans-serif;
+    font-size: 11.5px;
+    color: var(--text-muted);
+    font-weight: normal;
+    margin-top: 2px;
+}
+
+/* 9. Descrição / Narrativa Musical */
+.formation-description {
+    font-family: 'jaldi', sans-serif;
+    font-size: 18px;
+    line-height: 1.65;
+    color: #e2e8f0;
+}
+
+/* 10. Instrumentação Padrão (Pill Cards) */
+.instruments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+}
+
+.instrument-pill {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    padding: 10px 14px;
+    transition: all 0.25s ease;
+}
+
+.instrument-pill:hover {
+    background: var(--formation-light-overlay);
+    border-color: var(--formation-border);
+    transform: translateY(-2px);
+}
+
+.inst-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.inst-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.inst-info strong {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.inst-info small {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.25;
+}
+
+/* 11. Seção Interativa 'Faça do seu Jeito' (Escolha de Instrumentos) */
+.secao-personalizada {
+    border-color: var(--formation-border);
+    box-shadow: 0 0 25px var(--formation-glow);
+}
+
+.instrument-categories-container {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: 22px;
+}
+
+.custom-cat-block {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.custom-cat-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.custom-cat-icon {
+    font-size: 18px;
+}
+
+.custom-cat-header h3 {
+    font-family: 'julius', serif;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--formation-color);
+    font-weight: 600;
+}
+
+.custom-inst-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 10px;
+}
+
+.custom-inst-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: all 0.22s ease;
+    user-select: none;
+}
+
+.custom-inst-card:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: var(--formation-border);
+    transform: translateY(-2px);
+}
+
+.custom-inst-card.selecionado {
+    background: var(--formation-badge-bg);
+    border-color: var(--formation-color);
+    box-shadow: 0 0 16px var(--formation-glow);
+}
+
+.card-check-indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+    color: transparent;
+}
+
+.custom-inst-card.selecionado .card-check-indicator {
+    background: var(--formation-color);
+    border-color: var(--formation-color);
+    color: #07070a;
+}
+
+.card-inst-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-inst-name {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1.25;
+}
+
+.card-inst-desc {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.2;
+    margin-top: 2px;
+}
+
+/* Caixa de Resumo e Contador */
+.custom-selection-box {
+    background: rgba(10, 10, 16, 0.7);
+    border: 1px solid var(--formation-border);
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.custom-box-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.counter-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.counter-badge strong {
+    background: var(--formation-color);
+    color: #07070a;
+    font-size: 14px;
+    font-weight: 800;
+    padding: 2px 10px;
+    border-radius: 14px;
+}
+
+.btn-limpar-selecao {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: var(--text-muted);
+    font-size: 11.5px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-limpar-selecao:hover {
+    color: #ffffff;
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.15);
+}
+
+.selected-tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+    min-height: 38px;
+    align-items: center;
+}
+
+.nenhum-selecionado {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.tag-chip-selected {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--formation-badge-bg);
+    border: 1px solid var(--formation-border);
+    color: #ffffff;
+    font-size: 12.5px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 20px;
+    box-shadow: 0 0 10px var(--formation-glow);
+    animation: fadeInTag 0.25s ease;
+}
+
+@keyframes fadeInTag {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.btn-remove-chip {
+    background: transparent;
+    border: none;
+    color: var(--formation-color);
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.15s ease;
+}
+
+.btn-remove-chip:hover {
+    color: #ffffff;
+}
+
+.custom-obs-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.custom-obs-group label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.custom-obs-group textarea {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-family: 'inter', sans-serif;
+    font-size: 12.5px;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.custom-obs-group textarea:focus {
+    border-color: var(--formation-color);
+    box-shadow: 0 0 12px var(--formation-glow);
+}
+
+.custom-obs-group textarea::placeholder {
+    color: #64748b;
+}
+
+/* Card de Orientação dos Arranjos Especiais */
+.custom-advice-card {
+    border-color: var(--formation-border);
+}
+
+.custom-advice-text {
+    font-family: 'jaldi', sans-serif;
+    font-size: 16.5px;
+    color: #e2e8f0;
+    line-height: 1.6;
+}
+
+/* 12. Ocasiões Recomendadas */
+.occasions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.occasion-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 12px 16px;
+    transition: all 0.2s ease;
+}
+
+.occasion-item:hover {
+    border-color: var(--formation-border);
+    background: var(--formation-light-overlay);
+}
+
+.occasion-indicator {
+    width: 4px;
+    height: 100%;
+    min-height: 34px;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.occasion-text strong {
+    font-size: 14px;
+    color: #ffffff;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.occasion-text p {
+    font-size: 12.5px;
+    color: var(--text-muted);
+}
+
+/* 13. Estilos & Repertório */
+.styles-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.style-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+}
+
+.style-chip:hover {
+    color: #ffffff;
+    border-color: var(--formation-border);
+    background: var(--formation-badge-bg);
+}
+
+.chip-bullet {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* 14. Card de Imagem Showcase */
+.card-media {
+    padding: 0;
+    overflow: hidden;
+}
+
+.media-frame {
+    position: relative;
+    width: 100%;
+    height: 290px;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.formation-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.card-media:hover .formation-img {
+    transform: scale(1.03);
+}
+
+.media-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px 20px;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(7,7,10,0.85) 100%);
+    display: flex;
+    align-items: flex-end;
+}
+
+.media-tag {
+    font-family: 'julius', serif;
+    font-size: 11.5px;
+    letter-spacing: 1.5px;
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--formation-border);
+    padding: 4px 12px;
+    border-radius: 6px;
+    backdrop-filter: blur(6px);
+}
+
+/* 15. Playlist & Músicas Demonstrativas */
+.playlist-tracks {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.playlist-track {
+    display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
-#nav-bar #search img{
-    width: 30px;
+
+.playlist-track:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: var(--formation-border);
+}
+
+.playlist-track.tocando {
+    background: var(--formation-badge-bg);
+    border-color: var(--formation-color);
+    box-shadow: 0 0 14px var(--formation-glow);
+}
+
+.track-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-play-sim {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--formation-border);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--formation-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.playlist-track:hover .btn-play-sim,
+.playlist-track.tocando .btn-play-sim {
+    background: var(--formation-color);
+    color: #07070a;
+}
+
+.track-names {
+    display: flex;
+    flex-direction: column;
+}
+
+.track-title {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.track-artist {
+    font-size: 11.5px;
+    color: var(--text-muted);
+}
+
+.track-wave {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    height: 14px;
+    opacity: 0.3;
+}
+
+.wave-bar {
+    width: 2.5px;
+    height: 6px;
+    background-color: var(--formation-color);
+    border-radius: 2px;
+    transition: height 0.2s ease;
+}
+
+.playlist-track.tocando .track-wave {
+    opacity: 1;
+}
+
+.playlist-track.tocando .wave-bar:nth-child(1) {
+    animation: somOnda 0.8s ease-in-out infinite alternate;
+}
+.playlist-track.tocando .wave-bar:nth-child(2) {
+    animation: somOnda 1.1s ease-in-out infinite alternate 0.2s;
+}
+.playlist-track.tocando .wave-bar:nth-child(3) {
+    animation: somOnda 0.9s ease-in-out infinite alternate 0.4s;
+}
+.playlist-track.tocando .wave-bar:nth-child(4) {
+    animation: somOnda 1.2s ease-in-out infinite alternate 0.1s;
+}
+
+@keyframes somOnda {
+    0% { height: 4px; }
+    100% { height: 16px; }
+}
+
+.track-time {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    font-family: monospace;
+}
+
+/* 16. Card de Orçamento Exclusivo CTA */
+.cta-card {
+    background: linear-gradient(135deg, rgba(22, 22, 32, 0.95), var(--formation-light-overlay));
+    border: 1px solid var(--formation-border);
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, var(--formation-glow) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.cta-content h3 {
+    font-family: 'julius', serif;
+    font-size: 19px;
+    color: #ffffff;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+
+.cta-content p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.cta-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn-cta-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: var(--formation-color);
+    color: #07070a;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 13px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 18px var(--formation-glow);
+    transition: all 0.25s ease;
+}
+
+.btn-cta-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px var(--formation-glow);
+    filter: brightness(1.08);
+}
+
+.btn-cta-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-size: 13px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+.btn-cta-secondary:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--formation-border);
+}
+
+/* 17. Barra Inferior de Navegação Entre Formações */
+.bottom-navigation {
+    margin-top: 20px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.prev-next-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.btn-nav-step {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 20px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: all 0.25s ease;
+    max-width: 45%;
+}
+
+.btn-nav-step:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: var(--formation-border);
+    transform: translateY(-2px);
+}
+
+.btn-nav-step.text-right {
+    text-align: right;
+}
+
+.step-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.step-label {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.step-text strong {
+    font-family: 'julius', serif;
+    font-size: 16px;
+    letter-spacing: 1px;
+    margin-top: 2px;
+}
+
+.step-divider {
     height: 30px;
-}
-#nav-bar #search input{
-    background-color: transparent;
-    border: none;
-    color: white;
-    width: 80%;
-    height: 100%;
-    outline: none;
-}
-/*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
-.conteudo{
-    display: flex;
-    height: 91vh;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.08);
 }
 
-.esquerda{
-    width: 50%;
-    height: 100%;
+/* 18. Track de Pílulas das 16 Formações */
+.all-formations-strip {
+    background: rgba(14, 14, 20, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 14px;
+    padding: 18px;
+    backdrop-filter: blur(10px);
+}
+
+.strip-title {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+.pills-track {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.pill-link {
+    display: inline-flex;
     align-items: center;
-    padding-top: 2%;
+    gap: 7px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    transition: all 0.25s ease;
 }
 
-.esquerda .nome{
-    border-bottom: 1px solid white;
-    padding: 2%;
-    margin-bottom: 2%;
-
+.pill-link:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--pill-color, var(--formation-border));
+    transform: translateY(-2px);
 }
 
-.esquerda .nome h1{
-    font-family: 'julius';
-    font-size: 3vw;
+.pill-link.ativo {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.12);
+    font-weight: 600;
 }
 
-.esquerda .descricao{
-    width: 40vw;
-    height:auto;
-    font-family: 'jaldi';
-    font-size: 1.5vw;
+.pill-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
 }
 
-.direita{
-    width: 50%;
-    height: 100%;
-    padding-top: 2%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+/* 19. Responsividade */
+@media (max-width: 992px) {
+    .formation-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .media-frame {
+        height: 240px;
+    }
+
+    .prev-next-bar {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .btn-nav-step {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .step-divider {
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .page-container {
+        padding: 16px 16px 40px 16px;
+    }
+
+    .formation-title {
+        font-size: 28px;
+    }
+
+    .formation-subtitle {
+        font-size: 16px;
+    }
+
+    .card-glass {
+        padding: 18px;
+    }
+
+    .instruments-grid,
+    .custom-inst-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pills-track {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 8px;
+    }
+
+    .pill-link {
+        flex-shrink: 0;
+    }
 }

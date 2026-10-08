@@ -3,49 +3,247 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bravo Tatuí</title>
+    <title>Formação Musical | Instituto Bravo Tatuí</title>
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/formacaoSelecionada.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <img src="../images/Instagram_icon.png" alt="Instagram" width="18px" style="margin-right:5px;">
-            <a href="https://www.instagram.com/bravo_tatui/" target="_blank">@bravo_tatui</a>
-        </div>
-        <div id="nav-bar">
-            <div id="logo">
-                <a href="./index.html" style="font-family: 'julius', serif; font-weight: bold; color: #F5D696; font-size: 18px; text-decoration: none; letter-spacing: 1px;">BRAVO TATUÍ</a>
+    <div class="header">
+        <img src="../images/Instagram_icon.png" alt="Instagram" width="18px" style="margin-right:5px;">
+        <a href="https://www.instagram.com/bravo_tatui/" target="_blank">@bravo_tatui</a>
+    </div>
+
+    <!-- Central Site Navbar (Auto-managed by navbar.js) -->
+    <div id="nav-bar"></div>
+
+    <!-- Main Container -->
+    <main class="page-container">
+        <!-- Ambient Radial Glow in background (tinted with formation color) -->
+        <div class="ambient-glow" id="ambientGlow"></div>
+
+        <!-- Top Breadcrumbs (Clean, direct return without redundant dropdown) -->
+        <nav class="nav-breadcrumbs" aria-label="Navegação estrutural">
+            <a href="./formacoes.html" class="btn-voltar">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                <span>Voltar às Formações</span>
+            </a>
+
+            <div class="breadcrumb-trail">
+                <span class="trail-muted">Formações /</span>
+                <span class="breadcrumb-current" id="breadcrumbCurrent">Bravo Plus</span>
             </div>
-            <div id="nav-links">
-                <a href="./index.html">Início</a>
-                <a href="./formacoes.html">Bravo Tatuí</a>
-                <a href="./instrumentos.html">Aulas no IMBT</a>
-                <a href="./calendario.html">Calendário</a>
-                <a href="./login.html" style="color: #F5D696; font-weight: 500;">Login</a>
+        </nav>
+
+        <!-- Hero Header -->
+        <header class="formation-hero">
+            <div class="formation-badge" id="badgeFormacao">
+                <span class="badge-dot"></span>
+                <span id="badgeTexto">QUARTETO DE CORDAS & PIANO</span>
             </div>
-            <div id="search">
-                <img src="../images/searchIcon.png" alt="Icone de pesquisa">
-                <input type="text" placeholder="Pesquisar no site">
-            </div>
-        </div>
-        <div class="conteudo">
-            <div class="esquerda">
-                <div class="nome">
-                    <h1>Bravo <span class="destaque" style="color:#A4ADE5;">Plus</span></h1>
-                </div>
-                <div class="descricao">
-                    <p>A formação Bravo Plus é ideal para eventos que pedem sofisticação e impacto, com quarteto de cordas e piano elétrico. O grupo entrega uma experiência musical envolvente e emocionante, perfeita para momentos marcantes. Seu estilo versátil permite transitar entre o clássico e o moderno, criando uma atmosfera refinada que valoriza ainda mais cada ocasião.</p>
-                </div>
+            <h1 class="formation-title" id="tituloFormacao">
+                Bravo <span class="destaque">Plus</span>
+            </h1>
+            <p class="formation-subtitle" id="subtituloFormacao">
+                Quarteto de cordas e piano elétrico
+            </p>
+        </header>
+
+        <!-- Main 2-Column Responsive Grid -->
+        <div class="formation-grid">
+            <!-- Left Column: Narrative, Instrumentation (Fixed or Custom Builder), Occasions, Styles -->
+            <div class="grid-left">
+                <!-- Section: Narrative / Musical Overview -->
+                <section class="card-section card-glass">
+                    <div class="section-header">
+                        <span class="section-icon">🎻</span>
+                        <h2>Sobre a Formação</h2>
+                    </div>
+                    <p class="formation-description" id="descricaoLonga">
+                        Carregando informações da formação...
+                    </p>
+                </section>
+
+                <!-- SECTION A: Standard Fixed Instrumentation (For 15 standard formations) -->
+                <section class="card-section card-glass" id="secaoInstrumentosPadrao">
+                    <div class="section-header">
+                        <span class="section-icon">🎼</span>
+                        <div>
+                            <h2>Instrumentação Inclusa</h2>
+                            <small class="section-sub">Músicos e instrumentos presentes nesta formação</small>
+                        </div>
+                    </div>
+                    <div class="instruments-grid" id="instrumentosContainer">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+                </section>
+
+                <!-- SECTION B: Custom Interactive Instrument Chooser (Only for 'Faça do seu Jeito') -->
+                <section class="card-section card-glass secao-personalizada" id="secaoInstrumentosPersonalizada" style="display: none;">
+                    <div class="section-header">
+                        <span class="section-icon">✨</span>
+                        <div>
+                            <h2>Monte sua Formação dos Sonhos</h2>
+                            <small class="section-sub">Selecione os instrumentos que você deseja no seu grande dia:</small>
+                        </div>
+                    </div>
+
+                    <!-- Category Groups Container -->
+                    <div class="instrument-categories-container" id="containerCategoriasInstrumentos">
+                        <!-- Categories and instrument choice cards injected by JS -->
+                    </div>
+
+                    <!-- Live Selection Summary Box -->
+                    <div class="custom-selection-box">
+                        <div class="custom-box-header">
+                            <div class="counter-badge">
+                                <span>Instrumentos Selecionados:</span>
+                                <strong id="contadorInstrumentos">0</strong>
+                            </div>
+                            <button type="button" class="btn-limpar-selecao" onclick="window.limparInstrumentosPersonalizados()">Limpar Todos</button>
+                        </div>
+
+                        <!-- Selected Tag Chips List -->
+                        <div class="selected-tags-list" id="tagsInstrumentosSelecionados">
+                            <span class="nenhum-selecionado">Nenhum instrumento selecionado ainda. Clique nas opções acima para montar sua formação.</span>
+                        </div>
+
+                        <!-- Optional Notes/Songs Input -->
+                        <div class="custom-obs-group">
+                            <label for="campoObservacoesPersonalizadas">Observações ou Músicas Especiais que Sonha Ouvir (opcional):</label>
+                            <textarea id="campoObservacoesPersonalizadas" rows="2" placeholder="Ex: Gostaria da música A Thousand Years na entrada da noiva e um arranjo especial de Viva La Vida no cortejo..." oninput="window.atualizarMensagemWhatsappPersonalizada()"></textarea>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Recommended Occasions -->
+                <section class="card-section card-glass">
+                    <div class="section-header">
+                        <span class="section-icon">🌟</span>
+                        <div>
+                            <h2>Ocasiões Ideais</h2>
+                            <small class="section-sub">Momentos onde esta formação brilha com intensidade</small>
+                        </div>
+                    </div>
+                    <div class="occasions-list" id="ocasioesContainer">
+                        <!-- Populated by JS -->
+                    </div>
+                </section>
+
+                <!-- Section: Styles & Musical Aesthetics -->
+                <section class="card-section card-glass">
+                    <div class="section-header">
+                        <span class="section-icon">🎵</span>
+                        <div>
+                            <h2>Estilos & Repertório</h2>
+                            <small class="section-sub">Gêneros e atmosferas executadas com maestria</small>
+                        </div>
+                    </div>
+                    <div class="styles-tags" id="estilosContainer">
+                        <!-- Populated by JS -->
+                    </div>
+                </section>
             </div>
 
-            <div class="direita">
-                <div class="imagem">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQexJxGpbHv5CbPWASQ_0okvdC65KVmpzoKnCmq8P9MTHqU8kt0QYyDt6GS&s=10" alt="Imagem da formação Bravo Plus">
+            <!-- Right Column: Visual Showcase, Audio Playlist, Budget CTA -->
+            <div class="grid-right">
+                <!-- Visual Showcase Card -->
+                <div class="card-media card-glass">
+                    <div class="media-frame">
+                        <img id="imagemFormacao" src="" alt="Imagem da Formação Musical" class="formation-img" loading="lazy">
+                        <div class="media-overlay">
+                            <span class="media-tag" id="tagFoto">Bravo Tatuí • Live Experience</span>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- Playlist / Suggested Tracks Card (Hidden on 'Faça do seu Jeito') -->
+                <section class="card-section card-glass playlist-card" id="secaoPlaylist">
+                    <div class="section-header">
+                        <span class="section-icon">🎧</span>
+                        <div>
+                            <h2>Demonstração & Repertório</h2>
+                            <small class="section-sub">Clique em uma faixa para testar o arranjo</small>
+                        </div>
+                    </div>
+                    <div class="playlist-tracks" id="playlistContainer">
+                        <!-- Populated by JS -->
+                    </div>
+                </section>
+
+                <!-- Dedicated Custom Repertoire Advice (Shown on 'Faça do seu Jeito') -->
+                <section class="card-section card-glass custom-advice-card" id="secaoAvisoCustom" style="display: none;">
+                    <div class="section-header">
+                        <span class="section-icon">🎼</span>
+                        <div>
+                            <h2>Arranjos Sob Medida</h2>
+                            <small class="section-sub">Consultoria artística com o Maestro</small>
+                        </div>
+                    </div>
+                    <p class="custom-advice-text">
+                        Para formações personalizadas, nossa diretoria artística orquestra arranjos inéditos e exclusivos para a exata combinação de instrumentos que você escolher. Cada partitura é escrita sob medida para a sua história!
+                    </p>
+                </section>
+
+                <!-- Exclusive Budget CTA Card -->
+                <section class="cta-card card-glass">
+                    <div class="cta-content">
+                        <h3 id="tituloCta">Deseja esta Formação no seu Evento?</h3>
+                        <p id="descricaoCta">Receba atendimento exclusivo e tire todas as suas dúvidas diretamente com a equipe artística do Instituto Musical Bravo Tatuí.</p>
+
+                        <div class="cta-buttons">
+                            <a id="btnWhatsapp" href="#" target="_blank" class="btn-cta-primary">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.299.144.347.491 1.2.534 1.288.043.088.072.19.014.306-.058.115-.087.187-.173.289l-.26.307c-.087.087-.178.181-.077.355.101.173.449.742.964 1.201.662.591 1.221.774 1.394.861.173.086.275.072.376-.044.101-.116.433-.506.549-.679.116-.173.231-.144.39-.086.159.058 1.011.477 1.184.564.173.087.289.13.332.202.043.073.043.419-.101.824z"/>
+                                </svg>
+                                <span id="textoBtnWhatsapp">Solicitar Orçamento no WhatsApp</span>
+                            </a>
+                            <a href="https://www.instagram.com/bravo_tatui/" target="_blank" class="btn-cta-secondary">
+                                <img src="../images/Instagram_icon.png" alt="Instagram" width="16" height="16">
+                                <span>Ver Bastidores no Instagram</span>
+                            </a>
+                        </div>
+                    </div>
+                </section>
             </div>
         </div>
-    </div>
+
+        <!-- Bottom Navigation & All Formations Carousel -->
+        <section class="bottom-navigation">
+            <div class="prev-next-bar">
+                <a id="btnPrevFormacao" href="#" class="btn-nav-step">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    <div class="step-text">
+                        <span class="step-label">Formação Anterior</span>
+                        <strong id="labelPrevFormacao">Bravo ...</strong>
+                    </div>
+                </a>
+
+                <div class="step-divider"></div>
+
+                <a id="btnNextFormacao" href="#" class="btn-nav-step text-right">
+                    <div class="step-text">
+                        <span class="step-label">Próxima Formação</span>
+                        <strong id="labelNextFormacao">Bravo ...</strong>
+                    </div>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </a>
+            </div>
+
+            <!-- 16 Formations Strip -->
+            <div class="all-formations-strip">
+                <span class="strip-title">Navegar por todas as 16 formações:</span>
+                <div class="pills-track" id="pillsTrack">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Global Scripts -->
     <script src="../script/navbar.js"></script>
+    <script src="../script/formacaoSelecionada.js"></script>
 </body>
 </html>

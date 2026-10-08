@@ -64,6 +64,7 @@
         const isIndex = paginaAtual === "index.html" || paginaAtual === "";
         const isFormacoes = paginaAtual.includes("formacao");
         const isInstrumentos = paginaAtual.includes("inst");
+        const isCardapio = paginaAtual.includes("cardapio");
         const isCalendario = paginaAtual.includes("calendario");
         const isLogin = paginaAtual.includes("login");
 
@@ -102,6 +103,7 @@
                 <a href="./index.html" class="${isIndex ? 'link-ativo' : ''}">Início</a>
                 <a href="./formacoes.html" class="${isFormacoes ? 'link-ativo' : ''}">Bravo Tatuí</a>
                 <a href="./instrumentos.html" class="${isInstrumentos ? 'link-ativo' : ''}">Aulas no IMBT</a>
+                <a href="./cardapio.html" class="${isCardapio ? 'link-ativo' : ''}">Coffee Bravo</a>
                 ${linkCalendarioHtml}
                 ${linkPainelAdminHtml}
                 ${linkMatriculaHtml}

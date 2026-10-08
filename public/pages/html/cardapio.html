@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Bravo - Cardápio</title>
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/cardapio.css">
+</head>
+<body>
+    <div class="cardapio-container">
+        <!-- Cabeçalho Institucional -->
+        <div class="header-top">
+            <img src="../images/Instagram_icon.png" alt="Instagram" width="18" height="18" style="margin-right: 6px;">
+            <a href="https://www.instagram.com/bravo_tatui/" target="_blank">@bravo_tatui</a>
+        </div>
+
+        <!-- Navbar Global -->
+        <div id="nav-bar">
+            <!-- Gerenciado dinamicamente pelo navbar.js -->
+        </div>
+
+        <!-- Hero Banner do Coffee Bravo -->
+        <section class="cardapio-hero">
+            <span class="hero-tag">Espaço Aconchegante • Instituto Bravo Tatuí</span>
+            <h1 class="hero-title">COFFEE BRAVO</h1>
+            <p class="hero-subtitle">
+                O sabor que harmoniza com a sua música. Desfrute de nossos cafés especiais, opções artesanais, doces e salgados preparados diariamente com excelência e carinho.
+            </p>
+        </section>
+
+        <!-- Barra do Modo Administrador (Visível apenas para Admin e Owner) -->
+        <div id="adminToolbar" class="admin-toolbar-cardapio" style="display: none;">
+            <div class="admin-info-badge">
+                <span class="admin-tag-pill">Modo Admin</span>
+                <span class="admin-info-texto">Você pode gerenciar os itens, preços e disponibilidade do cardápio em tempo real.</span>
+            </div>
+            <div class="admin-toolbar-acoes">
+                <button type="button" class="btn-admin-add" onclick="window.abrirModalPublicNovo()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    + Novo Produto
+                </button>
+                <a href="/paginas/cardapio" id="btnAdminIrPainel" class="btn-admin-painel">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                    Painel Geral
+                </a>
+            </div>
+        </div>
+
+        <!-- Controles: Categorias e Pesquisa -->
+        <section class="cardapio-controles">
+            <!-- Abas de Categoria -->
+            <div class="categorias-tabs" id="categoriasTabs">
+                <button type="button" class="categoria-tab-btn ativo" data-categoria="Todos">Todos</button>
+                <button type="button" class="categoria-tab-btn" data-categoria="Cafés">Cafés</button>
+                <button type="button" class="categoria-tab-btn" data-categoria="Bebidas Geladas">Bebidas Geladas</button>
+                <button type="button" class="categoria-tab-btn" data-categoria="Salgados & Lanches">Salgados & Lanches</button>
+                <button type="button" class="categoria-tab-btn" data-categoria="Doces & Sobremesas">Doces & Sobremesas</button>
+                <button type="button" class="categoria-tab-btn" data-categoria="Combos">Combos</button>
+            </div>
+
+            <!-- Barra de Busca -->
+            <div class="busca-container">
+                <div class="campo-busca-box">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="campoBuscaCardapio" placeholder="Buscar no cardápio (ex: cappuccino, croissant, torta)...">
+                </div>
+                <div class="total-itens-contador" id="contadorTotalItens">
+                    Carregando cardápio...
+                </div>
+            </div>
+        </section>
+
+        <!-- Grid de Itens do Cardápio -->
+        <main class="grid-produtos" id="gridProdutos">
+            <div class="estado-vazio">
+                <h3>☕ Carregando cardápio...</h3>
+                <p>Buscando os produtos do Coffee Bravo.</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- MODAL DE CADASTRO / EDIÇÃO RÁPIDA (ADMIN)               -->
+    <!-- ======================================================= -->
+    <div id="modalPublicItem" class="modal-overlay-public">
+        <div class="modal-card-public">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid var(--cafe-borda-sutil); padding-bottom: 12px;">
+                <h3 id="modalTituloPublic" style="color: var(--cafe-ouro-caramelo); font-size: 18px; margin: 0; font-weight: 700;">Produto no Cardápio</h3>
+                <button type="button" onclick="window.fecharModalPublicItem()" style="background: none; border: none; font-size: 24px; color: var(--cafe-texto-muted); cursor: pointer;">&times;</button>
+            </div>
+
+            <form id="formCardapioPublic" enctype="multipart/form-data">
+                <input type="hidden" id="modalItemId" name="id" value="">
+
+                <div style="margin-bottom: 14px;">
+                    <label for="modalCampoNome" style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--cafe-texto-secundario);">Nome do Produto *</label>
+                    <input type="text" id="modalCampoNome" name="nome" required placeholder="Ex: Mocha Cremoso" style="width: 100%; padding: 9px 12px; border-radius: 6px; border: 1px solid var(--cafe-borda-sutil); background: var(--cafe-input-bg); color: var(--cafe-texto-principal); font-size: 14px;">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+                    <div>
+                        <label for="modalCampoPreco" style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--cafe-texto-secundario);">Preço (R$) *</label>
+                        <input type="number" step="0.01" min="0" id="modalCampoPreco" name="preco" required placeholder="0,00" style="width: 100%; padding: 9px 12px; border-radius: 6px; border: 1px solid var(--cafe-borda-sutil); background: var(--cafe-input-bg); color: var(--cafe-texto-principal); font-size: 14px;">
+                    </div>
+                    <div>
+                        <label for="modalCampoCategoria" style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--cafe-texto-secundario);">Categoria *</label>
+                        <select id="modalCampoCategoria" name="categoria" style="width: 100%; padding: 9px 12px; border-radius: 6px; border: 1px solid var(--cafe-borda-sutil); background: var(--cafe-input-bg); color: var(--cafe-texto-principal); font-size: 14px;">
+                            <option value="Cafés">Cafés</option>
+                            <option value="Bebidas Geladas">Bebidas Geladas</option>
+                            <option value="Salgados & Lanches">Salgados & Lanches</option>
+                            <option value="Doces & Sobremesas">Doces & Sobremesas</option>
+                            <option value="Combos">Combos</option>
+                            <option value="__nova__">+ Outra / Criar Nova Categoria</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="modalBoxNovaCategoria" style="display: none; margin-bottom: 14px;">
+                    <label for="modalCampoNovaCategoria" style="display: block; font-size: 12.5px; font-weight: 600; margin-bottom: 6px; color: var(--cafe-ouro-caramelo);">Nome da Nova Categoria:</label>
+                    <input type="text" id="modalCampoNovaCategoria" placeholder="Ex: Chás & Infusões" style="width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--cafe-ouro-suave); background: var(--cafe-input-bg); color: var(--cafe-texto-principal); font-size: 13.5px;">
+                </div>
+
+                <div style="margin-bottom: 14px;">
+                    <label for="modalCampoDescricao" style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--cafe-texto-secundario);">Descrição / Ingredientes</label>
+                    <textarea id="modalCampoDescricao" name="descricao" rows="2" placeholder="Descreva o sabor, ingredientes ou detalhes..." style="width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--cafe-borda-sutil); background: var(--cafe-input-bg); color: var(--cafe-texto-principal); font-size: 13.5px; resize: vertical;"></textarea>
+                </div>
+
+                <div style="background: rgba(42, 24, 14, 0.4); border: 1px solid var(--cafe-borda-sutil); padding: 12px; border-radius: 8px; margin-bottom: 16px;">
+                    <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--cafe-texto-secundario);">Imagem do Produto</label>
+                    <div style="margin-bottom: 10px;">
+                        <label for="modalCampoUpload" style="display: block; font-size: 12px; color: var(--cafe-texto-muted); margin-bottom: 4px;">Enviar imagem do computador:</label>
+                        <input type="file" id="modalCampoUpload" name="imagem" accept="image/*" style="font-size: 12px; color: var(--cafe-texto-secundario);">
+                    </div>
+                    <div>
+                        <label for="modalCampoUrl" style="display: block; font-size: 12px; color: var(--cafe-texto-muted); margin-bottom: 4px;">Ou informe o link da imagem (URL da internet):</label>
+                        <input type="url" id="modalCampoUrl" name="imagem_url" placeholder="https://exemplo.com/foto.jpg" style="width: 100%; padding: 8px 10px; border-radius: 6px; border: 1px solid var(--cafe-borda-sutil); background: var(--cafe-input-bg); color: var(--cafe-texto-principal); font-size: 12.5px;">
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 20px; align-items: center; margin-bottom: 22px; flex-wrap: wrap;">
+                    <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer; color: var(--cafe-texto-principal);">
+                        <input type="checkbox" id="modalCampoDisponivel" name="disponivel" value="1" checked style="width: 16px; height: 16px; accent-color: #22c55e;">
+                        Disponível no cardápio
+                    </label>
+
+                    <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer; color: var(--cafe-texto-principal);">
+                        <input type="checkbox" id="modalCampoDestaque" name="destaque" value="1" style="width: 16px; height: 16px; accent-color: #e4b87e;">
+                        ★ Exibir em Destaque
+                    </label>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid var(--cafe-borda-sutil); padding-top: 16px;">
+                    <button type="button" onclick="window.fecharModalPublicItem()" style="padding: 9px 16px; border: 1px solid #1e2433; background: #1e293b; color: #cbd5e1; border-radius: 6px; font-weight: 600; cursor: pointer;">Cancelar</button>
+                    <button type="submit" id="btnModalSalvar" style="padding: 9px 22px; border: none; background: #F5D696; color: #0b0d13; border-radius: 6px; font-weight: 700; cursor: pointer;">Salvar Produto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- MODAL DE CONFIRMAÇÃO DE EXCLUSÃO (ADMIN)                -->
+    <!-- ======================================================= -->
+    <div id="modalPublicExclusao" class="modal-overlay-public">
+        <div style="background: #24150d; border: 1px solid rgba(239, 68, 68, 0.4); color: #fff; width: 100%; max-width: 420px; border-radius: 12px; padding: 24px; text-align: center; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);">
+            <div style="font-size: 38px; margin-bottom: 12px;">🗑️</div>
+            <h3 style="font-size: 18px; margin-bottom: 8px; color: #f87171;">Remover do Cardápio?</h3>
+            <p id="textoPublicExclusao" style="font-size: 13.5px; color: var(--cafe-texto-secundario); margin-bottom: 22px;">Deseja realmente excluir este produto?</p>
+            <div style="display: flex; justify-content: center; gap: 12px;">
+                <button type="button" onclick="window.fecharModalPublicExclusao()" style="padding: 9px 18px; border: 1px solid #1e2433; background: #1e293b; color: #cbd5e1; border-radius: 6px; font-weight: 600; cursor: pointer;">Cancelar</button>
+                <button type="button" id="btnConfirmarExclusaoPublic" style="padding: 9px 20px; border: none; background: #ef4444; color: #fff; border-radius: 6px; font-weight: 700; cursor: pointer;">Sim, Excluir</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer class="footer-cardapio">
+        <p>© Instituto Musical Bravo Tatuí • <strong>Coffee Bravo</strong> — Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- Scripts de Funcionalidade -->
+    <script src="../script/navbar.js"></script>
+    <script src="../script/cardapio.js"></script>
+</body>
+</html>

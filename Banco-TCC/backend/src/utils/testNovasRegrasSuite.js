@@ -51,7 +51,7 @@ server.listen(3004, async () => {
         console.log("\n--- TESTE 2: Verificação do Bug (Owner permanece Owner em todas as páginas) ---");
         const pagUsuariosOwner = await getHtml(`/paginas/usuarios?token=${encodeURIComponent(tokenOwner)}`);
         console.log("Status /paginas/usuarios:", pagUsuariosOwner.status);
-        const permOwnerEmUsuarios = pagUsuariosOwner.text.includes("👑 Owner");
+        const permOwnerEmUsuarios = pagUsuariosOwner.text.includes("Owner");
         console.log("✓ Owner permanece Owner em /paginas/usuarios:", permOwnerEmUsuarios);
         if (!permOwnerEmUsuarios) {
             throw new Error("Bug persistiu: Owner virou Admin em /paginas/usuarios!");

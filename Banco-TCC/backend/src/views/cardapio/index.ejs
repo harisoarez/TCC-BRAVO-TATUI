@@ -1,0 +1,457 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+
+<main class="dashboard-container">
+    <header class="databricks-header">
+        <div class="header-title-col">
+            <h1>
+                <span class="estrela">☕</span> 
+                Gestão do Cardápio — Coffee Bravo
+            </h1>
+            <p>Instituto Musical Bravo Tatuí • Controle de produtos, preços, categorias e disponibilidade</p>
+        </div>
+
+        <div class="header-meta-col" style="display: flex; gap: 10px; align-items: center;">
+            <a href="/site/cardapio.html" target="_blank" class="btn-visualizar-site" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; background: #1e293b; color: #F5D696; border: 1px solid rgba(245, 214, 150, 0.3); border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 600;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                Ver Cardápio Público
+            </a>
+            <button type="button" onclick="abrirModalNovoItem()" class="btn-novo-item" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: #F5D696; color: #0b0d13; border: none; border-radius: 6px; font-size: 13.5px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 8px rgba(245, 214, 150, 0.3);">
+                + Novo Item no Cardápio
+            </button>
+        </div>
+    </header>
+
+    <!-- Feedback de Sucesso ou Erro -->
+    <% if (sucesso) { %>
+        <div style="background: #dcfce7; border: 1px solid #bbf7d0; color: #15803d; padding: 12px 18px; border-radius: 8px; font-size: 13.5px; font-weight: 600; margin-bottom: 20px;">
+            ✓ <%= sucesso %>
+        </div>
+    <% } %>
+    <% if (erro) { %>
+        <div style="background: #fee2e2; border: 1px solid #fecaca; color: #b91c1c; padding: 12px 18px; border-radius: 8px; font-size: 13.5px; font-weight: 600; margin-bottom: 20px;">
+            ✕ <%= erro %>
+        </div>
+    <% } %>
+
+    <!-- Cards de Métricas / KPIs do Cardápio -->
+    <section class="kpi-grid">
+        <div class="kpi-card destaque-ouro">
+            <div class="kpi-header">
+                <span class="kpi-label">Total de Itens</span>
+                <span class="kpi-badge neutro"><%= estatisticas.totalCategorias %> categorias</span>
+            </div>
+            <div class="kpi-valor"><%= estatisticas.totalItens %> produtos</div>
+            <div class="kpi-subtexto">Itens cadastrados no Coffee Bravo</div>
+        </div>
+
+        <div class="kpi-card destaque-verde">
+            <div class="kpi-header">
+                <span class="kpi-label">Disponíveis para Venda</span>
+                <span class="kpi-badge positivo">Ativos</span>
+            </div>
+            <div class="kpi-valor"><%= estatisticas.disponiveis %> itens</div>
+            <div class="kpi-subtexto">Visíveis e disponíveis aos clientes</div>
+        </div>
+
+        <div class="kpi-card destaque-vermelho">
+            <div class="kpi-header">
+                <span class="kpi-label">Esgotados / Pausados</span>
+                <span class="kpi-badge alerta"><%= estatisticas.esgotados > 0 ? 'Atenção' : 'Tudo Ok' %></span>
+            </div>
+            <div class="kpi-valor"><%= estatisticas.esgotados %> itens</div>
+            <div class="kpi-subtexto">Marcados como indisponíveis</div>
+        </div>
+
+        <div class="kpi-card destaque-azul">
+            <div class="kpi-header">
+                <span class="kpi-label">Destaques da Casa</span>
+                <span class="kpi-badge positivo">Estrelas</span>
+            </div>
+            <div class="kpi-valor"><%= estatisticas.destaques %> itens</div>
+            <div class="kpi-subtexto">Com selo de destaque no cardápio</div>
+        </div>
+    </section>
+
+    <!-- Barra de Filtros e Busca Rápida -->
+    <section class="mensalidades-card" style="margin-top: 24px;">
+        <div class="secao-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <div>
+                <h2>Cardápio Completo</h2>
+                <span style="font-size: 13px; color: var(--text-muted);">
+                    Gerencie os itens do cardápio. Clique no botão de status para pausar ou liberar um produto instantaneamente.
+                </span>
+            </div>
+
+            <!-- Controles de Filtro -->
+            <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                <input type="text" id="filtroBusca" placeholder="Pesquisar por nome ou descrição..." onkeyup="filtrarTabela()" style="padding: 8px 14px; border: 1px solid var(--border-color); border-radius: 6px; background: #111520; color: #fff; font-size: 13px; width: 260px;">
+
+                <select id="filtroCategoria" onchange="filtrarTabela()" style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 6px; background: #111520; color: #fff; font-size: 13px;">
+                    <option value="">Todas as Categorias</option>
+                    <% categorias.forEach(function(cat) { %>
+                        <option value="<%= cat %>"><%= cat %></option>
+                    <% }); %>
+                </select>
+
+                <select id="filtroDisponibilidade" onchange="filtrarTabela()" style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 6px; background: #111520; color: #fff; font-size: 13px;">
+                    <option value="">Todos os Status</option>
+                    <option value="disponivel">Apenas Disponíveis</option>
+                    <option value="esgotado">Apenas Esgotados</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Tabela de Itens -->
+        <div class="tabela-container" style="margin-top: 16px; overflow-x: auto;">
+            <table class="tabela-mensalidades" id="tabelaCardapio">
+                <thead>
+                    <tr>
+                        <th style="width: 60px;">Foto</th>
+                        <th>Produto</th>
+                        <th>Categoria</th>
+                        <th>Preço</th>
+                        <th>Status</th>
+                        <th>Destaque</th>
+                        <th style="text-align: right;">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (itens.length === 0) { %>
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 30px; color: var(--text-muted);">
+                                Nenhum item cadastrado no cardápio. Clique no botão <strong>+ Novo Item no Cardápio</strong> acima para cadastrar o primeiro!
+                            </td>
+                        </tr>
+                    <% } %>
+                    <% itens.forEach(function(item) { %>
+                        <tr class="linha-item" 
+                            data-id="<%= item.id_item %>"
+                            data-nome="<%= item.nome.toLowerCase() %>" 
+                            data-descricao="<%= (item.descricao || '').toLowerCase() %>" 
+                            data-categoria="<%= item.categoria %>"
+                            data-disponivel="<%= item.disponivel ? 'disponivel' : 'esgotado' %>">
+                            <td>
+                                <div style="width: 48px; height: 48px; border-radius: 8px; overflow: hidden; background: #1e293b; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-color);">
+                                    <% if (item.imagem_url) { %>
+                                        <img src="<%= item.imagem_url %>" alt="<%= item.nome %>" style="width: 100%; height: 100%; object-fit: cover;">
+                                    <% } else { %>
+                                        <span style="font-size: 20px;">☕</span>
+                                    <% } %>
+                                </div>
+                            </td>
+                            <td>
+                                <strong style="color: var(--text-primary); font-size: 14.5px;"><%= item.nome %></strong>
+                                <p style="font-size: 12px; color: var(--text-muted); margin: 3px 0 0 0; max-width: 380px; line-height: 1.3;">
+                                    <%= item.descricao || "Sem descrição cadastrada." %>
+                                </p>
+                            </td>
+                            <td>
+                                <span style="background: rgba(245, 214, 150, 0.12); color: #F5D696; border: 1px solid rgba(245, 214, 150, 0.25); padding: 3px 9px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                                    <%= item.categoria %>
+                                </span>
+                            </td>
+                            <td>
+                                <strong style="color: #e4b87e; font-size: 14.5px;">
+                                    R$ <%= Number(item.preco).toFixed(2).replace('.', ',') %>
+                                </strong>
+                            </td>
+                            <td>
+                                <button type="button" 
+                                    class="btn-toggle-status <%= item.disponivel ? 'status-disp' : 'status-esgot' %>" 
+                                    onclick="alternarStatusItem(<%= item.id_item %>, this)"
+                                    title="Clique para alternar entre Disponível e Esgotado"
+                                    style="padding: 4px 10px; border-radius: 20px; font-size: 11.5px; font-weight: 700; cursor: pointer; border: none; transition: 0.2s;">
+                                    <%= item.disponivel ? '● Disponível' : '○ Esgotado' %>
+                                </button>
+                            </td>
+                            <td>
+                                <% if (item.destaque) { %>
+                                    <span style="background: #fef3c7; color: #b45309; padding: 2px 8px; border-radius: 6px; font-size: 11.5px; font-weight: 700;">
+                                        ★ Destaque
+                                    </span>
+                                <% } else { %>
+                                    <span style="color: var(--text-muted); font-size: 12px;">Padrão</span>
+                                <% } %>
+                            </td>
+                            <td style="text-align: right; white-space: nowrap;">
+                                <button type="button" 
+                                    class="btn-acao-editar" 
+                                    onclick='abrirModalEditarItem(<%- JSON.stringify(item).replace(/'/g, "&#39;") %>)'
+                                    style="background: #1e293b; color: #F5D696; border: 1px solid rgba(245, 214, 150, 0.3); padding: 6px 12px; border-radius: 6px; font-size: 12.5px; font-weight: 600; cursor: pointer; margin-right: 6px;">
+                                    Editar
+                                </button>
+                                <button type="button" 
+                                    class="btn-acao-excluir" 
+                                    onclick="confirmarExclusao(<%= item.id_item %>, '<%= item.nome.replace(/'/g, "\\'") %>')"
+                                    style="background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); padding: 6px 10px; border-radius: 6px; font-size: 12.5px; font-weight: 600; cursor: pointer;">
+                                    Excluir
+                                </button>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<!-- ======================================================= -->
+<!-- MODAL DE CADASTRO / EDIÇÃO DE ITEM DO CARDÁPIO          -->
+<!-- ======================================================= -->
+<div id="modalItemCardapio" class="modal-overlay oculto" style="position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: none; align-items: center; justify-content: center; z-index: 99999; padding: 20px;">
+    <div class="modal-card" style="background: #111520; border: 1px solid var(--border-color); color: #fff; width: 100%; max-width: 540px; border-radius: 12px; padding: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); max-height: 90vh; overflow-y: auto;">
+        <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
+            <h3 id="modalTitulo" style="font-size: 18px; color: #F5D696; font-weight: 700; margin: 0;">Novo Item no Cardápio</h3>
+            <button type="button" onclick="fecharModalItem()" style="background: none; border: none; font-size: 24px; color: #94a3b8; cursor: pointer;">&times;</button>
+        </div>
+
+        <form id="formItemCardapio" method="POST" action="/paginas/cardapio/criar" enctype="multipart/form-data">
+            <input type="hidden" id="itemEditId" name="id" value="">
+
+            <div class="form-grupo" style="margin-bottom: 14px;">
+                <label for="campoItemNome" style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #cbd5e1;">Nome do Produto *</label>
+                <input type="text" id="campoItemNome" name="nome" required placeholder="Ex: Café Espresso Bravo" style="width: 100%; padding: 9px 12px; border-radius: 6px; border: 1px solid var(--border-color); background: #0b0d13; color: #fff; font-size: 14px; box-sizing: border-box;">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+                <div class="form-grupo">
+                    <label for="campoItemPreco" style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #cbd5e1;">Preço (R$) *</label>
+                    <input type="number" step="0.01" min="0" id="campoItemPreco" name="preco" required placeholder="0,00" style="width: 100%; padding: 9px 12px; border-radius: 6px; border: 1px solid var(--border-color); background: #0b0d13; color: #fff; font-size: 14px; box-sizing: border-box;">
+                </div>
+
+                <div class="form-grupo">
+                    <label for="campoItemCategoria" style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #cbd5e1;">Categoria *</label>
+                    <select id="campoItemCategoria" name="categoria" onchange="verificarCategoriaNova(this)" required style="width: 100%; padding: 9px 12px; border-radius: 6px; border: 1px solid var(--border-color); background: #0b0d13; color: #fff; font-size: 14px; box-sizing: border-box;">
+                        <option value="Cafés">Cafés</option>
+                        <option value="Bebidas Geladas">Bebidas Geladas</option>
+                        <option value="Salgados & Lanches">Salgados & Lanches</option>
+                        <option value="Doces & Sobremesas">Doces & Sobremesas</option>
+                        <option value="Combos">Combos</option>
+                        <% categorias.forEach(function(c) { %>
+                            <% if (!['Cafés', 'Bebidas Geladas', 'Salgados & Lanches', 'Doces & Sobremesas', 'Combos'].includes(c)) { %>
+                                <option value="<%= c %>"><%= c %></option>
+                            <% } %>
+                        <% }); %>
+                        <option value="__nova__">+ Outra / Criar Nova Categoria</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Campo caso o admin queira criar uma categoria nova -->
+            <div class="form-grupo" id="boxCategoriaNova" style="display: none; margin-bottom: 14px;">
+                <label for="campoCategoriaNova" style="display: block; font-size: 12.5px; font-weight: 600; margin-bottom: 6px; color: #F5D696;">Nome da Nova Categoria:</label>
+                <input type="text" id="campoCategoriaNova" name="categoria_nova" placeholder="Ex: Chás Especiais" style="width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid #F5D696; background: #0b0d13; color: #fff; font-size: 13.5px; box-sizing: border-box;">
+            </div>
+
+            <div class="form-grupo" style="margin-bottom: 14px;">
+                <label for="campoItemDescricao" style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #cbd5e1;">Descrição / Ingredientes</label>
+                <textarea id="campoItemDescricao" name="descricao" rows="2" placeholder="Descreva os ingredientes ou características do prato/bebida..." style="width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border-color); background: #0b0d13; color: #fff; font-size: 13.5px; box-sizing: border-box; resize: vertical;"></textarea>
+            </div>
+
+            <!-- Imagem: Upload de Arquivo ou URL -->
+            <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); padding: 12px; border-radius: 8px; margin-bottom: 16px;">
+                <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: #cbd5e1;">Imagem do Produto</label>
+                
+                <div style="margin-bottom: 10px;">
+                    <label for="campoItemUpload" style="display: block; font-size: 12px; color: #94a3b8; margin-bottom: 4px;">Enviar imagem do computador:</label>
+                    <input type="file" id="campoItemUpload" name="imagem" accept="image/*" style="font-size: 12px; color: #cbd5e1;">
+                </div>
+
+                <div>
+                    <label for="campoItemUrl" style="display: block; font-size: 12px; color: #94a3b8; margin-bottom: 4px;">Ou insira o link da imagem (URL da internet):</label>
+                    <input type="url" id="campoItemUrl" name="imagem_url" placeholder="https://exemplo.com/foto.jpg" style="width: 100%; padding: 8px 10px; border-radius: 6px; border: 1px solid var(--border-color); background: #0b0d13; color: #fff; font-size: 12.5px; box-sizing: border-box;">
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 20px; align-items: center; margin-bottom: 22px; flex-wrap: wrap;">
+                <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;">
+                    <input type="checkbox" id="campoItemDisponivel" name="disponivel" value="1" checked style="width: 16px; height: 16px; accent-color: #22c55e;">
+                    Disponível no cardápio
+                </label>
+
+                <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer;">
+                    <input type="checkbox" id="campoItemDestaque" name="destaque" value="1" style="width: 16px; height: 16px; accent-color: #F5D696;">
+                    ★ Destacar item no topo
+                </label>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid var(--border-color); padding-top: 16px;">
+                <button type="button" onclick="fecharModalItem()" style="padding: 9px 16px; border: 1px solid var(--border-color); background: #1e293b; color: #cbd5e1; border-radius: 6px; font-weight: 600; cursor: pointer;">Cancelar</button>
+                <button type="submit" id="btnSalvarItem" style="padding: 9px 22px; border: none; background: #F5D696; color: #0b0d13; border-radius: 6px; font-weight: 700; cursor: pointer;">Salvar Produto</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ======================================================= -->
+<!-- MODAL DE CONFIRMAÇÃO DE EXCLUSÃO                        -->
+<!-- ======================================================= -->
+<div id="modalExclusao" class="modal-overlay oculto" style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 99999; padding: 20px;">
+    <div style="background: #111520; border: 1px solid rgba(239, 68, 68, 0.4); color: #fff; width: 100%; max-width: 420px; border-radius: 12px; padding: 24px; text-align: center;">
+        <div style="font-size: 38px; margin-bottom: 12px;">🗑️</div>
+        <h3 style="font-size: 18px; margin-bottom: 8px; color: #f87171;">Remover do Cardápio?</h3>
+        <p id="textoExclusao" style="font-size: 13.5px; color: #94a3b8; margin-bottom: 22px;">Tem certeza que deseja excluir este item?</p>
+
+        <form id="formExclusao" method="POST" action="">
+            <div style="display: flex; justify-content: center; gap: 12px;">
+                <button type="button" onclick="fecharModalExclusao()" style="padding: 9px 18px; border: 1px solid var(--border-color); background: #1e293b; color: #cbd5e1; border-radius: 6px; font-weight: 600; cursor: pointer;">Cancelar</button>
+                <button type="submit" style="padding: 9px 20px; border: none; background: #ef4444; color: #fff; border-radius: 6px; font-weight: 700; cursor: pointer;">Sim, Excluir</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .status-disp {
+        background: rgba(34, 197, 94, 0.15);
+        color: #4ade80;
+        border: 1px solid rgba(34, 197, 94, 0.3) !important;
+    }
+    .status-disp:hover {
+        background: rgba(34, 197, 94, 0.25);
+    }
+    .status-esgot {
+        background: rgba(239, 68, 68, 0.15);
+        color: #f87171;
+        border: 1px solid rgba(239, 68, 68, 0.3) !important;
+    }
+    .status-esgot:hover {
+        background: rgba(239, 68, 68, 0.25);
+    }
+</style>
+
+<script>
+    function abrirModalNovoItem() {
+        document.getElementById('modalTitulo').textContent = 'Novo Item no Cardápio';
+        document.getElementById('formItemCardapio').action = '/paginas/cardapio/criar';
+        document.getElementById('formItemCardapio').reset();
+        document.getElementById('itemEditId').value = '';
+        document.getElementById('campoItemDisponivel').checked = true;
+        document.getElementById('campoItemDestaque').checked = false;
+        document.getElementById('boxCategoriaNova').style.display = 'none';
+
+        const modal = document.getElementById('modalItemCardapio');
+        modal.classList.remove('oculto');
+        modal.style.display = 'flex';
+    }
+
+    function abrirModalEditarItem(item) {
+        document.getElementById('modalTitulo').textContent = 'Editar Item: ' + item.nome;
+        document.getElementById('formItemCardapio').action = '/paginas/cardapio/editar/' + item.id_item;
+        document.getElementById('itemEditId').value = item.id_item;
+        document.getElementById('campoItemNome').value = item.nome;
+        document.getElementById('campoItemPreco').value = Number(item.preco).toFixed(2);
+        document.getElementById('campoItemDescricao').value = item.descricao || '';
+        document.getElementById('campoItemUrl').value = item.imagem_url || '';
+        document.getElementById('campoItemDisponivel').checked = Boolean(item.disponivel);
+        document.getElementById('campoItemDestaque').checked = Boolean(item.destaque);
+
+        const selCat = document.getElementById('campoItemCategoria');
+        let achou = false;
+        for (let i = 0; i < selCat.options.length; i++) {
+            if (selCat.options[i].value === item.categoria) {
+                selCat.selectedIndex = i;
+                achou = true;
+                break;
+            }
+        }
+        if (!achou) {
+            selCat.value = '__nova__';
+            document.getElementById('boxCategoriaNova').style.display = 'block';
+            document.getElementById('campoCategoriaNova').value = item.categoria;
+        } else {
+            document.getElementById('boxCategoriaNova').style.display = 'none';
+        }
+
+        const modal = document.getElementById('modalItemCardapio');
+        modal.classList.remove('oculto');
+        modal.style.display = 'flex';
+    }
+
+    function fecharModalItem() {
+        const modal = document.getElementById('modalItemCardapio');
+        modal.classList.add('oculto');
+        modal.style.display = 'none';
+    }
+
+    function verificarCategoriaNova(select) {
+        const box = document.getElementById('boxCategoriaNova');
+        if (select.value === '__nova__') {
+            box.style.display = 'block';
+            document.getElementById('campoCategoriaNova').focus();
+        } else {
+            box.style.display = 'none';
+        }
+    }
+
+    function confirmarExclusao(id, nome) {
+        document.getElementById('textoExclusao').innerHTML = `Tem certeza que deseja excluir <strong>"${nome}"</strong> do cardápio?`;
+        document.getElementById('formExclusao').action = '/paginas/cardapio/excluir/' + id;
+        const modal = document.getElementById('modalExclusao');
+        modal.classList.remove('oculto');
+        modal.style.display = 'flex';
+    }
+
+    function fecharModalExclusao() {
+        const modal = document.getElementById('modalExclusao');
+        modal.classList.add('oculto');
+        modal.style.display = 'none';
+    }
+
+    async function alternarStatusItem(id, btn) {
+        btn.disabled = true;
+        try {
+            const resp = await fetch('/paginas/cardapio/status/' + id, {
+                method: 'POST',
+                headers: { 'Accept': 'application/json' }
+            });
+            const dados = await resp.json();
+            if (dados.sucesso) {
+                if (dados.disponivel === 1) {
+                    btn.className = 'btn-toggle-status status-disp';
+                    btn.textContent = '● Disponível';
+                } else {
+                    btn.className = 'btn-toggle-status status-esgot';
+                    btn.textContent = '○ Esgotado';
+                }
+                const linha = btn.closest('.linha-item');
+                if (linha) {
+                    linha.setAttribute('data-disponivel', dados.disponivel === 1 ? 'disponivel' : 'esgotado');
+                }
+            } else {
+                alert('Erro ao atualizar status: ' + (dados.mensagem || ''));
+            }
+        } catch (e) {
+            alert('Erro de conexão ao alternar status.');
+        } finally {
+            btn.disabled = false;
+        }
+    }
+
+    function filtrarTabela() {
+        const busca = document.getElementById('filtroBusca').value.toLowerCase().trim();
+        const categoria = document.getElementById('filtroCategoria').value;
+        const disponibilidade = document.getElementById('filtroDisponibilidade').value;
+
+        const linhas = document.querySelectorAll('.linha-item');
+        linhas.forEach(linha => {
+            const nome = linha.getAttribute('data-nome') || '';
+            const desc = linha.getAttribute('data-descricao') || '';
+            const cat = linha.getAttribute('data-categoria') || '';
+            const disp = linha.getAttribute('data-disponivel') || '';
+
+            const matchBusca = !busca || nome.includes(busca) || desc.includes(busca);
+            const matchCategoria = !categoria || cat === categoria;
+            const matchDisp = !disponibilidade || disp === disponibilidade;
+
+            if (matchBusca && matchCategoria && matchDisp) {
+                linha.style.display = '';
+            } else {
+                linha.style.display = 'none';
+            }
+        });
+    }
+</script>
+
+<%- include('../partials/footer') %>

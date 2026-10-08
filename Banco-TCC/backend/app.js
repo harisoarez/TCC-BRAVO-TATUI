@@ -58,6 +58,9 @@ app.get("/login", (req, res) => {
 app.get("/calendario", (req, res) => {
     res.redirect("/site/calendario.html");
 });
+app.get("/cardapio", (req, res) => {
+    res.redirect("/site/cardapio.html");
+});
 app.get("/logout", (req, res) => {
     if (req.session) {
         req.session.destroy(() => {});
@@ -91,6 +94,12 @@ app.use("/api/responsaveis", responsavelRoutes);
 const dashboardRoutes = require("./src/routes/dashboardRoutes");
 app.use("/api/dashboard", dashboardRoutes);
 
+const cardapioRoutes = require("./src/routes/cardapioRoutes");
+app.use("/api/cardapio", cardapioRoutes);
+
+const instrumentoRoutes = require("./src/routes/instrumentoRoutes");
+app.use("/api/instrumentos", instrumentoRoutes);
+
 // Rotas das páginas do sistema administrativo (SSR EJS)
 const professorRoutes = require("./src/routes/professorRoutes"); 
 app.use("/paginas/professores", professorRoutes);
@@ -106,6 +115,20 @@ app.use("/paginas/usuarios", paginaUsuarioRoutes);
 
 const paginaMatriculaRoutes = require("./src/routes/paginaMatriculaRoutes");
 app.use("/paginas/matricula", paginaMatriculaRoutes);
+
+const paginaCardapioRoutes = require("./src/routes/paginaCardapioRoutes");
+app.use("/paginas/cardapio", paginaCardapioRoutes);
+
+const paginaInstrumentoRoutes = require("./src/routes/paginaInstrumentoRoutes");
+app.use("/paginas/instrumentos", paginaInstrumentoRoutes);
+
+// Inicializa tabela do cardápio e itens padrão se necessário
+const cardapioModel = require("./src/models/cardapioModel");
+cardapioModel.garantirTabela().catch((err) => console.error("Erro ao inicializar cardápio:", err));
+
+// Inicializa tabela de instrumentos e acervo padrão se necessário
+const instrumentoModel = require("./src/models/instrumentoModel");
+instrumentoModel.garantirTabela().catch((err) => console.error("Erro ao inicializar instrumentos:", err));
 
 // Rota de status da API
 app.get("/api", (req, res) => {

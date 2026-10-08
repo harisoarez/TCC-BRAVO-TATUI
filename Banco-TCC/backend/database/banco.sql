@@ -128,3 +128,34 @@ CREATE TABLE IF NOT EXISTS financeiro_pagamento (
     REFERENCES professor(idprofessor)
     ON DELETE CASCADE
 );
+
+-- Tabela de itens do cardápio do Coffee Bravo
+CREATE TABLE IF NOT EXISTS cardapio_item (
+  id_item INT PRIMARY KEY AUTO_INCREMENT,
+  nome VARCHAR(100) NOT NULL,
+  descricao TEXT,
+  preco DECIMAL(10,2) NOT NULL,
+  categoria VARCHAR(50) NOT NULL,
+  imagem_url VARCHAR(500) NULL,
+  disponivel TINYINT(1) DEFAULT 1,
+  destaque TINYINT(1) DEFAULT 0,
+  ordem INT DEFAULT 0,
+  data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Tabela de instrumentos musicais (Aulas no IMBT e Formações de Eventos)
+CREATE TABLE IF NOT EXISTS instrumento (
+  id_instrumento INT PRIMARY KEY AUTO_INCREMENT,
+  nome VARCHAR(100) NOT NULL,
+  categoria VARCHAR(60) NOT NULL,
+  icone VARCHAR(50) DEFAULT '🎻',
+  imagem_url VARCHAR(500) NULL,
+  descricao TEXT,
+  disponivel_aulas TINYINT(1) DEFAULT 1,
+  disponivel_eventos TINYINT(1) DEFAULT 1,
+  ativo TINYINT(1) DEFAULT 1,
+  ordem INT DEFAULT 0,
+  data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);

@@ -537,9 +537,8 @@
         }
     ];
 
-    // Conjunto de instrumentos selecionados pelo cliente na formação personalizada
-    // Padrão inicial com uma combinação elegante de trio clássico
-    let instrumentosSelecionados = new Set(["Violino", "Violoncelo", "Piano Elétrico / Cauda"]);
+    // Conjunto de instrumentos selecionados pelo cliente na formação personalizada (inicia vazio)
+    let instrumentosSelecionados = new Set();
 
     // Array ordenado para permitir navegação Anterior / Próximo e geração do carrossel
     const listaFormacoesIds = Object.keys(formacoesData);
@@ -657,6 +656,8 @@
     window.limparInstrumentosPersonalizados = function () {
         instrumentosSelecionados.clear();
         document.querySelectorAll(".custom-inst-card").forEach(c => c.classList.remove("selecionado"));
+        const obsEl = document.getElementById("campoObservacoesPersonalizadas");
+        if (obsEl) obsEl.value = "";
         atualizarResumoPersonalizado();
     };
 
@@ -759,6 +760,7 @@
         const secaoPersonalizada = document.getElementById("secaoInstrumentosPersonalizada");
         const secaoPlaylist = document.getElementById("secaoPlaylist");
         const secaoAvisoCustom = document.getElementById("secaoAvisoCustom");
+        const secaoOcasioes = document.getElementById("secaoOcasioes");
         const tituloCta = document.getElementById("tituloCta");
         const descricaoCta = document.getElementById("descricaoCta");
 
@@ -767,14 +769,16 @@
             if (secaoPersonalizada) secaoPersonalizada.style.display = "block";
             if (secaoPlaylist) secaoPlaylist.style.display = "none";
             if (secaoAvisoCustom) secaoAvisoCustom.style.display = "block";
+            if (secaoOcasioes) secaoOcasioes.style.display = "none"; // Remove o card de recomendações de ocasiões na página "Faça do seu jeito"
             if (tituloCta) tituloCta.textContent = "Seu Projeto Sob Medida";
             if (descricaoCta) descricaoCta.textContent = "Converse diretamente com o Maestro para alinhar os arranjos, horários e sonorização para o seu evento.";
-            atualizarResumoPersonalizado();
+            window.limparInstrumentosPersonalizados();
         } else {
             if (secaoPadrao) secaoPadrao.style.display = "block";
             if (secaoPersonalizada) secaoPersonalizada.style.display = "none";
             if (secaoPlaylist) secaoPlaylist.style.display = "block";
             if (secaoAvisoCustom) secaoAvisoCustom.style.display = "none";
+            if (secaoOcasioes) secaoOcasioes.style.display = "block";
             if (tituloCta) tituloCta.textContent = `Deseja a formação ${nomeCompleto} no seu Evento?`;
             if (descricaoCta) descricaoCta.textContent = "Receba atendimento exclusivo e tire todas as suas dúvidas diretamente com a equipe artística do Instituto Musical Bravo Tatuí.";
 
@@ -975,6 +979,23 @@
             const currentParams = new URLSearchParams(window.location.search);
             const currentId = currentParams.get("id") || "plus";
             renderizarFormacao(currentId);
+        });
+
+        // Garante que ao voltar para a página ou sair dela, nenhum instrumento continue selecionado
+        window.addEventListener("pageshow", () => {
+            const currentParams = new URLSearchParams(window.location.search);
+            const currentId = (currentParams.get("id") || "").toLowerCase();
+            if (currentId === "personalizada") {
+                if (typeof window.limparInstrumentosPersonalizados === "function") {
+                    window.limparInstrumentosPersonalizados();
+                }
+            }
+        });
+
+        window.addEventListener("pagehide", () => {
+            if (typeof window.limparInstrumentosPersonalizados === "function") {
+                window.limparInstrumentosPersonalizados();
+            }
         });
     }
 

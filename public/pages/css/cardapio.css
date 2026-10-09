@@ -583,22 +583,24 @@ body {
 .btn-pedir-whats {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    background: var(--ouro-bravo, #F5D696);
-    color: #0b0d13;
+    gap: 6px;
+    background: linear-gradient(135deg, #25D366 0%, #1ea952 100%);
+    color: #ffffff;
     font-size: 12px;
     font-weight: 700;
-    padding: 6px 12px;
-    border-radius: 6px;
+    padding: 7px 13px;
+    border-radius: 7px;
     text-decoration: none;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(245, 214, 150, 0.25);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 3px 10px rgba(37, 211, 102, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .btn-pedir-whats:hover {
-    filter: brightness(1.1);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(245, 214, 150, 0.4);
+    background: linear-gradient(135deg, #2bf074 0%, #20b859 100%);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(37, 211, 102, 0.55);
 }
 
 @media (max-width: 960px) {

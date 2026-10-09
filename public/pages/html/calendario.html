@@ -24,6 +24,42 @@
         <!-- Calendário Principal -->
         <main class="calendar-main">
             <div id="bannerModo" class="aviso-modo-leitura oculto"></div>
+
+            <!-- Topbar Mobile (Mês Completo, Ações de Busca, Hoje e Botão Adicionar Aula) -->
+            <header class="calendario-mob-topbar">
+                <div class="mob-mes-seletor">
+                    <button type="button" id="btnMobPrev" class="btn-mob-nav" title="Mês Anterior">&lsaquo;</button>
+                    <h2 id="mesMobTitulo" class="mes-mob-titulo">Outubro 2026</h2>
+                    <button type="button" id="btnMobNext" class="btn-mob-nav" title="Próximo Mês">&rsaquo;</button>
+                </div>
+
+                <div class="mob-acoes-direita">
+                    <button type="button" id="btnMobBusca" class="btn-mob-acao" title="Buscar / Filtrar Aulas">
+                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
+                    <button type="button" id="btnMobHoje" class="btn-mob-hoje" title="Ir para o Dia de Hoje">
+                        <span id="iconeDiaHoje">9</span>
+                    </button>
+                    <button type="button" id="btnNovaAulaMobile" class="btn-agendar-aula-mob" title="Agendar Nova Aula">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        <span>Adicionar Aula</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Barra de Busca Rápida Mobile -->
+            <div id="barraBuscaMobile" class="barra-busca-mob oculto">
+                <input type="text" id="inputBuscaMob" placeholder="Buscar por título, instrumento ou professor...">
+                <button type="button" id="btnLimparBuscaMob" class="btn-limpar-busca">&times;</button>
+            </div>
+
+            <!-- Header Original Desktop -->
             <header class="calendar-header">
                 <div class="mes-nav">
                     <button id="btnAnterior">&lsaquo;</button>
@@ -35,7 +71,13 @@
 
             <div class="calendar-grid">
                 <div class="weekdays">
-                    <span>Dom</span><span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span>
+                    <span class="col-dom"><span class="txt-desk">Dom</span><span class="txt-mob">D</span></span>
+                    <span class="col-seg"><span class="txt-desk">Seg</span><span class="txt-mob">S</span></span>
+                    <span class="col-ter"><span class="txt-desk">Ter</span><span class="txt-mob">T</span></span>
+                    <span class="col-qua"><span class="txt-desk">Qua</span><span class="txt-mob">Q</span></span>
+                    <span class="col-qui"><span class="txt-desk">Qui</span><span class="txt-mob">Q</span></span>
+                    <span class="col-sex"><span class="txt-desk">Sex</span><span class="txt-mob">S</span></span>
+                    <span class="col-sab"><span class="txt-desk">Sáb</span><span class="txt-mob">S</span></span>
                 </div>
                 <div id="gradeAtual" class="days-grid"></div>
             </div>
@@ -44,9 +86,28 @@
         <!-- Agenda do Dia -->
         <aside class="sidebar-details">
             <div class="todays-events">
-                <h3>Aulas do Dia</h3>
-                <p id="textoDataSelecionada">Selecione um dia no calendário</p>
+                <!-- Cabeçalho Desktop -->
+                <h3 class="desk-agenda-title">Aulas do Dia</h3>
+                <p id="textoDataSelecionada" class="desk-agenda-sub">Selecione um dia no calendário</p>
+
+                <!-- Cabeçalho Mobile no Modelo do Usuário (Ex: "9 SEX.") -->
+                <div class="mob-selected-day-header">
+                    <span id="mobDiaNumero" class="mob-dia-num">9</span>
+                    <span id="mobDiaSemana" class="mob-dia-sem">SEX.</span>
+                </div>
+
                 <div id="agendaDia" class="events-list"></div>
+            </div>
+
+            <!-- Botão de Ação Mobile no Rodapé (Ex: "Adic. em 9 de out. +") -->
+            <div class="mob-bottom-bar" id="mobBottomBar">
+                <button type="button" id="btnMobAdicionarAula" class="btn-mob-adicionar">
+                    <span id="textoBtnMobAdicionar">Adic. em 9 de out.</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
             </div>
 
             <div class="event-types">

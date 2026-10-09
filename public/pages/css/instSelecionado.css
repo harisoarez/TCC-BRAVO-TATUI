@@ -451,25 +451,27 @@ a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    background: #F5D696;
-    color: #080808;
+    gap: 10px;
+    background: linear-gradient(135deg, #25D366 0%, #1ea952 100%);
+    color: #ffffff;
     font-family: 'inter', sans-serif;
     font-weight: 700;
     font-size: clamp(12.5px, 2.2vw, 14px);
     padding: 12px 24px;
-    border-radius: 8px;
+    border-radius: 10px;
     text-decoration: none;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 14px rgba(245, 214, 150, 0.25);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 18px rgba(37, 211, 102, 0.4);
     max-width: 100%;
     text-align: right;
+    border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .btn-matricular-cta:hover {
-    filter: brightness(1.1);
+    background: linear-gradient(135deg, #2bf074 0%, #20b859 100%);
+    color: #ffffff;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(245, 214, 150, 0.4);
+    box-shadow: 0 8px 24px rgba(37, 211, 102, 0.6);
 }
 
 /* ================================================================ */
@@ -619,7 +621,7 @@ a {
     line-height: 1.55;
     padding: 14px 16px;
     border-radius: 8px;
-    resize: vertical;
+    resize: none !important;
     outline: none;
     min-height: 160px;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;

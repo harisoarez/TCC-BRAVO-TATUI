@@ -770,14 +770,22 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    background: #25D366;
+    background: linear-gradient(135deg, #25D366 0%, #1ea952 100%);
     color: #ffffff;
     font-weight: 700;
-    font-size: 13px;
-    padding: 10px;
+    font-size: 13.5px;
+    padding: 11px 16px;
     border-radius: 8px;
     text-decoration: none;
-    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.25);
+    box-shadow: 0 4px 16px rgba(37, 211, 102, 0.38);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: all 0.25s ease;
+}
+
+.btn-drawer-whatsapp:hover {
+    background: linear-gradient(135deg, #2bf074 0%, #20b859 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 22px rgba(37, 211, 102, 0.6);
 }
 
 .btn-drawer-insta {

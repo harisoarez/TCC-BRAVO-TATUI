@@ -868,25 +868,31 @@ a {
     gap: 10px;
 }
 
-.btn-cta-primary {
+.btn-cta-primary,
+#btnWhatsapp {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    background: var(--formation-color);
-    color: #07070a;
+    background: linear-gradient(135deg, #25D366 0%, #1ea952 100%) !important;
+    color: #ffffff !important;
     font-weight: 700;
     font-size: 14px;
     padding: 13px 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 18px var(--formation-glow);
-    transition: all 0.25s ease;
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4) !important;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
-.btn-cta-primary:hover {
+.btn-cta-primary:hover,
+#btnWhatsapp:hover {
+    background: linear-gradient(135deg, #2bf074 0%, #20b859 100%) !important;
+    color: #ffffff !important;
     transform: translateY(-2px);
-    box-shadow: 0 6px 25px var(--formation-glow);
-    filter: brightness(1.08);
+    box-shadow: 0 8px 26px rgba(37, 211, 102, 0.6) !important;
+    filter: brightness(1.05);
 }
 
 .btn-cta-secondary {

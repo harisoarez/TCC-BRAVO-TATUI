@@ -751,6 +751,7 @@ body {
     border-radius: 18px 18px 18px 48px;
     padding: 26px;
     box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+    scroll-margin-top: 85px;
 }
 
 .mensalidades-header {
@@ -973,7 +974,14 @@ body {
     z-index: 2000;
 }
 
-.modal-overlay.oculto { display: none; }
+/* Utilitário Global de Ocultação */
+.oculto {
+    display: none !important;
+}
+
+.modal-overlay.oculto {
+    display: none !important;
+}
 
 .modal-card {
     background: #0f172a;

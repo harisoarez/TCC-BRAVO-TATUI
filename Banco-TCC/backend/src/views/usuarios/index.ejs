@@ -20,14 +20,14 @@
     </header>
 
     <!-- Tabs para alternar entre Administradores, Professores e Alunos -->
-    <div style="display: flex; gap: 10px; border-bottom: 2px solid var(--border-color); padding-bottom: 12px;">
-        <button type="button" class="tab-btn ativo" id="tabBtnAlunos" onclick="trocarAbaUsuarios('alunos')">
+    <div style="display: flex; gap: 10px; border-bottom: 2px solid var(--border-color); padding-bottom: 12px; flex-wrap: wrap;">
+        <button type="button" class="tab-btn ativo" id="tabBtnAlunos" onclick="trocarAbaUsuarios('alunos', true)">
             Alunos Matriculados <span class="tab-badge"><%= alunos.length %></span>
         </button>
-        <button type="button" class="tab-btn" id="tabBtnProfessores" onclick="trocarAbaUsuarios('professores')">
+        <button type="button" class="tab-btn" id="tabBtnProfessores" onclick="trocarAbaUsuarios('professores', true)">
             Professores <span class="tab-badge"><%= professores.length %></span>
         </button>
-        <button type="button" class="tab-btn" id="tabBtnAdmins" onclick="trocarAbaUsuarios('admins')">
+        <button type="button" class="tab-btn" id="tabBtnAdmins" onclick="trocarAbaUsuarios('admins', true)">
             Administradores <span class="tab-badge"><%= administradores.length %></span>
         </button>
     </div>
@@ -409,15 +409,51 @@
 <%- include('../partials/footer') %>
 
 <script>
-    function trocarAbaUsuarios(aba) {
-        document.getElementById('secaoAlunos').classList.toggle('oculto', aba !== 'alunos');
-        document.getElementById('secaoProfessores').classList.toggle('oculto', aba !== 'professores');
-        document.getElementById('secaoAdmins').classList.toggle('oculto', aba !== 'admins');
+    function trocarAbaUsuarios(aba, rolar = true) {
+        const secoes = {
+            'alunos': { el: document.getElementById('secaoAlunos'), btn: document.getElementById('tabBtnAlunos') },
+            'professores': { el: document.getElementById('secaoProfessores'), btn: document.getElementById('tabBtnProfessores') },
+            'admins': { el: document.getElementById('secaoAdmins'), btn: document.getElementById('tabBtnAdmins') }
+        };
 
-        document.getElementById('tabBtnAlunos').classList.toggle('ativo', aba === 'alunos');
-        document.getElementById('tabBtnProfessores').classList.toggle('ativo', aba === 'professores');
-        document.getElementById('tabBtnAdmins').classList.toggle('ativo', aba === 'admins');
+        if (!secoes[aba]) aba = 'alunos';
+
+        Object.keys(secoes).forEach(chave => {
+            const item = secoes[chave];
+            const ativo = (chave === aba);
+            if (item.el) {
+                item.el.classList.toggle('oculto', !ativo);
+            }
+            if (item.btn) {
+                item.btn.classList.toggle('ativo', ativo);
+            }
+        });
+
+        // Atualiza a URL com a âncora correspondente sem reload
+        if (window.history && window.history.replaceState) {
+            window.history.replaceState(null, '', '#' + aba);
+        }
+
+        // Rola suavemente até a seção correspondente
+        if (rolar && secoes[aba] && secoes[aba].el) {
+            secoes[aba].el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     }
+
+    // Inicialização automática a partir do hash da URL (#alunos, #professores, #admins)
+    (function verificarHashInicial() {
+        const hash = (window.location.hash || '').replace('#', '').toLowerCase();
+        if (['alunos', 'professores', 'admins'].includes(hash)) {
+            trocarAbaUsuarios(hash, false);
+        }
+    })();
+
+    window.addEventListener('hashchange', function() {
+        const hash = (window.location.hash || '').replace('#', '').toLowerCase();
+        if (['alunos', 'professores', 'admins'].includes(hash)) {
+            trocarAbaUsuarios(hash, true);
+        }
+    });
 
     // Modal Desconto
     function abrirModalDesconto(id, nome, descontoAtual) {

@@ -139,14 +139,31 @@ function renderizarAreaUsuario() {
 }
 
 function aplicarPermissoesUI() {
-    const btnNova = document.getElementById("btnNovaAula");
-    if (!btnNova) return;
+    const btnNovaDesk = document.getElementById("btnNovaAula");
+    const btnNovaMob = document.getElementById("btnNovaAulaMobile");
+    const btnMobAdd = document.getElementById("btnMobAdicionarAula");
 
-    if (isPrivilegiado()) {
-        btnNova.classList.remove("oculto");
-        btnNova.onclick = abrirNovoAgendamento;
-    } else {
-        btnNova.classList.add("oculto");
+    const acaoAgendar = () => {
+        if (isPrivilegiado()) {
+            abrirNovoAgendamento();
+        } else {
+            alert("Modo de Leitura: Apenas administradores e professores autorizados podem agendar novas aulas.");
+        }
+    };
+
+    if (btnNovaDesk) {
+        if (isPrivilegiado()) {
+            btnNovaDesk.classList.remove("oculto");
+        }
+        btnNovaDesk.onclick = acaoAgendar;
+    }
+
+    if (btnNovaMob) {
+        btnNovaMob.onclick = acaoAgendar;
+    }
+
+    if (btnMobAdd) {
+        btnMobAdd.onclick = acaoAgendar;
     }
 }
 
@@ -212,23 +229,149 @@ async function carregarAulas() {
 
 // ================= CONFIGURAÇÃO DE NAVEGAÇÃO =================
 function configurarNavegacao() {
-    document.getElementById("btnAnterior").addEventListener("click", () => {
-        dataAtual.setMonth(dataAtual.getMonth() - 1);
-        renderizarCalendario();
-    });
+    // Navegação Desktop
+    const btnAnt = document.getElementById("btnAnterior");
+    if (btnAnt) {
+        btnAnt.addEventListener("click", () => {
+            dataAtual.setMonth(dataAtual.getMonth() - 1);
+            renderizarCalendario();
+        });
+    }
 
-    document.getElementById("btnProximo").addEventListener("click", () => {
-        dataAtual.setMonth(dataAtual.getMonth() + 1);
-        renderizarCalendario();
-    });
+    const btnProx = document.getElementById("btnProximo");
+    if (btnProx) {
+        btnProx.addEventListener("click", () => {
+            dataAtual.setMonth(dataAtual.getMonth() + 1);
+            renderizarCalendario();
+        });
+    }
+
+    // Navegação Mobile (Topbar estilo app)
+    const btnMobPrev = document.getElementById("btnMobPrev");
+    if (btnMobPrev) {
+        btnMobPrev.addEventListener("click", () => {
+            dataAtual.setMonth(dataAtual.getMonth() - 1);
+            renderizarCalendario();
+        });
+    }
+
+    const btnMobNext = document.getElementById("btnMobNext");
+    if (btnMobNext) {
+        btnMobNext.addEventListener("click", () => {
+            dataAtual.setMonth(dataAtual.getMonth() + 1);
+            renderizarCalendario();
+        });
+    }
+
+    // Botão Hoje Mobile (ícone com o número do dia de hoje)
+    const btnMobHoje = document.getElementById("btnMobHoje");
+    if (btnMobHoje) {
+        btnMobHoje.addEventListener("click", () => {
+            const hoje = new Date();
+            dataAtual = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
+            dataSelecionada = new Date();
+            renderizarCalendario();
+            renderizarAgendaDia(dataSelecionada);
+        });
+    }
+
+    // Botão Adicionar Aula no Topo Mobile / Tablet
+    const btnNovaMob = document.getElementById("btnNovaAulaMobile");
+    if (btnNovaMob) {
+        btnNovaMob.addEventListener("click", () => {
+            if (isPrivilegiado()) {
+                abrirNovoAgendamento();
+            } else {
+                alert("Modo de Leitura: Apenas administradores e professores autorizados podem agendar novas aulas.");
+            }
+        });
+    }
+
+    // Botão Inferior Mobile: "Adic. em [dia] de [mês] +"
+    const btnMobAdd = document.getElementById("btnMobAdicionarAula");
+    if (btnMobAdd) {
+        btnMobAdd.addEventListener("click", () => {
+            if (isPrivilegiado()) {
+                abrirNovoAgendamento();
+            } else {
+                alert("Modo de Leitura: Apenas administradores e professores autorizados podem agendar novas aulas.");
+            }
+        });
+    }
+
+    // Campo de Busca Rápida Mobile
+    const btnMobBusca = document.getElementById("btnMobBusca");
+    const barraBusca = document.getElementById("barraBuscaMobile");
+    const inputBusca = document.getElementById("inputBuscaMob");
+    const btnLimpar = document.getElementById("btnLimparBuscaMob");
+
+    if (btnMobBusca && barraBusca) {
+        btnMobBusca.addEventListener("click", () => {
+            barraBusca.classList.toggle("oculto");
+            if (!barraBusca.classList.contains("oculto") && inputBusca) {
+                inputBusca.focus();
+            }
+        });
+    }
+
+    if (btnLimpar && inputBusca) {
+        btnLimpar.addEventListener("click", () => {
+            inputBusca.value = "";
+            renderizarAgendaDia(dataSelecionada);
+        });
+    }
+
+    if (inputBusca) {
+        inputBusca.addEventListener("input", (e) => {
+            filtrarAulasBusca(e.target.value.toLowerCase().trim());
+        });
+    }
 
     document.getElementById("formAula").addEventListener("submit", salvarAula);
 
     document.getElementById("btnLixeira").addEventListener("click", () => {
-        if (usuarioAtivo.tipo !== "admin") return;
+        if (!isPrivilegiado()) return;
         fecharModal("modalFormulario");
         document.getElementById("modalExcluir").classList.remove("oculto");
     });
+}
+
+function filtrarAulasBusca(termo) {
+    const agenda = document.getElementById("agendaDia");
+    if (!agenda) return;
+
+    if (!termo) {
+        renderizarAgendaDia(dataSelecionada);
+        return;
+    }
+
+    const filtradas = aulas.filter(a => {
+        return (a.titulo && a.titulo.toLowerCase().includes(termo)) ||
+               (a.instrumento && a.instrumento.toLowerCase().includes(termo)) ||
+               (a.professor && a.professor.toLowerCase().includes(termo));
+    });
+
+    if (filtradas.length === 0) {
+        agenda.innerHTML = `
+            <div class="mob-empty-state">
+                <p>Nenhuma aula encontrada para "${termo}".</p>
+            </div>
+        `;
+        return;
+    }
+
+    agenda.innerHTML = filtradas.map(aula => {
+        const dataBr = aula.data ? aula.data.split("-").reverse().join("/") : "";
+        return `
+            <div class="evento-card ${aula.tipo}" onclick="abrirResumo(${aula.id}, null)">
+                <div class="evento-card-header">
+                    <strong>${aula.hora || ""} — ${aula.titulo}</strong>
+                    <span class="evento-badge-tipo ${aula.tipo}">${aula.tipo}</span>
+                </div>
+                <span>${dataBr} • ${aula.instrumento} | Sala ${aula.sala} | Prof: ${aula.professor || "A definir"}</span>
+            </div>
+        `;
+    }).join("");
 }
 
 // ================= RENDERIZAÇÃO DO CALENDÁRIO =================
@@ -236,33 +379,95 @@ function renderizarCalendario() {
     const ano = dataAtual.getFullYear();
     const mes = dataAtual.getMonth();
 
+    // Nome completo do mês sem abreviar tanto no desktop quanto no mobile/tablet (Ex: "Outubro 2026")
     const nomeMes = new Date(ano, mes).toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
-    document.getElementById("mesAtual").textContent = nomeMes.charAt(0).toUpperCase() + nomeMes.slice(1);
+    const nomeMesCapitalizado = nomeMes.charAt(0).toUpperCase() + nomeMes.slice(1);
 
-    const primeiroDia = new Date(ano, mes, 1).getDay();
+    const elMesAtual = document.getElementById("mesAtual");
+    if (elMesAtual) {
+        elMesAtual.textContent = nomeMesCapitalizado;
+    }
+
+    const elMesMob = document.getElementById("mesMobTitulo");
+    if (elMesMob) {
+        // Nome sem abreviação no mobile
+        elMesMob.textContent = nomeMesCapitalizado;
+    }
+
+    // Atualiza ícone do dia de hoje (Ex: "9")
+    const hoje = new Date();
+    const elIconeHoje = document.getElementById("iconeDiaHoje");
+    if (elIconeHoje) {
+        elIconeHoje.textContent = hoje.getDate();
+    }
+
+    const primeiroDiaSemana = new Date(ano, mes, 1).getDay(); // 0 (Dom) a 6 (Sáb)
     const ultimoDia = new Date(ano, mes + 1, 0).getDate();
+    const ultimoDiaMesAnterior = new Date(ano, mes, 0).getDate();
 
     const grade = document.getElementById("gradeAtual");
     let htmlDias = "";
 
-    for (let i = 0; i < primeiroDia; i++) {
-        htmlDias += `<div class="dia outro-mes"></div>`;
+    // Dias do mês anterior para preencher a primeira semana
+    for (let i = 0; i < primeiroDiaSemana; i++) {
+        const diaNum = ultimoDiaMesAnterior - primeiroDiaSemana + 1 + i;
+        const clsDom = (i === 0) ? "dia-domingo" : "";
+        htmlDias += `
+            <div class="dia outro-mes ${clsDom}">
+                <span class="numero-dia">${diaNum}</span>
+            </div>
+        `;
     }
 
+    // Dias do mês atual
     for (let dia = 1; dia <= ultimoDia; dia++) {
+        const dataObj = new Date(ano, mes, dia);
+        const diaSemana = dataObj.getDay();
         const dataFormatada = `${ano}-${String(mes + 1).padStart(2, "0")}-${String(dia).padStart(2, "0")}`;
         const aulasDoDia = aulas.filter(a => a.data === dataFormatada);
         const isSelecionado = dataFormatada === formatarData(dataSelecionada) ? "selecionado" : "";
+        const clsDomingo = diaSemana === 0 ? "dia-domingo" : "";
 
-        const htmlAulas = aulasDoDia.slice(0, 3).map(aula =>
+        // Indicadores visuais mobile (barras horizontais coloridas como no modelo)
+        let indicadoresMobileHtml = "";
+        if (aulasDoDia.length > 0) {
+            const temNormal = aulasDoDia.some(a => a.tipo === "normal");
+            const temReposicao = aulasDoDia.some(a => a.tipo === "reposicao");
+            const temCancelada = aulasDoDia.some(a => a.tipo === "cancelada");
+
+            indicadoresMobileHtml = `<div class="mob-indicadores-aulas">`;
+            if (temNormal) indicadoresMobileHtml += `<span class="mob-barra-aula normal" title="Aula Normal"></span>`;
+            if (temReposicao) indicadoresMobileHtml += `<span class="mob-barra-aula reposicao" title="Reposição"></span>`;
+            if (temCancelada) indicadoresMobileHtml += `<span class="mob-barra-aula cancelada" title="Cancelada"></span>`;
+            indicadoresMobileHtml += `</div>`;
+        }
+
+        // Itens de aula para desktop
+        const htmlAulasDesktop = aulasDoDia.slice(0, 3).map(aula =>
             `<div class="mini-aula ${aula.tipo}" onclick="abrirResumo(${aula.id}, event)">${aula.hora || ""} ${aula.titulo}</div>`
         ).join("");
 
         htmlDias += `
-            <div class="dia ${isSelecionado}" onclick="selecionarDia('${dataFormatada}')">
-                <span class="numero-dia">${dia}</span>
-                ${htmlAulas}
-                ${aulasDoDia.length > 3 ? `<div class="mini-aula">... mais ${aulasDoDia.length - 3}</div>` : ""}
+            <div class="dia ${isSelecionado} ${clsDomingo}" onclick="selecionarDia('${dataFormatada}')" data-data="${dataFormatada}">
+                <span class="numero-dia"><span class="numero-dia-badge">${dia}</span></span>
+                ${indicadoresMobileHtml}
+                <div class="aulas-desktop-list">
+                    ${htmlAulasDesktop}
+                    ${aulasDoDia.length > 3 ? `<div class="mini-aula">... mais ${aulasDoDia.length - 3}</div>` : ""}
+                </div>
+            </div>
+        `;
+    }
+
+    // Dias do mês seguinte para completar as linhas da grade
+    const totalCelulas = primeiroDiaSemana + ultimoDia;
+    const celulasFaltantes = (totalCelulas % 7 === 0) ? 0 : 7 - (totalCelulas % 7);
+    for (let j = 1; j <= celulasFaltantes; j++) {
+        const diaSemanaIdx = (totalCelulas + j - 1) % 7;
+        const clsDom = (diaSemanaIdx === 0) ? "dia-domingo" : "";
+        htmlDias += `
+            <div class="dia outro-mes ${clsDom}">
+                <span class="numero-dia">${j}</span>
             </div>
         `;
     }
@@ -274,21 +479,59 @@ function renderizarAgendaDia(dataObj) {
     const dataStr = formatarData(dataObj);
     const aulasDoDia = aulas.filter(a => a.data === dataStr);
 
-    document.getElementById("textoDataSelecionada").textContent = dataObj.toLocaleDateString("pt-BR", {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-    });
+    // Texto desktop original
+    const elTextoDesk = document.getElementById("textoDataSelecionada");
+    if (elTextoDesk) {
+        elTextoDesk.textContent = dataObj.toLocaleDateString("pt-BR", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+        });
+    }
+
+    // Cabeçalho Mobile no modelo do usuário (Ex: "9 SEX.")
+    const diasSemanaAbrev = ["DOM.", "SEG.", "TER.", "QUA.", "QUI.", "SEX.", "SÁB."];
+    const mesesAbrevLower = ["jan.", "fev.", "mar.", "abr.", "mai.", "jun.", "jul.", "ago.", "set.", "out.", "nov.", "dez."];
+    const diaNum = dataObj.getDate();
+    const diaSem = diasSemanaAbrev[dataObj.getDay()];
+
+    const elMobDiaNum = document.getElementById("mobDiaNumero");
+    const elMobDiaSem = document.getElementById("mobDiaSemana");
+    if (elMobDiaNum) elMobDiaNum.textContent = diaNum;
+    if (elMobDiaSem) elMobDiaSem.textContent = diaSem;
+
+    // Atualiza texto do botão de ação mobile: "Adicionar aula em 9 de out."
+    const elTextoBtn = document.getElementById("textoBtnMobAdicionar");
+    if (elTextoBtn) {
+        elTextoBtn.textContent = `Adicionar aula em ${diaNum} de ${mesesAbrevLower[dataObj.getMonth()]}`;
+    }
 
     const agenda = document.getElementById("agendaDia");
+    if (!agenda) return;
+
     if (aulasDoDia.length === 0) {
-        agenda.innerHTML = `<p style="font-size: 13px; color: #999; padding: 10px 0;">Nenhuma aula programada para este dia.</p>`;
+        agenda.innerHTML = `
+            <div class="mob-empty-state">
+                <div class="mob-empty-icon">
+                    <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#71717a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                        <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                        <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                    </svg>
+                </div>
+                <p>Nenhuma aula programada para este dia.</p>
+            </div>
+        `;
         return;
     }
 
     agenda.innerHTML = aulasDoDia.map(aula => `
         <div class="evento-card ${aula.tipo}" onclick="abrirResumo(${aula.id}, null)">
-            <strong>${aula.hora || ""} - ${aula.titulo}</strong>
+            <div class="evento-card-header">
+                <strong>${aula.hora || ""} — ${aula.titulo}</strong>
+                <span class="evento-badge-tipo ${aula.tipo}">${aula.tipo}</span>
+            </div>
             <span>${aula.instrumento} | Sala ${aula.sala} | Prof: ${aula.professor || "A definir"}</span>
         </div>
     `).join("");

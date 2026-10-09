@@ -1,8 +1,13 @@
-*{
+/* ================================================================
+   INSTITUTO MUSICAL BRAVO TATUÍ - INSTRUMENTO SELECIONADO
+   FOLHA DE ESTILO TOTALMENTE RESPONSIVA (Mobile, Tablet, Desktop)
+   ================================================================ */
+
+*, *::before, *::after {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
     -webkit-font-smoothing: antialiased;
-    font-weight: normal;
 }
 
 @font-face {
@@ -25,145 +30,951 @@
     src: url(../fonts/Quiksand/Quicksand-VariableFont_wght.ttf);
 }
 
-a{
+html {
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #080808;
+    color: #f1f5f9;
+    font-family: 'inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    width: 100%;
+    line-height: 1.5;
+}
+
+a {
     text-decoration: none;
     color: white;
-    
 }
 
-body{
-    background-color: #080808;
-}
-
-.container{ /*tela inteira*/
-    height: 100%;
+.container {
+    min-height: 100vh;
     width: 100%;
+    max-width: 100%;
     position: relative;
-    color: white;
-    
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
 }
 
-/*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
-
-.container .header{ /*cabeçalho*/
+/* ================================================================ */
+/* CABEÇALHO SUPERIOR (INSTAGRAM)                                   */
+/* ================================================================ */
+.container .header {
     background-color: #1A1A1A;
-    height: 3vh;
+    min-height: 32px;
     display: flex;
     align-items: center;
-    padding-left: 2%;
-    font-family: 'inter';
-    font-size: small;
+    padding: 6px 3%;
+    font-family: 'inter', sans-serif;
+    font-size: 13px;
+    color: #cbd5e1;
+    overflow-x: hidden;
 }
 
-/*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
+.container .header a {
+    color: #cbd5e1;
+    transition: color 0.2s ease;
+}
 
-#nav-bar{ /*barra de navegação*/
-    background-color: #080808;
-    height: 6vh;
+.container .header a:hover {
+    color: #F5D696;
+}
+
+/* ================================================================ */
+/* BARRA VOLTAR + STATUS ADMIN                                      */
+/* ================================================================ */
+.barra-voltar-inst {
+    padding: 16px 3% 8px 3%;
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 2%;
-    box-sizing: border-box;
-    font-family: 'inter';
-    border-bottom: 1px solid white;
-}
-#nav-bar #logo{
-    width: 16%;
-}
-#nav-bar img{
-    width: 60px;
-}
-#nav-bar #nav-links{
-    width: 40%;
-    display: flex;
-    justify-content: space-evenly;
-}
-#nav-bar #search{
-    background-color: transparent;
-    height: 60%;
-    width: 16%;
-    border-radius: 30px;
-    display: flex;
-    border: 1px solid white;
-    padding-left: 20px;
     align-items: center;
     justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    max-width: 1540px;
+    margin: 0 auto;
+    width: 100%;
 }
-#nav-bar #search img{
-    width: 30px;
-    height: 30px;
-}
-#nav-bar #search input{
-    background-color: transparent;
-    border: none;
-    color: white;
-    width: 80%;
-    height: 100%;
-    outline: none;
-}
-/*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
 
+.btn-voltar-inst {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #94a3b8;
+    font-family: 'inter', sans-serif;
+    font-size: 13.5px;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.2s ease;
+}
+
+.btn-voltar-inst:hover {
+    color: #F5D696;
+    border-color: #F5D696;
+    background: rgba(245, 214, 150, 0.1);
+    transform: translateX(-3px);
+}
+
+.admin-topbar-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(245, 214, 150, 0.1);
+    border: 1px solid rgba(245, 214, 150, 0.3);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-family: 'inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: #F5D696;
+}
+
+.ponto-status-admin {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #22c55e;
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.8);
+    animation: pulsarAdmin 2s infinite ease-in-out;
+}
+
+@keyframes pulsarAdmin {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.3); opacity: 0.6; }
+}
+
+/* ================================================================ */
+/* GRID PRINCIPAL (LAYOUT DAS SEÇÕES)                              */
+/* ================================================================ */
 .parent {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-    gap: 8px;
-    padding: 3%;
-}
-    
-.div1 {
-    grid-column: span 2 / span 2;
-    grid-row: span 3 / span 3;
-    background-color: #2E2E2E;
-    height: 40vh;
-    border-radius: 16px;
-    display: flex;
+    gap: 20px;
+    padding: 14px 3% 36px 3%;
+    flex: 1;
+    max-width: 1540px;
+    margin: 0 auto;
+    width: 100%;
 }
 
-.div1 img{
+/* ================================================================ */
+/* DIV 1: FOTO DO INSTRUMENTO                                       */
+/* ================================================================ */
+.div1 {
+    grid-column: span 2 / span 2;
+    grid-row: 1;
+    background-color: #1E1E1E;
+    min-height: 420px;
+    height: 100%;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.div1 img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: 16px;
+    transition: transform 0.4s ease;
 }
 
-
-.div2 {
-    grid-column: span 5 / span 5;
-    grid-row: span 2 / span 2;
-    grid-column-start: 1;
-    grid-row-start: 4;
-    background-color: #1E1E1E;
-    border-radius: 16px;
-    display: flex;
+.div1:hover img {
+    transform: scale(1.02);
 }
 
+/* ================================================================ */
+/* DIV 3: DETALHES DO INSTRUMENTO + CONTROLES DO CRUD ADMIN         */
+/* ================================================================ */
 .div3 {
     grid-column: span 3 / span 3;
-    grid-row: span 3 / span 3;
-    grid-column-start: 3;
-    grid-row-start: 1;
+    grid-row: 1;
     background-color: #1E1E1E;
     border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
     flex-direction: column;
+    padding: 28px 32px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    position: relative;
+    min-height: 420px;
+    height: 100%;
+}
+
+.div3-conteudo-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.div3-header-linha {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+.div3 h1 {
+    font-family: 'julius', serif;
+    font-size: clamp(2rem, 4.5vw, 3.2rem);
+    color: #F5D696;
+    letter-spacing: 1px;
+    margin: 0;
+    line-height: 1.15;
+    word-break: break-word;
+}
+
+.inst-categoria-badge {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #cbd5e1;
+    font-family: 'inter', sans-serif;
+    font-size: clamp(11.5px, 2vw, 12.5px);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.div3 p {
+    font-family: 'jaldi', sans-serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+    line-height: 1.65;
+    color: #cbd5e1;
+    text-align: justify;
+    text-justify: inter-word;
+    margin-top: 8px;
+    white-space: pre-line;
+    word-break: break-word;
+    hyphens: auto;
+}
+
+/* Barra de Ações Admin no Card do Instrumento */
+.admin-inst-controles {
+    display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+    padding: 10px 14px;
+    background: rgba(245, 214, 150, 0.06);
+    border: 1px solid rgba(245, 214, 150, 0.22);
+    border-radius: 10px;
+    flex-wrap: wrap;
+    width: 100%;
 }
 
-.div3 h1{
-    font-family: 'julius';
-    font-size: 4rem;
-    margin-top: 2%;
+.admin-tag-grupo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
-.div3 p{
-    font-family: 'jaldi';
-    font-size: 1.5rem;
-    text-align: center;
-    padding: 2%;
+.badge-admin-tag {
+    background: #F5D696;
+    color: #080808;
+    font-family: 'inter', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    padding: 3px 8px;
+    border-radius: 4px;
 }
-        
-/*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
 
+.badge-admin-info {
+    color: #94a3b8;
+    font-family: 'inter', sans-serif;
+    font-size: 12px;
+}
+
+.admin-botoes-grupo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn-admin-editar-desc {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #F5D696;
+    color: #080808;
+    border: none;
+    font-family: 'inter', sans-serif;
+    font-size: 12.5px;
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(245, 214, 150, 0.25);
+    white-space: nowrap;
+}
+
+.btn-admin-editar-desc:hover {
+    filter: brightness(1.12);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(245, 214, 150, 0.4);
+}
+
+.btn-admin-link-painel {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.06);
+    color: #cbd5e1;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    font-family: 'inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 7px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-admin-link-painel:hover {
+    color: #F5D696;
+    border-color: #F5D696;
+    background: rgba(245, 214, 150, 0.08);
+}
+
+/* ================================================================ */
+/* DIV 2: CARD INFERIOR (LOCAL DESTINADO A INFORMAÇÕES DOS PROFESSORES)
+/* REQUISITOS OBRIGATÓRIOS:
+/* - Título na esquerda
+/* - Texto justificado
+/* - Botão no canto inferior direito
+/* ================================================================ */
+.div2 {
+    grid-column: span 5 / span 5;
+    grid-row: 2;
+    background-color: #1E1E1E;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 28px 32px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    position: relative;
+    min-height: 200px;
+}
+
+.card-prof-topo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+/* O título tem que estar na esquerda */
+.card-prof-titulo {
+    text-align: left !important;
+    align-self: flex-start !important;
+    margin-left: 0 !important;
+    font-family: 'julius', serif;
+    color: #F5D696;
+    font-size: clamp(1.3rem, 3.2vw, 1.65rem);
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+    word-break: break-word;
+}
+
+/* O texto tem que ser justificado */
+.card-prof-texto {
+    text-align: justify !important;
+    text-justify: inter-word;
+    font-family: 'jaldi', sans-serif;
+    font-size: clamp(1.05rem, 2.4vw, 1.25rem);
+    color: #cbd5e1;
+    line-height: 1.65;
+    width: 100%;
+    margin-bottom: 14px;
+    word-break: break-word;
+    hyphens: auto;
+}
+
+/* Destaques dinâmicos dos professores lecionando o instrumento */
+.professores-destaques-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 6px;
+    margin-bottom: 14px;
+    width: 100%;
+}
+
+.chip-professor-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(245, 214, 150, 0.08);
+    border: 1px solid rgba(245, 214, 150, 0.25);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-family: 'inter', sans-serif;
+    font-size: clamp(11.5px, 2vw, 13px);
+    color: #f1f5f9;
+}
+
+.chip-professor-item strong {
+    color: #F5D696;
+}
+
+/* O botão tem que estar no canto inferior direito */
+.card-prof-btn-wrapper {
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: flex-end !important;
+    width: 100%;
+    margin-top: auto;
+    padding-top: 10px;
+}
+
+.btn-matricular-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #F5D696;
+    color: #080808;
+    font-family: 'inter', sans-serif;
+    font-weight: 700;
+    font-size: clamp(12.5px, 2.2vw, 14px);
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 14px rgba(245, 214, 150, 0.25);
+    max-width: 100%;
+    text-align: right;
+}
+
+.btn-matricular-cta:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(245, 214, 150, 0.4);
+}
+
+/* ================================================================ */
+/* MODAL DO CRUD ADMIN (EDIÇÃO DE DESCRIÇÃO)                        */
+/* ================================================================ */
+.modal-overlay-inst {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    padding: 12px;
+    overflow-y: auto;
+    animation: fadeInModal 0.2s ease-out;
+}
+
+@keyframes fadeInModal {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-card-inst {
+    background: #141414;
+    border: 1px solid rgba(245, 214, 150, 0.35);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 680px;
+    max-height: calc(100vh - 24px);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    margin: auto;
+    animation: slideUpModal 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUpModal {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header-inst {
+    padding: 18px 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.02);
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.modal-header-titulo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.modal-icone-wrapper {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    background: rgba(245, 214, 150, 0.12);
+    border: 1px solid rgba(245, 214, 150, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.modal-titulo-inst {
+    color: #F5D696;
+    font-family: 'julius', serif;
+    font-size: clamp(16px, 3vw, 19px);
+    font-weight: 700;
+    margin: 0;
+}
+
+.modal-subtitulo-inst {
+    color: #94a3b8;
+    font-family: 'inter', sans-serif;
+    font-size: 13px;
+    margin-top: 2px;
+}
+
+.modal-subtitulo-inst strong {
+    color: #ffffff;
+}
+
+.btn-fechar-modal-inst {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    font-size: 28px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px;
+    transition: color 0.2s ease;
+}
+
+.btn-fechar-modal-inst:hover {
+    color: #ffffff;
+}
+
+.modal-body-inst {
+    padding: 20px 24px;
+}
+
+.form-grupo-inst {
+    display: flex;
+    flex-direction: column;
+}
+
+.label-com-dica {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.label-com-dica label {
+    font-family: 'inter', sans-serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #e2e8f0;
+}
+
+.dica-contador {
+    font-family: 'inter', sans-serif;
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+#textareaDescricaoModal {
+    width: 100%;
+    box-sizing: border-box;
+    background: #1c1c1c;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #f1f5f9;
+    font-family: 'jaldi', sans-serif;
+    font-size: 16px !important; /* >= 16px evita zoom automático no iOS */
+    line-height: 1.55;
+    padding: 14px 16px;
+    border-radius: 8px;
+    resize: vertical;
+    outline: none;
+    min-height: 160px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#textareaDescricaoModal:focus {
+    border-color: #F5D696;
+    box-shadow: 0 0 0 3px rgba(245, 214, 150, 0.18);
+}
+
+.instrucoes-form-inst {
+    font-family: 'inter', sans-serif;
+    font-size: 12px;
+    color: #94a3b8;
+    margin-top: 8px;
+    line-height: 1.4;
+}
+
+.modal-feedback-msg {
+    margin-top: 14px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-family: 'inter', sans-serif;
+    font-size: 13px;
+}
+
+.modal-feedback-msg.sucesso {
+    background: rgba(34, 197, 94, 0.15);
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    color: #86efac;
+}
+
+.modal-feedback-msg.erro {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #fca5a5;
+}
+
+.modal-footer-inst {
+    padding: 16px 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.footer-acoes-primarias {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-modal-cancelar {
+    padding: 9px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: #1e2433;
+    color: #cbd5e1;
+    border-radius: 6px;
+    font-family: 'inter', sans-serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-modal-cancelar:hover {
+    background: #2b3548;
+    color: #ffffff;
+}
+
+.btn-modal-restaurar {
+    padding: 8px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: transparent;
+    color: #94a3b8;
+    border-radius: 6px;
+    font-family: 'inter', sans-serif;
+    font-size: 12.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-modal-restaurar:hover {
+    color: #F5D696;
+    border-color: rgba(245, 214, 150, 0.3);
+}
+
+.btn-modal-salvar {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 22px;
+    border: none;
+    background: #F5D696;
+    color: #080808;
+    border-radius: 6px;
+    font-family: 'inter', sans-serif;
+    font-size: 13.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 10px rgba(245, 214, 150, 0.25);
+}
+
+.btn-modal-salvar:hover:not(:disabled) {
+    filter: brightness(1.12);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(245, 214, 150, 0.4);
+}
+
+.btn-modal-salvar:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ================================================================ */
+/* TOAST NOTIFICAÇÃO FLUTUANTE                                      */
+/* ================================================================ */
+.toast-notificacao {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    max-width: 440px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-family: 'inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+    z-index: 11000;
+    display: none;
+    align-items: center;
+    gap: 10px;
+    animation: slideInToast 0.3s ease-out;
+}
+
+@keyframes slideInToast {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.toast-notificacao.sucesso {
+    background: #14532d;
+    border: 1px solid #22c55e;
+    color: #dcfce7;
+}
+
+.toast-notificacao.erro {
+    background: #7f1d1d;
+    border: 1px solid #ef4444;
+    color: #fee2e2;
+}
+
+/* ================================================================ */
+/* RESPONSIVIDADE: TABLETS E NOTEBOOKS MÉDIOS (769px a 1024px)     */
+/* ================================================================ */
+@media (max-width: 1024px) {
+    .parent {
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+        padding: 16px 20px 32px 20px;
+    }
+
+    .div1 {
+        grid-column: 1;
+        grid-row: 1;
+        min-height: 380px;
+        height: 100%;
+    }
+
+    .div3 {
+        grid-column: 2;
+        grid-row: 1;
+        min-height: 380px;
+        height: 100%;
+        padding: 24px;
+    }
+
+    .div2 {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        padding: 24px;
+    }
+}
+
+/* ================================================================ */
+/* RESPONSIVIDADE: SMARTPHONES E TABLETS PEQUENOS (Até 768px)       */
+/* ================================================================ */
+@media (max-width: 768px) {
+    .barra-voltar-inst {
+        padding: 12px 16px 6px 16px;
+    }
+
+    .parent {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 12px 14px 28px 14px;
+    }
+
+    .div1 {
+        grid-column: 1;
+        grid-row: auto;
+        min-height: 240px;
+        height: 280px;
+    }
+
+    .div3 {
+        grid-column: 1;
+        grid-row: auto;
+        min-height: auto;
+        padding: 20px 18px;
+    }
+
+    .div2 {
+        grid-column: 1;
+        grid-row: auto;
+        min-height: auto;
+        padding: 20px 18px;
+    }
+
+    .card-prof-btn-wrapper {
+        justify-content: flex-end !important;
+        margin-top: 14px;
+    }
+
+    /* Modal adaptado a telas móveis */
+    .modal-card-inst {
+        max-height: 92vh;
+        border-radius: 14px;
+    }
+
+    .modal-header-inst {
+        padding: 14px 18px;
+    }
+
+    .modal-body-inst {
+        padding: 16px 18px;
+    }
+
+    .modal-footer-inst {
+        padding: 14px 18px;
+        flex-direction: column-reverse;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .footer-acoes-primarias {
+        flex-direction: column-reverse;
+        width: 100%;
+        gap: 8px;
+    }
+
+    .footer-acoes-secundarias {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .btn-modal-salvar,
+    .btn-modal-cancelar,
+    .btn-modal-restaurar {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+        padding: 11px 16px;
+    }
+
+    /* Toast centralizado na parte inferior em telas pequenas */
+    .toast-notificacao {
+        bottom: 16px;
+        left: 14px;
+        right: 14px;
+        max-width: none;
+        justify-content: center;
+        text-align: center;
+        font-size: 13px;
+    }
+}
+
+/* ================================================================ */
+/* RESPONSIVIDADE: SMARTPHONES COMPACTOS (Até 480px)                */
+/* ================================================================ */
+@media (max-width: 480px) {
+    .parent {
+        padding: 10px 10px 24px 10px;
+        gap: 14px;
+    }
+
+    .barra-voltar-inst {
+        padding: 10px 12px 4px 12px;
+    }
+
+    .btn-voltar-inst {
+        padding: 6px 12px;
+        font-size: 12.5px;
+    }
+
+    .admin-topbar-badge {
+        padding: 5px 10px;
+        font-size: 11px;
+    }
+
+    .div1 {
+        height: 220px;
+        min-height: 180px;
+        border-radius: 12px;
+    }
+
+    .div3 {
+        padding: 16px 14px;
+        border-radius: 12px;
+    }
+
+    .div2 {
+        padding: 16px 14px;
+        border-radius: 12px;
+    }
+
+    .admin-inst-controles {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        padding: 8px 10px;
+    }
+
+    .admin-tag-grupo {
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .admin-botoes-grupo {
+        width: 100%;
+        display: flex;
+        gap: 8px;
+    }
+
+    .btn-admin-editar-desc {
+        flex: 1;
+        justify-content: center;
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    .btn-admin-link-painel {
+        justify-content: center;
+        padding: 8px 10px;
+    }
+
+    .btn-matricular-cta {
+        padding: 11px 16px;
+        font-size: 13px;
+    }
+}

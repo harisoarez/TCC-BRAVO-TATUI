@@ -7,7 +7,6 @@
     const API_BASE = (window.location.port === "3000" || (!window.location.port && window.location.protocol === "http:")) ? "" : "http://localhost:3000";
 
     const containerCards = document.getElementById("cards");
-    const inputBusca = document.querySelector("#search input");
 
     let instrumentosCache = [];
 
@@ -21,7 +20,7 @@
                 renderizarCards(instrumentosCache);
             }
         } catch (erro) {
-            console.warn("Usando catálogo padrão de instrumentos (fallback offline):", erro);
+            console.warn("Usando catálogo padrão de instrumentos (fallback estático):", erro);
         }
     }
 
@@ -31,7 +30,7 @@
         if (lista.length === 0) {
             containerCards.innerHTML = `
                 <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: #94a3b8; font-family: 'inter', sans-serif;">
-                    <p style="font-size: 16px;">Nenhum instrumento encontrado para a sua pesquisa.</p>
+                    <p style="font-size: 16px;">Nenhum instrumento encontrado.</p>
                 </div>
             `;
             return;
@@ -56,26 +55,6 @@
                 </div>
             `;
         }).join("");
-    }
-
-    // Filtro de busca em tempo real
-    if (inputBusca) {
-        inputBusca.addEventListener("input", function (e) {
-            const termo = e.target.value.toLowerCase().trim();
-            if (!termo) {
-                renderizarCards(instrumentosCache);
-                return;
-            }
-
-            const filtrados = instrumentosCache.filter(inst => {
-                const nome = (inst.nome || "").toLowerCase();
-                const cat = (inst.categoria || "").toLowerCase();
-                const desc = (inst.descricao || "").toLowerCase();
-                return nome.includes(termo) || cat.includes(termo) || desc.includes(termo);
-            });
-
-            renderizarCards(filtrados);
-        });
     }
 
     if (document.readyState === "loading") {

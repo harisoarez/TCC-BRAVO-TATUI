@@ -29,53 +29,25 @@ a {
     color: inherit;
 }
 
-/* Header & Navbar */
+/* Header Instagram */
 .header {
-    background-color: #151822;
-    height: 36px;
+    background-color: #121217;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    height: 32px;
     display: flex;
     align-items: center;
-    padding: 0 5%;
-    font-size: 13px;
-    color: #bbb;
+    padding: 0 3%;
+    font-size: 12px;
+    color: #94a3b8;
 }
 
 .header a {
-    color: #F5D696;
+    color: #94a3b8;
+    transition: color 0.2s ease;
 }
 
-#nav-bar {
-    background-color: #0b0d13;
-    border-bottom: 1px solid #1c2233;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 2%;
-}
-
-#nav-bar .logo a {
-    font-family: 'julius', serif;
-    font-size: 20px;
-    color: #F5D696;
-    letter-spacing: 2px;
-    font-weight: bold;
-}
-
-#nav-bar .nav-links {
-    display: flex;
-    gap: 25px;
-}
-
-#nav-bar .nav-links a {
-    font-size: 14px;
-    color: #ccc;
-    transition: color 0.2s;
-}
-
-#nav-bar .nav-links a:hover,
-#nav-bar .nav-links a.active {
-    color: #F5D696;
+.header a:hover {
+    color: #ffffff;
 }
 
 /* Login Container */
@@ -207,22 +179,28 @@ a {
     display: flex;
     gap: 8px;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 .btn-demo {
     background: #1d2436;
     color: #cbd5e1;
     border: 1px solid #2c3650;
-    border-radius: 4px;
-    padding: 6px 10px;
-    font-size: 11px;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 11.5px;
+    font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn-demo:hover {
     background: #2b354d;
     color: #F5D696;
+    border-color: rgba(245, 214, 150, 0.4);
 }
 
 /* Modal */
@@ -232,11 +210,13 @@ a {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.75);
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    padding: 16px;
 }
 
 .modal-overlay.oculto {
@@ -246,10 +226,11 @@ a {
 .modal-content {
     background: #141926;
     border: 1px solid #2a344d;
-    border-radius: 10px;
-    padding: 25px;
-    width: 90%;
-    max-width: 400px;
+    border-radius: 12px;
+    padding: 26px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
 }
 
 .modal-content h2 {
@@ -262,4 +243,32 @@ a {
     font-size: 13px;
     color: #a3adc2;
     margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+@media (max-width: 520px) {
+    .login-wrapper {
+        padding: 20px 14px 40px 14px;
+    }
+
+    .login-card {
+        padding: 26px 18px;
+        border-radius: 12px;
+    }
+
+    .demo-buttons {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .btn-demo {
+        padding: 10px;
+        font-size: 12px;
+    }
+
+    .btn-login {
+        padding: 14px;
+        font-size: 15px;
+    }
 }

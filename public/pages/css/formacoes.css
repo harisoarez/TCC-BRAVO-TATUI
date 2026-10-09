@@ -3,6 +3,7 @@
     padding: 0;
     -webkit-font-smoothing: antialiased;
     font-weight: normal;
+    box-sizing: border-box;
 }
 
 @font-face {
@@ -23,11 +24,11 @@
 a{
     text-decoration: none;
     color: white;
-    
 }
 
 body{
     background-color: #080808;
+    overflow-x: hidden;
 }
 
 .container{ /*tela inteira*/
@@ -35,7 +36,6 @@ body{
     width: 100%;
     position: relative;
     color: white;
-    
 }
 
 /*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
@@ -43,6 +43,7 @@ body{
 .container .header{ /*cabeçalho*/
     background-color: #1A1A1A;
     height: 3vh;
+    min-height: 28px;
     display: flex;
     align-items: center;
     padding-left: 2%;
@@ -50,54 +51,15 @@ body{
     font-size: small;
 }
 
-/*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
+/* ================================================================ */
+/* DESIGN ORIGINAL PARA NOTEBOOK / DESKTOP (> 960px)                */
+/* ================================================================ */
+.container-formacoes {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
 
-#nav-bar{ /*barra de navegação*/
-    background-color: #080808;
-    height: 6vh;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 2%;
-    box-sizing: border-box;
-    font-family: 'inter';
-}
-#nav-bar #logo{
-    width: 16%;
-}
-#nav-bar img{
-    width: 60px;
-}
-#nav-bar #nav-links{
-    width: 40%;
-    display: flex;
-    justify-content: space-evenly;
-}
-#nav-bar #search{
-    background-color: transparent;
-    height: 60%;
-    width: 16%;
-    border-radius: 30px;
-    display: flex;
-    border: 1px solid white;
-    padding-left: 20px;
-    align-items: center;
-    justify-content: space-between;
-}
-#nav-bar #search img{
-    width: 30px;
-    height: 30px;
-}
-#nav-bar #search input{
-    background-color: transparent;
-    border: none;
-    color: white;
-    width: 80%;
-    height: 100%;
-    outline: none;
-}
-/*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
 .opcao{
     height: 31vh;
     display: flex;
@@ -147,7 +109,7 @@ body{
 
 #master{
     background: #1D3362;
-background: linear-gradient(90deg,rgba(29, 51, 98, 1) 35%, rgba(0, 212, 255, 0) 100%);
+    background: linear-gradient(90deg,rgba(29, 51, 98, 1) 35%, rgba(0, 212, 255, 0) 100%);
 }
 
 #duo{
@@ -203,4 +165,45 @@ background: linear-gradient(90deg,rgba(29, 51, 98, 1) 35%, rgba(0, 212, 255, 0) 
 #personalizada{
     background: #6E6E6E;
     background: linear-gradient(90deg,rgba(110, 110, 110, 1) 35%, rgba(0, 212, 255, 0) 100%);
+}
+
+/* ================================================================ */
+/* ADAPTAÇÃO EXCLUSIVA PARA OUTROS DISPOSITIVOS (MOBILE E TABLET)    */
+/* ================================================================ */
+@media (max-width: 960px) {
+    .opcao {
+        height: auto;
+        min-height: 120px;
+        padding: 24px 6%;
+    }
+
+    .opcao:hover {
+        transform: none;
+        padding-left: 6%;
+    }
+
+    .opcao h1 {
+        font-size: clamp(20px, 4.5vw, 26px);
+        margin-bottom: 6px;
+    }
+
+    .opcao h2 {
+        font-size: clamp(13px, 3.2vw, 15px);
+        line-height: 1.4;
+    }
+}
+
+@media (max-width: 580px) {
+    .opcao {
+        padding: 20px 5%;
+        min-height: 105px;
+    }
+
+    .opcao h1 {
+        font-size: 20px;
+    }
+
+    .opcao h2 {
+        font-size: 13.5px;
+    }
 }

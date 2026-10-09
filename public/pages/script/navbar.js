@@ -191,8 +191,25 @@
         nav.innerHTML = `
             ${logoHtml}
             ${linksCentraisHtml}
-            ${areaUsuarioHtml}
+            <div class="nav-right-cluster">
+                ${areaUsuarioHtml}
+                <button type="button" class="btn-hamburger-nav" id="btnHamburgerNav" aria-label="Abrir menu de navegação" title="Abrir menu">
+                    <span class="hamburger-bar"></span>
+                    <span class="hamburger-bar"></span>
+                    <span class="hamburger-bar"></span>
+                </button>
+            </div>
         `;
+
+        // Injeta o Drawer do Menu Hamburguer para Mobile e Tablet
+        injetarMenuMobileDrawer(usuario, {
+            isIndex,
+            isFormacoes,
+            isInstrumentos,
+            isCardapio,
+            isCalendario,
+            isLogin
+        });
 
         // Se estiver logado, injeta o modal de perfil em todas as páginas do site
         if (usuario) {
@@ -202,6 +219,180 @@
         // Se for Admin ou Owner, injeta o modal de criação de conta no documento
         if (usuario && (usuario.tipo === "owner" || usuario.tipo === "admin")) {
             injetarModalCriarConta(usuario);
+        }
+    }
+
+    // ================================================================
+    // GESTÃO DO MENU HAMBÚRGUER MOBILE & TABLET
+    // ================================================================
+    window.abrirMenuMobile = function () {
+        const drawer = document.getElementById("menuMobileDrawer");
+        if (drawer) {
+            drawer.classList.add("aberto");
+            document.body.style.overflow = "hidden";
+        }
+    };
+
+    window.fecharMenuMobile = function () {
+        const drawer = document.getElementById("menuMobileDrawer");
+        if (drawer) {
+            drawer.classList.remove("aberto");
+            document.body.style.overflow = "";
+        }
+    };
+
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+            window.fecharMenuMobile();
+        }
+    });
+
+    function injetarMenuMobileDrawer(usuario, paginas) {
+        let drawerExistente = document.getElementById("menuMobileDrawer");
+        if (drawerExistente) {
+            drawerExistente.remove();
+        }
+
+        const linkCalendarioDrawer = usuario ? `
+            <a href="./calendario.html" class="menu-mobile-link ${paginas.isCalendario ? 'link-ativo-mobile' : ''}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <span>Calendário</span>
+            </a>
+        ` : "";
+
+        const linkPainelDrawer = (usuario && (usuario.tipo === "admin" || usuario.tipo === "owner")) ? `
+            <a href="${API_BASE || 'http://localhost:3000'}/paginas/dashboard?token=${encodeURIComponent(usuario.token)}" class="menu-mobile-link link-destaque-gold">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                <span>Painel Administrativo</span>
+            </a>
+        ` : "";
+
+        const linkMatriculaDrawer = (usuario && (usuario.tipo === "aluno" || usuario.tipo === "normal")) ? `
+            <a href="${API_BASE || 'http://localhost:3000'}/paginas/matricula?token=${encodeURIComponent(usuario.token)}" class="menu-mobile-link link-destaque-blue">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                <span>Matrícula do Aluno</span>
+            </a>
+        ` : "";
+
+        const linkAddContaDrawer = (usuario && (usuario.tipo === "admin" || usuario.tipo === "owner")) ? `
+            <button type="button" class="menu-mobile-btn-addconta" onclick="window.fecharMenuMobile(); window.abrirModalCriarConta();">
+                + Adicionar Conta de Usuário
+            </button>
+        ` : "";
+
+        let userAreaDrawerHtml = "";
+        if (!usuario) {
+            userAreaDrawerHtml = `
+                <div class="menu-mobile-user-card guest">
+                    <div class="avatar-guest-mobile">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    </div>
+                    <div class="guest-info-mobile">
+                        <span>Olá, Visitante</span>
+                        <a href="./login.html" class="btn-entrar-drawer">Fazer Login</a>
+                    </div>
+                </div>
+            `;
+        } else {
+            let rotuloCargo = "Aluno";
+            let badgeClass = "normal";
+            if (usuario.tipo === "owner") { rotuloCargo = "Owner"; badgeClass = "owner"; }
+            else if (usuario.tipo === "admin") { rotuloCargo = "Admin"; badgeClass = "admin"; }
+            else if (usuario.tipo === "professor") { rotuloCargo = "Professor"; badgeClass = "admin"; }
+
+            const avatarMobile = usuario.foto_url ? `
+                <img src="${usuario.foto_url}" alt="${usuario.nome}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+            ` : `
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            `;
+
+            userAreaDrawerHtml = `
+                <div class="menu-mobile-user-card logged">
+                    <div class="user-card-main-mobile" onclick="window.fecharMenuMobile(); window.abrirModalPerfilGlobal();" style="cursor: pointer;">
+                        <div class="avatar-perfil-mobile">
+                            ${avatarMobile}
+                        </div>
+                        <div class="user-dados-mobile">
+                            <span class="user-nome-mobile">${usuario.nome}</span>
+                            <span class="user-badge-cargo ${badgeClass}">${rotuloCargo}</span>
+                        </div>
+                    </div>
+                    <div class="user-card-botoes-mobile">
+                        <button type="button" class="btn-drawer-perfil" onclick="window.fecharMenuMobile(); window.abrirModalPerfilGlobal();">Editar Perfil</button>
+                        <button type="button" class="btn-drawer-sair" onclick="window.fazerLogoutNav();">Sair</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        const drawerHtml = `
+            <div id="menuMobileDrawer" class="menu-mobile-drawer-overlay" role="dialog" aria-modal="true" aria-label="Menu de Navegação">
+                <div class="menu-mobile-drawer">
+                    <div class="menu-mobile-header">
+                        <a href="./index.html" class="menu-mobile-logo-link" onclick="window.fecharMenuMobile();">
+                            <img src="https://friocenterpescados.com.br/uploads/tilapia-inteira-eviscerada_1.jpg" alt="Logo" class="menu-logo-img">
+                            <span class="menu-logo-text">BRAVO TATUÍ</span>
+                        </a>
+                        <button type="button" class="btn-fechar-menu-mobile" id="btnFecharMenuMobile" aria-label="Fechar menu">&times;</button>
+                    </div>
+
+                    <div class="menu-mobile-scrollable">
+                        ${userAreaDrawerHtml}
+
+                        <nav class="menu-mobile-nav">
+                            <a href="./index.html" class="menu-mobile-link ${paginas.isIndex ? 'link-ativo-mobile' : ''}" onclick="window.fecharMenuMobile();">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                                <span>Início</span>
+                            </a>
+                            <a href="./formacoes.html" class="menu-mobile-link ${paginas.isFormacoes ? 'link-ativo-mobile' : ''}" onclick="window.fecharMenuMobile();">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+                                <span>Bravo Tatuí (Eventos)</span>
+                            </a>
+                            <a href="./instrumentos.html" class="menu-mobile-link ${paginas.isInstrumentos ? 'link-ativo-mobile' : ''}" onclick="window.fecharMenuMobile();">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+                                <span>Aulas no IMBT</span>
+                            </a>
+                            <a href="./cardapio.html" class="menu-mobile-link ${paginas.isCardapio ? 'link-ativo-mobile' : ''}" onclick="window.fecharMenuMobile();">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+                                <span>Coffee Bravo</span>
+                            </a>
+                            ${linkCalendarioDrawer}
+                            ${linkPainelDrawer}
+                            ${linkMatriculaDrawer}
+                            ${linkAddContaDrawer}
+                        </nav>
+
+                        <div class="menu-mobile-footer">
+                            <a href="https://wa.me/5515996257683" target="_blank" class="btn-drawer-whatsapp">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                <span>WhatsApp: (15) 99625-7683</span>
+                            </a>
+                            <a href="https://www.instagram.com/bravo_tatui/" target="_blank" class="btn-drawer-insta">
+                                <img src="../images/Instagram_icon.png" alt="Instagram" width="16" height="16">
+                                <span>@bravo_tatui</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML("beforeend", drawerHtml);
+
+        const btnHamburguer = document.getElementById("btnHamburgerNav");
+        const btnFechar = document.getElementById("btnFecharMenuMobile");
+        const overlay = document.getElementById("menuMobileDrawer");
+
+        if (btnHamburguer) {
+            btnHamburguer.onclick = window.abrirMenuMobile;
+        }
+        if (btnFechar) {
+            btnFechar.onclick = window.fecharMenuMobile;
+        }
+        if (overlay) {
+            overlay.onclick = function (e) {
+                if (e.target === overlay) window.fecharMenuMobile();
+            };
         }
     }
 

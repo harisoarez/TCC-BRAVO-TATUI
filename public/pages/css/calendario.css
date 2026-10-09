@@ -1,3 +1,9 @@
+/* ================================================================
+   INSTITUTO MUSICAL BRAVO TATUÍ - CALENDÁRIO ACADÊMICO
+   DESIGN ORIGINAL PRESERVADO PARA NOTEBOOK / DESKTOP (> 960px)
+   ADAPTAÇÃO RESPONSIVA EXCLUSIVA PARA OUTROS DISPOSITIVOS (MOBILE E TABLET)
+   ================================================================ */
+
 :root {
     --bg-color: #f9fafb;
     --surface: #ffffff;
@@ -13,60 +19,48 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    -webkit-font-smoothing: antialiased;
 }
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     background-color: var(--bg-color);
     color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
 }
 
 .oculto {
     display: none !important;
 }
 
-/* Navbar Original Adaptada */
-#nav-bar { 
-    height: 70px; 
-    background: #111111; 
-    border-bottom: 1px solid #222222; 
-    display: flex; 
-    align-items: center; 
-    justify-content: space-between; 
-    padding: 0 2%; 
-    position: sticky; 
-    top: 0; 
-    z-index: 50; 
-}
-
-#logo img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-#nav-links {
+/* Header Instagram */
+.header {
+    background-color: #121217;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    height: 32px;
     display: flex;
-    gap: 30px;
-    flex: 1;
-    justify-content: center;
-    padding-right: 50px;
+    align-items: center;
+    padding: 0 3%;
+    font-size: 12px;
+    color: #94a3b8;
 }
 
-#nav-links a { 
-    color: #ffffff; 
-    text-decoration: none; 
-    font-size: 13px; 
-    font-weight: 700; 
-    transition: opacity 0.2s; 
+.header a {
+    color: #94a3b8;
+    text-decoration: none;
+    transition: color 0.2s ease;
 }
 
-#nav-links a:hover { 
-    opacity: 0.6; 
+.header a:hover {
+    color: #ffffff;
 }
 
-/* Dashboard Layout */
+/* ================================================================ */
+/* DESIGN ORIGINAL PARA NOTEBOOK / DESKTOP (> 960px)                */
+/* ================================================================ */
 .dashboard-container {
     display: flex;
     max-width: 1300px;
@@ -74,9 +68,10 @@ body {
     gap: 30px;
     padding: 0 20px;
     align-items: flex-start;
+    width: 100%;
 }
 
-/* Calendário */
+/* Calendário Principal */
 .calendar-main {
     flex: 1;
     background: #ffffff;
@@ -480,67 +475,6 @@ body {
     border-color: #9ca3af;
 }
 
-/* Badges e Botões de Usuário na Barra */
-.badge-usuario {
-    font-size: 12px;
-    padding: 4px 10px;
-    border-radius: 20px;
-    background: #1e2538;
-    color: #cbd5e1;
-    border: 1px solid #334155;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.badge-usuario.admin {
-    background: rgba(245, 214, 150, 0.15);
-    color: #F5D696;
-    border-color: #F5D696;
-    font-weight: 600;
-}
-
-.badge-usuario.aluno {
-    background: rgba(59, 130, 246, 0.15);
-    color: #93c5fd;
-    border-color: #3b82f6;
-}
-
-.badge-usuario.professor {
-    background: rgba(16, 185, 129, 0.15);
-    color: #6ee7b7;
-    border-color: #10b981;
-}
-
-.btn-nav-auth {
-    font-size: 12px;
-    padding: 6px 12px;
-    border-radius: 4px;
-    background: #F5D696;
-    color: #111;
-    font-weight: 600;
-    text-decoration: none;
-    transition: 0.2s;
-    border: none;
-    cursor: pointer;
-}
-
-.btn-nav-auth:hover {
-    background: #e2c178;
-}
-
-.btn-nav-sair {
-    background: transparent;
-    color: #9ca3af;
-    border: 1px solid #374151;
-}
-
-.btn-nav-sair:hover {
-    background: #1f2937;
-    color: #ef4444;
-    border-color: #ef4444;
-}
-
 .aviso-modo-leitura {
     background: #ffffff;
     color: #111111;
@@ -553,4 +487,71 @@ body {
     align-items: center;
     justify-content: space-between;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* ================================================================ */
+/* ADAPTAÇÃO EXCLUSIVA PARA OUTROS DISPOSITIVOS (MOBILE E TABLET)    */
+/* ================================================================ */
+@media (max-width: 960px) {
+    .dashboard-container {
+        flex-direction: column;
+        padding: 0 16px;
+        margin: 20px auto;
+        gap: 20px;
+    }
+
+    .calendar-main {
+        width: 100%;
+        padding: 20px 16px;
+    }
+
+    .sidebar-details {
+        width: 100%;
+        position: static;
+        padding: 20px 16px;
+    }
+
+    .days-grid {
+        gap: 4px;
+    }
+
+    .dia {
+        min-height: 80px;
+        padding: 4px;
+    }
+
+    .numero-dia {
+        font-size: 11px;
+    }
+
+    .mini-aula {
+        font-size: 9px;
+        padding: 2px 4px;
+    }
+
+    .modal {
+        width: 95vw;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 580px) {
+    .calendar-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .btn-admin {
+        width: 100%;
+        text-align: center;
+    }
+
+    .dia {
+        min-height: 65px;
+    }
+
+    .weekdays {
+        font-size: 9.5px;
+    }
 }

@@ -6,55 +6,6 @@
     <title>Instrumento | Instituto Bravo Tatuí</title>
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/instSelecionado.css">
-    <style>
-        .barra-voltar-inst {
-            padding: 14px 3%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .btn-voltar-inst {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: #94a3b8;
-            font-family: 'inter', sans-serif;
-            font-size: 13.5px;
-            text-decoration: none;
-            padding: 6px 14px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.2s ease;
-        }
-        .btn-voltar-inst:hover {
-            color: #F5D696;
-            border-color: #F5D696;
-            background: rgba(245, 214, 150, 0.1);
-            transform: translateX(-3px);
-        }
-        .btn-matricular-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: #F5D696;
-            color: #080808;
-            font-family: 'inter', sans-serif;
-            font-weight: 700;
-            font-size: 14px;
-            padding: 12px 24px;
-            border-radius: 8px;
-            text-decoration: none;
-            margin-top: 18px;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 14px rgba(245, 214, 150, 0.25);
-        }
-        .btn-matricular-cta:hover {
-            filter: brightness(1.1);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(245, 214, 150, 0.4);
-        }
-    </style>
 </head>
 <body>
     <div class="container">
@@ -62,6 +13,7 @@
             <img src="../images/Instagram_icon.png" alt="Instagram" width="18px" style="margin-right:5px;">
             <a href="https://www.instagram.com/bravo_tatui/" target="_blank">@bravo_tatui</a>
         </div>
+
         <div id="nav-bar">
             <div id="logo">
                 <a href="./index.html" style="font-family: 'julius', serif; font-weight: bold; color: #F5D696; font-size: 18px; text-decoration: none; letter-spacing: 1px;">BRAVO TATUÍ</a>
@@ -87,27 +39,147 @@
                 </svg>
                 <span>Voltar aos Instrumentos</span>
             </a>
+
+            <!-- Indicador do modo admin na barra superior -->
+            <div id="adminTopBarIndicador" class="admin-topbar-badge" style="display: none;">
+                <span class="ponto-status-admin"></span>
+                <span>Modo Administrador Ativo</span>
+            </div>
         </div>
         
         <div class="parent">
+            <!-- Card Superior Esquerdo: Imagem do Instrumento -->
             <div class="div1">
-                <img src="../images/instSelecionado.png" alt="Imagem do Instrumento">
+                <img id="instrumentoImagem" src="../images/instSelecionado.png" alt="Imagem do Instrumento">
             </div>
-            <div class="div2" style="padding: 24px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
-                <h3 style="font-family: 'julius', serif; color: #F5D696; font-size: 1.5rem; margin-bottom: 8px;">Deseja Aprender a Tocar?</h3>
-                <p style="font-family: 'jaldi', sans-serif; font-size: 1.2rem; color: #cbd5e1; max-width: 600px; margin-bottom: 12px;">
-                    Matricule-se no Instituto Musical Bravo Tatuí com professores graduados, salas acústicas climatizadas e metodologia de excelência.
-                </p>
-                <a href="https://wa.me/5515998127021?text=Ol%C3%A1!%20Gostaria%20de%20informa%C3%A7%C3%B5es%20sobre%20aulas%20de%20m%C3%BAsica%20no%20IMBT." target="_blank" class="btn-matricular-cta">
-                    <span>Quero me Matricular / Falar no WhatsApp</span>
-                </a>
+
+            <!-- Card Superior Direito: Título, Descrição e Ações do CRUD Admin -->
+            <div class="div3">
+                <!-- Barra de Ferramentas do Administrador (visível apenas para admin/owner) -->
+                <div id="adminControlsInstrumento" class="admin-inst-controles" style="display: none;">
+                    <div class="admin-tag-grupo">
+                        <span class="badge-admin-tag">Administrador</span>
+                        <span class="badge-admin-info">Edição de Acervo</span>
+                    </div>
+                    <div class="admin-botoes-grupo">
+                        <button type="button" id="btnEditarDescricao" class="btn-admin-editar-desc" title="Clique para editar a descrição deste instrumento no banco de dados">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                            <span>Editar Descrição</span>
+                        </button>
+                        <a id="linkPainelAdmin" href="#" class="btn-admin-link-painel" title="Gerenciar instrumentos completos no Painel" style="display: none;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                            <span>Painel</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="div3-conteudo-wrapper">
+                    <div class="div3-header-linha">
+                        <h1 id="instrumentoTitulo">Piano</h1>
+                        <span id="instrumentoCategoriaBadge" class="inst-categoria-badge" style="display: none;">Teclas & Harmonia</span>
+                    </div>
+
+                    <p id="instrumentoDescricao">
+                        O piano é um instrumento musical de teclado muito versátil, utilizado em diversos estilos como música clássica, pop e jazz. Ele possui normalmente 88 teclas e funciona por meio de um mecanismo em que, ao pressionar uma tecla, um martelo interno atinge cordas que vibram e produzem o som. Pode ser encontrado em versões como o piano de cauda e o piano vertical, e se destaca por permitir tocar diferentes intensidades e combinar melodia e acompanhamento ao mesmo tempo.
+                    </p>
+                </div>
             </div>
-            <div class="div3" style="padding: 20px; text-align: center;">
-                <h1>Piano</h1>
-                <p>O piano é um instrumento musical de teclado muito versátil, utilizado em diversos estilos como música clássica, pop e jazz. Ele possui normalmente 88 teclas e funciona por meio de um mecanismo em que, ao pressionar uma tecla, um martelo interno atinge cordas que vibram e produzem o som. Pode ser encontrado em versões como o piano de cauda e o piano vertical, e se destaca por permitir tocar diferentes intensidades e combinar melodia e acompanhamento ao mesmo tempo.</p>
+
+            <!-- Card Inferior: Destinado a Informações dos Professores -->
+            <!-- Título na esquerda, texto justificado, botão no canto inferior direito -->
+            <div class="div2">
+                <div class="card-prof-topo">
+                    <h3 id="professoresTitulo" class="card-prof-titulo">Informações dos Professores</h3>
+                    
+                    <p id="professoresTexto" class="card-prof-texto">
+                        O corpo docente do Instituto Musical Bravo Tatuí é formado por músicos concertistas e educadores com sólida formação superior e especialização nas mais prestigiadas academias musicais do país, como o Conservatório Dramático e Musical Dr. Carlos de Campos de Tatuí, a UNICAMP e a USP. Nossos professores desenvolvem um plano pedagógico individualizado focado no desenvolvimento artístico, técnico e expressivo de cada aluno, integrando domínio instrumental, postura anatômica saudável, leitura musical à primeira vista, percepção auditiva e vivência prática de câmara em auditórios com acústica de ponta.
+                    </p>
+
+                    <!-- Lista dinâmica de professores cadastrados que lecionam o instrumento selecionado -->
+                    <div id="professoresDestaques" class="professores-destaques-container" style="display: none;"></div>
+                </div>
+
+                <!-- Botão posicionado no canto inferior direito do card -->
+                <div class="card-prof-btn-wrapper">
+                    <a id="btnAcaoProfessores" href="https://wa.me/5515996257683?text=Ol%C3%A1!%20Gostaria%20de%20informa%C3%A7%C3%B5es%20sobre%20as%20aulas%20de%20m%C3%BAsica%20no%20IMBT." target="_blank" class="btn-matricular-cta">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                        </svg>
+                        <span>Quero me Matricular / Falar no WhatsApp</span>
+                    </a>
+                </div>
             </div>
         </div> 
     </div>
+
+    <!-- ================================================================ -->
+    <!-- MODAL DO CRUD ADMIN: EDIÇÃO DA DESCRIÇÃO DO INSTRUMENTO          -->
+    <!-- ================================================================ -->
+    <div id="modalEditarDescricao" class="modal-overlay-inst" style="display: none;">
+        <div class="modal-card-inst" role="dialog" aria-modal="true" aria-labelledby="modalTituloDesc">
+            <div class="modal-header-inst">
+                <div class="modal-header-titulo-area">
+                    <div class="modal-icone-wrapper">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5D696" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 id="modalTituloDesc" class="modal-titulo-inst">Editar Descrição do Instrumento</h3>
+                        <p class="modal-subtitulo-inst">Instrumento: <strong id="modalNomeInstExibicao">Piano</strong></p>
+                    </div>
+                </div>
+                <button type="button" class="btn-fechar-modal-inst" id="btnFecharModalDesc" aria-label="Fechar janela">&times;</button>
+            </div>
+
+            <form id="formEditarDescricao">
+                <div class="modal-body-inst">
+                    <div class="form-grupo-inst">
+                        <div class="label-com-dica">
+                            <label for="textareaDescricaoModal">Texto da Descrição no Site</label>
+                            <span class="dica-contador" id="contadorCaracteresModal">0 caracteres</span>
+                        </div>
+                        <textarea id="textareaDescricaoModal" rows="8" placeholder="Digite a descrição detalhada deste instrumento..." required></textarea>
+                        <p class="instrucoes-form-inst">
+                            Esta descrição é exibida a alunos, responsáveis e visitantes na página do instrumento. Descreva características técnicas, sonoridade, repertório e metodologia.
+                        </p>
+                    </div>
+
+                    <div id="modalFeedbackMsg" class="modal-feedback-msg" style="display: none;"></div>
+                </div>
+
+                <div class="modal-footer-inst">
+                    <div class="footer-acoes-secundarias">
+                        <button type="button" class="btn-modal-restaurar" id="btnRestaurarOriginal" title="Restaurar o texto carregado originalmente">Restaurar Original</button>
+                    </div>
+                    <div class="footer-acoes-primarias">
+                        <button type="button" class="btn-modal-cancelar" id="btnCancelarEdicao">Cancelar</button>
+                        <button type="submit" class="btn-modal-salvar" id="btnSalvarDescricao">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                                <polyline points="7 3 7 8 15 8"></polyline>
+                            </svg>
+                            <span id="textoBtnSalvar">Salvar Alterações</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast de Notificação Flutuante -->
+    <div id="toastNotificacao" class="toast-notificacao"></div>
+
     <script src="../script/navbar.js"></script>
     <script src="../script/instSelecionado.js"></script>
 </body>

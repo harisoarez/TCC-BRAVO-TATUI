@@ -706,7 +706,7 @@
         }
 
         if (btnWhatsapp) {
-            btnWhatsapp.href = `https://wa.me/5515998127021?text=${encodeURIComponent(mensagem)}`;
+            btnWhatsapp.href = `https://wa.me/5515996257683?text=${encodeURIComponent(mensagem)}`;
         }
     };
 
@@ -824,7 +824,7 @@
             const textoBtn = document.getElementById("textoBtnWhatsapp");
             if (btnWhatsapp) {
                 const mensagem = `Olá! Gostaria de solicitar um orçamento e saber a disponibilidade da formação ${nomeCompleto} para o meu evento com o Instituto Bravo Tatuí.`;
-                btnWhatsapp.href = `https://wa.me/5515998127021?text=${encodeURIComponent(mensagem)}`;
+                btnWhatsapp.href = `https://wa.me/5515996257683?text=${encodeURIComponent(mensagem)}`;
             }
             if (textoBtn) {
                 textoBtn.textContent = `Solicitar Orçamento no WhatsApp`;

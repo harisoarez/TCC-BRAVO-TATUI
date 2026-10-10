@@ -16,23 +16,20 @@
         const dataVencFormatada = mensAtual ? new Date(mensAtual.data_vencimento).toLocaleDateString('pt-BR') : '10/10/2026';
     %>
 
-    <header class="databricks-header">
+    <header class="painel-header">
         <div class="header-title-col">
-            <h1>
-                <span class="estrela">★</span>
-                Minha Matrícula • <%= al.nome %>
-            </h1>
+            <h1>Minha Matrícula • <%= al.nome %></h1>
             <p>Curso: <strong><%= al.curso || 'Piano' %></strong> • Instituto Musical Bravo Tatuí</p>
         </div>
 
         <div class="header-meta-col">
-            <span class="badge-modo-view admin" style="background:#1e293b; color:#38bdf8; border-color:#38bdf8;">
+            <span class="badge-cargo admin" style="background:#1e293b; color:#38bdf8; border-color:#38bdf8;">
                 Matrícula Ativa
             </span>
         </div>
     </header>
 
-    <!-- CARD DA MENSALIDADE DO MÊS ATUAL -->
+    <!-- Mensalidade Atual -->
     <section class="mensalidades-card">
         <div class="secao-header">
             <h2>Mensalidade de Outubro 2026</h2>

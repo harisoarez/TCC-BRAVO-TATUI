@@ -56,9 +56,7 @@ body{
     font-size: small;
 }
 
-/* ================================================================ */
-/* DESIGN ORIGINAL PARA NOTEBOOK / DESKTOP (> 960px)                */
-/* ================================================================ */
+/* Grid de instrumentos */
 #cards {
     width: 100%;
     max-width: 1320px;
@@ -165,9 +163,7 @@ body{
     color: #F5D696;
 }
 
-/* ================================================================ */
-/* ADAPTAÇÃO EXCLUSIVA PARA OUTROS DISPOSITIVOS (MOBILE E TABLET)    */
-/* ================================================================ */
+/* Responsividade */
 @media (max-width: 960px) {
     #cards {
         gap: 16px;

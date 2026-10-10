@@ -473,7 +473,7 @@ async function obterResumoFinanceiroOwner() {
     };
 }
 
-// Dados para os gráficos do Owner (Comparativo com sombrinha e Usuários cadastrados)
+// Dados para os gráficos do painel (comparativo mensal e evolução de usuários)
 async function obterDadosGraficosOwner() {
     const dadosFinanceiros = {
         labels: ["Semana 1 (1-7)", "Semana 2 (8-14)", "Semana 3 (15-21)", "Semana 4 (22-31)"],

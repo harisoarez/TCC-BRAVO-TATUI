@@ -1,6 +1,4 @@
-/* ================================================================
-   INSTITUTO BRAVO TATUÍ - NAVBAR GLOBAL E CONTROLE DE USUÁRIOS
-   ================================================================ */
+/* Barra de Navegação */
 
 #nav-bar {
     background-color: #0b0d13;
@@ -17,7 +15,7 @@
     font-family: 'inter', sans-serif;
 }
 
-/* Logo com o símbolo de rascunho (Tilápia) */
+/* Logo */
 #nav-bar .logo-container {
     display: flex;
     align-items: center;
@@ -263,9 +261,7 @@
     border-color: #ef4444;
 }
 
-/* ================================================================
-   MODAL DE CADASTRO DE CONTAS (OWNER / ADMIN)
-   ================================================================ */
+/* Modal de Cadastro de Contas */
 .modal-overlay-conta {
     position: fixed;
     inset: 0;
@@ -449,9 +445,7 @@
     color: #86efac;
 }
 
-/* ================================================================ */
-/* BOTÃO MENU HAMBÚRGUER (MOBILE & TABLET)                          */
-/* ================================================================ */
+/* Menu Hambúrguer (Mobile) */
 .nav-right-cluster {
     display: flex;
     align-items: center;
@@ -490,9 +484,7 @@
     transition: all 0.25s ease;
 }
 
-/* ================================================================ */
-/* DRAWER OVERLAY DO MENU HAMBÚRGUER MOBILE                         */
-/* ================================================================ */
+/* Drawer do Menu Mobile */
 .menu-mobile-drawer-overlay {
     position: fixed;
     inset: 0;
@@ -801,9 +793,7 @@
     text-decoration: none;
 }
 
-/* ================================================================ */
-/* RESPONSIVIDADE GLOBAL DA NAVBAR (MOBILE & TABLET <= 960px)        */
-/* ================================================================ */
+/* Responsividade */
 @media (max-width: 960px) {
     #nav-bar {
         min-height: 58px !important;
@@ -811,17 +801,17 @@
     }
 
     #nav-bar .nav-links-center {
-        display: none !important; /* Esconde os links horizontais no tablet/celular */
+        display: none !important;
     }
 
     .btn-hamburger-nav {
-        display: inline-flex !important; /* Exibe o botão hamburguer da imagem */
+        display: inline-flex !important;
     }
 
     .btn-nav-adicionar-conta,
     .user-info-col,
     .btn-nav-sair-logout {
-        display: none !important; /* O menu hamburguer substitui no mobile */
+        display: none !important;
     }
 
     .modal-perfil-card,

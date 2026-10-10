@@ -2,41 +2,36 @@
 <%- include('../partials/navbar') %>
 
 <main class="dashboard-container">
-    <!-- Header Executivo Estilo Databricks (Tema Claro) -->
-    <header class="databricks-header">
+    <header class="painel-header">
         <div class="header-title-col">
-            <h1>
-                <span class="estrela">★</span> 
-                Dashboard Geral & Indicadores
-            </h1>
-            <p>Instituto Musical Bravo Tatuí • Gestão Acadêmica e Controle Operacional</p>
+            <h1>Painel de Controle</h1>
+            <p>Instituto Musical Bravo Tatuí • Gestão Acadêmica e Financeira</p>
         </div>
 
         <div class="header-meta-col">
             <% if (isOwner) { %>
-                <span class="badge-modo-view owner">
-                    Modo Owner: Acesso Executivo Completo
+                <span class="badge-cargo owner">
+                    Proprietário
                 </span>
             <% } else { %>
-                <span class="badge-modo-view admin">
-                    Modo Administrador: Visão Operacional & Mensalidades
+                <span class="badge-cargo admin">
+                    Administrador
                 </span>
             <% } %>
             <span class="header-timestamp">Atualizado agora</span>
         </div>
     </header>
 
-    <!-- Feedback de Sucesso se houver -->
+    <!-- Mensagem de Sucesso -->
     <% if (locals.sucesso) { %>
         <div style="background: #dcfce7; border: 1px solid #bbf7d0; color: #15803d; padding: 12px 18px; border-radius: 8px; font-size: 13.5px; font-weight: 600;">
             ✓ Operação realizada com sucesso!
         </div>
     <% } %>
 
-    <!-- Cards de Métricas (KPIs) -->
+    <!-- Resumo Geral -->
     <section class="kpi-grid">
         <% if (isOwner && resumoFinanceiro) { %>
-            <!-- KPIs Financeiros EXCLUSIVOS DO OWNER -->
             <div class="kpi-card destaque-verde">
                 <div class="kpi-header">
                     <span class="kpi-label">Total Recebido (Mês Atual)</span>
@@ -75,7 +70,7 @@
                 <div class="kpi-subtexto">Corpo discente do Instituto Bravo</div>
             </div>
         <% } else { %>
-            <!-- KPIs Operacionais para ADMINISTRADOR (SEM EXIBIÇÃO DE RECEBIMENTOS SOMADOS) -->
+            <!-- Indicadores operacionais do mês -->
             <div class="kpi-card destaque-verde">
                 <div class="kpi-header">
                     <span class="kpi-label">Mensalidades em Dia</span>
@@ -114,27 +109,27 @@
         <% } %>
     </section>
 
-    <!-- GRÁFICO EXECUTIVO COM "SOMBRINHA" DO MÊS PASSADO (VISÍVEL APENAS PARA O OWNER) -->
+    <!-- Gráfico Comparativo -->
     <% if (isOwner && dadosGraficos) { %>
         <section class="grafico-card">
             <div class="grafico-header">
                 <div class="grafico-titulo-box">
-                    <h2 id="graficoTitulo">Resumo Financeiro & Comparativo com Mês Passado</h2>
-                    <p id="graficoSubtitulo">Acompanhe a curva de faturamento semanal com a <strong>sombrinha</strong> (área sombreada) do mês anterior para comparar o desempenho.</p>
+                    <h2 id="graficoTitulo">Desempenho Financeiro</h2>
+                    <p id="graficoSubtitulo">Comparativo do faturamento com o período anterior.</p>
                 </div>
 
                 <div class="grafico-controles">
                     <div class="btn-grupo-toggle">
                         <button type="button" class="btn-toggle ativo" id="btnToggleFinancas" onclick="alternarModoGrafico('financas')">
-                            Finanças Totais
+                            Recebimentos
                         </button>
                         <button type="button" class="btn-toggle" id="btnToggleUsuarios" onclick="alternarModoGrafico('usuarios')">
-                            Usuários Cadastrados
+                            Novos Alunos
                         </button>
                     </div>
 
-                    <button type="button" class="btn-tipo-grafico" id="btnAlternarTipo" onclick="alternarTipoGrafico()" title="Alternar entre Linha de Área e Barras">
-                        Mudar Tipo: <span id="labelTipoGrafico">Barras</span>
+                    <button type="button" class="btn-tipo-grafico" id="btnAlternarTipo" onclick="alternarTipoGrafico()" title="Alternar entre Linhas e Barras">
+                        Visualização: <span id="labelTipoGrafico">Barras</span>
                     </button>
                 </div>
             </div>
@@ -142,11 +137,11 @@
             <div class="grafico-legenda-sombrinha" id="boxLegendaSombrinha">
                 <div class="legenda-item">
                     <span class="ponto-legenda ponto-atual"></span>
-                    <span><strong>Mês Atual (Outubro 2026):</strong> Linha Sólida</span>
+                    <span><strong>Mês Atual:</strong> Linha principal</span>
                 </div>
                 <div class="legenda-item">
                     <span class="ponto-legenda ponto-sombra"></span>
-                    <span><strong>Sombrinha do Mês Passado (Setembro 2026):</strong> Faixa Comparativa</span>
+                    <span><strong>Mês Anterior:</strong> Comparativo sombreado</span>
                 </div>
             </div>
 
@@ -155,13 +150,13 @@
             </div>
         </section>
 
-        <!-- CONFIGURAÇÃO DE MENSALIDADES POR CURSO (EXCLUSIVO OWNER) -->
+        <!-- Valores das Mensalidades por Curso -->
         <section class="cursos-card">
             <div class="secao-header">
                 <div>
-                    <h2>Tabela de Mensalidades por Curso</h2>
+                    <h2>Mensalidade por Curso</h2>
                     <p style="font-size: 13px; color: var(--text-secondary); margin-top: 3px;">
-                        Defina o valor base da mensalidade de cada curso. Os alunos vinculados assumirão automaticamente estes valores.
+                        Configure o valor padrão de cada curso oferecido pelo instituto.
                     </p>
                 </div>
             </div>
@@ -219,11 +214,11 @@
         </div>
     </section>
 
-    <!-- GESTÃO DE MENSALIDADES DOS ALUNOS COM ANEXO DE COMPROVANTE (ADMIN E OWNER) -->
+    <!-- Controle de Mensalidades -->
     <section class="mensalidades-card">
         <div class="mensalidades-header">
             <div class="secao-header" style="margin-bottom: 0;">
-                <h2>Mensalidades dos Alunos & Anexo de Comprovantes</h2>
+                <h2>Controle de Mensalidades</h2>
             </div>
 
             <div class="tabs-mensalidades">
@@ -444,7 +439,7 @@
 
 <%- include('../partials/footer') %>
 
-<!-- SCRIPTS INTERATIVOS DO DASHBOARD (TEMA CLARO) -->
+<!-- Scripts do Painel -->
 <script>
     function filtrarTabela(status, btn) {
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('ativo'));
@@ -605,9 +600,7 @@
     }
 
     <% if (isOwner && dadosGraficos) { %>
-    // ================================================================
-    // GRÁFICO EXECUTIVO DO OWNER (TEMA CLARO DATABRICKS)
-    // ================================================================
+    // Configuração e renderização dos gráficos do painel
     const dadosGraficoFinanceiro = <%- JSON.stringify(dadosGraficos.financeiro) %>;
     const dadosGraficoUsuarios = <%- JSON.stringify(dadosGraficos.usuarios) %>;
 

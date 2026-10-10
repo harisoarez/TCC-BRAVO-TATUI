@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bravo Tatuí — Instituto Musical</title>
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/index.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Barra de redes sociais -->
+        <div class="header">
+            <img src="../images/Instagram_icon.png" alt="Instagram" width="18px" style="margin-right:5px;">
+            <a href="https://www.instagram.com/bravo_tatui/" target="_blank">@bravo_tatui</a>
+        </div>
+
+        <!-- Barra de navegação principal (gerenciada dinamicamente pelo navbar.js) -->
+        <div id="nav-bar">
+            <div id="logo">
+                <a href="./index.html" style="font-family: 'julius', serif; font-weight: bold; color: #F5D696; font-size: 18px; text-decoration: none; letter-spacing: 1px;">BRAVO TATUÍ</a>
+            </div>
+            <div id="nav-links">
+                <a href="./index.html">Início</a>
+                <a href="./formacoes.html">Bravo Tatuí</a>
+                <a href="./instrumentos.html">Aulas no IMBT</a>
+                <a href="./cardapio.html">Coffee Bravo</a>
+                <a href="./calendario.html">Calendário</a>
+                <a href="./login.html" style="color: #F5D696; font-weight: 500;">Login</a>
+            </div>
+            <div id="search">
+                <img src="../images/searchIcon.png" alt="Icone de pesquisa">
+                <input type="text" placeholder="Pesquisar no site">
+            </div>
+        </div>
+
+        <!-- Seção Hero Principal (Estilo Cinematográfico / Editorial) -->
+        <section class="hero-section">
+            <div class="hero-overlay"></div>
+
+            <div class="hero-main-content">
+                <!-- Coluna Esquerda: Tipografia e Destaque -->
+                <div class="hero-typography">
+                    <span class="hero-tag">
+                        <span class="hero-tag-dot"></span>
+                        INSTITUTO MUSICAL • TATUÍ / SP
+                    </span>
+                    <h1 class="hero-title">
+                        BRAVO<br>
+                        TATUÍ
+                    </h1>
+                    <div class="hero-slogan">
+                        <span class="hero-accent-triangle">▲</span>
+                        <p class="hero-slogan-text">Tradição, arte e excelência em cada nota musical.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Base da Hero: 3 Destaques e Linha Indicadora -->
+            <div class="hero-footer-wrapper">
+                <div class="hero-teasers-grid">
+                    <!-- Teaser 1: Eventos e Casamentos -->
+                    <a href="./formacoes.html" class="hero-teaser-item">
+                        <div class="teaser-icon-box">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F5D696" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 18V5l12-2v13"></path>
+                                <circle cx="6" cy="18" r="3"></circle>
+                                <circle cx="18" cy="16" r="3"></circle>
+                            </svg>
+                        </div>
+                        <div class="teaser-body">
+                            <h3 class="teaser-title">Formações para Eventos</h3>
+                            <p class="teaser-text">Orquestras completas e grupos personalizados para casamentos e ocasiões memoráveis.</p>
+                            <span class="teaser-action">Conhecer Formações <span class="teaser-arrow">→</span></span>
+                        </div>
+                    </a>
+
+                    <!-- Teaser 2: Aulas no IMBT -->
+                    <a href="./instrumentos.html" class="hero-teaser-item">
+                        <div class="teaser-icon-box">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F5D696" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                            </svg>
+                        </div>
+                        <div class="teaser-body">
+                            <h3 class="teaser-title">Aulas no IMBT</h3>
+                            <p class="teaser-text">Metodologia prática e teórica para todas as idades, com professores especialistas.</p>
+                            <span class="teaser-action">Ver Instrumentos <span class="teaser-arrow">→</span></span>
+                        </div>
+                    </a>
+
+                    <!-- Teaser 3: Coffee Bravo -->
+                    <a href="./cardapio.html" class="hero-teaser-item">
+                        <div class="teaser-icon-box">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F5D696" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                                <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                                <line x1="6" y1="1" x2="6" y2="4"></line>
+                                <line x1="10" y1="1" x2="10" y2="4"></line>
+                                <line x1="14" y1="1" x2="14" y2="4"></line>
+                            </svg>
+                        </div>
+                        <div class="teaser-body">
+                            <h3 class="teaser-title">Coffee Bravo</h3>
+                            <p class="teaser-text">Espaço acolhedor e aconchegante para desfrutar de cafés especiais e boa música.</p>
+                            <span class="teaser-action">Ver Cardápio <span class="teaser-arrow">→</span></span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Barra com indicador de progresso âmbar -->
+                <div class="hero-progress-line">
+                    <div class="hero-progress-bar"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção 2: Vitrine de Destaques em Cards Verticais -->
+        <section class="vitrine-section" id="cards">
+            <div class="vitrine-header">
+                <span class="vitrine-label">A EXPERIÊNCIA BRAVO TATUÍ</span>
+                <h2 class="vitrine-title">NOSSOS DESTAQUES</h2>
+            </div>
+
+            <div class="vitrine-grid">
+                <!-- Card 1: Bravo Tatuí (Eventos e Casamentos) -->
+                <a class="vitrine-card card card-bravo" href="./formacoes.html">
+                    <div class="vitrine-media">
+                        <img src="../images/exemplo_bravo.jpg" alt="Músicos da Bravo Tatuí">
+                        <div class="vitrine-gradient"></div>
+                    </div>
+                    <div class="vitrine-info">
+                        <span class="vitrine-card-tag">DESTAQUE 01</span>
+                        <h3 class="vitrine-card-title">BRAVO EVENTOS</h3>
+                        <p class="vitrine-card-desc">Formações personalizadas para casamentos e ocasiões especiais</p>
+                    </div>
+                </a>
+
+                <!-- Card 2: IMBT (Aulas de Música) -->
+                <a class="vitrine-card card card-imbt" href="./instrumentos.html">
+                    <div class="vitrine-media">
+                        <img src="../images/exemplo_imbt.jfif" alt="Alunos do IMBT">
+                        <div class="vitrine-gradient"></div>
+                    </div>
+                    <div class="vitrine-info">
+                        <span class="vitrine-card-tag">DESTAQUE 02</span>
+                        <h3 class="vitrine-card-title">AULAS NO IMBT</h3>
+                        <p class="vitrine-card-desc">Piano, violino, cordas e sopros para todos os níveis</p>
+                    </div>
+                </a>
+
+                <!-- Card 3: Coffee Bravo (Cafeteria) -->
+                <a class="vitrine-card card card-coffee" href="./cardapio.html">
+                    <div class="vitrine-media">
+                        <img src="../images/exemplo_coffe.jpeg" alt="Coffee Bravo">
+                        <div class="vitrine-gradient"></div>
+                    </div>
+                    <div class="vitrine-info">
+                        <span class="vitrine-card-tag">DESTAQUE 03</span>
+                        <h3 class="vitrine-card-title">COFFEE BRAVO</h3>
+                        <p class="vitrine-card-desc">Cafés artesanais em um ambiente de convivência musical</p>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- Rodapé Minimalista -->
+        <footer class="index-footer">
+            <div class="index-footer-content">
+                <span class="index-footer-brand">BRAVO TATUÍ</span>
+                <p class="index-footer-copy">© 2026 Instituto Musical Bravo Tatuí • Música, Educação e Eventos</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../script/navbar.js"></script>
+    <script>
+        // Animação de transição suave ao rolar a página (Scroll Reveal)
+        (function() {
+            // 1. Barra indicadora dos teasers na hero
+            const teasers = document.querySelectorAll('.hero-teaser-item');
+            const progressBar = document.querySelector('.hero-progress-bar');
+            if (teasers.length && progressBar) {
+                teasers.forEach((teaser, index) => {
+                    teaser.addEventListener('mouseenter', () => {
+                        progressBar.style.left = (index * 33.33) + '%';
+                    });
+                });
+            }
+
+            // 2. Transição suave das letras do cabeçalho de destaques ao rolar
+            const vitrineHeader = document.querySelector('.vitrine-header');
+            const vitrineLabel = document.querySelector('.vitrine-label');
+            const vitrineTitle = document.querySelector('.vitrine-title');
+
+            function atualizarScrollVitrine() {
+                const windowHeight = window.innerHeight;
+
+                if (vitrineHeader) {
+                    const rect = vitrineHeader.getBoundingClientRect();
+                    const start = windowHeight * 0.94;
+                    const end = windowHeight * 0.50;
+                    const progress = Math.min(Math.max((start - rect.top) / (start - end), 0), 1);
+
+                    if (vitrineLabel) {
+                        vitrineLabel.style.opacity = (0.2 + progress * 0.8).toFixed(2);
+                        vitrineLabel.style.transform = `translateY(${(1 - progress) * 14}px)`;
+                        vitrineLabel.style.filter = `blur(${(1 - progress) * 2}px)`;
+                    }
+
+                    if (vitrineTitle) {
+                        vitrineTitle.style.opacity = (0.2 + progress * 0.8).toFixed(2);
+                        vitrineTitle.style.transform = `translateY(${(1 - progress) * 20}px)`;
+                        vitrineTitle.style.filter = `blur(${(1 - progress) * 3}px)`;
+                    }
+                }
+            }
+
+            window.addEventListener('scroll', atualizarScrollVitrine, { passive: true });
+            window.addEventListener('resize', atualizarScrollVitrine, { passive: true });
+            atualizarScrollVitrine();
+
+            // 3. Revelação dos 3 cards da vitrine ao entrar na visualização
+            const vitrineCards = document.querySelectorAll('.vitrine-card');
+            if ('IntersectionObserver' in window && vitrineCards.length) {
+                const cardObserver = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('revealed');
+                        }
+                    });
+                }, { threshold: 0.15 });
+
+                vitrineCards.forEach(card => cardObserver.observe(card));
+            } else {
+                vitrineCards.forEach(card => card.classList.add('revealed'));
+            }
+        })();
+    </script>
+</body>
+</html>

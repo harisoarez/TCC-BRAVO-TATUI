@@ -1,7 +1,4 @@
-/* ================================================================
-   INSTITUTO MUSICAL BRAVO TATUÍ - DASHBOARD EXECUTIVO EM TEMA ESCURO
-   INSPIRADO NO DESIGN MODERNO DE BI (DATABRICKS) COM BORDAS NOVAS
-   ================================================================ */
+/* Painel Administrativo - Instituto Bravo Tatuí */
 
 :root {
     --bg-base: #080a0f;
@@ -39,9 +36,7 @@ body {
     flex-direction: column;
 }
 
-/* ================================================================
-   NAVBAR DO PAINEL (IDENTIDADE VISUAL PADRONIZADA COM O SITE)
-   ================================================================ */
+/* Navbar do Painel */
 .painel-navbar {
     background-color: #0b0d13 !important;
     border-bottom: 2px solid #000000;
@@ -273,9 +268,7 @@ body {
     color: #ffffff;
 }
 
-/* ================================================================
-   ESTRUTURA PRINCIPAL DO DASHBOARD (TEMA ESCURO COM BORDAS NOVAS)
-   ================================================================ */
+/* Conteúdo Principal */
 .dashboard-container {
     max-width: 1400px;
     width: 95%;
@@ -286,8 +279,8 @@ body {
     background-color: #080a0f !important;
 }
 
-/* Header Databricks Escuro com Borda Preta Moderna */
-.databricks-header {
+/* Cabeçalho do Painel */
+.painel-header {
     background: #0f172a;
     border: 2px solid #000000;
     border-radius: 18px 18px 18px 48px;
@@ -327,6 +320,7 @@ body {
     gap: 14px;
 }
 
+.badge-cargo,
 .badge-modo-view {
     padding: 7px 16px;
     border-radius: 10px 10px 10px 22px;
@@ -338,12 +332,14 @@ body {
     border: 1.5px solid #000000;
 }
 
+.badge-cargo.owner,
 .badge-modo-view.owner {
     background: rgba(245, 214, 150, 0.15);
     color: #F5D696;
     border-color: #F5D696;
 }
 
+.badge-cargo.admin,
 .badge-modo-view.admin {
     background: rgba(56, 189, 248, 0.15);
     color: #38bdf8;
@@ -356,9 +352,7 @@ body {
     font-weight: 600;
 }
 
-/* ================================================================
-   CARDS DE MÉTRICAS (KPIs) - COM BORDA PRETA MODERNA ASIMÉTRICA
-   ================================================================ */
+/* Cards de Resumo */
 .kpi-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -454,9 +448,7 @@ body {
     margin-top: 8px;
 }
 
-/* ================================================================
-   SEÇÃO DO GRÁFICO BI COM SOMBRINHA (EXCLUSIVO OWNER)
-   ================================================================ */
+/* Gráfico de Desempenho */
 .grafico-card {
     background: #0f172a;
     border: 2px solid #000000;
@@ -574,9 +566,7 @@ body {
     width: 100%;
 }
 
-/* ================================================================
-   CONFIGURAÇÃO DE CURSOS E MENSALIDADES (EXCLUSIVO OWNER)
-   ================================================================ */
+/* Configuração de Cursos */
 .cursos-card {
     background: #0f172a;
     border: 2px solid #000000;
@@ -645,9 +635,7 @@ body {
     border-color: #000000;
 }
 
-/* ================================================================
-   ANIVERSARIANTES DO MÊS - COM BORDA PRETA MODERNA
-   ================================================================ */
+/* Aniversariantes do Mês */
 .aniversariantes-card {
     background: #0f172a;
     border: 2px solid #000000;
@@ -742,9 +730,7 @@ body {
     border-radius: 6px 6px 6px 14px;
 }
 
-/* ================================================================
-   GESTÃO DE MENSALIDADES - COM BORDA PRETA MODERNA
-   ================================================================ */
+/* Gestão de Mensalidades */
 .mensalidades-card {
     background: #0f172a;
     border: 2px solid #000000;
@@ -957,9 +943,7 @@ body {
     color: #7dd3fc;
 }
 
-/* ================================================================
-   MODAIS - COM BORDA PRETA MODERNA ASIMÉTRICA
-   ================================================================ */
+/* Modais */
 .modal-overlay {
     position: fixed;
     top: 0;

@@ -2,19 +2,17 @@
 <%- include('../partials/navbar') %>
 
 <main class="dashboard-container">
-    <header class="databricks-header">
+    <header class="painel-header">
         <div class="header-title-col">
-            <h1>
-                Gestão de Usuários
-            </h1>
-            <p>Controle unificado de Administradores, Professores e Alunos Matriculados</p>
+            <h1>Gestão de Usuários</h1>
+            <p>Controle de Administradores, Professores e Alunos Matriculados</p>
         </div>
 
         <div class="header-meta-col">
             <% if (isOwner) { %>
-                <span class="badge-modo-view owner">Owner: Permissão Total de Descontos</span>
+                <span class="badge-cargo owner">Proprietário (Owner)</span>
             <% } else { %>
-                <span class="badge-modo-view admin">Administrador: Verificação de Comprovantes</span>
+                <span class="badge-cargo admin">Administrador</span>
             <% } %>
         </div>
     </header>

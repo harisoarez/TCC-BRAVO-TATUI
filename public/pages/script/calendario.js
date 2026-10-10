@@ -1,6 +1,4 @@
-// ================================================================
-// Instituto Musical Bravo Tatuí - Calendário Integrado com API & Auth
-// ================================================================
+// Calendário de Aulas - Instituto Bravo Tatuí
 
 const API_BASE = (window.location.port === "3000" || (!window.location.port && window.location.protocol === "http:")) ? "" : "http://localhost:3000";
 
@@ -178,7 +176,7 @@ async function fazerLogout() {
     window.location.href = "./login.html";
 }
 
-// ================= CARREGAMENTO DE DADOS DA API =================
+// Carregamento de dados
 async function carregarProfessores() {
     const selectProf = document.getElementById("formProfessor");
     if (!selectProf) return;
@@ -227,7 +225,7 @@ async function carregarAulas() {
     renderizarAgendaDia(dataSelecionada);
 }
 
-// ================= CONFIGURAÇÃO DE NAVEGAÇÃO =================
+// Navegação do calendário
 function configurarNavegacao() {
     // Navegação Desktop
     const btnAnt = document.getElementById("btnAnterior");
@@ -374,7 +372,7 @@ function filtrarAulasBusca(termo) {
     }).join("");
 }
 
-// ================= RENDERIZAÇÃO DO CALENDÁRIO =================
+// Renderização do calendário
 function renderizarCalendario() {
     const ano = dataAtual.getFullYear();
     const mes = dataAtual.getMonth();
@@ -544,7 +542,7 @@ function selecionarDia(dataStr) {
     renderizarAgendaDia(dataSelecionada);
 }
 
-// ================= MODAIS E FORMULÁRIO =================
+// Modais e formulário
 function fecharModal(id) {
     document.getElementById(id).classList.add("oculto");
 }
@@ -752,7 +750,7 @@ async function processarExclusao(acao) {
     await carregarAulas();
 }
 
-// ================= UTILIDADES =================
+// Formatação de data
 function formatarData(data) {
     return `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, "0")}-${String(data.getDate()).padStart(2, "0")}`;
 }

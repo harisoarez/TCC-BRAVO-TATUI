@@ -40,19 +40,11 @@ function tratarUploadImagem(req, res, next) {
     });
 }
 
-// ==========================================
-// ROTAS RESTRITAS (Admin e Owner)
-// ==========================================
-// Métricas e estatísticas para o painel
+// Rotas administrativas (Admin e Owner)
 router.get("/estatisticas", authMiddleware, exigirAdminOuOwner, instrumentoController.obterEstatisticas);
 
-// ==========================================
-// ROTAS PÚBLICAS (Frontend Institucional)
-// ==========================================
-// Listar todos os instrumentos (com filtros opcionais ?aulas=1, ?eventos=1, etc.)
+// Rotas públicas
 router.get("/", instrumentoController.listar);
-
-// Listar categorias de instrumentos existentes
 router.get("/categorias", instrumentoController.listarCategorias);
 
 // Obter detalhes de um instrumento por ID

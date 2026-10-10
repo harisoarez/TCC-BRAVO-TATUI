@@ -1,7 +1,4 @@
-/* ================================================================
-   INSTITUTO MUSICAL BRAVO TATUÍ - PÁGINA INICIAL (INDEX)
-   ESTILOS DESKTOP & LAYOUT HERO RESPONSIVO PARA MOBILE / TABLET
-   ================================================================ */
+/* Página Inicial */
 
 *, *::before, *::after {
     margin: 0;
@@ -53,9 +50,7 @@ body {
     flex-direction: column;
 }
 
-/* ================================================================ */
-/* CABEÇALHO SUPERIOR                                                */
-/* ================================================================ */
+/* Cabeçalho */
 .container .header {
     background-color: #1A1A1A;
     min-height: 28px;
@@ -76,9 +71,7 @@ body {
     color: #F5D696;
 }
 
-/* ================================================================ */
-/* FUNDO E BANNER SUPERIOR (DESKTOP)                                */
-/* ================================================================ */
+/* Fundo e Banner */
 #background {
     display: flex;
     flex-direction: column;
@@ -138,9 +131,7 @@ body {
     height: 50%;
 }
 
-/* ================================================================ */
-/* CARDS FLUTUANTES (DESKTOP)                                       */
-/* ================================================================ */
+/* Cards */
 .container #cards {
     position: absolute;
     z-index: 10;
@@ -222,11 +213,7 @@ body {
     box-sizing: border-box;
 }
 
-/* ================================================================ */
-/* RESPONSIVIDADE: CELULAR E TABLET (<= 960px)                      */
-/* Transforma a página inicial no layout da imagem de referência:   */
-/* 3 banners cheios empilhados (Bravo Tatuí, IMBT, Coffee Bravo)   */
-/* ================================================================ */
+/* Responsividade */
 @media (max-width: 960px) {
     #background {
         display: none !important;

@@ -2,7 +2,7 @@
 <%- include('../partials/navbar') %>
 
 <main class="dashboard-container">
-    <header class="databricks-header">
+    <header class="painel-header">
         <div class="header-title-col">
             <h1>
                 <span class="estrela">☕</span> 
@@ -34,7 +34,7 @@
         </div>
     <% } %>
 
-    <!-- Cards de Métricas / KPIs do Cardápio -->
+    <!-- Resumo do Cardápio -->
     <section class="kpi-grid">
         <div class="kpi-card destaque-ouro">
             <div class="kpi-header">
@@ -196,9 +196,7 @@
     </section>
 </main>
 
-<!-- ======================================================= -->
-<!-- MODAL DE CADASTRO / EDIÇÃO DE ITEM DO CARDÁPIO          -->
-<!-- ======================================================= -->
+<!-- Modal de cadastro e edição de item -->
 <div id="modalItemCardapio" class="modal-overlay oculto" style="position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: none; align-items: center; justify-content: center; z-index: 99999; padding: 20px;">
     <div class="modal-card" style="background: #111520; border: 1px solid var(--border-color); color: #fff; width: 100%; max-width: 540px; border-radius: 12px; padding: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); max-height: 90vh; overflow-y: auto;">
         <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
@@ -284,9 +282,7 @@
     </div>
 </div>
 
-<!-- ======================================================= -->
-<!-- MODAL DE CONFIRMAÇÃO DE EXCLUSÃO                        -->
-<!-- ======================================================= -->
+<!-- Modal de confirmação de exclusão -->
 <div id="modalExclusao" class="modal-overlay oculto" style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 99999; padding: 20px;">
     <div style="background: #111520; border: 1px solid rgba(239, 68, 68, 0.4); color: #fff; width: 100%; max-width: 420px; border-radius: 12px; padding: 24px; text-align: center;">
         <div style="font-size: 38px; margin-bottom: 12px;">🗑️</div>

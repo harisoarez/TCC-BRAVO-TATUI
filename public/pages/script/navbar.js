@@ -1,6 +1,4 @@
-// ================================================================
-// INSTITUTO MUSICAL BRAVO TATUÍ - CONTROLE CENTRAL DA NAVBAR
-// ================================================================
+// Controle da Barra de Navegação e Usuário
 
 (function () {
     const API_BASE = (window.location.port === "3000" || (!window.location.port && window.location.protocol === "http:")) ? "" : "http://localhost:3000";
@@ -60,7 +58,6 @@
         const usuario = obterUsuarioLogado();
         const paginaAtual = window.location.pathname.split("/").pop() || "index.html";
 
-        // Determinar links ativos
         const isIndex = paginaAtual === "index.html" || paginaAtual === "";
         const isFormacoes = paginaAtual.includes("formacao");
         const isInstrumentos = paginaAtual.includes("inst");
@@ -68,18 +65,17 @@
         const isCalendario = paginaAtual.includes("calendario");
         const isLogin = paginaAtual.includes("login");
 
-        // 1. Logo com Tilápia
+        // Logo
         const logoHtml = `
             <div class="logo-container">
                 <a href="./index.html" class="logo-link" title="Instituto Musical Bravo Tatuí">
-                    <img src="https://friocenterpescados.com.br/uploads/tilapia-inteira-eviscerada_1.jpg" alt="Tilápia Rascunho" class="logo-tilapia">
+                    <img src="https://friocenterpescados.com.br/uploads/tilapia-inteira-eviscerada_1.jpg" alt="Logo Bravo" class="logo-tilapia">
                     <span class="logo-text">BRAVO TATUÍ</span>
                 </a>
             </div>
         `;
 
-        // 2. Links Centrais (Sem Emojis nos Botões da Navbar)
-        // REGRA CRÍTICA: Não é possível ver o botão de acessar o calendário para pessoas não logadas!
+        // Links de navegação
         const linkCalendarioHtml = usuario ? `
             <a href="./calendario.html" class="nav-link-calendario ${isCalendario ? 'link-ativo' : ''}">
                 Calendário
@@ -222,9 +218,7 @@
         }
     }
 
-    // ================================================================
-    // GESTÃO DO MENU HAMBÚRGUER MOBILE & TABLET
-    // ================================================================
+    // Menu mobile
     window.abrirMenuMobile = function () {
         const drawer = document.getElementById("menuMobileDrawer");
         if (drawer) {
@@ -404,19 +398,18 @@
 
         const campoTipoUsuario = isOwner ? `
             <div class="form-grupo-conta">
-                <label for="campoNovoTipo">Tipo de Conta (Permissão Owner)</label>
+                <label for="campoNovoTipo">Tipo de Conta</label>
                 <select id="campoNovoTipo">
                     <option value="normal">Normal (Aluno)</option>
                     <option value="admin">Administrador</option>
                 </select>
-                <small style="color: #94a3b8; font-size: 11px;">Como Owner, você pode criar contas com nível de Administrador ou Normal.</small>
+                <small style="color: #94a3b8; font-size: 11px;">Selecione o nível de permissão.</small>
             </div>
         ` : `
             <div class="form-grupo-conta">
                 <label>Tipo de Conta</label>
                 <input type="text" value="Normal (Aluno)" disabled style="opacity: 0.7; cursor: not-allowed;">
                 <input type="hidden" id="campoNovoTipo" value="normal">
-                <small style="color: #94a3b8; font-size: 11px;">Administradores podem criar apenas contas de usuários normais.</small>
             </div>
         `;
 
@@ -457,13 +450,12 @@
                     <div class="form-grupo-conta" id="grupoDataNascConta">
                         <label for="campoDataNascimento">Data de Nascimento (Aluno)</label>
                         <input type="date" id="campoDataNascimento">
-                        <small style="color: #94a3b8; font-size: 11px;">Usada para registro de aniversariantes e controle acadêmico do aluno.</small>
                     </div>
 
                     ${campoTipoUsuario}
 
                     <div class="form-grupo-conta">
-                        <label>Senha Gerada Automaticamente</label>
+                        <label>Senha Gerada</label>
                         <div class="box-senha-gerada">
                             <div class="linha-senha">
                                 <input type="text" id="campoSenhaGerada" class="input-senha-gerada" readonly required>
@@ -471,7 +463,7 @@
                                 <button type="button" id="btnCopiarSenha" class="btn-acao-senha" onclick="window.copiarSenhaGerada()">Copiar</button>
                             </div>
                             <div class="aviso-envio-manual">
-                                <span>Copie e envie esta senha para o aluno manualmente. No primeiro acesso, o usuário deverá trocá-la (mín. 8 e máx. 20 caracteres).</span>
+                                <span>Envie esta senha para o aluno. Ele poderá alterá-la após o primeiro acesso.</span>
                             </div>
                         </div>
                     </div>
@@ -483,11 +475,9 @@
 
         document.body.appendChild(modalDiv);
 
-        // Listener do formulário
         document.getElementById("formCriarContaGlobal").addEventListener("submit", processarCriacaoConta);
     }
 
-    // Gerador de Senhas Seguras (10 caracteres com letras, números e símbolo)
     function gerarSenhaAleatoria() {
         const maiusculas = "ABCDEFGHJKLMNPQRSTUVWXYZ";
         const minusculas = "abcdefghijkmnpqrstuvwxyz";
@@ -505,7 +495,6 @@
             senha += todos.charAt(Math.floor(Math.random() * todos.length));
         }
 
-        // Embaralha
         return senha.split("").sort(() => 0.5 - Math.random()).join("");
     }
 
@@ -590,7 +579,7 @@
                     <strong>Conta criada com sucesso!</strong><br>
                     E-mail: <code>${email}</code><br>
                     Senha Inicial: <code>${senha}</code><br>
-                    <em>A senha foi gerada. Copie-a e envie manualmente para o usuário.</em>
+                    <em>Senha inicial gerada com sucesso.</em>
                 `;
                 fb.style.display = "block";
                 document.getElementById("formCriarContaGlobal").reset();
@@ -719,7 +708,6 @@
                         const novoTel = document.getElementById("campoSiteTelefone").value;
                         if (novoTel) usuarioLogado.telefone = novoTel;
 
-                        // Salva preservando estritamente id_usuario e tipo_usuario
                         const dadosSalvar = {
                             id_usuario: usuarioLogado.id_usuario || usuarioLogado.id,
                             id: usuarioLogado.id_usuario || usuarioLogado.id,

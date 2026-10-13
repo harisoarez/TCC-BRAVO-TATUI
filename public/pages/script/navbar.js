@@ -439,20 +439,44 @@
         const campoTipoUsuario = isOwner ? `
             <div class="form-grupo-conta">
                 <label for="campoNovoTipo">Tipo de Conta (Permissão Owner)</label>
-                <select id="campoNovoTipo">
+                <select id="campoNovoTipo" onchange="window.alternarTipoContaGlobal(this.value)">
                     <option value="normal">Normal (Aluno)</option>
+                    <option value="professor">Professor (Docente)</option>
                     <option value="admin">Administrador</option>
                 </select>
-                <small style="color: #94a3b8; font-size: 11px;">Como Owner, você pode criar contas com nível de Administrador ou Normal.</small>
+                <small style="color: #94a3b8; font-size: 11px;">Como Owner, você pode criar contas com nível de Administrador, Professor ou Aluno.</small>
             </div>
         ` : `
             <div class="form-grupo-conta">
-                <label>Tipo de Conta</label>
-                <input type="text" value="Normal (Aluno)" disabled style="opacity: 0.7; cursor: not-allowed;">
-                <input type="hidden" id="campoNovoTipo" value="normal">
-                <small style="color: #94a3b8; font-size: 11px;">Administradores podem criar apenas contas de usuários normais.</small>
+                <label for="campoNovoTipo">Tipo de Conta</label>
+                <select id="campoNovoTipo" onchange="window.alternarTipoContaGlobal(this.value)">
+                    <option value="normal">Normal (Aluno)</option>
+                    <option value="professor">Professor (Docente)</option>
+                </select>
+                <small style="color: #94a3b8; font-size: 11px;">Administradores podem criar contas de Alunos e Professores.</small>
             </div>
         `;
+
+        const cursosPadrao = ['Piano', 'Violino', 'Bateria', 'Canto', 'Violão', 'Clarinete', 'Saxofone', 'Flauta', 'Teoria Musical'];
+        const especialidadesPadrao = [
+            'Piano', 'Violino', 'Violoncelo', 'Viola de Arco', 'Contrabaixo Acústico',
+            'Flauta Transversal', 'Saxofone', 'Clarinete', 'Trompete', 'Bateria Acústica',
+            'Violão Acústico', 'Canto', 'Teoria Musical'
+        ];
+
+        const chipsCursosHtml = cursosPadrao.map((c, i) => `
+            <label class="tag-check-chip ${i === 0 ? 'ativo' : ''}">
+                <input type="checkbox" name="cursosContaSite" value="${c}" ${i === 0 ? 'checked' : ''}>
+                <span>${c}</span>
+            </label>
+        `).join('');
+
+        const chipsEspHtml = especialidadesPadrao.map((esp, i) => `
+            <label class="tag-check-chip ${i === 0 ? 'ativo' : ''}">
+                <input type="checkbox" name="espContaSite" value="${esp}" ${i === 0 ? 'checked' : ''}>
+                <span>${esp}</span>
+            </label>
+        `).join('');
 
         const modalDiv = document.createElement("div");
         modalDiv.id = "modalCriarContaGlobal";
@@ -488,13 +512,35 @@
                         </div>
                     </div>
 
-                    <div class="form-grupo-conta" id="grupoDataNascConta">
-                        <label for="campoDataNascimento">Data de Nascimento (Aluno)</label>
-                        <input type="date" id="campoDataNascimento">
-                        <small style="color: #94a3b8; font-size: 11px;">Usada para registro de aniversariantes e controle acadêmico do aluno.</small>
+                    ${campoTipoUsuario}
+
+                    <!-- Seção Aluno -->
+                    <div id="grupoAlunoContaGlobal">
+                        <div class="form-grupo-conta" id="grupoDataNascConta">
+                            <label for="campoDataNascimento">Data de Nascimento (Aluno)</label>
+                            <input type="date" id="campoDataNascimento">
+                            <small style="color: #94a3b8; font-size: 11px;">Usada para controle acadêmico e aniversários do aluno.</small>
+                        </div>
+
+                        <div class="form-grupo-conta" id="grupoCursosConta">
+                            <label>Cursos Matriculados (Selecione 1 ou mais)</label>
+                            <div class="chips-grid">
+                                ${chipsCursosHtml}
+                            </div>
+                            <small style="color: #94a3b8; font-size: 11px;">O aluno pode cursar mais de um instrumento simultaneamente.</small>
+                        </div>
                     </div>
 
-                    ${campoTipoUsuario}
+                    <!-- Seção Professor -->
+                    <div id="grupoProfessorContaGlobal" style="display: none;">
+                        <div class="form-grupo-conta" id="grupoEspecialidadesConta">
+                            <label>Especialidades / Instrumentos Lecionados (Selecione 1 ou mais)</label>
+                            <div class="chips-grid">
+                                ${chipsEspHtml}
+                            </div>
+                            <small style="color: #94a3b8; font-size: 11px;">O professor pode lecionar mais de um instrumento no Instituto Bravo.</small>
+                        </div>
+                    </div>
 
                     <div class="form-grupo-conta">
                         <label>Senha Gerada Automaticamente</label>
@@ -505,7 +551,7 @@
                                 <button type="button" id="btnCopiarSenha" class="btn-acao-senha" onclick="window.copiarSenhaGerada()">Copiar</button>
                             </div>
                             <div class="aviso-envio-manual">
-                                <span>Copie e envie esta senha para o aluno manualmente. No primeiro acesso, o usuário deverá trocá-la (mín. 8 e máx. 20 caracteres).</span>
+                                <span>Copie e envie esta senha para o usuário manualmente. No primeiro acesso, o usuário deverá trocá-la (mín. 8 e máx. 20 caracteres).</span>
                             </div>
                         </div>
                     </div>
@@ -517,9 +563,34 @@
 
         document.body.appendChild(modalDiv);
 
+        // Listener dinâmico de chips
+        modalDiv.addEventListener("change", function(e) {
+            if (e.target.matches('.tag-check-chip input[type="checkbox"]')) {
+                const label = e.target.closest('.tag-check-chip');
+                if (label) {
+                    label.classList.toggle('ativo', e.target.checked);
+                }
+            }
+        });
+
         // Listener do formulário
         document.getElementById("formCriarContaGlobal").addEventListener("submit", processarCriacaoConta);
     }
+
+    window.alternarTipoContaGlobal = function(tipo) {
+        const grupoAluno = document.getElementById("grupoAlunoContaGlobal");
+        const grupoProf = document.getElementById("grupoProfessorContaGlobal");
+        if (tipo === "normal" || tipo === "aluno") {
+            if (grupoAluno) grupoAluno.style.display = "block";
+            if (grupoProf) grupoProf.style.display = "none";
+        } else if (tipo === "professor") {
+            if (grupoAluno) grupoAluno.style.display = "none";
+            if (grupoProf) grupoProf.style.display = "block";
+        } else {
+            if (grupoAluno) grupoAluno.style.display = "none";
+            if (grupoProf) grupoProf.style.display = "none";
+        }
+    };
 
     // Gerador de Senhas Seguras (10 caracteres com letras, números e símbolo)
     function gerarSenhaAleatoria() {
@@ -599,9 +670,26 @@
         const email = document.getElementById("campoNovoEmail").value.trim();
         const cpf = document.getElementById("campoNovoCPF").value.trim();
         const telefone = document.getElementById("campoNovoTel").value.trim();
-        const data_nascimento = document.getElementById("campoDataNascimento") ? document.getElementById("campoDataNascimento").value : null;
         const tipo_usuario = document.getElementById("campoNovoTipo").value;
+        const data_nascimento = document.getElementById("campoDataNascimento") ? document.getElementById("campoDataNascimento").value : null;
         const senha = document.getElementById("campoSenhaGerada").value;
+
+        const cursosChecked = Array.from(document.querySelectorAll('input[name="cursosContaSite"]:checked')).map(cb => cb.value.trim());
+        const espChecked = Array.from(document.querySelectorAll('input[name="espContaSite"]:checked')).map(cb => cb.value.trim());
+
+        if ((tipo_usuario === "normal" || tipo_usuario === "aluno") && cursosChecked.length === 0) {
+            fb.className = "feedback-criar-conta erro";
+            fb.textContent = "Selecione ao menos um curso para o aluno.";
+            fb.style.display = "block";
+            return;
+        }
+
+        if (tipo_usuario === "professor" && espChecked.length === 0) {
+            fb.className = "feedback-criar-conta erro";
+            fb.textContent = "Selecione ao menos uma especialidade para o professor.";
+            fb.style.display = "block";
+            return;
+        }
 
         btn.disabled = true;
         btn.textContent = "Cadastrando conta...";
@@ -613,7 +701,17 @@
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({ nome, cpf, email, telefone, data_nascimento, tipo_usuario, senha }),
+                body: JSON.stringify({
+                    nome,
+                    cpf,
+                    email,
+                    telefone,
+                    tipo_usuario,
+                    data_nascimento,
+                    cursos: cursosChecked,
+                    especialidades: espChecked,
+                    senha
+                }),
             });
 
             const dados = await resp.json();

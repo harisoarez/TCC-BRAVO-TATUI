@@ -33,7 +33,8 @@ a{
 
 body{
     background-color: #080808;
-    overflow-x: hidden;
+    overflow-x: clip;
+    overflow-y: visible;
 }
 
 .container{ /*tela inteira*/

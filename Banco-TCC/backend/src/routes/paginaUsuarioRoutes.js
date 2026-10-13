@@ -11,5 +11,7 @@ router.post("/aluno/:idaluno/desconto", paginaUsuarioController.atribuirDesconto
 router.post("/aluno/:idaluno/curso", paginaUsuarioController.alterarCursoAluno);
 router.get("/aluno/:idaluno/historico", paginaUsuarioController.obterHistoricoAluno);
 router.post("/professor/:idprofessor/especialidade", paginaUsuarioController.alterarEspecialidadeProfessor);
+router.post("/:id/editar", paginaUsuarioController.editarUsuario);
+router.post("/:id/excluir", paginaUsuarioController.excluirUsuario);
 
 module.exports = router;

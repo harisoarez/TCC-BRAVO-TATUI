@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS usuario_login (
   nome VARCHAR(100) NOT NULL,
   telefone VARCHAR(20),
   cpf VARCHAR(14),
-  tipo_instrumento VARCHAR(45),
+  tipo_instrumento VARCHAR(255),
   autorizacao_imagem TINYINT DEFAULT 0,
   foto_url VARCHAR(255),
   descricao TEXT,
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS curso_mensalidade (
 CREATE TABLE IF NOT EXISTS aluno (
   idaluno INT PRIMARY KEY AUTO_INCREMENT,
   CPF VARCHAR(14) UNIQUE,
-  curso VARCHAR(100) DEFAULT 'Piano',
+  curso VARCHAR(255) DEFAULT 'Piano',
   desconto_porcentagem DECIMAL(5,2) DEFAULT 0.00,
   endereco_rua VARCHAR(100),
   endereco_numero VARCHAR(10),

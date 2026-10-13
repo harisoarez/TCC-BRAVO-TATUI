@@ -64,6 +64,16 @@
             }
             const nomeExibicao = (u.nome || 'Usuário').split(' ')[0];
         %>
+        <% if (!isAluno) { %>
+            <button type="button" class="btn-painel-add-conta" onclick="abrirModalCriarContaPainel()" title="Cadastrar Nova Conta de Aluno, Professor ou Admin">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                <span>Adicionar Conta</span>
+            </button>
+        <% } %>
+
         <div class="painel-user-box">
             <button type="button" class="painel-avatar-btn" onclick="abrirModalPerfilGlobal()" title="Meu Perfil (Clique para alterar foto e descrição)">
                 <div class="painel-avatar <%= classeBorda %>">
@@ -134,6 +144,107 @@
         </form>
     </div>
 </div>
+
+<% if (!isAluno) { %>
+<!-- MODAL GLOBAL DO PAINEL: ADICIONAR NOVA CONTA -->
+<div id="modalCriarContaPainel" class="modal-overlay oculto">
+    <div class="modal-card" style="max-width: 520px; width: 92%;">
+        <div class="modal-header">
+            <h3>Adicionar Nova Conta</h3>
+            <button type="button" class="btn-fechar-modal" onclick="fecharModalCriarContaPainel()">&times;</button>
+        </div>
+
+        <div id="feedbackCriarContaPainel" class="feedback-box-painel"></div>
+
+        <form id="formCriarContaPainel">
+            <div class="form-grupo">
+                <label for="painelNovoNome">Nome Completo</label>
+                <input type="text" id="painelNovoNome" placeholder="Ex: Lucas Gabriel Silveira" required>
+            </div>
+
+            <div class="form-grupo">
+                <label for="painelNovoEmail">E-mail</label>
+                <input type="email" id="painelNovoEmail" placeholder="usuario@exemplo.com" required>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div class="form-grupo">
+                    <label for="painelNovoCPF">CPF</label>
+                    <input type="text" id="painelNovoCPF" placeholder="000.000.000-00">
+                </div>
+                <div class="form-grupo">
+                    <label for="painelNovoTel">Celular / WhatsApp</label>
+                    <input type="text" id="painelNovoTel" placeholder="(15) 99999-0000">
+                </div>
+            </div>
+
+            <div class="form-grupo">
+                <label for="painelNovoTipo">Tipo de Conta</label>
+                <select id="painelNovoTipo" onchange="alternarCamposTipoPainel(this.value)">
+                    <option value="normal">Aluno (Corpo Discente)</option>
+                    <option value="professor">Professor (Corpo Docente)</option>
+                    <% if (isOwner) { %>
+                        <option value="admin">Administrador do Sistema</option>
+                    <% } %>
+                </select>
+            </div>
+
+            <!-- Campos Específicos para Aluno -->
+            <div id="painelSecaoAluno">
+                <div class="form-grupo">
+                    <label for="painelDataNasc">Data de Nascimento (Aluno)</label>
+                    <input type="date" id="painelDataNasc">
+                    <small style="color: var(--text-muted); font-size: 11px;">Usada para aniversários e controle acadêmico.</small>
+                </div>
+
+                <div class="form-grupo">
+                    <label>Cursos Matriculados (Selecione 1 ou mais)</label>
+                    <div class="chips-grid" id="painelGridCursos">
+                        <% const cursosPainel = ['Piano', 'Violino', 'Bateria', 'Canto', 'Violão', 'Clarinete', 'Saxofone', 'Flauta', 'Teoria Musical']; %>
+                        <% cursosPainel.forEach(function(c, i) { %>
+                            <label class="tag-check-chip <%= i === 0 ? 'ativo' : '' %>">
+                                <input type="checkbox" name="painelCursosAluno" value="<%= c %>" <%= i === 0 ? 'checked' : '' %>>
+                                <span><%= c %></span>
+                            </label>
+                        <% }); %>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Campos Específicos para Professor -->
+            <div id="painelSecaoProfessor" style="display: none;">
+                <div class="form-grupo">
+                    <label>Especialidades / Instrumentos Lecionados (Selecione 1 ou mais)</label>
+                    <div class="chips-grid" id="painelGridEspecialidades">
+                        <% const espPainel = ['Piano', 'Violino', 'Violoncelo', 'Viola de Arco', 'Contrabaixo Acústico', 'Flauta Transversal', 'Saxofone', 'Clarinete', 'Trompete', 'Bateria Acústica', 'Violão Acústico', 'Canto', 'Teoria Musical']; %>
+                        <% espPainel.forEach(function(esp, i) { %>
+                            <label class="tag-check-chip <%= i === 0 ? 'ativo' : '' %>">
+                                <input type="checkbox" name="painelEspecialidadesProf" value="<%= esp %>" <%= i === 0 ? 'checked' : '' %>>
+                                <span><%= esp %></span>
+                            </label>
+                        <% }); %>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Senha Gerada -->
+            <div class="form-grupo">
+                <label>Senha Inicial Gerada</label>
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" id="painelSenhaGerada" readonly required style="font-family: monospace; font-size: 15px; font-weight: 700; color: var(--accent-gold); letter-spacing: 1px;">
+                    <button type="button" class="btn-acao-editar" onclick="gerarNovaSenhaPainel()" style="padding: 0 12px; white-space: nowrap;">Outra</button>
+                    <button type="button" id="btnCopiarSenhaPainel" class="btn-acao-editar" onclick="copiarSenhaPainel()" style="padding: 0 12px; white-space: nowrap;">Copiar</button>
+                </div>
+                <small style="color: var(--text-muted); font-size: 11px;">Copie e envie a senha para o usuário. Ele poderá alterá-la depois.</small>
+            </div>
+
+            <button type="submit" id="btnSubmitContaPainel" class="btn-confirmar-pagamento">
+                Criar Conta
+            </button>
+        </form>
+    </div>
+</div>
+<% } %>
 
 <script>
     (function() {
@@ -215,4 +326,154 @@
             btn.textContent = 'Salvar Alterações de Perfil';
         }
     });
+
+    // Funções do Modal Criar Conta Painel
+    function abrirModalCriarContaPainel() {
+        const modal = document.getElementById('modalCriarContaPainel');
+        if (!modal) return;
+        gerarNovaSenhaPainel();
+        const fb = document.getElementById('feedbackCriarContaPainel');
+        if (fb) fb.style.display = 'none';
+        modal.classList.remove('oculto');
+    }
+
+    function fecharModalCriarContaPainel() {
+        const modal = document.getElementById('modalCriarContaPainel');
+        if (modal) modal.classList.add('oculto');
+    }
+
+    function alternarCamposTipoPainel(tipo) {
+        const secAluno = document.getElementById('painelSecaoAluno');
+        const secProf = document.getElementById('painelSecaoProfessor');
+        if (tipo === 'professor') {
+            if (secAluno) secAluno.style.display = 'none';
+            if (secProf) secProf.style.display = 'block';
+        } else if (tipo === 'admin') {
+            if (secAluno) secAluno.style.display = 'none';
+            if (secProf) secProf.style.display = 'none';
+        } else {
+            if (secAluno) secAluno.style.display = 'block';
+            if (secProf) secProf.style.display = 'none';
+        }
+    }
+
+    function gerarSenhaAleatoriaLocal() {
+        const maiusc = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+        const minusc = "abcdefghijkmnpqrstuvwxyz";
+        const nums = "23456789";
+        const sims = "@#$%&!";
+        let s = maiusc[Math.floor(Math.random() * maiusc.length)] +
+                minusc[Math.floor(Math.random() * minusc.length)] +
+                nums[Math.floor(Math.random() * nums.length)] +
+                sims[Math.floor(Math.random() * sims.length)];
+        const todos = maiusc + minusc + nums + sims;
+        for (let i = 0; i < 6; i++) s += todos[Math.floor(Math.random() * todos.length)];
+        return s.split('').sort(() => 0.5 - Math.random()).join('');
+    }
+
+    function gerarNovaSenhaPainel() {
+        const input = document.getElementById('painelSenhaGerada');
+        if (input) input.value = gerarSenhaAleatoriaLocal();
+    }
+
+    function copiarSenhaPainel() {
+        const input = document.getElementById('painelSenhaGerada');
+        const btn = document.getElementById('btnCopiarSenhaPainel');
+        if (!input || !input.value) return;
+        navigator.clipboard.writeText(input.value).then(() => {
+            if (btn) {
+                btn.textContent = '✓ Copiado';
+                setTimeout(() => { btn.textContent = 'Copiar'; }, 2000);
+            }
+        }).catch(() => {
+            input.select();
+            document.execCommand('copy');
+            alert('Senha copiada!');
+        });
+    }
+
+    document.addEventListener('change', function(e) {
+        if (e.target.matches('.tag-check-chip input[type="checkbox"]')) {
+            const label = e.target.closest('.tag-check-chip');
+            if (label) {
+                if (e.target.checked) label.classList.add('ativo');
+                else label.classList.remove('ativo');
+            }
+        }
+    });
+
+    const formCriarPainel = document.getElementById('formCriarContaPainel');
+    if (formCriarPainel) {
+        formCriarPainel.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnSubmitContaPainel');
+            const fb = document.getElementById('feedbackCriarContaPainel');
+            const token = localStorage.getItem('authToken');
+
+            const nome = document.getElementById('painelNovoNome').value.trim();
+            const email = document.getElementById('painelNovoEmail').value.trim();
+            const cpf = document.getElementById('painelNovoCPF').value.trim();
+            const telefone = document.getElementById('painelNovoTel').value.trim();
+            const tipo_usuario = document.getElementById('painelNovoTipo').value;
+            const data_nascimento = document.getElementById('painelDataNasc') ? document.getElementById('painelDataNasc').value : null;
+            const senha = document.getElementById('painelSenhaGerada').value;
+
+            const cursosChecked = Array.from(document.querySelectorAll('input[name="painelCursosAluno"]:checked')).map(cb => cb.value);
+            const espChecked = Array.from(document.querySelectorAll('input[name="painelEspecialidadesProf"]:checked')).map(cb => cb.value);
+
+            btn.disabled = true;
+            btn.textContent = 'Cadastrando conta...';
+
+            try {
+                const resp = await fetch('/api/usuarios/criar-conta', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(token ? { Authorization: 'Bearer ' + token } : {}),
+                    },
+                    body: JSON.stringify({
+                        nome,
+                        email,
+                        cpf,
+                        telefone,
+                        tipo_usuario,
+                        data_nascimento,
+                        cursos: cursosChecked,
+                        especialidades: espChecked,
+                        senha,
+                    }),
+                });
+
+                const dados = await resp.json();
+
+                if (dados.sucesso) {
+                    fb.className = 'feedback-box-painel sucesso';
+                    fb.innerHTML = `
+                        <strong>✓ Conta criada com sucesso!</strong><br>
+                        Nome: <b>${nome}</b><br>
+                        E-mail: <code>${email}</code><br>
+                        Senha: <code>${senha}</code><br>
+                        <em>A senha foi gerada. Copie e repasse ao usuário.</em>
+                    `;
+                    fb.style.display = 'block';
+                    formCriarPainel.reset();
+                    gerarNovaSenhaPainel();
+                    if (window.location.pathname.includes('/paginas/usuarios')) {
+                        setTimeout(() => window.location.reload(), 1500);
+                    }
+                } else {
+                    fb.className = 'feedback-box-painel erro';
+                    fb.textContent = dados.mensagem || 'Erro ao cadastrar conta.';
+                    fb.style.display = 'block';
+                }
+            } catch (err) {
+                fb.className = 'feedback-box-painel erro';
+                fb.textContent = 'Erro de comunicação com o servidor.';
+                fb.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Criar Conta';
+            }
+        });
+    }
 </script>

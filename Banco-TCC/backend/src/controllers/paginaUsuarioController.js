@@ -1,4 +1,6 @@
 const dashboardModel = require("../models/dashboardModel");
+const instrumentoModel = require("../models/instrumentoModel");
+const usuarioController = require("./usuarioController");
 
 async function paginaListarUsuarios(req, res) {
     const usuario = req.session?.usuario;
@@ -10,11 +12,12 @@ async function paginaListarUsuarios(req, res) {
 
     const isOwner = tipo === "owner";
 
-    const [administradores, professores, alunos, cursos] = await Promise.all([
+    const [administradores, professores, alunos, cursos, instrumentos] = await Promise.all([
         dashboardModel.listarAdministradores(),
         dashboardModel.listarProfessores(),
         dashboardModel.listarAlunosCompletos(),
         dashboardModel.listarCursos(),
+        instrumentoModel.listarTodos({ ativo: 1 }),
     ]);
 
     res.render("usuarios/index", {
@@ -25,6 +28,7 @@ async function paginaListarUsuarios(req, res) {
         professores,
         alunos,
         cursos,
+        instrumentos,
     });
 }
 
@@ -89,17 +93,26 @@ async function alterarCursoAluno(req, res) {
         }
 
         const { idaluno } = req.params;
-        const { curso } = req.body;
+        let { curso, cursos } = req.body;
 
-        if (!curso) {
-            return res.status(400).json({ sucesso: false, mensagem: "O nome do curso é obrigatório." });
+        const entrada = cursos || curso;
+        let cursoFinal = "";
+        if (Array.isArray(entrada)) {
+            cursoFinal = entrada.filter(Boolean).map(c => c.trim()).join(", ");
+        } else if (typeof entrada === "string") {
+            cursoFinal = entrada.trim();
         }
 
-        await dashboardModel.atualizarCursoAluno(idaluno, curso);
+        if (!cursoFinal) {
+            return res.status(400).json({ sucesso: false, mensagem: "Ao menos um curso deve ser selecionado." });
+        }
+
+        await dashboardModel.atualizarCursoAluno(idaluno, cursoFinal);
 
         return res.json({
             sucesso: true,
-            mensagem: `Matrícula do aluno atualizada para o curso de ${curso} com sucesso!`,
+            mensagem: `Matrícula do aluno atualizada para: ${cursoFinal} com sucesso!`,
+            curso: cursoFinal,
         });
     } catch (err) {
         console.error("Erro ao alterar curso do aluno:", err);
@@ -119,22 +132,41 @@ async function alterarEspecialidadeProfessor(req, res) {
         }
 
         const { idprofessor } = req.params;
-        const { especialidade } = req.body;
+        let { especialidade, especialidades } = req.body;
 
-        if (!especialidade) {
-            return res.status(400).json({ sucesso: false, mensagem: "A especialidade é obrigatória." });
+        const entrada = especialidades || especialidade;
+        let espFinal = "";
+        if (Array.isArray(entrada)) {
+            espFinal = entrada.filter(Boolean).map(e => e.trim()).join(", ");
+        } else if (typeof entrada === "string") {
+            espFinal = entrada.trim();
         }
 
-        await dashboardModel.atualizarEspecialidadeProfessor(idprofessor, especialidade);
+        if (!espFinal) {
+            return res.status(400).json({ sucesso: false, mensagem: "Ao menos uma especialidade deve ser selecionada." });
+        }
+
+        await dashboardModel.atualizarEspecialidadeProfessor(idprofessor, espFinal);
 
         return res.json({
             sucesso: true,
-            mensagem: `Especialidade do professor atualizada para ${especialidade} com sucesso!`,
+            mensagem: `Especialidades do professor atualizadas para: ${espFinal} com sucesso!`,
+            especialidade: espFinal,
         });
     } catch (err) {
         console.error("Erro ao alterar especialidade do professor:", err);
         return res.status(500).json({ sucesso: false, mensagem: err.message || "Erro ao alterar especialidade." });
     }
+}
+
+// Editar dados completos do usuário (Owner total, Admin para alunos)
+async function editarUsuario(req, res) {
+    return usuarioController.editarUsuario(req, res);
+}
+
+// Excluir conta de usuário (Owner total, Admin para alunos)
+async function excluirUsuario(req, res) {
+    return usuarioController.deletarConta(req, res);
 }
 
 module.exports = {
@@ -143,4 +175,6 @@ module.exports = {
     obterHistoricoAluno,
     alterarCursoAluno,
     alterarEspecialidadeProfessor,
+    editarUsuario,
+    excluirUsuario,
 };

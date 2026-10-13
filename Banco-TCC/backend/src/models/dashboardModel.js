@@ -153,6 +153,7 @@ async function listarAlunosCompletos() {
             u.foto_url,
             u.descricao,
             u.data_cadastro,
+            a.data_nascimento,
             a.curso,
             a.desconto_porcentagem,
             COALESCE(c.valor_mensalidade, 180.00) AS valor_base
@@ -161,6 +162,12 @@ async function listarAlunosCompletos() {
         LEFT JOIN curso_mensalidade c ON c.nome = a.curso
         ORDER BY u.nome ASC`
     );
+
+    const [cursosDb] = await pool.query("SELECT nome, valor_mensalidade FROM curso_mensalidade WHERE ativo = 1");
+    const precosCursos = {};
+    for (const c of cursosDb) {
+        precosCursos[c.nome.trim().toLowerCase()] = parseFloat(c.valor_mensalidade) || 180.00;
+    }
 
     const [recebimentos] = await pool.query(
         `SELECT idfinanceiroRecebimento, aluno_idaluno, status_parcela, valor, data_vencimento, data_pagamento, comprovante_url
@@ -178,11 +185,21 @@ async function listarAlunosCompletos() {
     return alunos.map(al => {
         const r = mapReceb[al.idaluno];
         const desc = parseFloat(al.desconto_porcentagem) || 0;
-        const base = parseFloat(al.valor_base) || 180.00;
+        
+        // Suporte a múltiplos cursos no cálculo da mensalidade base
+        const nomesCursos = (al.curso || 'Piano').split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+        let baseCalculada = 0;
+        for (const nomeC of nomesCursos) {
+            baseCalculada += (precosCursos[nomeC] !== undefined ? precosCursos[nomeC] : (parseFloat(al.valor_base) || 180.00));
+        }
+        if (baseCalculada === 0) baseCalculada = parseFloat(al.valor_base) || 180.00;
+
+        const base = baseCalculada;
         const valorCalculado = Math.max(0, base * (1 - desc / 100));
 
         return {
             ...al,
+            valor_base: base,
             id_recebimento_atual: r?.idfinanceiroRecebimento || null,
             status_mes_atual: r?.status_parcela || 'pendente',
             comprovante_url: r?.comprovante_url || null,

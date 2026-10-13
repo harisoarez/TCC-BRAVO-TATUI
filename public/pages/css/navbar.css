@@ -957,3 +957,12 @@
         font-size: 12px;
     }
 }
+
+/* Fallback de segurança para elementos legados de pesquisa */
+#search {
+    display: none !important;
+}
+#search img {
+    max-width: 20px !important;
+    max-height: 20px !important;
+}

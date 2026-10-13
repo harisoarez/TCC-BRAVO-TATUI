@@ -1,9 +1,4 @@
-// ================================================================
-// INSTITUTO MUSICAL BRAVO TATUÍ - INSTRUMENTO SELECIONADO
-// - Carregamento dinâmico do acervo via API
-// - CRUD para Admin/Owner editar a descrição do instrumento no banco de dados
-// - Card inferior dedicado a informações dos professores (Título na esquerda, texto justificado, botão no canto inferior direito)
-// ================================================================
+// Instrumento Selecionado - Instituto Bravo Tatuí
 
 (function () {
     const API_BASE = (window.location.port === "3000" || (!window.location.port && window.location.protocol === "http:")) ? "" : "http://localhost:3000";
@@ -56,9 +51,7 @@
     let usuarioLogado = null;
     let isAdmin = false;
 
-    // ============================================================
-    // 1. AUTENTICAÇÃO E CHECAGEM DE PERMISSÕES DO ADMINISTRADOR
-    // ============================================================
+    // Autenticação e permissões
     function decodificarToken(token) {
         if (!token) return null;
         try {
@@ -111,9 +104,7 @@
         }
     }
 
-    // ============================================================
-    // 2. CARREGAMENTO DOS DETALHES DO INSTRUMENTO
-    // ============================================================
+    // Carregamento do instrumento
     async function carregarDetalhesInstrumento() {
         // Se idParam estiver ausente, carrega instrumento 1 (Piano por padrão)
         const idFinal = idParam || 1;
@@ -175,24 +166,18 @@
         }
     }
 
-    // ============================================================
-    // 3. CARD INFERIOR: INFORMAÇÕES DOS PROFESSORES
-    // Requisitos: Título na esquerda, texto justificado, botão no canto inferior direito
-    // ============================================================
+    // Informações dos professores
     async function carregarInformacoesProfessores() {
         const nomeInst = instrumentoAtual.nome || "Instrumento";
 
-        // Título na esquerda
         if (elProfTitulo) {
             elProfTitulo.textContent = `Informações dos Professores • ${nomeInst}`;
         }
 
-        // Texto Justificado
         if (elProfTexto) {
             elProfTexto.textContent = `O corpo docente de ${nomeInst} do Instituto Musical Bravo Tatuí é constituído por mestres, concertistas e educadores de renome com sólida formação superior pelas mais prestigiadas academias musicais do país, como o Conservatório Dramático e Musical Dr. Carlos de Campos de Tatuí, a UNICAMP e a USP. Nossos professores trabalham um currículo pedagógico individualizado e dinâmico, focado no desenvolvimento artístico, técnico e expressivo de cada estudante. O aprendizado integra postura anatômica saudável, afinação e sonoridade refinada, leitura à primeira vista, percepção rítmica e harmônica, além de vivência em prática de câmara e orquestral em salas acusticamente isoladas com instrumentos de alta performance.`;
         }
 
-        // Botão no canto inferior direito - Mensagem personalizada para WhatsApp
         if (elBtnAcaoProfessores) {
             const msgWhatsApp = encodeURIComponent(`Olá! Gostaria de falar com a coordenação pedagógica e tirar dúvidas sobre as aulas e professores de ${nomeInst} no Instituto Bravo Tatuí.`);
             elBtnAcaoProfessores.href = `https://wa.me/5515996257683?text=${msgWhatsApp}`;
@@ -234,9 +219,7 @@
         }
     }
 
-    // ============================================================
-    // 4. CRUD ADMIN: MODAL E SALVAMENTO DA DESCRIÇÃO DO INSTRUMENTO
-    // ============================================================
+    // Edição da descrição do instrumento
     function abrirModalEdicao() {
         if (!isAdmin) {
             exibirToast("Acesso restrito: faça login como administrador.", "erro");
@@ -367,9 +350,7 @@
         }, tempoMs);
     }
 
-    // ============================================================
-    // 5. REGISTRO DE EVENTOS
-    // ============================================================
+    // Eventos
     function registrarEventos() {
         // Abertura do Modal de Edição (Admin)
         if (elBtnEditarDescricao) {

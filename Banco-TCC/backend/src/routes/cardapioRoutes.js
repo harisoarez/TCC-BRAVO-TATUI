@@ -40,22 +40,12 @@ function tratarUploadImagem(req, res, next) {
     });
 }
 
-// ==========================================
-// ROTAS PÚBLICAS (Visitantes e Alunos)
-// ==========================================
-// Listar todos os itens do cardápio
+// Rotas públicas
 router.get("/", cardapioController.listar);
-
-// Listar categorias existentes
 router.get("/categorias", cardapioController.listarCategorias);
-
-// Obter detalhes de um item específico
 router.get("/item/:id", cardapioController.obterPorId);
 
-// ==========================================
-// ROTAS RESTRITAS (Admin e Owner)
-// ==========================================
-// Obter estatísticas do cardápio
+// Rotas administrativas (Admin e Owner)
 router.get("/estatisticas", authMiddleware, exigirAdminOuOwner, cardapioController.obterEstatisticas);
 
 // Criar novo item no cardápio

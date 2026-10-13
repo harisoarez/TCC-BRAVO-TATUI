@@ -1,6 +1,4 @@
-/* ================================================================
-   INSTITUTO BRAVO TATUÍ - NAVBAR GLOBAL E CONTROLE DE USUÁRIOS
-   ================================================================ */
+/* Barra de Navegação */
 
 #nav-bar {
     background-color: var(--navbar-bg, #0b0d13);
@@ -19,68 +17,7 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
-/* ================================================================
-   VARIAÇÕES SUTIS DE COR DA NAVBAR DE ACORDO COM CADA PÁGINA
-   Harmonização suave com a identidade cromática de cada ambiente
-   ================================================================ */
-
-/* 1. Página Inicial / Index (Onyx e grafite escuro refinado) */
-#nav-bar.nav-tema-index {
-    background: linear-gradient(180deg, #0a0c12 0%, #07080d 100%);
-    border-bottom-color: #171c28;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-}
-
-/* 2. Coffee Bravo / Cardápio (Tonalidade quente marrom café torrado e caramelo) */
-#nav-bar.nav-tema-cardapio {
-    background: linear-gradient(180deg, #18100b 0%, #120c08 100%);
-    border-bottom-color: #382014;
-    box-shadow: 0 4px 24px rgba(24, 15, 10, 0.6);
-}
-
-/* 3. Calendário Acadêmico (Cinza escuro, grafite e cinza claro sofisticado) */
-#nav-bar.nav-tema-calendario {
-    background: linear-gradient(180deg, #1c1c22 0%, #121215 100%);
-    border-bottom-color: #363640;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.65);
-}
-
-/* 4. Formações Musicais (Índigo e ardósia erudito elegante) */
-#nav-bar.nav-tema-formacoes {
-    background: linear-gradient(180deg, #141727 0%, #0e101c 100%);
-    border-bottom-color: #242944;
-    box-shadow: 0 4px 24px rgba(17, 20, 35, 0.6);
-}
-
-/* 5. Formação Selecionada (Matiz sutil da formação ativa com brilho harmônico) */
-#nav-bar.nav-tema-formacao-selecionada {
-    background: var(--navbar-formation-bg, linear-gradient(180deg, #121422 0%, #0a0b14 100%));
-    border-bottom-color: var(--navbar-formation-border, var(--formation-border, rgba(164, 173, 229, 0.3)));
-    box-shadow: 0 4px 24px var(--formation-glow, rgba(0, 0, 0, 0.55));
-}
-
-/* 6. Aulas e Instrumentos (Madeira acústica / mogno nobre e ébano clássico) */
-#nav-bar.nav-tema-instrumentos {
-    background: linear-gradient(180deg, #131014 0%, #0d0a0e 100%);
-    border-bottom-color: #281d27;
-    box-shadow: 0 4px 24px rgba(18, 14, 19, 0.6);
-}
-
-/* 7. Instrumento Selecionado (Madeira quente com sutil filete dourado clássico) */
-#nav-bar.nav-tema-inst-selecionado {
-    background: linear-gradient(180deg, #14110f 0%, #0e0b09 100%);
-    border-bottom: 1px solid rgba(245, 214, 150, 0.22);
-    box-shadow: 0 4px 24px rgba(20, 15, 11, 0.55);
-}
-
-/* 8. Login e Autenticação (Grafite escuro com cinza acetinado) */
-#nav-bar.nav-tema-login {
-    background: linear-gradient(180deg, #0d0f17 0%, #080910 100%);
-    border-bottom-color: #1a1e2c;
-    box-shadow: 0 4px 22px rgba(9, 11, 18, 0.55);
-}
-
-/* Logo Oficial Bravo Tatuí */
+/* Logo com o símbolo de rascunho (Tilápia) */
 #nav-bar .logo-container {
     display: flex;
     align-items: center;
@@ -320,9 +257,7 @@
     border-color: #ef4444;
 }
 
-/* ================================================================
-   MODAL DE CADASTRO DE CONTAS (OWNER / ADMIN)
-   ================================================================ */
+/* Modal de Cadastro de Contas */
 .modal-overlay-conta {
     position: fixed;
     inset: 0;
@@ -506,9 +441,7 @@
     color: #86efac;
 }
 
-/* ================================================================ */
-/* BOTÃO MENU HAMBÚRGUER (MOBILE & TABLET)                          */
-/* ================================================================ */
+/* Menu Hambúrguer (Mobile) */
 .nav-right-cluster {
     display: flex;
     align-items: center;
@@ -547,9 +480,7 @@
     transition: all 0.25s ease;
 }
 
-/* ================================================================ */
-/* DRAWER OVERLAY DO MENU HAMBÚRGUER MOBILE                         */
-/* ================================================================ */
+/* Drawer do Menu Mobile */
 .menu-mobile-drawer-overlay {
     position: fixed;
     inset: 0;
@@ -908,9 +839,7 @@
     text-decoration: none;
 }
 
-/* ================================================================ */
-/* RESPONSIVIDADE GLOBAL DA NAVBAR (MOBILE & TABLET <= 960px)        */
-/* ================================================================ */
+/* Responsividade */
 @media (max-width: 960px) {
     #nav-bar {
         min-height: 58px !important;
@@ -918,17 +847,17 @@
     }
 
     #nav-bar .nav-links-center {
-        display: none !important; /* Esconde os links horizontais no tablet/celular */
+        display: none !important;
     }
 
     .btn-hamburger-nav {
-        display: inline-flex !important; /* Exibe o botão hamburguer da imagem */
+        display: inline-flex !important;
     }
 
     .btn-nav-adicionar-conta,
     .user-info-col,
     .btn-nav-sair-logout {
-        display: none !important; /* O menu hamburguer substitui no mobile */
+        display: none !important;
     }
 
     .modal-perfil-card,

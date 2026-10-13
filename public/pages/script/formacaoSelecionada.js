@@ -1,7 +1,4 @@
-// ================================================================
-// INSTITUTO MUSICAL BRAVO TATUÍ - PÁGINA DE FORMAÇÃO SELECIONADA
-// Controle dinâmico de dados, paleta de cores respectiva e interações
-// ================================================================
+// Formação Selecionada - Instituto Bravo Tatuí
 
 (function () {
     // 1. Dicionário Completo das 16 Formações do Instituto Bravo Tatuí

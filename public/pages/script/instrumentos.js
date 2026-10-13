@@ -1,7 +1,4 @@
-// ================================================================
-// INSTITUTO MUSICAL BRAVO TATUÍ - AULAS NO IMBT (INSTRUMENTOS)
-// Carregamento dinâmico do acervo cadastrado no CRUD
-// ================================================================
+// Aulas e Instrumentos - Instituto Bravo Tatuí
 
 (function () {
     const API_BASE = (window.location.port === "3000" || (!window.location.port && window.location.protocol === "http:")) ? "" : "http://localhost:3000";

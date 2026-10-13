@@ -51,9 +51,7 @@ body{
     font-size: small;
 }
 
-/* ================================================================ */
-/* DESIGN ORIGINAL PARA NOTEBOOK / DESKTOP (> 960px)                */
-/* ================================================================ */
+/* Lista de formações */
 .container-formacoes {
     width: 100%;
     display: flex;
@@ -167,9 +165,7 @@ body{
     background: linear-gradient(90deg,rgba(110, 110, 110, 1) 35%, rgba(0, 212, 255, 0) 100%);
 }
 
-/* ================================================================ */
-/* ADAPTAÇÃO EXCLUSIVA PARA OUTROS DISPOSITIVOS (MOBILE E TABLET)    */
-/* ================================================================ */
+/* Responsividade */
 @media (max-width: 960px) {
     .opcao {
         height: auto;

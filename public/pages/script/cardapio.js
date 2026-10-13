@@ -1,6 +1,4 @@
-// ================================================================
-// COFFEE BRAVO - CONTROLE DINÂMICO DO CARDÁPIO & CRUD ADMIN
-// ================================================================
+// Cardápio - Coffee Bravo
 
 (function () {
     const API_BASE = (window.location.port === "3000" || (!window.location.port && window.location.protocol === "http:")) ? "" : "http://localhost:3000";
@@ -277,10 +275,7 @@
         }
     }
 
-    // ============================================================
-    // AÇÕES DO ADMIN (CRUD)
-    // ============================================================
-
+    // Funções de administração
     window.abrirModalPublicNovo = function () {
         const modal = document.getElementById("modalPublicItem");
         const form = document.getElementById("formCardapioPublic");

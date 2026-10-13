@@ -1,0 +1,573 @@
+/* Página Inicial — Instituto Musical Bravo Tatuí */
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+@font-face {
+    font-family: "julius";
+    src: url(../fonts/Julius_Sans_One/JuliusSansOne-Regular.ttf) format('truetype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "inter";
+    src: url(../fonts/Inter/Inter-VariableFont_opsz\,wght.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: "jaldi";
+    src: url(../fonts/Jaldi/Jaldi-Regular.ttf) format('truetype');
+}
+
+:root {
+    --bg-dark: #0c1017;
+    --bg-card: #131822;
+    --gold-primary: #F5D696;
+    --amber-accent: #e09f3e;
+    --text-primary: #ffffff;
+    --text-muted: #94a3b8;
+    --text-subtle: #cbd5e1;
+    --border-subtle: rgba(255, 255, 255, 0.08);
+}
+
+html {
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: 'inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.container {
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Barra superior de contato / redes sociais */
+.container .header {
+    background-color: #080a0e;
+    min-height: 28px;
+    height: 3.5vh;
+    display: flex;
+    align-items: center;
+    padding-left: 2%;
+    font-family: 'inter', sans-serif;
+    font-size: small;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.container .header a {
+    color: var(--text-muted);
+    transition: color 0.2s ease;
+}
+
+.container .header a:hover {
+    color: var(--gold-primary);
+}
+
+/* ============================================================== */
+/* SEÇÃO HERO (ESTILO EDITORIAL / CINEMATOGRÁFICO)                */
+/* ============================================================== */
+
+.hero-section {
+    position: relative;
+    min-height: calc(100vh - 65px);
+    background-image: url('../images/heroBackground.jpg');
+    background-size: cover;
+    background-position: center 25%;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 48px 6% 36px 6%;
+    overflow: hidden;
+}
+
+/* Gradiente de escurecimento sobre a foto de fundo */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(12, 16, 23, 0.55) 0%,
+        rgba(12, 16, 23, 0.25) 30%,
+        rgba(12, 16, 23, 0.65) 65%,
+        rgba(12, 16, 23, 0.94) 90%,
+        #0c1017 100%
+    );
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Conteúdo principal do centro da Hero */
+.hero-main-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 30px 0;
+}
+
+/* Coluna Esquerda: Tipografia de Alto Impacto */
+.hero-typography {
+    max-width: 780px;
+}
+
+.hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.8px;
+    color: var(--gold-primary);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    background: rgba(245, 214, 150, 0.08);
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(245, 214, 150, 0.2);
+}
+
+.hero-tag-dot {
+    width: 6px;
+    height: 6px;
+    background-color: var(--amber-accent);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--amber-accent);
+}
+
+.hero-title {
+    font-family: 'julius', 'Cinzel', serif;
+    font-size: clamp(3.2rem, 7.5vw, 6.2rem);
+    font-weight: 900;
+    line-height: 0.94;
+    letter-spacing: 3px;
+    color: #ffffff;
+    text-transform: uppercase;
+    text-shadow: 0 4px 24px rgba(0, 0, 0, 0.85);
+}
+
+.hero-slogan {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.hero-accent-triangle {
+    color: var(--amber-accent);
+    font-size: 13px;
+    filter: drop-shadow(0 0 6px rgba(224, 159, 62, 0.6));
+    line-height: 1;
+}
+
+.hero-slogan-text {
+    font-size: 14.5px;
+    color: var(--text-subtle);
+    letter-spacing: 0.6px;
+    font-weight: 400;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+/* Base da Hero: 3 Destaques / Teasers */
+.hero-footer-wrapper {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    margin-top: auto;
+    padding-top: 24px;
+}
+
+.hero-teasers-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-bottom: 24px;
+}
+
+.hero-teaser-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: rgba(19, 24, 34, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(8px);
+    transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+
+.hero-teaser-item:hover {
+    transform: translateY(-4px);
+    background: rgba(19, 24, 34, 0.7);
+    border-color: rgba(245, 214, 150, 0.3);
+}
+
+.teaser-icon-box {
+    width: 42px;
+    height: 42px;
+    border-radius: 8px;
+    background: rgba(245, 214, 150, 0.08);
+    border: 1px solid rgba(245, 214, 150, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.teaser-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.teaser-title {
+    font-family: 'julius', serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+    transition: color 0.2s ease;
+}
+
+.hero-teaser-item:hover .teaser-title {
+    color: var(--gold-primary);
+}
+
+.teaser-text {
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.teaser-action {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--gold-primary);
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.teaser-arrow {
+    transition: transform 0.2s ease;
+}
+
+.hero-teaser-item:hover .teaser-arrow {
+    transform: translateX(4px);
+}
+
+/* Linha com indicador âmbar na base da Hero */
+.hero-progress-line {
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.12);
+    position: relative;
+}
+
+.hero-progress-bar {
+    width: 33.33%;
+    height: 2px;
+    background: var(--amber-accent);
+    position: absolute;
+    top: -0.5px;
+    left: 0;
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(224, 159, 62, 0.6);
+}
+
+/* ============================================================== */
+/* SEÇÃO 2: VITRINE DE DESTAQUES (CARDS VERTICAIS)                */
+/* ============================================================== */
+
+.vitrine-section {
+    background-color: var(--bg-dark);
+    padding: 70px 6% 90px 6%;
+    position: relative;
+    z-index: 2;
+}
+
+.vitrine-header {
+    text-align: center;
+    margin-bottom: 48px;
+    will-change: transform, opacity, filter;
+}
+
+.vitrine-label {
+    display: block;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--gold-primary);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    opacity: 0.2;
+    transform: translateY(14px);
+    filter: blur(2px);
+    transition: opacity 0.35s ease-out, transform 0.35s ease-out, filter 0.35s ease-out;
+}
+
+.vitrine-title {
+    font-family: 'julius', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    opacity: 0.2;
+    transform: translateY(20px);
+    filter: blur(3px);
+    transition: opacity 0.35s ease-out, transform 0.35s ease-out, filter 0.35s ease-out;
+}
+
+.vitrine-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.vitrine-card {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    height: 440px;
+    text-decoration: none;
+    border: 1px solid var(--border-subtle);
+    background-color: var(--bg-card);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    opacity: 0;
+    transform: translateY(48px) scale(0.98);
+    filter: blur(4px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.35s ease,
+                box-shadow 0.35s ease;
+    will-change: transform, opacity, filter;
+}
+
+.vitrine-card.revealed {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+}
+
+.vitrine-card:nth-child(1) { transition-delay: 0.08s; }
+.vitrine-card:nth-child(2) { transition-delay: 0.22s; }
+.vitrine-card:nth-child(3) { transition-delay: 0.36s; }
+
+.vitrine-card:hover {
+    transform: translateY(-8px) scale(1.015);
+    border-color: rgba(245, 214, 150, 0.45);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7);
+}
+
+.vitrine-media {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.vitrine-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease, filter 0.5s ease;
+    filter: brightness(0.9);
+}
+
+.vitrine-card:hover .vitrine-media img {
+    transform: scale(1.06);
+    filter: brightness(1.05);
+}
+
+.vitrine-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(12, 16, 23, 0.05) 0%,
+        rgba(12, 16, 23, 0.35) 40%,
+        rgba(12, 16, 23, 0.88) 80%,
+        rgba(12, 16, 23, 0.98) 100%
+    );
+    pointer-events: none;
+}
+
+.vitrine-info {
+    position: relative;
+    z-index: 2;
+    padding: 24px 20px;
+}
+
+.vitrine-card-tag {
+    display: block;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--gold-primary);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    transform: translateY(6px);
+    opacity: 0.85;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.vitrine-card.revealed .vitrine-card-tag {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.vitrine-card-title {
+    font-family: 'julius', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    transform: translateY(8px);
+    opacity: 0.9;
+    transition: transform 0.5s ease 0.1s, opacity 0.5s ease 0.1s, color 0.2s ease;
+}
+
+.vitrine-card.revealed .vitrine-card-title {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.vitrine-card:hover .vitrine-card-title {
+    color: var(--gold-primary);
+}
+
+.vitrine-card-desc {
+    font-size: 12.5px;
+    color: var(--text-subtle);
+    line-height: 1.45;
+    transform: translateY(10px);
+    opacity: 0.8;
+    transition: transform 0.5s ease 0.18s, opacity 0.5s ease 0.18s;
+}
+
+.vitrine-card.revealed .vitrine-card-desc {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* ============================================================== */
+/* RODAPÉ MINIMALISTA                                             */
+/* ============================================================== */
+
+.index-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    background-color: #07090d;
+    padding: 32px 6%;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.index-footer-brand {
+    font-family: 'julius', serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gold-primary);
+    letter-spacing: 2px;
+}
+
+.index-footer-copy {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 6px;
+}
+
+/* ============================================================== */
+/* RESPONSIVIDADE                                                 */
+/* ============================================================== */
+
+@media (max-width: 1080px) {
+    .hero-teasers-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+    }
+
+    .vitrine-grid {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 860px) {
+    .hero-main-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+    }
+
+    .hero-teasers-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .hero-progress-line {
+        display: none;
+    }
+
+    .vitrine-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .vitrine-section {
+        padding: 50px 5% 70px 5%;
+    }
+}
+
+@media (max-width: 640px) {
+    .hero-section {
+        padding: 30px 5% 24px 5%;
+        min-height: auto;
+    }
+
+    .hero-title {
+        font-size: clamp(2.4rem, 11vw, 3.4rem);
+    }
+
+    .vitrine-grid {
+        grid-template-columns: 1fr;
+        max-width: 440px;
+    }
+
+    .vitrine-card {
+        height: 380px;
+    }
+}

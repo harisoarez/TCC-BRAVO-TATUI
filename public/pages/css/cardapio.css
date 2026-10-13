@@ -1,7 +1,4 @@
-/* ================================================================
-   COFFEE BRAVO - CARDÁPIO COM PALETA MARROM CAFÉ ELEGANTE
-   (Botões do CRUD preservam suas cores funcionais operacionais)
-   ================================================================ */
+/* Cardápio - Coffee Bravo */
 
 @font-face {
     font-family: "julius";
@@ -184,9 +181,7 @@ body {
     gap: 10px;
 }
 
-/* ========================================================
-   BOTÕES DO CRUD (PRESERVADOS CONFORME INSTRUÇÃO DO USUÁRIO)
-   ======================================================== */
+/* Botões de administração */
 .btn-admin-add {
     background: #F5D696;
     color: #0b0d13;
@@ -471,9 +466,7 @@ body {
     margin-right: 2px;
 }
 
-/* ========================================================
-   AÇÕES DO CRUD NO CARD (PRESERVADAS AS CORES OPERACIONAIS)
-   ======================================================== */
+/* Ações do card */
 .admin-card-acoes {
     border-top: 1px dashed var(--cafe-borda-destaque);
     background: rgba(42, 24, 14, 0.5);

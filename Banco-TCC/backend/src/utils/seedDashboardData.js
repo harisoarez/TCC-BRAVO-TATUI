@@ -45,7 +45,7 @@ async function seedDashboard() {
         if (mensalidadesAtuais[0].qtd === 0) {
             console.log("Inserindo mensalidades de teste do Mês Passado (Setembro 2026) e Mês Atual (Outubro 2026)...");
 
-            // Mensalidades de Setembro 2026 (Mês Passado - Pagas, compondo a "sombrinha")
+            // Mensalidades de Setembro 2026 (Mês anterior - para histórico e comparação gráfica)
             const mensalidadesSetembro = [
                 { idAluno: alunosBanco[0]?.idaluno, valor: 180.00, venc: "2026-09-05", pag: "2026-09-04 10:30:00", forma: "pix" },
                 { idAluno: alunosBanco[1]?.idaluno, valor: 210.00, venc: "2026-09-10", pag: "2026-09-09 14:15:00", forma: "cartao" },

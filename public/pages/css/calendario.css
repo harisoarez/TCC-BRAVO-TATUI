@@ -1,6 +1,7 @@
 /* ================================================================
    INSTITUTO MUSICAL BRAVO TATUÍ - CALENDÁRIO ACADÊMICO
-   TEMA MONOCROMÁTICO (CINZA ESCURO / CINZA MÉDIO / CINZA CLARO)
+   TEMA DARK ELEGANTE E UNIFICADO PARA NOTEBOOK, CELULARES E TABLETS
+   CORES PADRONIZADAS: NORMAL (AZUL), REPOSIÇÃO (DOURADO), CANCELADA (VERMELHO)
    ================================================================ */
 
 :root {
@@ -71,9 +72,7 @@ body {
     color: var(--text-main);
 }
 
-/* ================================================================ */
-/* REGRAS PADRÃO (DESKTOP / NOTEBOOK > 960px)                       */
-/* ================================================================ */
+/* Layout */
 .dashboard-container {
     display: flex;
     max-width: 1300px;
@@ -621,9 +620,7 @@ body {
     display: block;
 }
 
-/* ================================================================ */
-/* ADAPTAÇÃO EXCLUSIVA PARA CELULARES E TABLETS (<= 960px)          */
-/* ================================================================ */
+/* Responsividade */
 @media (max-width: 960px) {
     body {
         background-color: var(--bg-color) !important;

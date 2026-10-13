@@ -571,7 +571,7 @@ function abrirResumo(id, evento) {
         <p><strong>Professor:</strong> ${aula.professor || "A definir"}</p>
         <p><strong>Data/Hora:</strong> ${dataFormatadaBR} às ${aula.hora || ""}</p>
         <p><strong>Sala:</strong> Sala ${aula.sala}</p>
-        <p><strong>Status:</strong> <span style="text-transform: capitalize; font-weight:600;">${aula.tipo}</span></p>
+        <p><strong>Status:</strong> <span class="evento-badge-tipo ${aula.tipo}" style="text-transform: capitalize; display: inline-block;">${aula.tipo}</span></p>
         <p><strong>Observações:</strong> ${aula.observacoes || "Nenhuma observação registrada."}</p>
     `;
 

@@ -23,10 +23,10 @@
     --accent-light-hover: #ffffff;  /* Hover em branco limpo */
     --accent-text-dark: #121215;    /* Texto escuro de alto contraste sobre cinza claro */
 
-    /* Status das Aulas na Escala de Cinzas */
-    --c-normal: #e4e4e7;            /* Normal: Cinza claro */
-    --c-reposicao: #a1a1aa;         /* Reposição: Cinza médio */
-    --c-cancelada: #71717a;         /* Cancelada: Cinza escuro grafite */
+    /* Status das Aulas: Normal (Azul), Reposição (Dourado), Cancelada (Vermelho) */
+    --c-normal: #38bdf8;            /* Normal: Azul celeste */
+    --c-reposicao: #F5D696;         /* Reposição: Dourado Instituto Bravo */
+    --c-cancelada: #ef4444;         /* Cancelada: Vermelho */
 }
 
 * {
@@ -160,7 +160,7 @@ body {
 }
 
 .weekdays .col-dom {
-    color: #d4d4d8 !important;
+    color: var(--c-cancelada) !important;
 }
 
 .days-grid {
@@ -209,7 +209,7 @@ body {
 }
 
 .dia.dia-domingo:not(.outro-mes) .numero-dia {
-    color: var(--text-main);
+    color: var(--c-cancelada);
 }
 
 .numero-dia {
@@ -240,21 +240,21 @@ body {
 }
 
 .mini-aula.normal {
-    background: rgba(228, 228, 231, 0.12);
+    background: rgba(56, 189, 248, 0.15);
     border-left-color: var(--c-normal);
-    color: #f4f4f6;
+    color: #7dd3fc;
 }
 
 .mini-aula.reposicao {
-    background: rgba(161, 161, 170, 0.12);
+    background: rgba(245, 214, 150, 0.15);
     border-left-color: var(--c-reposicao);
-    color: #d4d4d8;
+    color: var(--c-reposicao);
 }
 
 .mini-aula.cancelada {
-    background: rgba(113, 113, 122, 0.15);
+    background: rgba(239, 68, 68, 0.15);
     border-left-color: var(--c-cancelada);
-    color: #a1a1aa;
+    color: #fca5a5;
     text-decoration: line-through;
     opacity: 0.7;
 }
@@ -352,21 +352,21 @@ body {
 }
 
 .evento-badge-tipo.normal {
-    background: rgba(228, 228, 231, 0.12);
+    background: rgba(56, 189, 248, 0.15);
     color: var(--c-normal);
-    border-color: rgba(228, 228, 231, 0.35);
+    border-color: rgba(56, 189, 248, 0.4);
 }
 
 .evento-badge-tipo.reposicao {
-    background: rgba(161, 161, 170, 0.12);
+    background: rgba(245, 214, 150, 0.15);
     color: var(--c-reposicao);
-    border-color: rgba(161, 161, 170, 0.35);
+    border-color: rgba(245, 214, 150, 0.4);
 }
 
 .evento-badge-tipo.cancelada {
-    background: rgba(113, 113, 122, 0.15);
+    background: rgba(239, 68, 68, 0.15);
     color: var(--c-cancelada);
-    border-color: rgba(113, 113, 122, 0.35);
+    border-color: rgba(239, 68, 68, 0.4);
 }
 
 /* Legenda Desktop */
@@ -400,17 +400,17 @@ body {
 
 .dot.normal {
     background: var(--c-normal);
-    box-shadow: 0 0 6px rgba(228, 228, 231, 0.4);
+    box-shadow: 0 0 6px rgba(56, 189, 248, 0.5);
 }
 
 .dot.reposicao {
     background: var(--c-reposicao);
-    box-shadow: 0 0 6px rgba(161, 161, 170, 0.4);
+    box-shadow: 0 0 6px rgba(245, 214, 150, 0.5);
 }
 
 .dot.cancelada {
     background: var(--c-cancelada);
-    box-shadow: 0 0 6px rgba(113, 113, 122, 0.4);
+    box-shadow: 0 0 6px rgba(239, 68, 68, 0.5);
 }
 
 /* Modais Padronizados */
@@ -820,7 +820,7 @@ body {
     }
 
     .weekdays .col-dom {
-        color: #d4d4d8 !important;
+        color: var(--c-cancelada) !important;
         font-weight: 800;
     }
 
@@ -865,7 +865,7 @@ body {
     }
 
     .dia.dia-domingo:not(.outro-mes) .numero-dia {
-        color: var(--text-main) !important;
+        color: var(--c-cancelada) !important;
     }
 
     .dia:not(.dia-domingo):not(.outro-mes) .numero-dia {
@@ -914,17 +914,17 @@ body {
 
     .mob-barra-aula.normal {
         background: var(--c-normal);
-        box-shadow: 0 0 4px rgba(228, 228, 231, 0.4);
+        box-shadow: 0 0 4px rgba(56, 189, 248, 0.6);
     }
 
     .mob-barra-aula.reposicao {
         background: var(--c-reposicao);
-        box-shadow: 0 0 4px rgba(161, 161, 170, 0.4);
+        box-shadow: 0 0 4px rgba(245, 214, 150, 0.6);
     }
 
     .mob-barra-aula.cancelada {
         background: var(--c-cancelada);
-        box-shadow: 0 0 4px rgba(113, 113, 122, 0.4);
+        box-shadow: 0 0 4px rgba(239, 68, 68, 0.6);
     }
 
     /* Painel de Detalhes Inferior */

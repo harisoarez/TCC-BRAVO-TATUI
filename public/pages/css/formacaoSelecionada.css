@@ -47,7 +47,8 @@ body {
     color: var(--text-primary);
     font-family: 'inter', sans-serif;
     min-height: 100vh;
-    overflow-x: hidden;
+    overflow-x: clip;
+    overflow-y: visible;
     position: relative;
     line-height: 1.5;
 }

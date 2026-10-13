@@ -18,6 +18,10 @@ router.get("/", verificarAdmin, usuarioController.listarContas);
 // Alterar cargo (exclusivo do Owner)
 router.patch("/:id/cargo", verificarAdmin, usuarioController.alterarCargo);
 
+// Editar dados completos do usuário (Owner total, Admin para alunos)
+router.put("/:id", verificarAdmin, usuarioController.editarUsuario);
+router.patch("/:id", verificarAdmin, usuarioController.editarUsuario);
+
 // Deletar conta (Owner pode deletar qualquer um exceto ele mesmo; Admin só normais)
 router.delete("/:id", verificarAdmin, usuarioController.deletarConta);
 

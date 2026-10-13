@@ -29,7 +29,8 @@ a {
 }
 
 html {
-    overflow-x: hidden;
+    overflow-x: clip;
+    overflow-y: auto;
     scroll-behavior: smooth;
 }
 
@@ -38,7 +39,8 @@ body {
     color: white;
     font-family: 'inter', sans-serif;
     min-height: 100vh;
-    overflow-x: hidden;
+    overflow-x: clip;
+    overflow-y: visible;
 }
 
 .container {

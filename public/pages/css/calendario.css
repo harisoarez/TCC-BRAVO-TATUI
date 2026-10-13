@@ -43,7 +43,7 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow-x: hidden;
+    overflow-x: clip;
 }
 
 .oculto {
@@ -165,12 +165,16 @@ body {
 
 .days-grid {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(7, minmax(0, 1fr));
     gap: 8px;
+    width: 100%;
 }
 
 .dia {
     min-height: 110px;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
     border: 1.5px solid var(--border-color);
     background: var(--surface-card);
     border-radius: 8px 8px 8px 18px;
@@ -178,6 +182,7 @@ body {
     cursor: pointer;
     transition: 0.2s;
     color: var(--text-main);
+    box-sizing: border-box;
 }
 
 .dia:hover {
@@ -222,6 +227,10 @@ body {
 
 /* Tags das Aulas Desktop */
 .mini-aula {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
     padding: 4px 6px;
     border-radius: 4px;
     font-size: 10px;
@@ -233,6 +242,7 @@ body {
     cursor: pointer;
     border-left: 3px solid;
     transition: 0.2s;
+    box-sizing: border-box;
 }
 
 .mini-aula:hover {
@@ -617,7 +627,12 @@ body {
 }
 
 .aulas-desktop-list {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 /* Responsividade */
@@ -827,14 +842,18 @@ body {
     /* Grid do Calendário */
     .days-grid {
         display: grid;
-        grid-template-columns: repeat(7, 1fr);
+        grid-template-columns: repeat(7, minmax(0, 1fr));
         gap: 4px;
+        width: 100%;
     }
 
     /* Células de Dia no Mobile */
     .dia {
         min-height: 54px;
         height: 56px;
+        min-width: 0;
+        max-width: 100%;
+        overflow: hidden;
         background: var(--surface-card) !important;
         border: 1px solid var(--border-color) !important;
         border-radius: 8px !important;

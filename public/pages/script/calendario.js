@@ -442,9 +442,10 @@ function renderizarCalendario() {
         }
 
         // Itens de aula para desktop
-        const htmlAulasDesktop = aulasDoDia.slice(0, 3).map(aula =>
-            `<div class="mini-aula ${aula.tipo}" onclick="abrirResumo(${aula.id}, event)">${aula.hora || ""} ${aula.titulo}</div>`
-        ).join("");
+        const htmlAulasDesktop = aulasDoDia.slice(0, 3).map(aula => {
+            const rotuloAula = `${aula.hora ? aula.hora + ' ' : ''}${aula.titulo || 'Aula'}`;
+            return `<div class="mini-aula ${aula.tipo}" onclick="abrirResumo(${aula.id}, event)" title="${rotuloAula}">${rotuloAula}</div>`;
+        }).join("");
 
         htmlDias += `
             <div class="dia ${isSelecionado} ${clsDomingo}" onclick="selecionarDia('${dataFormatada}')" data-data="${dataFormatada}">

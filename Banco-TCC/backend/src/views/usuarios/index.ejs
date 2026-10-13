@@ -44,7 +44,7 @@
                 <thead>
                     <tr>
                         <th>Aluno</th>
-                        <th>Curso</th>
+                        <th>Cursos</th>
                         <th>Mensalidade Base</th>
                         <th>Desconto</th>
                         <th>Valor Final</th>
@@ -68,7 +68,11 @@
                                 </div>
                             </td>
                             <td>
-                                <span style="font-weight: 700; color: var(--text-primary);"><%= al.curso || 'Piano' %></span>
+                                <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+                                    <% (al.curso || 'Piano').split(',').map(c => c.trim()).filter(Boolean).forEach(function(cur) { %>
+                                        <span class="badge-curso"><%= cur %></span>
+                                    <% }); %>
+                                </div>
                             </td>
                             <td>
                                 R$ <%= Number(al.valor_base).toFixed(2) %>
@@ -108,24 +112,34 @@
                                 <% } %>
                             </td>
                             <td style="text-align: right;">
-                                <div style="display: inline-flex; gap: 6px;">
+                                <div style="display: inline-flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end;">
                                     <% if (al.status_mes_atual === 'em_analise' && al.id_recebimento_atual) { %>
                                         <button type="button" class="btn-acao-comprovante btn-validar-alerta" 
                                             onclick="abrirModalValidacao('<%= al.id_recebimento_atual %>', '<%= al.nome %>', '<%= Number(al.valor_cobrado).toFixed(2) %>', '<%= al.comprovante_url %>')">
-                                            Validar Comprovante
+                                            Validar
                                         </button>
                                     <% } %>
 
                                     <% if (isOwner) { %>
+                                        <button type="button" class="btn-acao-editar" 
+                                            onclick="abrirModalEditarUsuario({ id_usuario: '<%= al.id_usuario %>', idaluno: '<%= al.idaluno %>', nome: '<%= al.nome %>', email: '<%= al.email %>', telefone: '<%= al.telefone || '' %>', cpf: '<%= al.cpf || '' %>', data_nascimento: '<%= al.data_nascimento ? new Date(al.data_nascimento).toISOString().split('T')[0] : '' %>', tipo: 'normal', cursos: '<%= al.curso || 'Piano' %>', desconto: '<%= al.desconto_porcentagem || 0 %>' })"
+                                            title="Editar Dados Cadastrais do Aluno">
+                                            Editar
+                                        </button>
                                         <button type="button" class="btn-acao-comprovante" 
                                             onclick="abrirModalCurso('<%= al.idaluno %>', '<%= al.nome %>', '<%= al.curso || 'Piano' %>')"
-                                            title="Editar Curso / Matrícula do Aluno">
-                                            Mudar Curso
+                                            title="Editar Cursos / Matrícula do Aluno">
+                                            Cursos
                                         </button>
                                         <button type="button" class="btn-acao-comprovante" 
                                             onclick="abrirModalDesconto('<%= al.idaluno %>', '<%= al.nome %>', '<%= al.desconto_porcentagem %>')"
                                             title="Atribuir Desconto Individual">
                                             Desconto
+                                        </button>
+                                        <button type="button" class="btn-acao-excluir" 
+                                            onclick="abrirConfirmarExclusao('<%= al.id_usuario %>', '<%= al.nome %>', 'Aluno')"
+                                            title="Excluir Conta do Aluno">
+                                            Excluir
                                         </button>
                                     <% } %>
 
@@ -157,7 +171,7 @@
                         <th>Professor</th>
                         <th>E-mail</th>
                         <th>Telefone</th>
-                        <th>Instrumento / Especialidade</th>
+                        <th>Especialidades / Instrumentos</th>
                         <th>Data de Cadastro</th>
                         <% if (isOwner) { %>
                             <th style="text-align: right;">Ações</th>
@@ -176,18 +190,32 @@
                             <td><%= p.email %></td>
                             <td><%= p.telefone || "—" %></td>
                             <td>
-                                <span style="background: #e0f2fe; color: #0369a1; padding: 3px 8px; border-radius: 6px; font-weight: 600; font-size: 12px;">
-                                    <%= p.tipo_instrumento || "Geral" %>
-                                </span>
+                                <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+                                    <% (p.tipo_instrumento || 'Geral').split(',').map(e => e.trim()).filter(Boolean).forEach(function(esp) { %>
+                                        <span class="badge-especialidade"><%= esp %></span>
+                                    <% }); %>
+                                </div>
                             </td>
                             <td><%= new Date(p.data_cadastro).toLocaleDateString('pt-BR') %></td>
                             <% if (isOwner) { %>
                                 <td style="text-align: right;">
-                                    <button type="button" class="btn-acao-comprovante" 
-                                        onclick="abrirModalEspecialidade('<%= p.idprofessor || p.id_usuario %>', '<%= p.nome %>', '<%= p.tipo_instrumento || 'Piano' %>')"
-                                        title="Editar Especialidade / Instrumento do Professor">
-                                        Especialidade
-                                    </button>
+                                    <div style="display: inline-flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end;">
+                                        <button type="button" class="btn-acao-editar" 
+                                            onclick="abrirModalEditarUsuario({ id_usuario: '<%= p.id_usuario %>', idprofessor: '<%= p.idprofessor %>', nome: '<%= p.nome %>', email: '<%= p.email %>', telefone: '<%= p.telefone || '' %>', cpf: '<%= p.cpf || '' %>', tipo: 'professor', especialidades: '<%= p.tipo_instrumento || 'Piano' %>' })"
+                                            title="Editar Dados Cadastrais do Professor">
+                                            Editar
+                                        </button>
+                                        <button type="button" class="btn-acao-comprovante" 
+                                            onclick="abrirModalEspecialidade('<%= p.idprofessor || p.id_usuario %>', '<%= p.nome %>', '<%= p.tipo_instrumento || 'Piano' %>')"
+                                            title="Editar Especialidades do Professor">
+                                            Especialidades
+                                        </button>
+                                        <button type="button" class="btn-acao-excluir" 
+                                            onclick="abrirConfirmarExclusao('<%= p.id_usuario %>', '<%= p.nome %>', 'Professor')"
+                                            title="Excluir Conta do Professor">
+                                            Excluir
+                                        </button>
+                                    </div>
                                 </td>
                             <% } %>
                         </tr>
@@ -214,6 +242,9 @@
                         <th>CPF</th>
                         <th>Cargo</th>
                         <th>Cadastro</th>
+                        <% if (isOwner) { %>
+                            <th style="text-align: right;">Ações</th>
+                        <% } %>
                     </tr>
                 </thead>
                 <tbody>
@@ -240,6 +271,26 @@
                                 <% } %>
                             </td>
                             <td><%= new Date(adm.data_cadastro).toLocaleDateString('pt-BR') %></td>
+                            <% if (isOwner) { %>
+                                <td style="text-align: right;">
+                                    <% if (adm.id_usuario != usuario.id_usuario && adm.tipo_usuario !== 'owner') { %>
+                                        <div style="display: inline-flex; gap: 6px; justify-content: flex-end;">
+                                            <button type="button" class="btn-acao-editar" 
+                                                onclick="abrirModalEditarUsuario({ id_usuario: '<%= adm.id_usuario %>', nome: '<%= adm.nome %>', email: '<%= adm.email %>', telefone: '<%= adm.telefone || '' %>', cpf: '<%= adm.cpf || '' %>', tipo: '<%= adm.tipo_usuario %>' })"
+                                                title="Editar Dados do Administrador">
+                                                Editar
+                                            </button>
+                                            <button type="button" class="btn-acao-excluir" 
+                                                onclick="abrirConfirmarExclusao('<%= adm.id_usuario %>', '<%= adm.nome %>', 'Administrador')"
+                                                title="Excluir Conta de Administrador">
+                                                Excluir
+                                            </button>
+                                        </div>
+                                    <% } else { %>
+                                        <span style="font-size: 11px; color: var(--text-muted);">Sua Conta</span>
+                                    <% } %>
+                                </td>
+                            <% } %>
                         </tr>
                     <% }); %>
                 </tbody>
@@ -282,11 +333,24 @@
     </div>
 </div>
 
-<!-- MODAL PARA O OWNER MUDAR O CURSO DO ALUNO -->
+<% 
+    const todasEspecialidades = [
+        'Piano', 'Violino', 'Violoncelo', 'Viola de Arco', 'Contrabaixo Acústico',
+        'Flauta Transversal', 'Saxofone', 'Clarinete', 'Trompete', 'Bateria Acústica',
+        'Violão Acústico', 'Canto', 'Teoria Musical'
+    ];
+    if (locals.instrumentos) {
+        instrumentos.forEach(ins => {
+            if (!todasEspecialidades.includes(ins.nome)) todasEspecialidades.push(ins.nome);
+        });
+    }
+%>
+
+<!-- MODAL PARA O OWNER MUDAR O CURSO DO ALUNO (MÚLTIPLOS CURSOS) -->
 <div id="modalEditarCursoAluno" class="modal-overlay oculto">
-    <div class="modal-card">
+    <div class="modal-card" style="max-width: 520px;">
         <div class="modal-header">
-            <h3>Alterar Curso / Matrícula do Aluno</h3>
+            <h3>Alterar Cursos do Aluno</h3>
             <button type="button" class="btn-fechar-modal" onclick="fecharModalCurso()">&times;</button>
         </div>
 
@@ -299,29 +363,32 @@
             </div>
 
             <div class="form-grupo">
-                <label for="cursoModalSelectCurso">Novo Curso Matriculado</label>
-                <select id="cursoModalSelectCurso" required style="font-size: 15px; font-weight: 600;">
+                <label>Cursos Matriculados (Selecione 1 ou mais)</label>
+                <div class="chips-grid" id="containerCursosAlunoModal">
                     <% cursos.forEach(function(c) { %>
-                        <option value="<%= c.nome %>"><%= c.nome %> (Mensalidade Base: R$ <%= Number(c.valor_mensalidade).toFixed(2) %>)</option>
+                        <label class="tag-check-chip" id="chip_curso_<%= c.nome.replace(/\s+/g, '_') %>">
+                            <input type="checkbox" name="cursosAlunoModal" value="<%= c.nome %>">
+                            <span><%= c.nome %></span>
+                        </label>
                     <% }); %>
-                </select>
+                </div>
                 <small style="color: var(--text-muted); font-size: 11.5px;">
-                    Ao alterar o curso, a mensalidade base será ajustada e o desconto do aluno continuará sendo aplicado.
+                    O aluno pode cursar mais de um instrumento. As mensalidades base serão somadas e o desconto aplicado sobre o valor total.
                 </small>
             </div>
 
             <button type="submit" id="btnSalvarCursoAluno" class="btn-confirmar-pagamento">
-                Salvar Novo Curso
+                Salvar Cursos
             </button>
         </form>
     </div>
 </div>
 
-<!-- MODAL PARA O OWNER MUDAR A ESPECIALIDADE DO PROFESSOR -->
+<!-- MODAL PARA O OWNER MUDAR AS ESPECIALIDADES DO PROFESSOR (MÚLTIPLAS ESPECIALIDADES) -->
 <div id="modalEditarEspecialidadeProfessor" class="modal-overlay oculto">
-    <div class="modal-card">
+    <div class="modal-card" style="max-width: 520px;">
         <div class="modal-header">
-            <h3>Alterar Especialidade do Professor</h3>
+            <h3>Alterar Especialidades do Professor</h3>
             <button type="button" class="btn-fechar-modal" onclick="fecharModalEspecialidade()">&times;</button>
         </div>
 
@@ -334,25 +401,153 @@
             </div>
 
             <div class="form-grupo">
-                <label for="espModalSelectEspecialidade">Instrumento / Área de Atuação</label>
-                <select id="espModalSelectEspecialidade" required style="font-size: 15px; font-weight: 600;">
-                    <% cursos.forEach(function(c) { %>
-                        <option value="<%= c.nome %>"><%= c.nome %></option>
+                <label>Especialidades / Instrumentos (Selecione 1 ou mais)</label>
+                <div class="chips-grid" id="containerEspecialidadesProfModal">
+                    <% todasEspecialidades.forEach(function(esp) { %>
+                        <label class="tag-check-chip" id="chip_esp_<%= esp.replace(/\s+/g, '_') %>">
+                            <input type="checkbox" name="especialidadesProfModal" value="<%= esp %>">
+                            <span><%= esp %></span>
+                        </label>
                     <% }); %>
-                    <option value="Piano & Teclado">Piano & Teclado</option>
-                    <option value="Violão & Cordas">Violão & Cordas</option>
-                    <option value="Violino & Viola">Violino & Viola</option>
-                    <option value="Canto & Técnica Vocal">Canto & Técnica Vocal</option>
-                    <option value="Percussão & Bateria">Percussão & Bateria</option>
-                    <option value="Madeiras & Sopros">Madeiras & Sopros</option>
-                    <option value="Teoria Musical Avançada">Teoria Musical Avançada</option>
-                </select>
+                </div>
+                <small style="color: var(--text-muted); font-size: 11.5px;">
+                    O professor pode lecionar mais de um instrumento no Instituto Musical Bravo Tatuí.
+                </small>
             </div>
 
             <button type="submit" id="btnSalvarEspecialidade" class="btn-confirmar-pagamento">
-                Salvar Especialidade
+                Salvar Especialidades
             </button>
         </form>
+    </div>
+</div>
+
+<!-- MODAL COMPLETO DE EDIÇÃO DE DADOS DE USUÁRIO (OWNER / ADMIN) -->
+<div id="modalEditarUsuarioCompleto" class="modal-overlay oculto">
+    <div class="modal-card" style="max-width: 540px; width: 92%;">
+        <div class="modal-header">
+            <h3>Editar Dados do Usuário</h3>
+            <button type="button" class="btn-fechar-modal" onclick="fecharModalEditarUsuario()">&times;</button>
+        </div>
+
+        <form id="formEditarUsuarioCompleto">
+            <input type="hidden" id="editModalIdUsuario">
+            <input type="hidden" id="editModalIdAluno">
+            <input type="hidden" id="editModalIdProfessor">
+
+            <div class="form-grupo">
+                <label for="editModalNome">Nome Completo</label>
+                <input type="text" id="editModalNome" required>
+            </div>
+
+            <div class="form-grupo">
+                <label for="editModalEmail">E-mail</label>
+                <input type="email" id="editModalEmail" required>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div class="form-grupo">
+                    <label for="editModalCPF">CPF</label>
+                    <input type="text" id="editModalCPF" placeholder="000.000.000-00">
+                </div>
+                <div class="form-grupo">
+                    <label for="editModalTelefone">Telefone / Celular</label>
+                    <input type="text" id="editModalTelefone" placeholder="(15) 99999-0000">
+                </div>
+            </div>
+
+            <% if (isOwner) { %>
+                <div class="form-grupo">
+                    <label for="editModalTipoUsuario">Cargo / Nível de Acesso (Exclusivo Owner)</label>
+                    <select id="editModalTipoUsuario" onchange="alternarCamposEdicao(this.value)">
+                        <option value="normal">Aluno (Normal)</option>
+                        <option value="professor">Professor</option>
+                        <option value="admin">Administrador</option>
+                    </select>
+                </div>
+            <% } else { %>
+                <input type="hidden" id="editModalTipoUsuario" value="normal">
+            <% } %>
+
+            <!-- Seção Aluno -->
+            <div id="editSecaoAluno">
+                <div class="form-grupo">
+                    <label for="editModalDataNasc">Data de Nascimento (Aluno)</label>
+                    <input type="date" id="editModalDataNasc">
+                </div>
+
+                <div class="form-grupo">
+                    <label>Cursos Matriculados (Selecione 1 ou mais)</label>
+                    <div class="chips-grid" id="editGridCursosAluno">
+                        <% cursos.forEach(function(c) { %>
+                            <label class="tag-check-chip" id="edit_chip_curso_<%= c.nome.replace(/\s+/g, '_') %>">
+                                <input type="checkbox" name="editCursosAluno" value="<%= c.nome %>">
+                                <span><%= c.nome %></span>
+                            </label>
+                        <% }); %>
+                    </div>
+                </div>
+
+                <% if (isOwner) { %>
+                    <div class="form-grupo">
+                        <label for="editModalDesconto">Desconto Atribuído (%)</label>
+                        <div style="display: flex; gap: 8px;">
+                            <input type="number" id="editModalDesconto" min="0" max="100" step="5" style="font-weight: 700;">
+                            <span style="display: flex; align-items: center; font-weight: 700; color: var(--text-secondary);">%</span>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+
+            <!-- Seção Professor -->
+            <div id="editSecaoProfessor" style="display: none;">
+                <div class="form-grupo">
+                    <label>Especialidades / Instrumentos (Selecione 1 ou mais)</label>
+                    <div class="chips-grid" id="editGridEspecialidadesProf">
+                        <% todasEspecialidades.forEach(function(esp) { %>
+                            <label class="tag-check-chip" id="edit_chip_esp_<%= esp.replace(/\s+/g, '_') %>">
+                                <input type="checkbox" name="editEspecialidadesProf" value="<%= esp %>">
+                                <span><%= esp %></span>
+                            </label>
+                        <% }); %>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" id="btnSalvarEdicaoCompleta" class="btn-confirmar-pagamento">
+                Salvar Alterações
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL DE CONFIRMAÇÃO DE EXCLUSÃO (EXCLUSIVO OWNER) -->
+<div id="modalConfirmarExclusao" class="modal-overlay oculto">
+    <div class="modal-card" style="max-width: 440px;">
+        <div class="modal-header">
+            <h3 style="color: #ef4444;">Excluir Usuário</h3>
+            <button type="button" class="btn-fechar-modal" onclick="fecharConfirmarExclusao()">&times;</button>
+        </div>
+
+        <div>
+            <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.5;">
+                Tem certeza que deseja excluir permanentemente o usuário <strong id="excluirNomeUsuario" style="color: #ffffff;"></strong> (<span id="excluirTipoUsuario"></span>)?
+            </p>
+            <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px; padding: 12px; margin-bottom: 16px;">
+                <p style="font-size: 12px; color: #fca5a5; margin: 0;">
+                    ⚠️ Atenção: Esta ação removerá o login, matrículas, registros financeiros e histórico associados. Não poderá ser desfeita.
+                </p>
+            </div>
+
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button type="button" class="btn-acao-comprovante" onclick="fecharConfirmarExclusao()" style="padding: 9px 16px;">
+                    Cancelar
+                </button>
+                <button type="button" id="btnConfirmarExclusaoDefinitiva" onclick="executarExclusaoUsuario()" class="btn-acao-excluir" style="padding: 9px 18px; font-size: 13px;">
+                    Confirmar Exclusão
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -498,19 +693,23 @@
         }
     });
 
-    // Modal Mudar Curso do Aluno (Owner)
-    function abrirModalCurso(id, nome, cursoAtual) {
+    // Modal Mudar Curso do Aluno (Owner) - Multi-cursos
+    function abrirModalCurso(id, nome, cursosStr) {
         document.getElementById('cursoModalIdAluno').value = id;
         document.getElementById('cursoModalNomeAluno').value = nome;
-        const select = document.getElementById('cursoModalSelectCurso');
-        if (select) {
-            for (let i = 0; i < select.options.length; i++) {
-                if (select.options[i].value === cursoAtual) {
-                    select.selectedIndex = i;
-                    break;
-                }
-            }
-        }
+        
+        const listaCursos = (cursosStr || '')
+            .split(',')
+            .map(c => c.trim().toLowerCase())
+            .filter(Boolean);
+
+        document.querySelectorAll('input[name="cursosAlunoModal"]').forEach(cb => {
+            const marcado = listaCursos.includes(cb.value.trim().toLowerCase());
+            cb.checked = marcado;
+            const label = cb.closest('.tag-check-chip');
+            if (label) label.classList.toggle('ativo', marcado);
+        });
+
         document.getElementById('modalEditarCursoAluno').classList.remove('oculto');
     }
 
@@ -523,12 +722,19 @@
         formCursoAluno.addEventListener('submit', async function(e) {
             e.preventDefault();
             const id = document.getElementById('cursoModalIdAluno').value;
-            const curso = document.getElementById('cursoModalSelectCurso').value;
+            const selecionados = Array.from(document.querySelectorAll('input[name="cursosAlunoModal"]:checked'))
+                .map(cb => cb.value.trim());
+
+            if (selecionados.length === 0) {
+                alert('Selecione ao menos um curso para o aluno.');
+                return;
+            }
+
             const btn = document.getElementById('btnSalvarCursoAluno');
             const token = localStorage.getItem('authToken');
 
             btn.disabled = true;
-            btn.textContent = 'Salvando curso...';
+            btn.textContent = 'Salvando cursos...';
 
             try {
                 const resp = await fetch(`/paginas/usuarios/aluno/${id}/curso`, {
@@ -537,7 +743,7 @@
                         'Content-Type': 'application/json',
                         ...(token ? { Authorization: 'Bearer ' + token } : {})
                     },
-                    body: JSON.stringify({ curso }),
+                    body: JSON.stringify({ cursos: selecionados }),
                 });
                 const dados = await resp.json();
 
@@ -545,36 +751,34 @@
                     alert('✓ ' + dados.mensagem);
                     window.location.reload();
                 } else {
-                    alert('Erro: ' + (dados.mensagem || 'Falha ao alterar curso do aluno.'));
+                    alert('Erro: ' + (dados.mensagem || 'Falha ao alterar cursos do aluno.'));
                 }
             } catch (err) {
-                alert('Erro de conexão ao salvar curso.');
+                alert('Erro de conexão ao salvar cursos.');
             } finally {
                 btn.disabled = false;
-                btn.textContent = 'Salvar Novo Curso';
+                btn.textContent = 'Salvar Cursos';
             }
         });
     }
 
-    // Modal Mudar Especialidade do Professor (Owner)
-    function abrirModalEspecialidade(id, nome, espAtual) {
+    // Modal Mudar Especialidade do Professor (Owner) - Multi-especialidades
+    function abrirModalEspecialidade(id, nome, espStr) {
         document.getElementById('espModalIdProfessor').value = id;
         document.getElementById('espModalNomeProfessor').value = nome;
-        const select = document.getElementById('espModalSelectEspecialidade');
-        if (select) {
-            let found = false;
-            for (let i = 0; i < select.options.length; i++) {
-                if (select.options[i].value === espAtual) {
-                    select.selectedIndex = i;
-                    found = true;
-                    break;
-                }
-            }
-            if (!found && espAtual) {
-                const opt = new Option(espAtual, espAtual, true, true);
-                select.add(opt);
-            }
-        }
+
+        const listaEsp = (espStr || '')
+            .split(',')
+            .map(e => e.trim().toLowerCase())
+            .filter(Boolean);
+
+        document.querySelectorAll('input[name="especialidadesProfModal"]').forEach(cb => {
+            const marcado = listaEsp.includes(cb.value.trim().toLowerCase());
+            cb.checked = marcado;
+            const label = cb.closest('.tag-check-chip');
+            if (label) label.classList.toggle('ativo', marcado);
+        });
+
         document.getElementById('modalEditarEspecialidadeProfessor').classList.remove('oculto');
     }
 
@@ -587,12 +791,19 @@
         formEspProfessor.addEventListener('submit', async function(e) {
             e.preventDefault();
             const id = document.getElementById('espModalIdProfessor').value;
-            const especialidade = document.getElementById('espModalSelectEspecialidade').value;
+            const selecionados = Array.from(document.querySelectorAll('input[name="especialidadesProfModal"]:checked'))
+                .map(cb => cb.value.trim());
+
+            if (selecionados.length === 0) {
+                alert('Selecione ao menos uma especialidade para o professor.');
+                return;
+            }
+
             const btn = document.getElementById('btnSalvarEspecialidade');
             const token = localStorage.getItem('authToken');
 
             btn.disabled = true;
-            btn.textContent = 'Salvando especialidade...';
+            btn.textContent = 'Salvando especialidades...';
 
             try {
                 const resp = await fetch(`/paginas/usuarios/professor/${id}/especialidade`, {
@@ -601,7 +812,7 @@
                         'Content-Type': 'application/json',
                         ...(token ? { Authorization: 'Bearer ' + token } : {})
                     },
-                    body: JSON.stringify({ especialidade }),
+                    body: JSON.stringify({ especialidades: selecionados }),
                 });
                 const dados = await resp.json();
 
@@ -609,16 +820,222 @@
                     alert('✓ ' + dados.mensagem);
                     window.location.reload();
                 } else {
-                    alert('Erro: ' + (dados.mensagem || 'Falha ao alterar especialidade.'));
+                    alert('Erro: ' + (dados.mensagem || 'Falha ao alterar especialidades.'));
                 }
             } catch (err) {
-                alert('Erro de conexão ao salvar especialidade.');
+                alert('Erro de conexão ao salvar especialidades.');
             } finally {
                 btn.disabled = false;
-                btn.textContent = 'Salvar Especialidade';
+                btn.textContent = 'Salvar Especialidades';
             }
         });
     }
+
+    // Alternar campos conforme o tipo de usuário no modal de edição completa
+    function alternarCamposEdicao(tipo) {
+        const secaoAluno = document.getElementById('editSecaoAluno');
+        const secaoProf = document.getElementById('editSecaoProfessor');
+        if (secaoAluno) {
+            secaoAluno.style.display = (tipo === 'normal' || tipo === 'aluno') ? 'block' : 'none';
+        }
+        if (secaoProf) {
+            secaoProf.style.display = (tipo === 'professor') ? 'block' : 'none';
+        }
+    }
+
+    // Modal Completo de Edição de Usuário (Owner e Admin)
+    function abrirModalEditarUsuario(dados) {
+        if (!dados) return;
+
+        document.getElementById('editModalIdUsuario').value = dados.id_usuario || '';
+        document.getElementById('editModalIdAluno').value = dados.idaluno || '';
+        document.getElementById('editModalIdProfessor').value = dados.idprofessor || '';
+        document.getElementById('editModalNome').value = dados.nome || '';
+        document.getElementById('editModalEmail').value = dados.email || '';
+        document.getElementById('editModalCPF').value = dados.cpf || '';
+        document.getElementById('editModalTelefone').value = dados.telefone || '';
+
+        const selectTipo = document.getElementById('editModalTipoUsuario');
+        const tipoFinal = (dados.tipo === 'aluno' || dados.tipo === 'normal') ? 'normal' : dados.tipo;
+        if (selectTipo) {
+            selectTipo.value = tipoFinal;
+        }
+
+        alternarCamposEdicao(tipoFinal);
+
+        // Se for aluno
+        const campoDataNasc = document.getElementById('editModalDataNasc');
+        if (campoDataNasc) {
+            campoDataNasc.value = dados.data_nascimento || '';
+        }
+        const campoDesconto = document.getElementById('editModalDesconto');
+        if (campoDesconto) {
+            campoDesconto.value = parseFloat(dados.desconto) || 0;
+        }
+
+        const listaCursos = (dados.cursos || '')
+            .split(',')
+            .map(c => c.trim().toLowerCase())
+            .filter(Boolean);
+
+        document.querySelectorAll('input[name="editCursosAluno"]').forEach(cb => {
+            const marcado = listaCursos.includes(cb.value.trim().toLowerCase());
+            cb.checked = marcado;
+            const label = cb.closest('.tag-check-chip');
+            if (label) label.classList.toggle('ativo', marcado);
+        });
+
+        // Se for professor
+        const listaEsp = (dados.especialidades || '')
+            .split(',')
+            .map(e => e.trim().toLowerCase())
+            .filter(Boolean);
+
+        document.querySelectorAll('input[name="editEspecialidadesProf"]').forEach(cb => {
+            const marcado = listaEsp.includes(cb.value.trim().toLowerCase());
+            cb.checked = marcado;
+            const label = cb.closest('.tag-check-chip');
+            if (label) label.classList.toggle('ativo', marcado);
+        });
+
+        document.getElementById('modalEditarUsuarioCompleto').classList.remove('oculto');
+    }
+
+    function fecharModalEditarUsuario() {
+        document.getElementById('modalEditarUsuarioCompleto').classList.add('oculto');
+    }
+
+    const formEditarCompleto = document.getElementById('formEditarUsuarioCompleto');
+    if (formEditarCompleto) {
+        formEditarCompleto.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const idUsuario = document.getElementById('editModalIdUsuario').value;
+            const selectTipo = document.getElementById('editModalTipoUsuario');
+            const tipo = selectTipo ? selectTipo.value : 'normal';
+            const nome = document.getElementById('editModalNome').value.trim();
+            const email = document.getElementById('editModalEmail').value.trim();
+            const cpf = document.getElementById('editModalCPF').value.trim();
+            const telefone = document.getElementById('editModalTelefone').value.trim();
+
+            const payload = {
+                nome,
+                email,
+                cpf,
+                telefone,
+                tipo_usuario: tipo
+            };
+
+            if (tipo === 'normal' || tipo === 'aluno') {
+                const dataNasc = document.getElementById('editModalDataNasc') ? document.getElementById('editModalDataNasc').value : '';
+                const desc = document.getElementById('editModalDesconto') ? document.getElementById('editModalDesconto').value : '';
+                const cursos = Array.from(document.querySelectorAll('input[name="editCursosAluno"]:checked')).map(cb => cb.value.trim());
+
+                if (cursos.length === 0) {
+                    alert('Selecione ao menos um curso para o aluno.');
+                    return;
+                }
+                payload.data_nascimento = dataNasc;
+                payload.desconto_porcentagem = desc;
+                payload.cursos = cursos;
+            } else if (tipo === 'professor') {
+                const especialidades = Array.from(document.querySelectorAll('input[name="editEspecialidadesProf"]:checked')).map(cb => cb.value.trim());
+                if (especialidades.length === 0) {
+                    alert('Selecione ao menos uma especialidade para o professor.');
+                    return;
+                }
+                payload.especialidades = especialidades;
+            }
+
+            const btn = document.getElementById('btnSalvarEdicaoCompleta');
+            const token = localStorage.getItem('authToken');
+            btn.disabled = true;
+            btn.textContent = 'Salvando alterações...';
+
+            try {
+                const resp = await fetch(`/paginas/usuarios/${idUsuario}/editar`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(token ? { Authorization: 'Bearer ' + token } : {})
+                    },
+                    body: JSON.stringify(payload)
+                });
+                const res = await resp.json();
+
+                if (res.sucesso) {
+                    alert('✓ ' + res.mensagem);
+                    window.location.reload();
+                } else {
+                    alert('Erro: ' + (res.mensagem || 'Falha ao salvar edições do usuário.'));
+                }
+            } catch (err) {
+                alert('Erro de conexão ao salvar edições do usuário.');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Salvar Alterações';
+            }
+        });
+    }
+
+    // Modal de Confirmação de Exclusão (Exclusivo Owner)
+    let idUsuarioParaExcluir = null;
+
+    function abrirConfirmarExclusao(id, nome, tipo) {
+        idUsuarioParaExcluir = id;
+        document.getElementById('excluirNomeUsuario').textContent = nome;
+        document.getElementById('excluirTipoUsuario').textContent = tipo;
+        document.getElementById('modalConfirmarExclusao').classList.remove('oculto');
+    }
+
+    function fecharConfirmarExclusao() {
+        document.getElementById('modalConfirmarExclusao').classList.add('oculto');
+        idUsuarioParaExcluir = null;
+    }
+
+    async function executarExclusaoUsuario() {
+        if (!idUsuarioParaExcluir) return;
+
+        const btn = document.getElementById('btnConfirmarExclusaoDefinitiva');
+        const token = localStorage.getItem('authToken');
+
+        btn.disabled = true;
+        btn.textContent = 'Excluindo conta...';
+
+        try {
+            const resp = await fetch(`/paginas/usuarios/${idUsuarioParaExcluir}/excluir`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(token ? { Authorization: 'Bearer ' + token } : {})
+                }
+            });
+            const dados = await resp.json();
+
+            if (dados.sucesso) {
+                alert('✓ ' + dados.mensagem);
+                window.location.reload();
+            } else {
+                alert('Erro: ' + (dados.mensagem || 'Falha ao excluir usuário.'));
+            }
+        } catch (err) {
+            alert('Erro de conexão ao excluir usuário.');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = 'Confirmar Exclusão';
+            fecharConfirmarExclusao();
+        }
+    }
+
+    // Sincroniza estilo ativo dos chips dinamicamente
+    document.addEventListener('change', function(e) {
+        if (e.target.matches('.tag-check-chip input[type="checkbox"]')) {
+            const label = e.target.closest('.tag-check-chip');
+            if (label) {
+                if (e.target.checked) label.classList.add('ativo');
+                else label.classList.remove('ativo');
+            }
+        }
+    });
 
     // Modal Histórico
     async function abrirHistoricoAluno(id, nome) {

@@ -4,8 +4,8 @@ const { ehOwner, ehAdmin } = require("../utils/admin");
 
 async function criarConta(req, res) {
     try {
-        const { nome, cpf, email, telefone, senha, tipo_usuario, data_nascimento } = req.body;
-        const usuarioLogado = req.user;
+        const { nome, cpf, email, telefone, senha, tipo_usuario, data_nascimento, cursos, especialidades, curso, especialidade } = req.body;
+        const usuarioLogado = req.user || req.session?.usuario;
 
         if (!email || !senha) {
             return res.status(400).json({
@@ -25,8 +25,9 @@ async function criarConta(req, res) {
         }
 
         let tipoFinal = (tipo_usuario || "normal").toLowerCase();
+        if (tipoFinal === "aluno") tipoFinal = "normal";
 
-        // Regra essencial: Administrador normal NÃO pode criar outros administradores ou conta owner
+        // Regra: Administrador normal não pode criar contas admin ou owner
         if (!isOwner) {
             if (tipoFinal === "admin" || tipoFinal === "owner") {
                 return res.status(403).json({
@@ -34,12 +35,32 @@ async function criarConta(req, res) {
                     mensagem: "Administradores não têm permissão para criar outros administradores ou contas owner.",
                 });
             }
-            tipoFinal = "normal";
-        } else {
-            // Owner pode escolher 'admin' ou 'normal' (aluno)
-            if (tipoFinal !== "admin" && tipoFinal !== "normal" && tipoFinal !== "aluno" && tipoFinal !== "professor") {
+            if (tipoFinal !== "professor") {
                 tipoFinal = "normal";
             }
+        } else {
+            // Owner pode escolher 'admin', 'professor' ou 'normal' (aluno)
+            if (tipoFinal !== "admin" && tipoFinal !== "normal" && tipoFinal !== "professor") {
+                tipoFinal = "normal";
+            }
+        }
+
+        // Formatação de cursos do aluno
+        let cursosFormatados = null;
+        const cursosInput = cursos || curso;
+        if (Array.isArray(cursosInput)) {
+            cursosFormatados = cursosInput.filter(Boolean).map(c => c.trim()).join(", ");
+        } else if (typeof cursosInput === "string" && cursosInput.trim() !== "") {
+            cursosFormatados = cursosInput.trim();
+        }
+
+        // Formatação de especialidades do professor
+        let especialidadesFormatadas = null;
+        const espInput = especialidades || especialidade;
+        if (Array.isArray(espInput)) {
+            especialidadesFormatadas = espInput.filter(Boolean).map(e => e.trim()).join(", ");
+        } else if (typeof espInput === "string" && espInput.trim() !== "") {
+            especialidadesFormatadas = espInput.trim();
         }
 
         const conexao = await pool.getConnection();
@@ -82,8 +103,8 @@ async function criarConta(req, res) {
 
             const [resUsuario] = await conexao.query(
                 `INSERT INTO usuario_login 
-                (senha, tipo_usuario, email, nome, telefone, cpf, primeiro_acesso, data_cadastro)
-                VALUES (?, ?, ?, ?, ?, ?, 1, NOW())`,
+                (senha, tipo_usuario, email, nome, telefone, cpf, tipo_instrumento, primeiro_acesso, data_cadastro)
+                VALUES (?, ?, ?, ?, ?, ?, ?, 1, NOW())`,
                 [
                     senhaHash,
                     tipoFinal,
@@ -91,18 +112,28 @@ async function criarConta(req, res) {
                     nomeFinal,
                     telefone ? telefone.trim() : null,
                     cpfLimpo,
+                    tipoFinal === "professor" ? (especialidadesFormatadas || "Piano") : (cursosFormatados || null),
                 ]
             );
 
             const idUsuario = resUsuario.insertId;
 
             // Se for conta de usuário normal / aluno, vincula na tabela aluno
-            if (tipoFinal === "normal" || tipoFinal === "aluno") {
+            if (tipoFinal === "normal") {
                 const dataNascFinal = (data_nascimento && data_nascimento.trim() !== "") ? data_nascimento.trim() : "2000-01-01";
                 await conexao.query(
-                    `INSERT INTO aluno (CPF, data_nascimento, usuario_login_id)
-                     VALUES (?, ?, ?)`,
-                    [cpfLimpo || `SEM_CPF_${idUsuario}`, dataNascFinal, idUsuario]
+                    `INSERT INTO aluno (CPF, data_nascimento, usuario_login_id, curso)
+                     VALUES (?, ?, ?, ?)`,
+                    [cpfLimpo || `SEM_CPF_${idUsuario}`, dataNascFinal, idUsuario, cursosFormatados || "Piano"]
+                );
+            }
+
+            // Se for conta de professor, vincula na tabela professor
+            if (tipoFinal === "professor") {
+                await conexao.query(
+                    `INSERT INTO professor (CPF, usuario_login_id)
+                     VALUES (?, ?)`,
+                    [cpfLimpo || `SEM_CPF_${idUsuario}`, idUsuario]
                 );
             }
 
@@ -110,7 +141,7 @@ async function criarConta(req, res) {
 
             return res.status(201).json({
                 sucesso: true,
-                mensagem: `Conta (${tipoFinal}) criada com sucesso!`,
+                mensagem: `Conta (${tipoFinal === "normal" ? "Aluno" : (tipoFinal === "professor" ? "Professor" : "Administrador")}) criada com sucesso!`,
                 usuario: {
                     id_usuario: idUsuario,
                     nome: nomeFinal,
@@ -118,6 +149,8 @@ async function criarConta(req, res) {
                     tipo_usuario: tipoFinal,
                     cpf: cpfLimpo,
                     telefone: telefone || null,
+                    cursos: cursosFormatados,
+                    especialidades: especialidadesFormatadas,
                     senhaGerada: senha,
                 },
             });
@@ -184,11 +217,211 @@ async function alterarCargo(req, res) {
     }
 }
 
+// Editar usuário completo (Owner tem poder total em qualquer conta; Admin pode editar alunos)
+async function editarUsuario(req, res) {
+    try {
+        const idUsuario = req.params.id;
+        const usuarioLogado = req.user || req.session?.usuario;
+        const isOwner = ehOwner(usuarioLogado);
+        const isAdmin = ehAdmin(usuarioLogado);
+
+        if (!isOwner && !isAdmin) {
+            return res.status(403).json({ sucesso: false, mensagem: "Acesso não autorizado." });
+        }
+
+        const [usuariosAlvo] = await pool.query(
+            "SELECT id_usuario, tipo_usuario, email, nome, telefone, cpf FROM usuario_login WHERE id_usuario = ?",
+            [idUsuario]
+        );
+
+        if (usuariosAlvo.length === 0) {
+            return res.status(404).json({ sucesso: false, mensagem: "Usuário não encontrado." });
+        }
+
+        const alvo = usuariosAlvo[0];
+
+        // Regra de segurança: Apenas Owner pode editar outros administradores ou a conta Owner
+        if (alvo.tipo_usuario === "owner" && !isOwner) {
+            return res.status(403).json({ sucesso: false, mensagem: "Apenas o Owner pode editar esta conta." });
+        }
+        if (alvo.tipo_usuario === "admin" && !isOwner) {
+            return res.status(403).json({ sucesso: false, mensagem: "Apenas o Owner pode editar outros administradores." });
+        }
+
+        const {
+            nome,
+            email,
+            telefone,
+            cpf,
+            tipo_usuario,
+            data_nascimento,
+            cursos,
+            curso,
+            especialidades,
+            especialidade,
+            desconto_porcentagem,
+        } = req.body;
+
+        const conexao = await pool.getConnection();
+        try {
+            await conexao.beginTransaction();
+
+            const cpfLimpo = cpf ? cpf.replace(/\D/g, "") : null;
+            if (cpfLimpo) {
+                const [existenteCpf] = await conexao.query(
+                    "SELECT id_usuario FROM usuario_login WHERE cpf = ? AND id_usuario != ? LIMIT 1",
+                    [cpfLimpo, idUsuario]
+                );
+                if (existenteCpf.length > 0) {
+                    conexao.release();
+                    return res.status(409).json({ sucesso: false, mensagem: "Já existe outro usuário com este CPF." });
+                }
+            }
+
+            if (email && email.trim().toLowerCase() !== alvo.email.toLowerCase()) {
+                const [existenteEmail] = await conexao.query(
+                    "SELECT id_usuario FROM usuario_login WHERE email = ? AND id_usuario != ? LIMIT 1",
+                    [email.trim().toLowerCase(), idUsuario]
+                );
+                if (existenteEmail.length > 0) {
+                    conexao.release();
+                    return res.status(409).json({ sucesso: false, mensagem: "Já existe outro usuário com este e-mail." });
+                }
+            }
+
+            // Tratamento de especialidades do professor
+            let especialidadeFinal = null;
+            const espInput = especialidades || especialidade;
+            if (Array.isArray(espInput)) {
+                especialidadeFinal = espInput.filter(Boolean).map(e => e.trim()).join(", ");
+            } else if (typeof espInput === "string" && espInput.trim() !== "") {
+                especialidadeFinal = espInput.trim();
+            }
+
+            // Tratamento de cursos do aluno
+            let cursosFinal = null;
+            const cursosInput = cursos || curso;
+            if (Array.isArray(cursosInput)) {
+                cursosFinal = cursosInput.filter(Boolean).map(c => c.trim()).join(", ");
+            } else if (typeof cursosInput === "string" && cursosInput.trim() !== "") {
+                cursosFinal = cursosInput.trim();
+            }
+
+            // Apenas o Owner pode alterar o tipo de usuário (e nunca rebaixar outro owner)
+            let novoTipo = alvo.tipo_usuario;
+            if (isOwner && tipo_usuario && alvo.tipo_usuario !== "owner") {
+                const tiposPermitidos = ["admin", "normal", "aluno", "professor"];
+                if (tiposPermitidos.includes(tipo_usuario)) {
+                    novoTipo = tipo_usuario === "aluno" ? "normal" : tipo_usuario;
+                }
+            }
+
+            await conexao.query(
+                `UPDATE usuario_login
+                    SET nome = COALESCE(?, nome),
+                        email = COALESCE(?, email),
+                        telefone = ?,
+                        cpf = ?,
+                        tipo_usuario = ?,
+                        tipo_instrumento = COALESCE(?, tipo_instrumento)
+                  WHERE id_usuario = ?`,
+                [
+                    nome ? nome.trim() : null,
+                    email ? email.trim().toLowerCase() : null,
+                    telefone ? telefone.trim() : null,
+                    cpfLimpo,
+                    novoTipo,
+                    especialidadeFinal || cursosFinal || null,
+                    idUsuario,
+                ]
+            );
+
+            // Atualização ou inserção nas tabelas específicas (aluno / professor)
+            if (novoTipo === "normal" || novoTipo === "aluno") {
+                const [alunoExistente] = await conexao.query(
+                    "SELECT idaluno FROM aluno WHERE usuario_login_id = ?",
+                    [idUsuario]
+                );
+                const dataNasc = (data_nascimento && data_nascimento.trim()) ? data_nascimento.trim() : null;
+
+                if (alunoExistente.length > 0) {
+                    const paramsUpdate = [];
+                    const setClausulas = [];
+                    if (dataNasc) {
+                        setClausulas.push("data_nascimento = ?");
+                        paramsUpdate.push(dataNasc);
+                    }
+                    if (cursosFinal) {
+                        setClausulas.push("curso = ?");
+                        paramsUpdate.push(cursosFinal);
+                    }
+                    if (isOwner && desconto_porcentagem !== undefined && desconto_porcentagem !== null && desconto_porcentagem !== "") {
+                        setClausulas.push("desconto_porcentagem = ?");
+                        paramsUpdate.push(Math.max(0, Math.min(100, parseFloat(desconto_porcentagem) || 0)));
+                    }
+                    if (cpfLimpo) {
+                        setClausulas.push("CPF = ?");
+                        paramsUpdate.push(cpfLimpo);
+                    }
+                    if (setClausulas.length > 0) {
+                        paramsUpdate.push(idUsuario);
+                        await conexao.query(
+                            `UPDATE aluno SET ${setClausulas.join(", ")} WHERE usuario_login_id = ?`,
+                            paramsUpdate
+                        );
+                    }
+                } else {
+                    await conexao.query(
+                        `INSERT INTO aluno (CPF, data_nascimento, usuario_login_id, curso, desconto_porcentagem)
+                         VALUES (?, COALESCE(?, '2000-01-01'), ?, COALESCE(?, 'Piano'), ?)`,
+                        [
+                            cpfLimpo || `SEM_CPF_${idUsuario}`,
+                            dataNasc,
+                            idUsuario,
+                            cursosFinal || "Piano",
+                            isOwner && desconto_porcentagem ? parseFloat(desconto_porcentagem) : 0,
+                        ]
+                    );
+                }
+            }
+
+            if (novoTipo === "professor") {
+                const [profExistente] = await conexao.query(
+                    "SELECT idprofessor FROM professor WHERE usuario_login_id = ?",
+                    [idUsuario]
+                );
+                if (profExistente.length === 0) {
+                    await conexao.query(
+                        "INSERT INTO professor (CPF, usuario_login_id) VALUES (?, ?)",
+                        [cpfLimpo || `SEM_CPF_${idUsuario}`, idUsuario]
+                    );
+                } else if (cpfLimpo) {
+                    await conexao.query(
+                        "UPDATE professor SET CPF = ? WHERE usuario_login_id = ?",
+                        [cpfLimpo, idUsuario]
+                    );
+                }
+            }
+
+            await conexao.commit();
+            return res.json({ sucesso: true, mensagem: "Dados do usuário atualizados com sucesso!" });
+        } catch (err) {
+            await conexao.rollback();
+            throw err;
+        } finally {
+            conexao.release();
+        }
+    } catch (error) {
+        console.error("Erro ao editar usuário:", error);
+        return res.status(500).json({ sucesso: false, mensagem: "Erro ao editar usuário no banco de dados." });
+    }
+}
+
 // Deletar conta (Owner pode deletar qualquer um exceto ele mesmo; Admin só pode deletar contas normais)
 async function deletarConta(req, res) {
     try {
         const { id } = req.params;
-        const usuarioLogado = req.user;
+        const usuarioLogado = req.user || req.session?.usuario;
         const isOwner = ehOwner(usuarioLogado);
         const isAdmin = ehAdmin(usuarioLogado);
 
@@ -217,13 +450,45 @@ async function deletarConta(req, res) {
         const conexao = await pool.getConnection();
         try {
             await conexao.beginTransaction();
-            // Remove registros vinculados em aluno/professor
-            await conexao.query("DELETE FROM aluno WHERE usuario_login_id = ?", [id]);
-            await conexao.query("DELETE FROM professor WHERE usuario_login_id = ?", [id]);
+
+            // Desvincula e remove registros vinculados de aluno
+            await conexao.query(
+                "DELETE FROM aluno_responsavel WHERE aluno_idaluno IN (SELECT idaluno FROM aluno WHERE usuario_login_id = ?)",
+                [id]
+            );
+            await conexao.query(
+                "DELETE FROM financeiro_recebimento WHERE aluno_idaluno IN (SELECT idaluno FROM aluno WHERE usuario_login_id = ?)",
+                [id]
+            );
+            await conexao.query(
+                "DELETE FROM aula WHERE aluno_idaluno IN (SELECT idaluno FROM aluno WHERE usuario_login_id = ?)",
+                [id]
+            );
+            await conexao.query(
+                "DELETE FROM aluno WHERE usuario_login_id = ?",
+                [id]
+            );
+
+            // Desvincula e remove registros vinculados de professor
+            await conexao.query(
+                "DELETE FROM financeiro_pagamento WHERE professor_idprofessor IN (SELECT idprofessor FROM professor WHERE usuario_login_id = ?)",
+                [id]
+            );
+            await conexao.query(
+                "DELETE FROM aula WHERE professor_idprofessor IN (SELECT idprofessor FROM professor WHERE usuario_login_id = ?)",
+                [id]
+            );
+            await conexao.query(
+                "DELETE FROM professor WHERE usuario_login_id = ?",
+                [id]
+            );
+
+            // Por fim remove a conta em usuario_login
             await conexao.query("DELETE FROM usuario_login WHERE id_usuario = ?", [id]);
+
             await conexao.commit();
 
-            return res.status(200).json({ sucesso: true, mensagem: "Usuário excluído com sucesso!" });
+            return res.status(200).json({ sucesso: true, mensagem: "Usuário e todos os seus registros foram excluídos com sucesso!" });
         } catch (e) {
             await conexao.rollback();
             throw e;
@@ -231,6 +496,7 @@ async function deletarConta(req, res) {
             conexao.release();
         }
     } catch (error) {
+        console.error("Erro ao excluir conta:", error);
         return res.status(500).json({ sucesso: false, mensagem: "Erro ao excluir conta." });
     }
 }
@@ -274,6 +540,7 @@ module.exports = {
     criarConta,
     listarContas,
     alterarCargo,
+    editarUsuario,
     deletarConta,
     atualizarPerfil,
 };

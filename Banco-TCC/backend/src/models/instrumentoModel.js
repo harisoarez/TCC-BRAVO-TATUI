@@ -9,7 +9,7 @@ const instrumentoModel = {
                     id_instrumento INT PRIMARY KEY AUTO_INCREMENT,
                     nome VARCHAR(100) NOT NULL,
                     categoria VARCHAR(60) NOT NULL,
-                    icone VARCHAR(50) DEFAULT '🎻',
+                    icone VARCHAR(50) DEFAULT '',
                     imagem_url VARCHAR(500) NULL,
                     descricao TEXT,
                     disponivel_aulas TINYINT(1) DEFAULT 1,
@@ -24,12 +24,12 @@ const instrumentoModel = {
             // Verifica se a tabela já possui instrumentos cadastrados
             const [linhas] = await pool.query("SELECT COUNT(*) AS total FROM instrumento");
             if (linhas[0].total === 0) {
-                console.log("🎻 Tabela de instrumentos vazia. Inserindo instrumentos padrão do Instituto Bravo...");
+                console.log("Tabela de instrumentos vazia. Inserindo instrumentos padrão do Instituto Bravo...");
                 const instrumentosIniciais = [
                     {
                         nome: "Piano",
                         categoria: "Teclas & Harmonia",
-                        icone: "🎹",
+                        icone: "",
                         imagem_url: "https://images.unsplash.com/photo-1520523839898-50712825e617?w=600&auto=format&fit=crop&q=80",
                         descricao: "O piano é um instrumento de teclado fascinante e completo, essencial para o desenvolvimento da percepção harmônica e rítmica. No IMBT, oferecemos formação completa desde os primeiros acordes até a técnica avançada clássica e popular.",
                         disponivel_aulas: 1,
@@ -40,7 +40,7 @@ const instrumentoModel = {
                     {
                         nome: "Violino",
                         categoria: "Cordas de Arco & Harpa",
-                        icone: "🎻",
+                        icone: "",
                         imagem_url: "https://images.unsplash.com/photo-1612225330812-01a9c6b355ec?w=600&auto=format&fit=crop&q=80",
                         descricao: "O violino é o líder melódico da família das cordas, dono de um timbre aveludado, expressivo e brilhante. Nossos professores trabalham postura, afinação pura, técnica de arco e repertório clássico e contemporâneo.",
                         disponivel_aulas: 1,
@@ -51,7 +51,7 @@ const instrumentoModel = {
                     {
                         nome: "Violoncelo",
                         categoria: "Cordas de Arco & Harpa",
-                        icone: "🎻",
+                        icone: "",
                         imagem_url: "https://images.unsplash.com/photo-1511192336575-5a79af67a629?w=600&auto=format&fit=crop&q=80",
                         descricao: "Com graves profundos e ressonância emocional incomparável, o violoncelo emociona pela sua semelhança com a voz humana. Aulas com metodologia direcionada à afinação, leitura musical e prática de câmara.",
                         disponivel_aulas: 1,
@@ -62,7 +62,7 @@ const instrumentoModel = {
                     {
                         nome: "Viola de Arco",
                         categoria: "Cordas de Arco & Harpa",
-                        icone: "🎻",
+                        icone: "",
                         imagem_url: "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=600&auto=format&fit=crop&q=80",
                         descricao: "A alma intermediária do quarteto de cordas. Possui timbre nobre, caloroso e levemente nostálgico, fundamental para orquestras e música de câmara.",
                         disponivel_aulas: 1,
@@ -73,7 +73,7 @@ const instrumentoModel = {
                     {
                         nome: "Contrabaixo Acústico",
                         categoria: "Cordas de Arco & Harpa",
-                        icone: "🎻",
+                        icone: "",
                         imagem_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&auto=format&fit=crop&q=80",
                         descricao: "O gigante das cordas acústicas. Fornece sustentação harmônica e condução rítmica tanto na música sinfônica quanto no jazz e na MPB.",
                         disponivel_aulas: 1,
@@ -84,7 +84,7 @@ const instrumentoModel = {
                     {
                         nome: "Harpa Clássica",
                         categoria: "Cordas de Arco & Harpa",
-                        icone: "🪕",
+                        icone: "",
                         imagem_url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&auto=format&fit=crop&q=80",
                         descricao: "Instrumento nobre de som celestial e etéreo. Ideal para cortejos de casamento de alto luxo e formações sinfônicas exclusivas.",
                         disponivel_aulas: 0,
@@ -95,7 +95,7 @@ const instrumentoModel = {
                     {
                         nome: "Flauta Transversal",
                         categoria: "Sopros (Metais & Madeiras)",
-                        icone: "🎶",
+                        icone: "",
                         imagem_url: "https://images.unsplash.com/photo-1541689592655-f5f52825a3b8?w=600&auto=format&fit=crop&q=80",
                         descricao: "Instrumento de sopro de sonoridade lírica, doce e ágil. Desenvolve o controle de respiração, embocadura e expressividade melódica.",
                         disponivel_aulas: 1,
@@ -106,7 +106,7 @@ const instrumentoModel = {
                     {
                         nome: "Saxofone",
                         categoria: "Sopros (Metais & Madeiras)",
-                        icone: "🎷",
+                        icone: "",
                         imagem_url: "https://images.unsplash.com/photo-1525994886773-080587e161c2?w=600&auto=format&fit=crop&q=80",
                         descricao: "Extremamente versátil, o saxofone brilha no jazz, no pop, na música clássica e em celebrações ao ar livre com solos cativantes e envolventes.",
                         disponivel_aulas: 1,
@@ -117,7 +117,7 @@ const instrumentoModel = {
                     {
                         nome: "Clarinete",
                         categoria: "Sopros (Metais & Madeiras)",
-                        icone: "🎶",
+                        icone: "",
                         imagem_url: "https://images.unsplash.com/photo-1573871669414-010dbf73ca84?w=600&auto=format&fit=crop&q=80",
                         descricao: "Com uma das maiores extensões de notas entre os instrumentos de sopro, o clarinete entrega desde graves aveludados até agudos cheios de brilho.",
                         disponivel_aulas: 1,
@@ -128,7 +128,7 @@ const instrumentoModel = {
                     {
                         nome: "Trompete",
                         categoria: "Sopros (Metais & Madeiras)",
-                        icone: "🎺",
+                        icone: "",
                         imagem_url: "https://images.unsplash.com/photo-1511192336575-5a79af67a629?w=600&auto=format&fit=crop&q=80",
                         descricao: "O brilho triunfal da família dos metais. Ideal para fanfarras de casamento, marchas clássicas solenes e solos vibrantes.",
                         disponivel_aulas: 1,
@@ -139,7 +139,7 @@ const instrumentoModel = {
                     {
                         nome: "Clarim Triunfal",
                         categoria: "Sopros (Metais & Madeiras)",
-                        icone: "🎺",
+                        icone: "",
                         imagem_url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&auto=format&fit=crop&q=80",
                         descricao: "Clarim heráldico com estandarte bordado exclusivo, usado para o anúncio triunfal da noiva e cortejos majestosos.",
                         disponivel_aulas: 0,
@@ -150,7 +150,7 @@ const instrumentoModel = {
                     {
                         nome: "Trombone",
                         categoria: "Sopros (Metais & Madeiras)",
-                        icone: "🎺",
+                        icone: "",
                         imagem_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&auto=format&fit=crop&q=80",
                         descricao: "Metal encorpado com mecanismo de vara característico, gerando harmonia nobre e sonoridade imponente em naipes de metais.",
                         disponivel_aulas: 1,
@@ -161,7 +161,7 @@ const instrumentoModel = {
                     {
                         nome: "Bateria Acústica",
                         categoria: "Percussão & Ritmo",
-                        icone: "🥁",
+                        icone: "",
                         imagem_url: "https://images.unsplash.com/photo-1519892300165-cb5542fb47c7?w=600&auto=format&fit=crop&q=80",
                         descricao: "O coração rítmico da música contemporânea. Aulas focadas em coordenação motora, precisão de tempo, grooves e dinâmica musical.",
                         disponivel_aulas: 1,
@@ -172,7 +172,7 @@ const instrumentoModel = {
                     {
                         nome: "Percussão Sinfônica",
                         categoria: "Percussão & Ritmo",
-                        icone: "🥁",
+                        icone: "",
                         imagem_url: "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=600&auto=format&fit=crop&q=80",
                         descricao: "Tímpanos, pratos de choque, sinos tubulares e percussão orquestral clássica para os momentos mais solenes e apoteóticos.",
                         disponivel_aulas: 1,
@@ -183,7 +183,7 @@ const instrumentoModel = {
                     {
                         nome: "Cajon / Percussão Leve",
                         categoria: "Percussão & Ritmo",
-                        icone: "📦",
+                        icone: "",
                         imagem_url: "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=600&auto=format&fit=crop&q=80",
                         descricao: "Praticidade e groove acústico caloroso. Ideal para eventos acústicos, casamentos no campo e apresentações intimistas.",
                         disponivel_aulas: 1,
@@ -194,7 +194,7 @@ const instrumentoModel = {
                     {
                         nome: "Violão Acústico / Folk",
                         categoria: "Teclas & Harmonia",
-                        icone: "🎸",
+                        icone: "",
                         imagem_url: "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=600&auto=format&fit=crop&q=80",
                         descricao: "O instrumento mais popular e acolhedor do Brasil e do mundo. Ensino completo de dedilhados, acordes, técnica clássica e popular.",
                         disponivel_aulas: 1,
@@ -205,7 +205,7 @@ const instrumentoModel = {
                     {
                         nome: "Guitarra Semi-Acústica",
                         categoria: "Teclas & Harmonia",
-                        icone: "🎸",
+                        icone: "",
                         imagem_url: "https://images.unsplash.com/photo-1511192336575-5a79af67a629?w=600&auto=format&fit=crop&q=80",
                         descricao: "Timbre encorpado e refinado, perfeito para arranjos de jazz, blues, bossa nova e baladas românticas contemporâneas.",
                         disponivel_aulas: 1,
@@ -216,7 +216,7 @@ const instrumentoModel = {
                     {
                         nome: "Acordeon",
                         categoria: "Teclas & Harmonia",
-                        icone: "🪗",
+                        icone: "",
                         imagem_url: "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=600&auto=format&fit=crop&q=80",
                         descricao: "Fole expressivo e riqueza harmônica única. Tradicional em celebrações rústicas, casamento no campo e folclore sofisticado.",
                         disponivel_aulas: 1,
@@ -227,7 +227,7 @@ const instrumentoModel = {
                     {
                         nome: "Ukulelê",
                         categoria: "Teclas & Harmonia",
-                        icone: "🪕",
+                        icone: "",
                         imagem_url: "https://images.unsplash.com/photo-1445375011782-238468d778a0?w=600&auto=format&fit=crop&q=80",
                         descricao: "Leveza havaiana e charme descontraído para casamentos na praia, cerimônias diurnas e repertório folk ensolarado.",
                         disponivel_aulas: 1,
@@ -238,7 +238,7 @@ const instrumentoModel = {
                     {
                         nome: "Voz Solista Feminina",
                         categoria: "Vozes & Coral",
-                        icone: "🎤",
+                        icone: "",
                         imagem_url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&auto=format&fit=crop&q=80",
                         descricao: "Interpretação lírica e popular de alta sensibilidade para temas inesquecíveis, hinos e canções de amor.",
                         disponivel_aulas: 1,
@@ -249,7 +249,7 @@ const instrumentoModel = {
                     {
                         nome: "Voz Solista Masculina",
                         categoria: "Vozes & Coral",
-                        icone: "🎤",
+                        icone: "",
                         imagem_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&auto=format&fit=crop&q=80",
                         descricao: "Potência e elegância vocal em árias, clássicos românticos internacionais e canções solenes.",
                         disponivel_aulas: 1,
@@ -260,7 +260,7 @@ const instrumentoModel = {
                     {
                         nome: "Coral / Quarteto Vocal",
                         categoria: "Vozes & Coral",
-                        icone: "👥",
+                        icone: "",
                         imagem_url: "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=600&auto=format&fit=crop&q=80",
                         descricao: "Harmonia vocal a quatro vozes para cerimônias de máxima magnitude e solenidade em catedrais e igrejas.",
                         disponivel_aulas: 1,
@@ -287,10 +287,10 @@ const instrumentoModel = {
                         ]
                     );
                 }
-                console.log(`✅ ${instrumentosIniciais.length} instrumentos inseridos com sucesso.`);
+                console.log(`${instrumentosIniciais.length} instrumentos inseridos com sucesso.`);
             }
         } catch (erro) {
-            console.error("⚠️ Erro ao garantir tabela de instrumentos:", erro.message);
+            console.error("Erro ao garantir tabela de instrumentos:", erro.message);
         }
     },
 
@@ -357,7 +357,7 @@ const instrumentoModel = {
             const params = [
                 dados.nome,
                 dados.categoria || "Geral",
-                dados.icone || "🎻",
+                dados.icone || "",
                 dados.imagem_url || null,
                 dados.descricao || "",
                 dados.disponivel_aulas !== undefined ? Number(dados.disponivel_aulas) : 1,

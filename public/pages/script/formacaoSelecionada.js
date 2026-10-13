@@ -15,11 +15,11 @@
             subtitulo: "Quarteto de cordas e piano elétrico",
             descricao: "A formação Bravo Plus é a síntese primorosa entre a tradição clássica e a versatilidade moderna. Unindo a riqueza acústica do quarteto de cordas tradicional (dois violinos, viola e violoncelo) à base harmônica encorpada do piano elétrico, esta formação entrega uma sonoridade grandiosa, solene e extremamente emocionante. Capaz de transitar de clássicos barrocos a arranjos contemporâneos de pop e cinema com total refinamento.",
             instrumentos: [
-                { nome: "Violino I", icone: "🎻", desc: "Melodias principais e brilho agudo" },
-                { nome: "Violino II", icone: "🎻", desc: "Harmonia vocal e contraponto" },
-                { nome: "Viola de Arco", icone: "🎻", desc: "Corpo harmônico e timbre aveludado" },
-                { nome: "Violoncelo", icone: "🎻", desc: "Graves solenes e profundidade acústica" },
-                { nome: "Piano Elétrico", icone: "🎹", desc: "Sustentação harmônica e dinâmicas ricas" }
+                { nome: "Violino I", desc: "Melodias principais e brilho agudo" },
+                { nome: "Violino II", desc: "Harmonia vocal e contraponto" },
+                { nome: "Viola de Arco", desc: "Corpo harmônico e timbre aveludado" },
+                { nome: "Violoncelo", desc: "Graves solenes e profundidade acústica" },
+                { nome: "Piano Elétrico", desc: "Sustentação harmônica e dinâmicas ricas" }
             ],
             ocasioes: [
                 { titulo: "Cerimônia de Casamento", desc: "Entradas solenes, cortejo e bênção das alianças" },
@@ -46,10 +46,10 @@
             subtitulo: "Quarteto de cordas (dois violinos, viola e violoncelo)",
             descricao: "A formação camerística mais reverenciada da história da música ocidental. O Bravo Classic dispensa amplificações pesadas e aposta na pureza acústica e no diálogo perfeito entre quatro instrumentos de arco. Cada frase musical ganha textura nobre e riqueza de timbres, criando um clima de pura sofisticação aristocrática para eventos que buscam solenidade absoluta.",
             instrumentos: [
-                { nome: "Violino I", icone: "🎻", desc: "Voz líder e solos expressivos" },
-                { nome: "Violino II", icone: "🎻", desc: "Costura melódica e preenchimento" },
-                { nome: "Viola de Arco", icone: "🎻", desc: "Profundidade aveludada do médio-grave" },
-                { nome: "Violoncelo", icone: "🎻", desc: "Fundação rítmica e ressonância dramática" }
+                { nome: "Violino I", desc: "Voz líder e solos expressivos" },
+                { nome: "Violino II", desc: "Costura melódica e preenchimento" },
+                { nome: "Viola de Arco", desc: "Profundidade aveludada do médio-grave" },
+                { nome: "Violoncelo", desc: "Fundação rítmica e ressonância dramática" }
             ],
             ocasioes: [
                 { titulo: "Entrada Solene da Noiva", desc: "Marchas clássicas e temas tradicionais intocáveis" },
@@ -76,12 +76,12 @@
             subtitulo: "Voz, violino, violoncelo, piano elétrico, dois clarins triunfais e percussão",
             descricao: "Concebida para ser verdadeiramente inesquecível. A formação Bravo Gold une a emoção arrebatadora da voz ao calor das cordas e do piano, culminando no anúncio régio dos clarins triunfais com estandartes e na pulsação solene da percussão. Ideal para noivos e anfitriões que desejam impacto visual e sonoro de cinema no momento de maior ápice da celebração.",
             instrumentos: [
-                { nome: "Voz Solista", icone: "🎤", desc: "Interpretação emocionante e lirismo vocal" },
-                { nome: "2 Clarins Triunfais", icone: "🎺", desc: "Anúncio heráldico da entrada da noiva" },
-                { nome: "Violino", icone: "🎻", desc: "Melodia aveludada e solos virtuosos" },
-                { nome: "Violoncelo", icone: "🎻", desc: "Base nobre e ressonância emocional" },
-                { nome: "Piano Elétrico", icone: "🎹", desc: "Harmonia encorpada e dinâmica orquestral" },
-                { nome: "Percussão Sinfônica", icone: "🥁", desc: "Clímax rítmico, pratos e tímpanos" }
+                { nome: "Voz Solista", desc: "Interpretação emocionante e lirismo vocal" },
+                { nome: "2 Clarins Triunfais", desc: "Anúncio heráldico da entrada da noiva" },
+                { nome: "Violino", desc: "Melodia aveludada e solos virtuosos" },
+                { nome: "Violoncelo", desc: "Base nobre e ressonância emocional" },
+                { nome: "Piano Elétrico", desc: "Harmonia encorpada e dinâmica orquestral" },
+                { nome: "Percussão Sinfônica", desc: "Clímax rítmico, pratos e tímpanos" }
             ],
             ocasioes: [
                 { titulo: "Cortejo Nupcial de Grande Porte", desc: "Anúncio triunfal que arrepia todos os convidados" },
@@ -108,9 +108,9 @@
             subtitulo: "Violino, violoncelo e piano elétrico",
             descricao: "Uma das formações mais queridas e dinâmicas da Bravo. O diálogo constante entre o brilho lírico do violino e o timbre aveludado do violoncelo, sustentados pela amplitude do piano elétrico, cria uma experiência sonora quente, elegante e acolhedora. É a pedida ideal para cerimônias que prezam pela intimidade e leveza com máxima excelência musical.",
             instrumentos: [
-                { nome: "Violino", icone: "🎻", desc: "Condução melódica primária" },
-                { nome: "Violoncelo", icone: "🎻", desc: "Contrapontos líricos e sustentação grave" },
-                { nome: "Piano Elétrico", icone: "🎹", desc: "Base rítmica e riqueza harmônica" }
+                { nome: "Violino", desc: "Condução melódica primária" },
+                { nome: "Violoncelo", desc: "Contrapontos líricos e sustentação grave" },
+                { nome: "Piano Elétrico", desc: "Base rítmica e riqueza harmônica" }
             ],
             ocasioes: [
                 { titulo: "Casamentos ao Ar Livre / Fazendas", desc: "Integração harmônica com a natureza e o pôr do sol" },
@@ -137,10 +137,10 @@
             subtitulo: "Quarteto de cordas, piano, percussão e dois trompetes",
             descricao: "A potência e o brilho orquestral condensados com maestria. Ao somar o quarteto de cordas completo à força expansiva dos trompetes, do piano e da percussão rítmica, o Bravo Master cria um espetáculo capaz de preencher igrejas monumentais e salões imponentes com energia triunfante e emoção ininterrupta.",
             instrumentos: [
-                { nome: "Quarteto de Cordas", icone: "🎻", desc: "2 violinos, viola e violoncelo para textura clássica" },
-                { nome: "2 Trompetes", icone: "🎺", desc: "Brilho metálico e chamadas majestosas" },
-                { nome: "Piano Elétrico", icone: "🎹", desc: "Conexão harmônica de todos os naipes" },
-                { nome: "Percussão Completa", icone: "🥁", desc: "Dinâmica e impacto rítmico vibrante" }
+                { nome: "Quarteto de Cordas", desc: "2 violinos, viola e violoncelo para textura clássica" },
+                { nome: "2 Trompetes", desc: "Brilho metálico e chamadas majestosas" },
+                { nome: "Piano Elétrico", desc: "Conexão harmônica de todos os naipes" },
+                { nome: "Percussão Completa", desc: "Dinâmica e impacto rítmico vibrante" }
             ],
             ocasioes: [
                 { titulo: "Grandes Cerimônias de Casamento", desc: "Momentos culminantes com riqueza sonora máxima" },
@@ -167,8 +167,8 @@
             subtitulo: "Violino e piano elétrico ou violão",
             descricao: "O minimalismo acústico elevado ao seu expoente máximo de poesia. Com apenas dois instrumentos em íntima cumplicidade, cada nota tocada tem peso, respiração e significado. Perfeito para cerimônias diurnas, enlaces intimistas ou recepções onde uma trilha sonora suave e sofisticada embala as conversas.",
             instrumentos: [
-                { nome: "Violino", icone: "🎻", desc: "Solos delicados e expressividade emotiva" },
-                { nome: "Piano Elétrico / Violão", icone: "🎹", desc: "Arpejos harmônicos e condução suave" }
+                { nome: "Violino", desc: "Solos delicados e expressividade emotiva" },
+                { nome: "Piano Elétrico / Violão", desc: "Arpejos harmônicos e condução suave" }
             ],
             ocasioes: [
                 { titulo: "Elopement Wedding", desc: "Celebrações a dois com romantismo pleno" },
@@ -195,10 +195,10 @@
             subtitulo: "Violino, violoncelo, piano elétrico e percussão ou voz",
             descricao: "Projetada para entregar excelente custo-benefício sem abrir mão da qualidade e do peso musical. A combinação de cordas, piano e a escolha entre voz ou percussão permite cobrir com fidelidade desde os momentos contemplativos até os trechos de celebração animada do cortejo.",
             instrumentos: [
-                { nome: "Violino", icone: "🎻", desc: "Melodias emotivas e temas principais" },
-                { nome: "Violoncelo", icone: "🎻", desc: "Graves aconchegantes e profundidade" },
-                { nome: "Piano Elétrico", icone: "🎹", desc: "Estrutura harmônica sólida" },
-                { nome: "Percussão ou Voz", icone: "🎤", desc: "Personalização de acordo com o perfil dos anfitriões" }
+                { nome: "Violino", desc: "Melodias emotivas e temas principais" },
+                { nome: "Violoncelo", desc: "Graves aconchegantes e profundidade" },
+                { nome: "Piano Elétrico", desc: "Estrutura harmônica sólida" },
+                { nome: "Percussão ou Voz", desc: "Personalização de acordo com o perfil dos anfitriões" }
             ],
             ocasioes: [
                 { titulo: "Cerimônias de Casamento Modernas", desc: "Equilíbrio entre temas solenes e modernos" },
@@ -225,8 +225,8 @@
             subtitulo: "Apenas um instrumento acompanhado por playback profissional",
             descricao: "O virtuosismo e a expressividade de um músico de elite, amparado por arranjos gravados em estúdio profissional. Garante a imponência de uma banda completa com a discrição espacial e orçamentária de um único instrumentista. Perfeito para entradas pontuais ou recepções descontraídas.",
             instrumentos: [
-                { nome: "Instrumento Solista", icone: "🎷", desc: "Escolha entre Saxofone, Violino, Violoncelo ou Piano" },
-                { nome: "Playback Masterizado", icone: "🎚️", desc: "Base orquestral ou moderna em alta fidelidade" }
+                { nome: "Instrumento Solista", desc: "Escolha entre Saxofone, Violino, Violoncelo ou Piano" },
+                { nome: "Playback Masterizado", desc: "Base orquestral ou moderna em alta fidelidade" }
             ],
             ocasioes: [
                 { titulo: "Entradas Especiais no Cortejo", desc: "Entrada de alianças, floristas ou pais" },
@@ -253,10 +253,10 @@
             subtitulo: "Piano elétrico, violino, dois trompetes e percussão",
             descricao: "Uma injeção de entusiasmo, clareza e vigor sonoro. A combinação audaciosa de dois trompetes com o violino e uma forte base rítmica de piano e percussão produz uma atmosfera radiante, ideal para casamentos e formaturas repletas de alegria e momentos de êxtase coletivo.",
             instrumentos: [
-                { nome: "2 Trompetes", icone: "🎺", desc: "Fanfarras triunfais e linhas melódicas brilhantes" },
-                { nome: "Violino", icone: "🎻", desc: "Contrapontos expressivos e textura clássica" },
-                { nome: "Piano Elétrico", icone: "🎹", desc: "Harmonia encorpada e ritmo" },
-                { nome: "Percussão Dinâmica", icone: "🥁", desc: "Condução rítmica envolvente" }
+                { nome: "2 Trompetes", desc: "Fanfarras triunfais e linhas melódicas brilhantes" },
+                { nome: "Violino", desc: "Contrapontos expressivos e textura clássica" },
+                { nome: "Piano Elétrico", desc: "Harmonia encorpada e ritmo" },
+                { nome: "Percussão Dinâmica", desc: "Condução rítmica envolvente" }
             ],
             ocasioes: [
                 { titulo: "Entradas Festivas de Noivos", desc: "Momento triunfal com os metais vibrando" },
@@ -283,11 +283,11 @@
             subtitulo: "Acordeon, ukulelê, gaita, violão, contrabaixo e cajon",
             descricao: "Aconchegante, nostálgico e transbordando poesia orgânica. O Bravo Folk transporta seus convidados para a atmosfera bucólica de um entardecer no campo, unindo o fole comovente do acordeon, os timbres dedilhados de violão e ukulelê, e o balanço do cajon e contrabaixo.",
             instrumentos: [
-                { nome: "Acordeon", icone: "🪗", desc: "Fole emotivo, calor regional e harmonia" },
-                { nome: "Violão Folk & Ukulelê", icone: "🎸", desc: "Dedilhado rítmico e texturas ensolaradas" },
-                { nome: "Gaita de Boca", icone: "🌬️", desc: "Solos nostálgicos e estilo country-folk" },
-                { nome: "Contrabaixo", icone: "🎸", desc: "Graves acústicos quentes e redondos" },
-                { nome: "Cajon / Percussão Orgânica", icone: "📦", desc: "Batida acústica suave e despretensiosa" }
+                { nome: "Acordeon", desc: "Fole emotivo, calor regional e harmonia" },
+                { nome: "Violão Folk & Ukulelê", desc: "Dedilhado rítmico e texturas ensolaradas" },
+                { nome: "Gaita de Boca", desc: "Solos nostálgicos e estilo country-folk" },
+                { nome: "Contrabaixo", desc: "Graves acústicos quentes e redondos" },
+                { nome: "Cajon / Percussão Orgânica", desc: "Batida acústica suave e despretensiosa" }
             ],
             ocasioes: [
                 { titulo: "Casamentos no Campo & Fazendas", desc: "Total sinergia com feno, luzes de gambiarra e verde" },
@@ -314,11 +314,11 @@
             subtitulo: "Voz, quarteto de cordas, piano elétrico, percussão e dois clarins",
             descricao: "O termo clássico italiano 'Tutti' traduz a reunião de todas as forças instrumentais em conjunto. Esta formação integra o quarteto de cordas, piano, percussão, voz e clarins heráldicos, criando a mais rica paleta sonora disponível para celebrações que não admitem concessões em requinte e plenitude.",
             instrumentos: [
-                { nome: "Voz Solista", icone: "🎤", desc: "Interpretação lírica sublime" },
-                { nome: "Quarteto de Cordas", icone: "🎻", desc: "2 violinos, viola e violoncelo em harmonia pura" },
-                { nome: "2 Clarins Triunfais", icone: "🎺", desc: "Anúncios solenes de abertura" },
-                { nome: "Piano Elétrico", icone: "🎹", desc: "Amarração harmônica densa e rica" },
-                { nome: "Percussão Sinfônica", icone: "🥁", desc: "Dinâmicas dramáticas e grandiosas" }
+                { nome: "Voz Solista", desc: "Interpretação lírica sublime" },
+                { nome: "Quarteto de Cordas", desc: "2 violinos, viola e violoncelo em harmonia pura" },
+                { nome: "2 Clarins Triunfais", desc: "Anúncios solenes de abertura" },
+                { nome: "Piano Elétrico", desc: "Amarração harmônica densa e rica" },
+                { nome: "Percussão Sinfônica", desc: "Dinâmicas dramáticas e grandiosas" }
             ],
             ocasioes: [
                 { titulo: "Grandes Casamentos Tradicionais", desc: "Cerimônias completas com cortejos amplos" },
@@ -345,11 +345,11 @@
             subtitulo: "Voz, piano elétrico, violino, contrabaixo e bateria",
             descricao: "O vigor contagiante de uma banda moderna suavizado pelo requinte erudito do violino. O Bravo Acustic transita com elegância ímpar entre baladas de amor emocionantes na cerimônia e uma recepção descontraída, sofisticada e cheia de balanço.",
             instrumentos: [
-                { nome: "Voz Solista", icone: "🎤", desc: "Vocal cativante e versátil" },
-                { nome: "Violino", icone: "🎻", desc: "O toque orquestral e nobre" },
-                { nome: "Piano Elétrico", icone: "🎹", desc: "Harmonias ricas e solos modernos" },
-                { nome: "Contrabaixo", icone: "🎸", desc: "Groove e peso rítmico encorpado" },
-                { nome: "Bateria / Percussão", icone: "🥁", desc: "Pulso e dinâmica para cada andamento" }
+                { nome: "Voz Solista", desc: "Vocal cativante e versátil" },
+                { nome: "Violino", desc: "O toque orquestral e nobre" },
+                { nome: "Piano Elétrico", desc: "Harmonias ricas e solos modernos" },
+                { nome: "Contrabaixo", desc: "Groove e peso rítmico encorpado" },
+                { nome: "Bateria / Percussão", desc: "Pulso e dinâmica para cada andamento" }
             ],
             ocasioes: [
                 { titulo: "Recepções de Casamento & Jantares", desc: "Trilha sonora moderna e vibrante durante a festa" },
@@ -376,12 +376,12 @@
             subtitulo: "Voz, violino, violoncelo, guitarra, piano elétrico, dois trompetes e percussão",
             descricao: "O ápice do charme cosmopolita e da elegância despretensiosa. Inspirado nos clubes de jazz lendários de Nova York e na sofisticação da Bossa Nova carioca, o Bravo Jazz une naipes nobres de cordas e trompetes ao balanço da guitarra semi-acústica e da voz aveludada.",
             instrumentos: [
-                { nome: "Voz Jazz", icone: "🎤", desc: "Timbre aveludado e interpretação intimista" },
-                { nome: "Violino & Violoncelo", icone: "🎻", desc: "Arranjos cinematográficos de cordas jazzísticas" },
-                { nome: "Guitarra Semi-Acústica", icone: "🎸", desc: "Acordes refinados e fraseados limpos" },
-                { nome: "Piano Elétrico", icone: "🎹", desc: "Harmonias complexas e improvisos de bom gosto" },
-                { nome: "2 Trompetes com Surdina", icone: "🎺", desc: "Timbre clássico vintage e intervenções brilhantes" },
-                { nome: "Percussão & Bateria Jazz", icone: "🥁", desc: "Vassourinhas, pratos elegantes e swing" }
+                { nome: "Voz Jazz", desc: "Timbre aveludado e interpretação intimista" },
+                { nome: "Violino & Violoncelo", desc: "Arranjos cinematográficos de cordas jazzísticas" },
+                { nome: "Guitarra Semi-Acústica", desc: "Acordes refinados e fraseados limpos" },
+                { nome: "Piano Elétrico", desc: "Harmonias complexas e improvisos de bom gosto" },
+                { nome: "2 Trompetes com Surdina", desc: "Timbre clássico vintage e intervenções brilhantes" },
+                { nome: "Percussão & Bateria Jazz", desc: "Vassourinhas, pratos elegantes e swing" }
             ],
             ocasioes: [
                 { titulo: "Coquetéis de Gala & Lounges", desc: "Clima sofisticado perfeito para taças de champanhe" },
@@ -408,12 +408,12 @@
             subtitulo: "Orquestra sinfônica completa sob regência de Maestro",
             descricao: "A experiência máxima e definitiva da arte musical humana. Dezenas de músicos sinfônicos reunidos sob a batuta atenta do Maestro, unindo naipes completos de cordas, madeiras, metais brilhantes, percussão orquestral e tímpanos. Cada acorde ecoa com magnitude arrebatadora, transformando sua cerimônia em um marco lendário.",
             instrumentos: [
-                { nome: "Naipe de Cordas Completo", icone: "🎻", desc: "Violinos I e II, Violas, Violoncelos e Contrabaixos" },
-                { nome: "Madeiras Clássicas", icone: "🎶", desc: "Flautas transversais, Clarinetes e Oboé" },
-                { nome: "Metais Sinfônicos", icone: "🎺", desc: "Trompetes, Trompas e Trombones majestosos" },
-                { nome: "Percussão Sinfônica & Tímpanos", icone: "🥁", desc: "Impacto visceral e dinâmicas triunfais" },
-                { nome: "Piano de Cauda / Órgão", icone: "🎹", desc: "Fundação harmônica majestosa" },
-                { nome: "Maestro Regente", icone: "🎼", desc: "Direção artística e precisão milimétrica" }
+                { nome: "Naipe de Cordas Completo", desc: "Violinos I e II, Violas, Violoncelos e Contrabaixos" },
+                { nome: "Madeiras Clássicas", desc: "Flautas transversais, Clarinetes e Oboé" },
+                { nome: "Metais Sinfônicos", desc: "Trompetes, Trompas e Trombones majestosos" },
+                { nome: "Percussão Sinfônica & Tímpanos", desc: "Impacto visceral e dinâmicas triunfais" },
+                { nome: "Piano de Cauda / Órgão", desc: "Fundação harmônica majestosa" },
+                { nome: "Maestro Regente", desc: "Direção artística e precisão milimétrica" }
             ],
             ocasioes: [
                 { titulo: "Grandes Casamentos em Catedrais", desc: "O ápice do luxo, tradição e solenidade" },
@@ -440,9 +440,9 @@
             subtitulo: "Trio Bravo Electro (Violino Elétrico, Live DJ & Percussão / Sax)",
             descricao: "O encontro eletrizante do virtuosismo acústico com a pulsação frenética das pistas mundiais. Munidos de violino com iluminação LED interna, sintetizadores, live beats e saxofone ou percussão ao vivo, o Trio Bravo Electro explode de energia para incendiar a abertura de pista da sua festa.",
             instrumentos: [
-                { nome: "Violino Elétrico LED", icone: "🎻", desc: "Solos incendiários com efeitos e visual futurista" },
-                { nome: "Live DJ & Sintetizadores", icone: "🎧", desc: "Beats eletrônicos, transições fluidas e synths" },
-                { nome: "Saxofone ou Percussão Eletrônica", icone: "🎷", desc: "Swing ao vivo e interação direta na pista de dança" }
+                { nome: "Violino Elétrico LED", desc: "Solos incendiários com efeitos e visual futurista" },
+                { nome: "Live DJ & Sintetizadores", desc: "Beats eletrônicos, transições fluidas e synths" },
+                { nome: "Saxofone ou Percussão Eletrônica", desc: "Swing ao vivo e interação direta na pista de dança" }
             ],
             ocasioes: [
                 { titulo: "Abertura de Pista de Dança", desc: "Momento de transição bombástica após o cortejo" },
@@ -484,9 +484,7 @@
     // 2. Catálogo Completo de Instrumentos para Escolha Personalizada ('Faça do seu Jeito')
     const catalogoInstrumentos = [
         {
-            categoria: "Cordas de Arco & Harpa",
-            icone: "🎻",
-            itens: [
+            categoria: "Cordas de Arco & Harpa", itens: [
                 { id: "violino", nome: "Violino", desc: "Melodias agudas brilhantes" },
                 { id: "viola", nome: "Viola de Arco", desc: "Harmonia aveludada intermediária" },
                 { id: "violoncelo", nome: "Violoncelo", desc: "Graves líricos e nobres" },
@@ -495,9 +493,7 @@
             ]
         },
         {
-            categoria: "Teclas & Harmonia",
-            icone: "🎹",
-            itens: [
+            categoria: "Teclas & Harmonia", itens: [
                 { id: "piano", nome: "Piano Elétrico / Cauda", desc: "Sustentação harmônica essencial" },
                 { id: "violao", nome: "Violão Acústico / Folk", desc: "Dedilhado acolhedor e rítmico" },
                 { id: "guitarra", nome: "Guitarra Semi-Acústica", desc: "Charme jazzístico e vintage" },
@@ -506,9 +502,7 @@
             ]
         },
         {
-            categoria: "Sopros (Metais & Madeiras)",
-            icone: "🎺",
-            itens: [
+            categoria: "Sopros (Metais & Madeiras)", itens: [
                 { id: "clarim", nome: "Clarim Triunfal (com Estandarte)", desc: "Anúncios régios de entrada" },
                 { id: "trompete", nome: "Trompete", desc: "Fanfarras triunfais e brilho" },
                 { id: "trombone", nome: "Trombone", desc: "Metais médios encorpados" },
@@ -518,18 +512,14 @@
             ]
         },
         {
-            categoria: "Percussão & Ritmo",
-            icone: "🥁",
-            itens: [
+            categoria: "Percussão & Ritmo", itens: [
                 { id: "percussao_sinfonica", nome: "Percussão Sinfônica", desc: "Tímpanos, pratos e sinos solenes" },
                 { id: "bateria", nome: "Bateria Acústica", desc: "Pulso rítmico contemporâneo" },
                 { id: "cajon", nome: "Cajon / Percussão Leve", desc: "Acústico despojado e orgânico" }
             ]
         },
         {
-            categoria: "Vozes & Coral",
-            icone: "🎤",
-            itens: [
+            categoria: "Vozes & Coral", itens: [
                 { id: "voz_feminina", nome: "Voz Solista Feminina", desc: "Interpretação lírica e emocionante" },
                 { id: "voz_masculina", nome: "Voz Solista Masculina", desc: "Imponência vocal e calor" },
                 { id: "coral", nome: "Coral / Quarteto Vocal", desc: "Textura polifônica majestosa" }
@@ -571,7 +561,7 @@
                     if (!mapaCategorias[cat]) {
                         mapaCategorias[cat] = {
                             categoria: cat,
-                            icone: inst.icone || "🎻",
+                            icone: inst.icone || "",
                             itens: []
                         };
                     }
@@ -597,7 +587,7 @@
         container.innerHTML = catalogoInstrumentos.map(cat => `
             <div class="custom-cat-block">
                 <div class="custom-cat-header">
-                    <span class="custom-cat-icon">${cat.icone}</span>
+                    ${cat.icone ? `<span class="custom-cat-icon">${cat.icone}</span>` : ""}
                     <h3>${cat.categoria}</h3>
                 </div>
                 <div class="custom-inst-grid">
@@ -735,6 +725,8 @@
         root.style.setProperty("--formation-border", hexParaRgba(cor, 0.38));
         root.style.setProperty("--formation-badge-bg", hexParaRgba(cor, 0.12));
         root.style.setProperty("--formation-light-overlay", hexParaRgba(cor, 0.05));
+        root.style.setProperty("--navbar-formation-bg", `linear-gradient(180deg, ${hexParaRgba(cor, 0.08)} 0%, #090a12 100%)`);
+        root.style.setProperty("--navbar-formation-border", hexParaRgba(cor, 0.28));
 
         // Atualizar Header & Hero
         const badgeTexto = document.getElementById("badgeTexto");
@@ -787,7 +779,7 @@
             if (instContainer) {
                 instContainer.innerHTML = dados.instrumentos.map(inst => `
                     <div class="instrument-pill">
-                        <span class="inst-icon">${inst.icone}</span>
+                        ${inst.icone ? `<span class="inst-icon">${inst.icone}</span>` : ""}
                         <div class="inst-info">
                             <strong>${inst.nome}</strong>
                             <small>${inst.desc}</small>

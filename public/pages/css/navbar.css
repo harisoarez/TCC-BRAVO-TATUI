@@ -3,8 +3,8 @@
    ================================================================ */
 
 #nav-bar {
-    background-color: #0b0d13;
-    border-bottom: 1px solid #1c2233;
+    background-color: var(--navbar-bg, #0b0d13);
+    border-bottom: 1px solid var(--navbar-border, #1c2233);
     min-height: 65px;
     display: flex;
     align-items: center;
@@ -15,9 +15,72 @@
     top: 0;
     z-index: 1000;
     font-family: 'inter', sans-serif;
+    transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
-/* Logo com o símbolo de rascunho (Tilápia) */
+/* ================================================================
+   VARIAÇÕES SUTIS DE COR DA NAVBAR DE ACORDO COM CADA PÁGINA
+   Harmonização suave com a identidade cromática de cada ambiente
+   ================================================================ */
+
+/* 1. Página Inicial / Index (Onyx e grafite escuro refinado) */
+#nav-bar.nav-tema-index {
+    background: linear-gradient(180deg, #0a0c12 0%, #07080d 100%);
+    border-bottom-color: #171c28;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* 2. Coffee Bravo / Cardápio (Tonalidade quente marrom café torrado e caramelo) */
+#nav-bar.nav-tema-cardapio {
+    background: linear-gradient(180deg, #18100b 0%, #120c08 100%);
+    border-bottom-color: #382014;
+    box-shadow: 0 4px 24px rgba(24, 15, 10, 0.6);
+}
+
+/* 3. Calendário Acadêmico (Cinza escuro, grafite e cinza claro sofisticado) */
+#nav-bar.nav-tema-calendario {
+    background: linear-gradient(180deg, #1c1c22 0%, #121215 100%);
+    border-bottom-color: #363640;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.65);
+}
+
+/* 4. Formações Musicais (Índigo e ardósia erudito elegante) */
+#nav-bar.nav-tema-formacoes {
+    background: linear-gradient(180deg, #141727 0%, #0e101c 100%);
+    border-bottom-color: #242944;
+    box-shadow: 0 4px 24px rgba(17, 20, 35, 0.6);
+}
+
+/* 5. Formação Selecionada (Matiz sutil da formação ativa com brilho harmônico) */
+#nav-bar.nav-tema-formacao-selecionada {
+    background: var(--navbar-formation-bg, linear-gradient(180deg, #121422 0%, #0a0b14 100%));
+    border-bottom-color: var(--navbar-formation-border, var(--formation-border, rgba(164, 173, 229, 0.3)));
+    box-shadow: 0 4px 24px var(--formation-glow, rgba(0, 0, 0, 0.55));
+}
+
+/* 6. Aulas e Instrumentos (Madeira acústica / mogno nobre e ébano clássico) */
+#nav-bar.nav-tema-instrumentos {
+    background: linear-gradient(180deg, #131014 0%, #0d0a0e 100%);
+    border-bottom-color: #281d27;
+    box-shadow: 0 4px 24px rgba(18, 14, 19, 0.6);
+}
+
+/* 7. Instrumento Selecionado (Madeira quente com sutil filete dourado clássico) */
+#nav-bar.nav-tema-inst-selecionado {
+    background: linear-gradient(180deg, #14110f 0%, #0e0b09 100%);
+    border-bottom: 1px solid rgba(245, 214, 150, 0.22);
+    box-shadow: 0 4px 24px rgba(20, 15, 11, 0.55);
+}
+
+/* 8. Login e Autenticação (Grafite escuro com cinza acetinado) */
+#nav-bar.nav-tema-login {
+    background: linear-gradient(180deg, #0d0f17 0%, #080910 100%);
+    border-bottom-color: #1a1e2c;
+    box-shadow: 0 4px 22px rgba(9, 11, 18, 0.55);
+}
+
+/* Logo Oficial Bravo Tatuí */
 #nav-bar .logo-container {
     display: flex;
     align-items: center;
@@ -30,17 +93,20 @@
     text-decoration: none;
 }
 
-#nav-bar .logo-tilapia {
+#nav-bar .logo-tilapia,
+#nav-bar .logo-img {
     width: 44px;
     height: 44px;
     border-radius: 50%;
     object-fit: cover;
+    background-color: rgba(0, 0, 0, 0.35);
     border: 2px solid #F5D696;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     box-shadow: 0 0 8px rgba(245, 214, 150, 0.3);
 }
 
-#nav-bar .logo-tilapia:hover {
+#nav-bar .logo-tilapia:hover,
+#nav-bar .logo-img:hover {
     transform: scale(1.06);
 }
 
@@ -79,20 +145,11 @@
     background: rgba(245, 214, 150, 0.1);
 }
 
-/* Botão especial do Calendário (Apenas para logados) */
+/* Botão do Calendário na Navbar */
 #nav-bar .nav-link-calendario {
-    background: rgba(245, 214, 150, 0.15) !important;
-    border: 1px solid rgba(245, 214, 150, 0.4) !important;
-    color: #F5D696 !important;
-    font-weight: 600 !important;
     display: inline-flex;
     align-items: center;
     gap: 6px;
-}
-
-#nav-bar .nav-link-calendario:hover {
-    background: rgba(245, 214, 150, 0.28) !important;
-    box-shadow: 0 0 10px rgba(245, 214, 150, 0.25);
 }
 
 /* Área de Usuário no Canto Superior Direito */
@@ -538,6 +595,55 @@
     background: rgba(255, 255, 255, 0.02);
 }
 
+/* ================================================================
+   ADAPTAÇÃO SUTIL DO MENU MOBILE DRAWER POR PÁGINA
+   ================================================================ */
+.drawer-nav-tema-cardapio .menu-mobile-drawer {
+    background: #150e09;
+    border-left-color: rgba(228, 184, 126, 0.28);
+}
+.drawer-nav-tema-cardapio .menu-mobile-header {
+    background: rgba(228, 184, 126, 0.04);
+    border-bottom-color: rgba(228, 184, 126, 0.12);
+}
+
+.drawer-nav-tema-calendario .menu-mobile-drawer {
+    background: #141418;
+    border-left-color: rgba(228, 228, 231, 0.28);
+}
+.drawer-nav-tema-calendario .menu-mobile-header {
+    background: rgba(255, 255, 255, 0.04);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.drawer-nav-tema-formacoes .menu-mobile-drawer {
+    background: #111422;
+    border-left-color: rgba(164, 173, 229, 0.28);
+}
+.drawer-nav-tema-formacoes .menu-mobile-header {
+    background: rgba(164, 173, 229, 0.04);
+    border-bottom-color: rgba(164, 173, 229, 0.12);
+}
+
+.drawer-nav-tema-formacao-selecionada .menu-mobile-drawer {
+    background: #0d0f1a;
+    border-left-color: var(--formation-border, rgba(164, 173, 229, 0.35));
+}
+.drawer-nav-tema-formacao-selecionada .menu-mobile-header {
+    background: var(--formation-badge-bg, rgba(164, 173, 229, 0.05));
+    border-bottom-color: var(--formation-border, rgba(164, 173, 229, 0.15));
+}
+
+.drawer-nav-tema-instrumentos .menu-mobile-drawer {
+    background: #120e13;
+    border-left-color: rgba(245, 214, 150, 0.25);
+}
+
+.drawer-nav-tema-inst-selecionado .menu-mobile-drawer {
+    background: #120f0d;
+    border-left-color: rgba(245, 214, 150, 0.28);
+}
+
 .menu-mobile-logo-link {
     display: flex;
     align-items: center;
@@ -551,6 +657,7 @@
     border-radius: 50%;
     border: 1.5px solid #F5D696;
     object-fit: cover;
+    background-color: #0b0d13;
 }
 
 .menu-logo-text {
@@ -839,7 +946,8 @@
         letter-spacing: 0.8px !important;
     }
 
-    #nav-bar .logo-tilapia {
+    #nav-bar .logo-tilapia,
+    #nav-bar .logo-img {
         width: 36px !important;
         height: 36px !important;
     }

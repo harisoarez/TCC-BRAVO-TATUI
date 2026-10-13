@@ -22,9 +22,9 @@ async function popularBanco() {
                 VALUES (?, 'owner', 'owner@institutobravo.com.br', 'Owner', '15999990000', 0, NOW())`,
                 [hashOwner]
             );
-            console.log("✅ Usuário Owner criado: owner@institutobravo.com.br (senha: D@hl1a_P1nn@t4!)");
+            console.log("Usuário Owner criado: owner@institutobravo.com.br (senha: D@hl1a_P1nn@t4!)");
         } else {
-            console.log("ℹ️ Owner já existe no banco.");
+            console.log("Owner já existe no banco.");
         }
 
         // 1. Criar usuário Admin se não existir
@@ -43,10 +43,10 @@ async function popularBanco() {
                 [hashAdmin]
             );
             idAdmin = resAdmin.insertId;
-            console.log("✅ Usuário Administrador criado: admin@institutobravo.com.br (senha: admin123)");
+            console.log("Usuário Administrador criado: admin@institutobravo.com.br (senha: admin123)");
         } else {
             idAdmin = admins[0].id_usuario;
-            console.log("ℹ️ Administrador já existe no banco.");
+            console.log("Administrador já existe no banco.");
         }
 
         // 2. Criar Professor se não existir
@@ -71,14 +71,14 @@ async function popularBanco() {
                 [resProfUser.insertId]
             );
             idProfessorDB = resProf.insertId;
-            console.log("✅ Professor criado: professor@institutobravo.com.br (senha: prof123)");
+            console.log("Professor criado: professor@institutobravo.com.br (senha: prof123)");
         } else {
             const [profCadastrado] = await conexao.query(
                 "SELECT idprofessor FROM professor WHERE usuario_login_id = ? LIMIT 1",
                 [professoresUser[0].id_usuario]
             );
             idProfessorDB = profCadastrado[0]?.idprofessor || 1;
-            console.log("ℹ️ Professor já existe no banco.");
+            console.log("Professor já existe no banco.");
         }
 
         // 3. Criar Aluno se não existir
@@ -103,9 +103,9 @@ async function popularBanco() {
                 [resAlunoUser.insertId]
             );
             idAlunoDB = resAluno.insertId;
-            console.log("✅ Aluno criado: aluno@institutobravo.com.br (senha: aluno123)");
+            console.log("Aluno criado: aluno@institutobravo.com.br (senha: aluno123)");
         } else {
-            console.log("ℹ️ Aluno já existe no banco.");
+            console.log("Aluno já existe no banco.");
         }
 
         // 4. Criar Aulas iniciais se não houver nenhuma
@@ -137,16 +137,16 @@ async function popularBanco() {
                     `${ano}-${mes}-${diaHoje} 16:30:00`,
                 ]
             );
-            console.log("✅ 3 Aulas de exemplo cadastradas para o calendário!");
+            console.log("3 Aulas de exemplo cadastradas para o calendário!");
         } else {
-            console.log(`ℹ️ O banco já possui ${aulasExistentes[0].total} aulas cadastradas.`);
+            console.log(`O banco já possui ${aulasExistentes[0].total} aulas cadastradas.`);
         }
 
         await conexao.commit();
-        console.log("🎉 Seed finalizado com sucesso!");
+        console.log("Seed finalizado com sucesso!");
     } catch (erro) {
         await conexao.rollback();
-        console.error("❌ Erro ao popular banco:", erro.message);
+        console.error("Erro ao popular banco:", erro.message);
     } finally {
         conexao.release();
         process.exit(0);

@@ -97,12 +97,14 @@ body {
     text-decoration: none;
 }
 
-.painel-logo-tilapia {
+.painel-logo-tilapia,
+.painel-logo-img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid #000000;
+    background-color: #0b0d13;
+    border: 2px solid #F5D696;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
 }
 

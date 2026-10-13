@@ -6,7 +6,6 @@
     <header class="databricks-header">
         <div class="header-title-col">
             <h1>
-                <span class="estrela">★</span> 
                 Dashboard Geral & Indicadores
             </h1>
             <p>Instituto Musical Bravo Tatuí • Gestão Acadêmica e Controle Operacional</p>
@@ -381,7 +380,7 @@
             <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 14px; text-align: center; margin-bottom: 18px;">
                 <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">Anexo enviado:</p>
                 <a href="#" id="confLinkAnexo" target="_blank" class="link-ver-comprovante" style="font-size: 14px;">
-                    Abrir Comprovante em Nova Guia ↗
+                    Abrir Comprovante em Nova Guia
                 </a>
             </div>
 
@@ -623,7 +622,7 @@
 
         if (modoAtual === 'financas') {
             document.getElementById('boxLegendaSombrinha').style.display = 'flex';
-            document.getElementById('graficoTitulo').textContent = '📈 Resumo Financeiro & Comparativo com Mês Passado';
+            document.getElementById('graficoTitulo').textContent = 'Resumo Financeiro & Comparativo com Mês Passado';
             document.getElementById('graficoSubtitulo').innerHTML = 'Acompanhe a curva de recebimentos semanais com a <strong>sombrinha</strong> (área preenchida) do mês anterior para comparar o faturamento.';
 
             if (tipoGrafico === 'line') {
@@ -739,7 +738,7 @@
         } else {
             // MODO USUÁRIOS CADASTRADOS
             document.getElementById('boxLegendaSombrinha').style.display = 'none';
-            document.getElementById('graficoTitulo').textContent = '👥 Evolução de Usuários Cadastrados';
+            document.getElementById('graficoTitulo').textContent = 'Evolução de Usuários Cadastrados';
             document.getElementById('graficoSubtitulo').textContent = 'Visualização do crescimento da base de alunos e usuários cadastrados no Instituto ao longo dos últimos meses.';
 
             chartInstance = new Chart(ctx, {

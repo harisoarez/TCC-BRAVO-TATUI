@@ -52,9 +52,10 @@ function isPrivilegiado() {
 function inicializarAutenticacao() {
     token = localStorage.getItem("authToken");
     if (!token) {
-        alert("Acesso restrito: faça login para acessar o calendário.");
-        window.location.href = "./login.html";
-        return false;
+        usuarioAtivo = { tipo: "visitante", nome: "Visitante" };
+        renderizarAreaUsuario();
+        aplicarPermissoesUI();
+        return;
     }
 
     const payload = decodificarToken(token);
@@ -124,16 +125,16 @@ function renderizarAreaUsuario() {
             bannerModo.innerHTML = `
                 <span><strong>${rotulo}:</strong> Você tem permissão total para agendar, editar e cancelar aulas.</span>
             `;
-            bannerModo.style.background = "#fefce8";
-            bannerModo.style.borderColor = "#fef08a";
-            bannerModo.style.color = "#854d0e";
+            bannerModo.style.background = "#2a2a32";
+            bannerModo.style.borderColor = "#4c4c58";
+            bannerModo.style.color = "#f4f4f6";
         } else {
             bannerModo.innerHTML = `
                 <span><strong>Modo de Visualização:</strong> Você está visualizando a grade de aulas em modo somente leitura. Apenas a administração pode agendar ou alterar horários.</span>
             `;
-            bannerModo.style.background = "#eff6ff";
-            bannerModo.style.borderColor = "#bfdbfe";
-            bannerModo.style.color = "#1e40af";
+            bannerModo.style.background = "#1e1e24";
+            bannerModo.style.borderColor = "#363640";
+            bannerModo.style.color = "#a1a1aa";
         }
     }
 }

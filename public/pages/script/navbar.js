@@ -58,33 +58,65 @@
         if (!nav) return;
 
         const usuario = obterUsuarioLogado();
-        const paginaAtual = window.location.pathname.split("/").pop() || "index.html";
+        const paginaAtual = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
 
         // Determinar links ativos
-        const isIndex = paginaAtual === "index.html" || paginaAtual === "";
+        const isIndex = paginaAtual === "index.html" || paginaAtual === "" || paginaAtual === "index";
+        const isFormacaoSelecionada = paginaAtual.includes("formacaoselecionada");
         const isFormacoes = paginaAtual.includes("formacao");
+        const isInstSelecionado = paginaAtual.includes("instselecionado");
         const isInstrumentos = paginaAtual.includes("inst");
         const isCardapio = paginaAtual.includes("cardapio");
         const isCalendario = paginaAtual.includes("calendario");
         const isLogin = paginaAtual.includes("login");
 
-        // 1. Logo com Tilápia
+        // Identificar tema cromático específico da página
+        let temaPagina = "nav-tema-index";
+        if (isCardapio) {
+            temaPagina = "nav-tema-cardapio";
+        } else if (isCalendario) {
+            temaPagina = "nav-tema-calendario";
+        } else if (isFormacaoSelecionada) {
+            temaPagina = "nav-tema-formacao-selecionada";
+        } else if (isFormacoes) {
+            temaPagina = "nav-tema-formacoes";
+        } else if (isInstSelecionado) {
+            temaPagina = "nav-tema-inst-selecionado";
+        } else if (isInstrumentos) {
+            temaPagina = "nav-tema-instrumentos";
+        } else if (isLogin) {
+            temaPagina = "nav-tema-login";
+        }
+
+        // Aplica o tema visual sutil na navbar
+        nav.classList.remove(
+            "nav-tema-index",
+            "nav-tema-cardapio",
+            "nav-tema-calendario",
+            "nav-tema-formacoes",
+            "nav-tema-formacao-selecionada",
+            "nav-tema-instrumentos",
+            "nav-tema-inst-selecionado",
+            "nav-tema-login"
+        );
+        nav.classList.add(temaPagina);
+
+        // 1. Logo Oficial Bravo Tatuí
         const logoHtml = `
             <div class="logo-container">
                 <a href="./index.html" class="logo-link" title="Instituto Musical Bravo Tatuí">
-                    <img src="https://friocenterpescados.com.br/uploads/tilapia-inteira-eviscerada_1.jpg" alt="Tilápia Rascunho" class="logo-tilapia">
+                    <img src="../images/logo_bravo.png" alt="Instituto Musical Bravo Tatuí" class="logo-tilapia logo-img">
                     <span class="logo-text">BRAVO TATUÍ</span>
                 </a>
             </div>
         `;
 
         // 2. Links Centrais (Sem Emojis nos Botões da Navbar)
-        // REGRA CRÍTICA: Não é possível ver o botão de acessar o calendário para pessoas não logadas!
-        const linkCalendarioHtml = usuario ? `
-            <a href="./calendario.html" class="nav-link-calendario ${isCalendario ? 'link-ativo' : ''}">
+        const linkCalendarioHtml = `
+            <a href="./calendario.html" class="${isCalendario ? 'link-ativo' : ''}">
                 Calendário
             </a>
-        ` : "";
+        `;
 
         const linkPainelAdminHtml = (usuario && (usuario.tipo === "admin" || usuario.tipo === "owner")) ? `
             <a href="${API_BASE || 'http://localhost:3000'}/paginas/dashboard?token=${encodeURIComponent(usuario.token)}" style="color: #F5D696; font-weight:600;">
@@ -208,7 +240,8 @@
             isInstrumentos,
             isCardapio,
             isCalendario,
-            isLogin
+            isLogin,
+            temaPagina
         });
 
         // Se estiver logado, injeta o modal de perfil em todas as páginas do site
@@ -253,12 +286,12 @@
             drawerExistente.remove();
         }
 
-        const linkCalendarioDrawer = usuario ? `
-            <a href="./calendario.html" class="menu-mobile-link ${paginas.isCalendario ? 'link-ativo-mobile' : ''}">
+        const linkCalendarioDrawer = `
+            <a href="./calendario.html" class="menu-mobile-link ${paginas.isCalendario ? 'link-ativo-mobile' : ''}" onclick="window.fecharMenuMobile();">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                 <span>Calendário</span>
             </a>
-        ` : "";
+        `;
 
         const linkPainelDrawer = (usuario && (usuario.tipo === "admin" || usuario.tipo === "owner")) ? `
             <a href="${API_BASE || 'http://localhost:3000'}/paginas/dashboard?token=${encodeURIComponent(usuario.token)}" class="menu-mobile-link link-destaque-gold">
@@ -325,12 +358,13 @@
             `;
         }
 
+        const drawerTemaClasse = paginas.temaPagina ? `drawer-${paginas.temaPagina}` : "";
         const drawerHtml = `
-            <div id="menuMobileDrawer" class="menu-mobile-drawer-overlay" role="dialog" aria-modal="true" aria-label="Menu de Navegação">
+            <div id="menuMobileDrawer" class="menu-mobile-drawer-overlay ${drawerTemaClasse}" role="dialog" aria-modal="true" aria-label="Menu de Navegação">
                 <div class="menu-mobile-drawer">
                     <div class="menu-mobile-header">
                         <a href="./index.html" class="menu-mobile-logo-link" onclick="window.fecharMenuMobile();">
-                            <img src="https://friocenterpescados.com.br/uploads/tilapia-inteira-eviscerada_1.jpg" alt="Logo" class="menu-logo-img">
+                            <img src="../images/logo_bravo.png" alt="Instituto Musical Bravo Tatuí" class="menu-logo-img">
                             <span class="menu-logo-text">BRAVO TATUÍ</span>
                         </a>
                         <button type="button" class="btn-fechar-menu-mobile" id="btnFecharMenuMobile" aria-label="Fechar menu">&times;</button>

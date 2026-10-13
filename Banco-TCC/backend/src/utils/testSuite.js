@@ -106,11 +106,11 @@ server.listen(3002, async () => {
         await pool.query("DELETE FROM usuario_login WHERE email IN ('aluno_normal_teste@teste.com', 'novo_admin_owner@teste.com')");
         console.log("Limpeza concluída com sucesso!");
 
-        console.log("\n🎉 TODOS OS TESTES PASSARAM COM SUCESSO!");
+        console.log("\nTODOS OS TESTES PASSARAM COM SUCESSO!");
         server.close();
         process.exit(0);
     } catch (err) {
-        console.error("❌ ERRO NO TESTE:", err);
+        console.error("ERRO NO TESTE:", err);
         server.close();
         process.exit(1);
     }

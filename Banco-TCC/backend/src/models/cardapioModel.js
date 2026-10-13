@@ -23,7 +23,7 @@ const cardapioModel = {
             // Verifica se a tabela já possui itens cadastrados
             const [linhas] = await pool.query("SELECT COUNT(*) AS total FROM cardapio_item");
             if (linhas[0].total === 0) {
-                console.log("☕ Cardápio vazio. Inserindo itens iniciais do Coffee Bravo...");
+                console.log("Cardápio vazio. Inserindo itens iniciais do Coffee Bravo...");
                 const itensIniciais = [
                     {
                         nome: "Café Espresso Bravo",

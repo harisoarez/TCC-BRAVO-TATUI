@@ -67,7 +67,7 @@ const paginaInstrumentoController = {
             await instrumentoModel.criar({
                 nome: nome.trim(),
                 categoria: categoriaFinal,
-                icone: icone ? icone.trim() : "🎻",
+                icone: icone ? icone.trim() : "",
                 descricao: descricao ? descricao.trim() : "",
                 imagem_url: imagemFinal,
                 disponivel_aulas: disponivel_aulas === "1" || disponivel_aulas === "on" || disponivel_aulas === 1 ? 1 : 0,
@@ -110,7 +110,7 @@ const paginaInstrumentoController = {
             await instrumentoModel.atualizar(id, {
                 nome: nome.trim(),
                 categoria: categoriaFinal,
-                icone: icone ? icone.trim() : "🎻",
+                icone: icone ? icone.trim() : "",
                 descricao: descricao !== undefined ? descricao.trim() : "",
                 imagem_url: imagemFinal,
                 disponivel_aulas: disponivel_aulas === "1" || disponivel_aulas === "on" || disponivel_aulas === 1 ? 1 : 0,

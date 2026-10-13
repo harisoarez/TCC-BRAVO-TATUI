@@ -147,11 +147,11 @@ server.listen(3004, async () => {
         const [userVerif] = await pool.query("SELECT descricao, telefone FROM usuario_login WHERE email = 'admin@institutobravo.com.br'");
         console.log("Descrição gravada:", userVerif[0].descricao);
 
-        console.log("\n🎉 TODAS AS NOVAS REGRAS, TEMA CLARO E FUNCIONALIDADES FORAM TESTADAS E APROVADAS COM 100% DE SUCESSO!");
+        console.log("\nTODAS AS NOVAS REGRAS, TEMA CLARO E FUNCIONALIDADES FORAM TESTADAS E APROVADAS COM 100% DE SUCESSO!");
         server.close();
         process.exit(0);
     } catch (err) {
-        console.error("❌ ERRO NO TESTE:", err);
+        console.error("ERRO NO TESTE:", err);
         server.close();
         process.exit(1);
     }

@@ -72,7 +72,7 @@
 
         grid.innerHTML = `
             <div class="estado-vazio">
-                <h3>☕ Carregando delícias do Coffee Bravo...</h3>
+                <h3>Carregando delícias do Coffee Bravo...</h3>
                 <p>Buscando os produtos mais recentes.</p>
             </div>
         `;
@@ -190,10 +190,10 @@
 
                 const imagemHtml = item.imagem_url
                     ? `<img src="${item.imagem_url}" alt="${item.nome}" loading="lazy">`
-                    : `<div class="produto-imagem-placeholder">☕</div>`;
+                    : `<div class="produto-imagem-placeholder"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg></div>`;
 
                 const badgeDestaqueHtml = estaDestaque
-                    ? `<span class="badge-destaque">★ Destaque</span>`
+                    ? `<span class="badge-destaque">Destaque</span>`
                     : "";
 
                 const badgeStatusHtml = `<span class="badge-status ${estaDisponivel ? 'disponivel' : 'esgotado'}">${estaDisponivel ? 'Disponível' : 'Esgotado'}</span>`;

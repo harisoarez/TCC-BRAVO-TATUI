@@ -15,15 +15,15 @@ const pool = mysql.createPool({
 
 pool.getConnection()
 .then(connection => {
-  console.log('✅ MySQL conectado');
+  console.log('MySQL conectado');
   connection.release();
 })
 .catch(err => {
   const detalhe = err.code || (err.errors && err.errors[0]?.code) || err.message || err;
   if (detalhe === 'ECONNREFUSED') {
-    console.error('❌ Erro MySQL: Conexão recusada (ECONNREFUSED) na porta 3306. Verifique se o serviço do MySQL (ou XAMPP/Wamp) está ativo.');
+    console.error('Erro MySQL: Conexão recusada (ECONNREFUSED) na porta 3306. Verifique se o serviço do MySQL (ou XAMPP/Wamp) está ativo.');
   } else {
-    console.error('❌ Erro MySQL:', detalhe);
+    console.error('Erro MySQL:', detalhe);
   }
 });
 

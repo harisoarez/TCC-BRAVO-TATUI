@@ -41,7 +41,7 @@ async function migrate() {
              VALUES (?, 'owner', 'owner@institutobravo.com.br', 'Owner', '15999990000', 0, NOW())`,
             [senhaHash]
         );
-        console.log("✅ Usuário Owner criado: owner@institutobravo.com.br / D@hl1a_P1nn@t4!");
+        console.log("Usuário Owner criado: owner@institutobravo.com.br / D@hl1a_P1nn@t4!");
     } else {
         await conn.query(
             `UPDATE usuario_login 
@@ -49,7 +49,7 @@ async function migrate() {
              WHERE email = ?`,
             [senhaHash, "owner@institutobravo.com.br"]
         );
-        console.log("✅ Usuário Owner atualizado com sucesso.");
+        console.log("Usuário Owner atualizado com sucesso.");
     }
 
     await conn.end();

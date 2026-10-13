@@ -19,7 +19,6 @@
     <header class="databricks-header">
         <div class="header-title-col">
             <h1>
-                <span class="estrela">★</span>
                 Minha Matrícula • <%= al.nome %>
             </h1>
             <p>Curso: <strong><%= al.curso || 'Piano' %></strong> • Instituto Musical Bravo Tatuí</p>
@@ -84,7 +83,7 @@
                 <p style="color: #86efac; font-size: 13.5px; margin-top: 6px;">Seu pagamento foi conferido e validado com sucesso pela administração.</p>
                 <% if (mensAtual && mensAtual.comprovante_url) { %>
                     <a href="<%= mensAtual.comprovante_url %>" target="_blank" class="link-ver-comprovante" style="display:inline-block; margin-top:12px; font-size:13.5px;">
-                        Visualizar Meu Comprovante Aprovado ↗
+                        Visualizar Meu Comprovante Aprovado
                     </a>
                 <% } %>
             </div>
@@ -98,7 +97,7 @@
                 <div style="display: flex; justify-content: center; gap: 10px; align-items: center; margin-top: 14px; flex-wrap: wrap;">
                     <% if (mensAtual && mensAtual.comprovante_url) { %>
                         <a href="<%= mensAtual.comprovante_url %>" target="_blank" class="link-ver-comprovante" style="font-size:13.5px;">
-                            Visualizar Comprovante Enviado ↗
+                            Visualizar Comprovante Enviado
                         </a>
                     <% } %>
                     <button type="button" class="btn-acao-comprovante" onclick="document.getElementById('blocoSubstituirComprovante').classList.toggle('oculto')" style="font-size: 13px; padding: 7px 14px; background: #d97706; color: #fff;">
@@ -255,7 +254,7 @@
         formAluno.addEventListener('submit', function(e) {
             e.preventDefault();
             const btn = document.getElementById('btnEnviarComprovanteAluno');
-            enviarComprovanteGenerico(this, btn, '📤 Enviar Comprovante para Verificação da Administração');
+            enviarComprovanteGenerico(this, btn, 'Enviar Comprovante para Verificação da Administração');
         });
     }
 
@@ -264,7 +263,7 @@
         formSubstituir.addEventListener('submit', function(e) {
             e.preventDefault();
             const btn = document.getElementById('btnSubstituirComprovanteAluno');
-            enviarComprovanteGenerico(this, btn, '📤 Enviar Novo Comprovante e Atualizar');
+            enviarComprovanteGenerico(this, btn, 'Enviar Novo Comprovante e Atualizar');
         });
     }
 </script>

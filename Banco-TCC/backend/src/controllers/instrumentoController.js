@@ -120,7 +120,7 @@ const instrumentoController = {
             const novoId = await instrumentoModel.criar({
                 nome: nome.trim(),
                 categoria: categoria ? categoria.trim() : "Teclas & Harmonia",
-                icone: icone ? icone.trim() : "🎻",
+                icone: icone ? icone.trim() : "",
                 descricao: descricao ? descricao.trim() : "",
                 disponivel_aulas: disponivel_aulas !== undefined ? (disponivel_aulas === "1" || disponivel_aulas === 1 || disponivel_aulas === true || disponivel_aulas === "on" ? 1 : 0) : 1,
                 disponivel_eventos: disponivel_eventos !== undefined ? (disponivel_eventos === "1" || disponivel_eventos === 1 || disponivel_eventos === true || disponivel_eventos === "on" ? 1 : 0) : 1,

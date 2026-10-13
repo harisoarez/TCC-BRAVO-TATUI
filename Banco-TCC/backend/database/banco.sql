@@ -149,7 +149,7 @@ CREATE TABLE IF NOT EXISTS instrumento (
   id_instrumento INT PRIMARY KEY AUTO_INCREMENT,
   nome VARCHAR(100) NOT NULL,
   categoria VARCHAR(60) NOT NULL,
-  icone VARCHAR(50) DEFAULT '🎻',
+  icone VARCHAR(50) DEFAULT '',
   imagem_url VARCHAR(500) NULL,
   descricao TEXT,
   disponivel_aulas TINYINT(1) DEFAULT 1,

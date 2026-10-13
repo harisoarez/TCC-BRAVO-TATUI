@@ -77,7 +77,7 @@ server.listen(3003, async () => {
 
         const temModoAdmin = dashAdmin.text.includes("Modo Administrador");
         const graficoOcultadoParaAdmin = !dashAdmin.text.includes("graficoExecutivoOwner");
-        const professoresOcultadoParaAdmin = !dashAdmin.text.includes("🎻 Professores");
+        const professoresOcultadoParaAdmin = !dashAdmin.text.includes("/paginas/professores");
         const temAniversariantesAdmin = dashAdmin.text.includes("Aniversariantes do Mês");
         const temMensalidadesAdmin = dashAdmin.text.includes("Mensalidades dos Alunos");
 
@@ -134,11 +134,11 @@ server.listen(3003, async () => {
             }
         }
 
-        console.log("\n🎉 TODOS OS TESTES DO DASHBOARD E PERMISSÕES PASSARAM COM 100% DE SUCESSO!");
+        console.log("\nTODOS OS TESTES DO DASHBOARD E PERMISSÕES PASSARAM COM 100% DE SUCESSO!");
         server.close();
         process.exit(0);
     } catch (err) {
-        console.error("❌ ERRO NO TESTE:", err);
+        console.error("ERRO NO TESTE:", err);
         server.close();
         process.exit(1);
     }

@@ -195,7 +195,7 @@
                             <% if (aluno.foto_url) { %>
                                 <img src="<%= aluno.foto_url %>" alt="<%= aluno.nome %>">
                             <% } else { %>
-                                <%= aluno.nome.charAt(0) %>
+                                <%= (aluno.nome || 'A').charAt(0) %>
                             <% } %>
                         </div>
                         <div class="aniv-detalhes">
@@ -265,13 +265,13 @@
                             </td>
                             <td>
                                 <% 
-                                    const dataVenc = new Date(m.data_vencimento);
-                                    const vencFormatado = dataVenc.toLocaleDateString('pt-BR');
-                                    %>
+                                    const dataVenc = m.data_vencimento ? new Date(m.data_vencimento) : null;
+                                    const vencFormatado = (dataVenc && !isNaN(dataVenc.getTime())) ? dataVenc.toLocaleDateString('pt-BR') : '—';
+                                %>
                                 <strong><%= vencFormatado %></strong>
                             </td>
                             <td>
-                                <strong>R$ <%= Number(m.valor).toFixed(2) %></strong>
+                                <strong>R$ <%= Number(m.valor || 0).toFixed(2) %></strong>
                             </td>
                             <td>
                                 <% if (m.status_parcela === 'pago') { %>
@@ -285,8 +285,11 @@
                                 <% } %>
                             </td>
                             <td>
-                                <% if (m.data_pagamento) { %>
-                                    <%= new Date(m.data_pagamento).toLocaleDateString('pt-BR') %> 
+                                <% if (m.data_pagamento) { 
+                                    const dtPag = new Date(m.data_pagamento);
+                                    const pagFormatado = (!isNaN(dtPag.getTime())) ? dtPag.toLocaleDateString('pt-BR') : '';
+                                %>
+                                    <%= pagFormatado %> 
                                     <small style="color: var(--text-muted);">(<%= m.forma_pagamento ? m.forma_pagamento.toUpperCase() : 'PIX' %>)</small>
                                 <% } else { %>
                                     <span style="color: var(--text-muted);">—</span>
@@ -439,8 +442,6 @@
         </form>
     </div>
 </div>
-
-<%- include('../partials/footer') %>
 
 <!-- Scripts do Painel -->
 <script>
@@ -612,7 +613,13 @@
     let tipoGrafico = 'line';
 
     function renderizarGrafico() {
-        const ctx = document.getElementById('graficoExecutivoOwner').getContext('2d');
+        const canvas = document.getElementById('graficoExecutivoOwner');
+        if (!canvas) return;
+        if (typeof Chart === 'undefined') {
+            console.warn('Biblioteca Chart.js não encontrada.');
+            return;
+        }
+        const ctx = canvas.getContext('2d');
         if (chartInstance) {
             chartInstance.destroy();
         }
@@ -786,6 +793,12 @@
         renderizarGrafico();
     }
 
-    document.addEventListener('DOMContentLoaded', renderizarGrafico);
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', renderizarGrafico);
+    } else {
+        renderizarGrafico();
+    }
     <% } %>
 </script>
+
+<%- include('../partials/footer') %>

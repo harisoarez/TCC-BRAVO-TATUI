@@ -1,4 +1,6 @@
-*{
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap');
+
+* {
     margin: 0;
     padding: 0;
     -webkit-font-smoothing: antialiased;
@@ -26,27 +28,28 @@
     src: url(../fonts/Quiksand/Quicksand-VariableFont_wght.ttf);
 }
 
-a{
+a {
     text-decoration: none;
     color: white;
 }
 
-body{
+body {
     background-color: #080808;
     overflow-x: clip;
     overflow-y: visible;
+    font-family: 'inter', sans-serif;
+    color: #FFFFFF;
 }
 
-.container{ /*tela inteira*/
-    height: 100%;
+.container {
+    min-height: 100vh;
     width: 100%;
     position: relative;
     color: white;
 }
 
-/*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
-
-.container .header{ /*cabeçalho*/
+/* Cabeçalho */
+.container .header {
     background-color: #1A1A1A;
     height: 3vh;
     min-height: 28px;
@@ -57,96 +60,121 @@ body{
     font-size: small;
 }
 
-/* Grid de instrumentos */
+/* Grid de instrumentos estilo Galeria de Concerto */
 #cards {
     width: 100%;
-    max-width: 1320px;
+    max-width: 1440px;
     margin: 0 auto;
     min-height: calc(100vh - 120px);
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    align-items: stretch;
-    justify-content: center;
-    gap: 28px;
-    padding: 40px 24px 60px 24px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 22px;
+    padding: 36px 28px 70px 28px;
     box-sizing: border-box;
 }
 
+/* Card Individual - Paleta Dourada / Dark Amber do Instituto Bravo */
 .card {
-    border: 1px solid rgba(255, 255, 255, 0.85);
-    background-color: #1A1A1A;
+    border: 1px solid rgba(212, 175, 55, 0.28);
+    background: linear-gradient(180deg, #15120d 0%, #1e1811 50%, #2b2114 100%);
     border-radius: 16px;
-    width: 220px;
-    height: 280px;
+    width: 100%;
+    height: 380px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 12px 16px 12px;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 0;
     box-sizing: border-box;
     cursor: pointer;
     overflow: hidden;
     position: relative;
-    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+    animation: cardFadeIn 0.35s ease;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(245, 214, 150, 0.16);
 }
 
 .card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-6px);
     border-color: #F5D696;
-    box-shadow: 0 10px 25px rgba(245, 214, 150, 0.16);
+    box-shadow: 0 18px 38px rgba(212, 175, 55, 0.22), 0 4px 14px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(245, 214, 150, 0.35);
 }
 
-.imagem {
+@keyframes cardFadeIn {
+    from {
+        opacity: 0.15;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Área Superior da Imagem com Vinheta e Holofote Dourado */
+.card .imagem {
+    width: 100%;
+    height: 185px;
+    min-height: 185px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    box-sizing: border-box;
+    overflow: hidden;
+    position: relative;
+    background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.12) 0%, rgba(14, 12, 9, 0.95) 75%);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.14);
+}
+
+.card .imagem img {
+    max-width: 86%;
+    max-height: 86%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    background-color: transparent;
+    transition: transform 0.3s ease;
+    user-select: none;
+    pointer-events: none;
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.7));
+}
+
+.card:hover .imagem img {
+    transform: scale(1.06);
+}
+
+/* Área Inferior de Informações */
+.card .conteudo {
     width: 100%;
     flex: 1;
     min-height: 0;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 4px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    text-align: left;
+    padding: 16px 18px 16px 18px;
     box-sizing: border-box;
-    overflow: hidden;
 }
 
-.card .imagem img {
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    border-radius: 10px;
-    background-color: transparent;
-    transition: transform 0.25s ease;
-    user-select: none;
-    pointer-events: none;
-}
-
-.card:hover .imagem img {
-    transform: scale(1.05);
-}
-
-.card .conteudo {
+.card .conteudo-topo {
     width: 100%;
-    min-height: 52px;
-    max-height: 56px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 4px 6px 0 6px;
-    box-sizing: border-box;
-    flex-shrink: 0;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
-.card .conteudo h3 {
-    font-family: 'quicksand', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
+/* Título em Serif Clássico */
+.card .card-titulo {
+    font-family: 'Playfair Display', 'Cinzel', 'Georgia', serif;
+    font-size: 18px;
+    font-weight: 600;
     line-height: 1.25;
-    color: #FFFFFF;
-    text-align: center;
-    margin: 0;
+    color: #FFF8EB;
+    text-align: left;
+    margin: 0 0 5px 0;
     padding: 0;
     width: 100%;
     max-width: 100%;
@@ -160,87 +188,256 @@ body{
     transition: color 0.2s ease;
 }
 
-.card:hover .conteudo h3 {
+.card:hover .card-titulo {
+    color: #FDF1D6;
+}
+
+/* Subtítulo / Tag de Categoria */
+.card .card-subtitulo {
+    font-family: 'inter', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.9px;
+    color: #D4AF37;
+    opacity: 0.9;
+    text-align: left;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+/* Linha de Preço / Mensalidade Dourada */
+.card .card-preco-linha {
+    width: 100%;
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin-top: auto;
+    margin-bottom: 10px;
+    padding-top: 8px;
+}
+
+.card .card-preco {
+    font-family: 'inter', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #F5D696;
+    letter-spacing: -0.2px;
+    line-height: 1;
+}
+
+.card .card-preco-periodo {
+    font-family: 'inter', sans-serif;
+    font-size: 11.5px;
+    font-weight: 500;
+    color: rgba(245, 214, 150, 0.65);
+    margin-left: 2px;
+}
+
+/* Link de Ação Ver Detalhes */
+.card .card-link {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'inter', sans-serif;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: #E8D5B5;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.card .card-link .seta-link {
+    display: inline-block;
+    transition: transform 0.25s ease;
+    font-size: 13px;
+    line-height: 1;
+}
+
+.card:hover .card-link {
     color: #F5D696;
 }
 
-/* Responsividade */
-@media (max-width: 960px) {
+.card:hover .card-link .seta-link {
+    transform: translateX(5px);
+}
+
+/* =========================================================
+   Skeletons de Carregamento dos Cards (Grid Idêntico)
+   ========================================================= */
+.card.card-skeleton {
+    border: 1px solid rgba(212, 175, 55, 0.16);
+    background: linear-gradient(180deg, #14110d 0%, #1b1610 50%, #241c12 100%);
+    cursor: default;
+    pointer-events: none;
+    box-shadow: none;
+    animation: skeletonPulse 1.6s ease-in-out infinite alternate;
+}
+
+.card.card-skeleton:hover {
+    transform: none;
+    border-color: rgba(212, 175, 55, 0.16);
+    box-shadow: none;
+}
+
+.card.card-skeleton .skeleton-imagem-box {
+    width: 80%;
+    height: 80%;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #1e1912 0%, #2e261a 50%, #1e1912 100%);
+    background-size: 200% 100%;
+    animation: skeletonShimmer 1.8s infinite linear;
+}
+
+.card.card-skeleton .skeleton-titulo-box {
+    width: 78%;
+    height: 18px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #1e1912 0%, #2e261a 50%, #1e1912 100%);
+    background-size: 200% 100%;
+    animation: skeletonShimmer 1.8s infinite linear;
+    margin-bottom: 6px;
+}
+
+.card.card-skeleton .skeleton-subtitulo-box {
+    width: 55%;
+    height: 11px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, #1e1912 0%, #2e261a 50%, #1e1912 100%);
+    background-size: 200% 100%;
+    animation: skeletonShimmer 1.8s infinite linear;
+    margin-bottom: 16px;
+}
+
+.card.card-skeleton .skeleton-preco-box {
+    width: 42%;
+    height: 22px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #1e1912 0%, #2e261a 50%, #1e1912 100%);
+    background-size: 200% 100%;
+    animation: skeletonShimmer 1.8s infinite linear;
+    margin-top: auto;
+    margin-bottom: 10px;
+}
+
+.card.card-skeleton .skeleton-link-box {
+    width: 50%;
+    height: 13px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, #1e1912 0%, #2e261a 50%, #1e1912 100%);
+    background-size: 200% 100%;
+    animation: skeletonShimmer 1.8s infinite linear;
+}
+
+@keyframes skeletonShimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+@keyframes skeletonPulse {
+    0% { opacity: 0.6; }
+    100% { opacity: 0.95; }
+}
+
+/* =========================================================
+   Responsividade
+   ========================================================= */
+@media (max-width: 1280px) {
     #cards {
-        gap: 16px;
-        padding: 24px 16px 48px 16px;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+        padding: 30px 20px 60px 20px;
     }
 
     .card {
-        width: calc(33.333% - 12px);
-        min-width: 160px;
-        max-width: 210px;
-        height: 250px;
-        padding: 12px 10px 14px 10px;
+        height: 370px;
     }
 
-    .card .conteudo {
-        min-height: 48px;
-        max-height: 52px;
-        padding: 2px 4px 0 4px;
-    }
-
-    .card .conteudo h3 {
-        font-size: 15px;
+    .card .imagem {
+        height: 175px;
+        min-height: 175px;
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 1024px) {
     #cards {
-        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        padding: 24px 16px 50px 16px;
+    }
+
+    .card {
+        height: 360px;
+    }
+
+    .card .imagem {
+        height: 170px;
+        min-height: 170px;
+    }
+}
+
+@media (max-width: 680px) {
+    #cards {
         grid-template-columns: repeat(2, 1fr);
         gap: 12px;
         padding: 16px 12px 40px 12px;
-        width: 100%;
     }
 
     .card {
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-        height: 210px;
-        padding: 10px 8px 12px 8px;
+        height: 320px;
         border-radius: 14px;
     }
 
-    .imagem {
-        padding: 2px;
+    .card .imagem {
+        height: 145px;
+        min-height: 145px;
+        padding: 8px;
     }
 
     .card .conteudo {
-        min-height: 44px;
-        max-height: 48px;
-        padding: 2px 2px 0 2px;
+        padding: 12px 12px 12px 12px;
     }
 
-    .card .conteudo h3 {
-        font-size: 13.5px;
-        line-height: 1.2;
+    .card .card-titulo {
+        font-size: 15.5px;
+        margin-bottom: 3px;
+    }
+
+    .card .card-subtitulo {
+        font-size: 9px;
+        letter-spacing: 0.6px;
+    }
+
+    .card .card-preco {
+        font-size: 17px;
+    }
+
+    .card .card-preco-periodo {
+        font-size: 10.5px;
+    }
+
+    .card .card-link {
+        font-size: 11.5px;
     }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 380px) {
     #cards {
-        gap: 8px;
-        padding: 12px 8px 32px 8px;
+        grid-template-columns: 1fr;
+        gap: 14px;
+        padding: 14px 12px 36px 12px;
     }
 
     .card {
-        height: 195px;
-        padding: 8px 6px 10px 6px;
+        height: 340px;
     }
 
-    .card .conteudo {
-        min-height: 40px;
-        max-height: 44px;
-    }
-
-    .card .conteudo h3 {
-        font-size: 12.5px;
+    .card .imagem {
+        height: 160px;
+        min-height: 160px;
     }
 }

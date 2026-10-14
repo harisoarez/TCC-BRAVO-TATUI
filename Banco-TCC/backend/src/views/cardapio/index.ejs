@@ -176,13 +176,14 @@
                             <td style="text-align: right; white-space: nowrap;">
                                 <button type="button" 
                                     class="btn-acao-editar" 
-                                    onclick='abrirModalEditarItem(<%- JSON.stringify(item).replace(/'/g, "&#39;") %>)'
+                                    data-item="<%- Buffer.from(JSON.stringify(item)).toString('base64') %>"
+                                    onclick="abrirModalEditarItem(JSON.parse(atob(this.dataset.item)))"
                                     style="background: #1e293b; color: #F5D696; border: 1px solid rgba(245, 214, 150, 0.3); padding: 6px 12px; border-radius: 6px; font-size: 12.5px; font-weight: 600; cursor: pointer; margin-right: 6px;">
                                     Editar
                                 </button>
                                 <button type="button" 
                                     class="btn-acao-excluir" 
-                                    onclick="confirmarExclusao(<%= item.id_item %>, '<%= item.nome.replace(/'/g, "\\'") %>')"
+                                    onclick="confirmarExclusao(<%= Number(item.id_item) %>, decodeURIComponent('<%= encodeURIComponent(item.nome) %>'))"
                                     style="background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); padding: 6px 10px; border-radius: 6px; font-size: 12.5px; font-weight: 600; cursor: pointer;">
                                     Excluir
                                 </button>

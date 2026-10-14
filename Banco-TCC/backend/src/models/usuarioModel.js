@@ -15,6 +15,13 @@ async function inserir(conexao, dadosUsuario) {
 
     const db = conexao || pool;
 
+    let instFinal = null;
+    if (Array.isArray(tipo_instrumento)) {
+        instFinal = tipo_instrumento.filter(Boolean).map(s => String(s).trim()).join(", ");
+    } else if (typeof tipo_instrumento === "string" && tipo_instrumento.trim() !== "") {
+        instFinal = tipo_instrumento.trim();
+    }
+
     const [resultado] = await db.query(
         `INSERT INTO usuario_login(
             senha,
@@ -35,7 +42,7 @@ async function inserir(conexao, dadosUsuario) {
             email,
             nome,
             telefone || null,
-            tipo_instrumento || null,
+            instFinal,
             autorizacao_imagem ? 1 : 0,
             foto_url || null,
             primeiro_acesso ? 1 : 0,
@@ -133,7 +140,11 @@ async function atualizar(conexao, id_usuario, dados) {
     for (const campo of camposPermitidos) {
         if (dados[campo] !== undefined) {
             campos.push(`${campo} = ?`);
-            valores.push(dados[campo]);
+            if (campo === "tipo_instrumento" && Array.isArray(dados[campo])) {
+                valores.push(dados[campo].filter(Boolean).map(s => String(s).trim()).join(", "));
+            } else {
+                valores.push(dados[campo]);
+            }
         }
     }
 

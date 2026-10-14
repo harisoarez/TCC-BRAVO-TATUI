@@ -9,6 +9,16 @@
     let usuarioLogado = null;
     let isAdmin = false;
 
+    function escapeHtml(str) {
+        if (str === null || str === undefined) return "";
+        return String(str)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+    }
+
     // Decodifica JWT localmente
     function decodificarToken(token) {
         if (!token) return null;
@@ -92,11 +102,11 @@
                 `;
             }
         } catch (erro) {
-            console.error("Erro ao consultar cardápio:", erro);
+            console.error("Erro ao carregar cardápio:", erro);
             grid.innerHTML = `
                 <div class="estado-vazio">
-                    <h3>Não foi possível conectar ao servidor.</h3>
-                    <p>Verifique se o backend está em execução na porta 3000.</p>
+                    <h3>Não foi possível carregar o cardápio.</h3>
+                    <p>Verifique sua conexão ou recarregue a página.</p>
                 </div>
             `;
         }
@@ -186,8 +196,13 @@
                 const estaDisponivel = item.disponivel === 1 || item.disponivel === true;
                 const estaDestaque = item.destaque === 1 || item.destaque === true;
 
+                const idSanitizado = Number(item.id_item) || 0;
+                const nomeEscapado = escapeHtml(item.nome);
+                const categoriaEscapada = escapeHtml(item.categoria);
+                const descricaoEscapada = escapeHtml(item.descricao || "Sem descrição disponível.");
+
                 const imagemHtml = item.imagem_url
-                    ? `<img src="${item.imagem_url}" alt="${item.nome}" loading="lazy">`
+                    ? `<img src="${encodeURI(item.imagem_url)}" alt="${nomeEscapado}" loading="lazy">`
                     : `<div class="produto-imagem-placeholder"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg></div>`;
 
                 const badgeDestaqueHtml = estaDestaque
@@ -200,13 +215,13 @@
                 const adminAcoesHtml = isAdmin
                     ? `
                     <div class="admin-card-acoes">
-                        <button type="button" class="btn-card-admin btn-card-editar" onclick="window.abrirModalPublicEditar(${item.id_item})">
+                        <button type="button" class="btn-card-admin btn-card-editar" onclick="window.abrirModalPublicEditar(${idSanitizado})">
                             Editar
                         </button>
-                        <button type="button" class="btn-card-admin btn-card-status ${estaDisponivel ? '' : 'esgot'}" onclick="window.alternarStatusPublic(${item.id_item}, ${estaDisponivel ? 0 : 1})">
+                        <button type="button" class="btn-card-admin btn-card-status ${estaDisponivel ? '' : 'esgot'}" onclick="window.alternarStatusPublic(${idSanitizado}, ${estaDisponivel ? 0 : 1})">
                             ${estaDisponivel ? 'Marcar Esgotado' : 'Marcar Disponível'}
                         </button>
-                        <button type="button" class="btn-card-admin btn-card-excluir" onclick="window.confirmarExclusaoPublic(${item.id_item}, '${item.nome.replace(/'/g, "\\'")}')">
+                        <button type="button" class="btn-card-admin btn-card-excluir" onclick="window.confirmarExclusaoPublic(${idSanitizado}, '${nomeEscapado.replace(/'/g, "\\'")}')">
                             Excluir
                         </button>
                     </div>
@@ -214,16 +229,16 @@
                     : "";
 
                 return `
-                    <div class="produto-card ${estaDisponivel ? '' : 'esgotado'}" id="card-item-${item.id_item}">
+                    <div class="produto-card ${estaDisponivel ? '' : 'esgotado'}" id="card-item-${idSanitizado}">
                         <div class="produto-imagem-box">
                             ${imagemHtml}
                             ${badgeDestaqueHtml}
                             ${badgeStatusHtml}
                         </div>
                         <div class="produto-info">
-                            <span class="produto-categoria-tag">${item.categoria}</span>
-                            <h3 class="produto-nome">${item.nome}</h3>
-                            <p class="produto-descricao">${item.descricao || "Sem descrição disponível."}</p>
+                            <span class="produto-categoria-tag">${categoriaEscapada}</span>
+                            <h3 class="produto-nome">${nomeEscapado}</h3>
+                            <p class="produto-descricao">${descricaoEscapada}</p>
                             <div class="produto-rodape">
                                 <div class="produto-preco">
                                     <span class="produto-preco-prefixo">R$</span>${precoFormatado}
@@ -412,7 +427,7 @@
     window.confirmarExclusaoPublic = function (id, nome) {
         const modal = document.getElementById("modalPublicExclusao");
         if (!modal) return;
-        document.getElementById("textoPublicExclusao").innerHTML = `Deseja remover <strong>"${nome}"</strong> do cardápio?`;
+        document.getElementById("textoPublicExclusao").innerHTML = `Deseja remover <strong>"${escapeHtml(nome)}"</strong> do cardápio?`;
         document.getElementById("btnConfirmarExclusaoPublic").onclick = () => executarExclusaoPublic(id);
         modal.style.display = "flex";
     };

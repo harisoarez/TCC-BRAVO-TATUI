@@ -605,8 +605,8 @@
 
     <% if (isOwner && dadosGraficos) { %>
     // Configuração e renderização dos gráficos do painel
-    const dadosGraficoFinanceiro = <%- JSON.stringify(dadosGraficos.financeiro) %>;
-    const dadosGraficoUsuarios = <%- JSON.stringify(dadosGraficos.usuarios) %>;
+    const dadosGraficoFinanceiro = <%- JSON.stringify(dadosGraficos.financeiro).replace(/</g, '\\u003c').replace(/>/g, '\\u003e') %>;
+    const dadosGraficoUsuarios = <%- JSON.stringify(dadosGraficos.usuarios).replace(/</g, '\\u003c').replace(/>/g, '\\u003e') %>;
 
     let chartInstance = null;
     let modoAtual = 'financas';

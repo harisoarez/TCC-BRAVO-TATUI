@@ -7,11 +7,14 @@ function verificarSessao(req, res, next) {
     const tokenQuery = req.query.token;
     if (tokenQuery) {
         try {
-            const decodificado = jwt.verify(tokenQuery, segredo);
-            if (!req.session) req.session = {};
-            req.session.usuario = decodificado;
-            res.locals.usuario = decodificado;
-            return next();
+            const decodificado = jwt.verify(tokenQuery, segredo, { algorithms: ["HS256"] });
+            if (decodificado && decodificado.acao !== "reset_senha") {
+                if (!req.session) req.session = {};
+                req.session.usuario = decodificado;
+                req.user = decodificado;
+                res.locals.usuario = decodificado;
+                return next();
+            }
         } catch (erro) {
             // Token inválido na query
         }
@@ -22,11 +25,14 @@ function verificarSessao(req, res, next) {
     if (authHeader && authHeader.startsWith("Bearer ")) {
         const token = authHeader.replace("Bearer ", "").trim();
         try {
-            const decodificado = jwt.verify(token, segredo);
-            if (!req.session) req.session = {};
-            req.session.usuario = decodificado;
-            res.locals.usuario = decodificado;
-            return next();
+            const decodificado = jwt.verify(token, segredo, { algorithms: ["HS256"] });
+            if (decodificado && decodificado.acao !== "reset_senha") {
+                if (!req.session) req.session = {};
+                req.session.usuario = decodificado;
+                req.user = decodificado;
+                res.locals.usuario = decodificado;
+                return next();
+            }
         } catch (erro) {
             // Token inválido no header
         }
@@ -34,6 +40,7 @@ function verificarSessao(req, res, next) {
 
     // 3. Se já existir sessão ativa via express-session
     if (req.session && req.session.usuario) {
+        req.user = req.session.usuario;
         res.locals.usuario = req.session.usuario;
         return next();
     }

@@ -2,6 +2,16 @@
 
 const API_BASE = (window.location.port === "3000" || (!window.location.port && window.location.protocol === "http:")) ? "" : "http://localhost:3000";
 
+function escapeHtml(str) {
+    if (str === null || str === undefined) return "";
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+}
+
 let dataAtual = new Date();
 let dataSelecionada = new Date();
 let usuarioAtivo = { tipo: "visitante" };
@@ -361,13 +371,14 @@ function filtrarAulasBusca(termo) {
 
     agenda.innerHTML = filtradas.map(aula => {
         const dataBr = aula.data ? aula.data.split("-").reverse().join("/") : "";
+        const idSanitizado = Number(aula.id) || 0;
         return `
-            <div class="evento-card ${aula.tipo}" onclick="abrirResumo(${aula.id}, null)">
+            <div class="evento-card ${escapeHtml(aula.tipo)}" onclick="abrirResumo(${idSanitizado}, null)">
                 <div class="evento-card-header">
-                    <strong>${aula.hora || ""} — ${aula.titulo}</strong>
-                    <span class="evento-badge-tipo ${aula.tipo}">${aula.tipo}</span>
+                    <strong>${escapeHtml(aula.hora || "")} — ${escapeHtml(aula.titulo)}</strong>
+                    <span class="evento-badge-tipo ${escapeHtml(aula.tipo)}">${escapeHtml(aula.tipo)}</span>
                 </div>
-                <span>${dataBr} • ${aula.instrumento} | Sala ${aula.sala} | Prof: ${aula.professor || "A definir"}</span>
+                <span>${dataBr} • ${escapeHtml(aula.instrumento)} | Sala ${escapeHtml(aula.sala)} | Prof: ${escapeHtml(aula.professor || "A definir")}</span>
             </div>
         `;
     }).join("");
@@ -567,13 +578,13 @@ function abrirResumo(id, evento) {
     const dataFormatadaBR = aula.data ? aula.data.split("-").reverse().join("/") : "";
 
     document.getElementById("detalhesAulaConteudo").innerHTML = `
-        <p><strong>Título:</strong> ${aula.titulo}</p>
-        <p><strong>Instrumento:</strong> ${aula.instrumento}</p>
-        <p><strong>Professor:</strong> ${aula.professor || "A definir"}</p>
-        <p><strong>Data/Hora:</strong> ${dataFormatadaBR} às ${aula.hora || ""}</p>
-        <p><strong>Sala:</strong> Sala ${aula.sala}</p>
-        <p><strong>Status:</strong> <span class="evento-badge-tipo ${aula.tipo}" style="text-transform: capitalize; display: inline-block;">${aula.tipo}</span></p>
-        <p><strong>Observações:</strong> ${aula.observacoes || "Nenhuma observação registrada."}</p>
+        <p><strong>Título:</strong> ${escapeHtml(aula.titulo)}</p>
+        <p><strong>Instrumento:</strong> ${escapeHtml(aula.instrumento)}</p>
+        <p><strong>Professor:</strong> ${escapeHtml(aula.professor || "A definir")}</p>
+        <p><strong>Data/Hora:</strong> ${dataFormatadaBR} às ${escapeHtml(aula.hora || "")}</p>
+        <p><strong>Sala:</strong> Sala ${escapeHtml(aula.sala)}</p>
+        <p><strong>Status:</strong> <span class="evento-badge-tipo ${escapeHtml(aula.tipo)}" style="text-transform: capitalize; display: inline-block;">${escapeHtml(aula.tipo)}</span></p>
+        <p><strong>Observações:</strong> ${escapeHtml(aula.observacoes || "Nenhuma observação registrada.")}</p>
     `;
 
     document.getElementById("modalResumo").classList.remove("oculto");

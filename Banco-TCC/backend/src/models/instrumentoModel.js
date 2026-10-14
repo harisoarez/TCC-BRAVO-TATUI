@@ -297,36 +297,67 @@ const instrumentoModel = {
     // Listar todos com filtros flexíveis
     async listarTodos(filtros = {}) {
         try {
-            let sql = "SELECT * FROM instrumento WHERE 1=1";
+            let sql = `
+                SELECT i.*,
+                       COALESCE(
+                           (SELECT MIN(c.valor_mensalidade) 
+                              FROM curso_mensalidade c 
+                             WHERE c.ativo = 1 
+                               AND (LOWER(TRIM(i.nome)) LIKE CONCAT('%', LOWER(TRIM(c.nome)), '%')
+                                 OR LOWER(TRIM(c.nome)) LIKE CONCAT('%', LOWER(TRIM(i.nome)), '%'))),
+                           CASE 
+                               WHEN i.nome LIKE '%Piano%' THEN 225
+                               WHEN i.nome LIKE '%Violino%' THEN 195
+                               WHEN i.nome LIKE '%Violoncelo%' THEN 195
+                               WHEN i.nome LIKE '%Viola%' THEN 195
+                               WHEN i.nome LIKE '%Contrabaixo%' THEN 195
+                               WHEN i.nome LIKE '%Flauta%' THEN 180
+                               WHEN i.nome LIKE '%Saxofone%' THEN 195
+                               WHEN i.nome LIKE '%Clarinete%' THEN 185
+                               WHEN i.nome LIKE '%Trompete%' THEN 195
+                               WHEN i.nome LIKE '%Trombone%' THEN 195
+                               WHEN i.nome LIKE '%Violão%' THEN 180
+                               WHEN i.nome LIKE '%Guitarra%' THEN 195
+                               WHEN i.nome LIKE '%Acordeon%' THEN 195
+                               WHEN i.nome LIKE '%Ukulelê%' THEN 180
+                               WHEN i.nome LIKE '%Voz%' OR i.nome LIKE '%Canto%' THEN 220
+                               WHEN i.nome LIKE '%Percussão%' OR i.nome LIKE '%Cajon%' THEN 180
+                               WHEN i.nome LIKE '%Bateria%' THEN 220
+                               ELSE 190
+                           END
+                       ) AS valor_mensalidade
+                  FROM instrumento i
+                 WHERE 1=1
+            `;
             const params = [];
 
             if (filtros.ativo !== undefined) {
-                sql += " AND ativo = ?";
+                sql += " AND i.ativo = ?";
                 params.push(Number(filtros.ativo));
             }
 
             if (filtros.categoria && filtros.categoria !== "todas") {
-                sql += " AND categoria = ?";
+                sql += " AND i.categoria = ?";
                 params.push(filtros.categoria);
             }
 
             if (filtros.aulas !== undefined) {
-                sql += " AND disponivel_aulas = ?";
+                sql += " AND i.disponivel_aulas = ?";
                 params.push(Number(filtros.aulas));
             }
 
             if (filtros.eventos !== undefined) {
-                sql += " AND disponivel_eventos = ?";
+                sql += " AND i.disponivel_eventos = ?";
                 params.push(Number(filtros.eventos));
             }
 
             if (filtros.busca) {
-                sql += " AND (nome LIKE ? OR descricao LIKE ? OR categoria LIKE ?)";
+                sql += " AND (i.nome LIKE ? OR i.descricao LIKE ? OR i.categoria LIKE ?)";
                 const termo = `%${filtros.busca}%`;
                 params.push(termo, termo, termo);
             }
 
-            sql += " ORDER BY ordem ASC, id_instrumento ASC";
+            sql += " ORDER BY i.ordem ASC, i.id_instrumento ASC";
 
             const [linhas] = await pool.query(sql, params);
             return linhas;
@@ -339,7 +370,20 @@ const instrumentoModel = {
     // Buscar instrumento por ID
     async buscarPorId(id) {
         try {
-            const [linhas] = await pool.query("SELECT * FROM instrumento WHERE id_instrumento = ?", [id]);
+            const sql = `
+                SELECT i.*,
+                       COALESCE(
+                           (SELECT MIN(c.valor_mensalidade) 
+                              FROM curso_mensalidade c 
+                             WHERE c.ativo = 1 
+                               AND (LOWER(TRIM(i.nome)) LIKE CONCAT('%', LOWER(TRIM(c.nome)), '%')
+                                 OR LOWER(TRIM(c.nome)) LIKE CONCAT('%', LOWER(TRIM(i.nome)), '%'))),
+                           195
+                       ) AS valor_mensalidade
+                  FROM instrumento i
+                 WHERE i.id_instrumento = ?
+            `;
+            const [linhas] = await pool.query(sql, [id]);
             return linhas[0] || null;
         } catch (erro) {
             console.error(`Erro ao buscar instrumento com ID ${id}:`, erro.message);

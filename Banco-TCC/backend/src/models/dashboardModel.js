@@ -214,6 +214,28 @@ async function listarAlunosCompletos() {
     });
 }
 
+// Função utilitária para somar mensalidades base quando há múltiplos cursos
+async function calcularMensalidadeBasePorCursos(cursosStr) {
+    if (!cursosStr) return 180.00;
+    const nomesCursos = String(cursosStr)
+        .split(',')
+        .map(s => s.trim().toLowerCase())
+        .filter(Boolean);
+    if (nomesCursos.length === 0) return 180.00;
+
+    const [cursosDb] = await pool.query("SELECT nome, valor_mensalidade FROM curso_mensalidade WHERE ativo = 1");
+    const precosCursos = {};
+    for (const c of cursosDb) {
+        precosCursos[c.nome.trim().toLowerCase()] = parseFloat(c.valor_mensalidade) || 180.00;
+    }
+
+    let soma = 0;
+    for (const nome of nomesCursos) {
+        soma += (precosCursos[nome] !== undefined ? precosCursos[nome] : 180.00);
+    }
+    return soma > 0 ? soma : 180.00;
+}
+
 // Atribuir desconto para um aluno específico (Exclusivo Owner)
 async function atribuirDescontoAluno(idaluno, porcentagem) {
     const desc = parseFloat(porcentagem);
@@ -226,17 +248,14 @@ async function atribuirDescontoAluno(idaluno, porcentagem) {
         [desc, idaluno]
     );
 
-    // Recalcula o valor da mensalidade pendente ou em análise do aluno
+    // Recalcula o valor da mensalidade pendente ou em análise do aluno (somando múltiplos cursos se houver)
     const [alunoInfo] = await pool.query(
-        `SELECT a.curso, COALESCE(c.valor_mensalidade, 180.00) as base
-           FROM aluno a
-           LEFT JOIN curso_mensalidade c ON c.nome = a.curso
-          WHERE a.idaluno = ?`,
+        `SELECT a.curso FROM aluno a WHERE a.idaluno = ?`,
         [idaluno]
     );
 
     if (alunoInfo.length > 0) {
-        const base = parseFloat(alunoInfo[0].base);
+        const base = await calcularMensalidadeBasePorCursos(alunoInfo[0].curso);
         const novoValor = Math.max(0, base * (1 - desc / 100));
         await pool.query(
             `UPDATE financeiro_recebimento
@@ -267,16 +286,13 @@ async function atualizarCursoAluno(idaluno, novoCurso) {
     );
 
     const [alunoInfo] = await pool.query(
-        `SELECT a.desconto_porcentagem, COALESCE(c.valor_mensalidade, 180.00) as base
-           FROM aluno a
-           LEFT JOIN curso_mensalidade c ON c.nome = ?
-          WHERE a.idaluno = ?`,
-        [novoCurso, idaluno]
+        `SELECT a.desconto_porcentagem FROM aluno a WHERE a.idaluno = ?`,
+        [idaluno]
     );
 
     if (alunoInfo.length > 0) {
         const desc = parseFloat(alunoInfo[0].desconto_porcentagem) || 0;
-        const base = parseFloat(alunoInfo[0].base) || 180.00;
+        const base = await calcularMensalidadeBasePorCursos(novoCurso);
         const novoValor = Math.max(0, base * (1 - desc / 100));
 
         await pool.query(
@@ -398,8 +414,22 @@ async function obterMatriculaAluno(idUsuario) {
     };
 }
 
-// Enviar comprovante pelo aluno
-async function enviarComprovanteAluno(idRecebimento, comprovanteUrl) {
+// Enviar comprovante pelo aluno com validação de propriedade (IDOR fix)
+async function enviarComprovanteAluno(idRecebimento, comprovanteUrl, idUsuario) {
+    if (idUsuario) {
+        const [verificacao] = await pool.query(
+            `SELECT r.idfinanceiroRecebimento 
+               FROM financeiro_recebimento r
+               JOIN aluno a ON a.idaluno = r.aluno_idaluno
+              WHERE r.idfinanceiroRecebimento = ? AND a.usuario_login_id = ?
+              LIMIT 1`,
+            [idRecebimento, idUsuario]
+        );
+        if (verificacao.length === 0) {
+            return false;
+        }
+    }
+
     const [resultado] = await pool.query(
         `UPDATE financeiro_recebimento
             SET status_parcela = 'em_analise',

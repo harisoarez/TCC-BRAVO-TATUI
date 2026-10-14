@@ -33,7 +33,7 @@ async function enviarComprovante(req, res) {
         }
 
         const comprovanteUrl = `/uploads/comprovantes/${req.file.filename}`;
-        const sucesso = await dashboardModel.enviarComprovanteAluno(idRecebimento, comprovanteUrl);
+        const sucesso = await dashboardModel.enviarComprovanteAluno(idRecebimento, comprovanteUrl, usuario.id_usuario);
 
         if (sucesso) {
             return res.json({
@@ -42,7 +42,7 @@ async function enviarComprovante(req, res) {
                 comprovanteUrl,
             });
         } else {
-            return res.status(400).json({ sucesso: false, mensagem: "Não foi possível enviar o comprovante." });
+            return res.status(403).json({ sucesso: false, mensagem: "Cobrança não encontrada ou você não tem permissão para anexar comprovante nesta mensalidade." });
         }
     } catch (err) {
         console.error("Erro ao enviar comprovante do aluno:", err);

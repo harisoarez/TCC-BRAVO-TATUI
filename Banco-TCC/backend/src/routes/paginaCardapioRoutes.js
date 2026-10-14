@@ -18,13 +18,24 @@ function tratarUpload(req, res, next) {
     });
 }
 
+const { ehAdmin } = require("../utils/admin");
+
+// Middleware de autorização para ações administrativas
+function exigirAdmin(req, res, next) {
+    const usuario = req.session?.usuario || res.locals?.usuario || req.user;
+    if (!usuario || !ehAdmin(usuario)) {
+        return res.status(403).send("Acesso negado. Apenas administradores podem modificar o cardápio.");
+    }
+    next();
+}
+
 // Visualização da tabela e gestão do cardápio
 router.get("/", paginaCardapioController.paginaCardapio);
 
-// Ações do formulário
-router.post("/criar", tratarUpload, paginaCardapioController.criarItem);
-router.post("/editar/:id", tratarUpload, paginaCardapioController.atualizarItem);
-router.post("/status/:id", paginaCardapioController.alternarStatus);
-router.post("/excluir/:id", paginaCardapioController.excluirItem);
+// Ações do formulário (Restritas a Administradores e Owner)
+router.post("/criar", exigirAdmin, tratarUpload, paginaCardapioController.criarItem);
+router.post("/editar/:id", exigirAdmin, tratarUpload, paginaCardapioController.atualizarItem);
+router.post("/status/:id", exigirAdmin, paginaCardapioController.alternarStatus);
+router.post("/excluir/:id", exigirAdmin, paginaCardapioController.excluirItem);
 
 module.exports = router;

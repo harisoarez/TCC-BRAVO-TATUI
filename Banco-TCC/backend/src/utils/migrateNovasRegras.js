@@ -51,12 +51,17 @@ async function migrateNovasRegras() {
             console.log("✓ Coluna aluno.desconto_porcentagem adicionada.");
         }
 
-        // 3. Coluna descricao em usuario_login (foto_url já existe)
+        // 3. Coluna descricao em usuario_login e ampliação de colunas para suportar multi-seleção
         const [colsUserDesc] = await pool.query("SHOW COLUMNS FROM usuario_login LIKE 'descricao'");
         if (colsUserDesc.length === 0) {
             await pool.query("ALTER TABLE usuario_login ADD COLUMN descricao TEXT NULL");
             console.log("✓ Coluna usuario_login.descricao adicionada.");
         }
+
+        await pool.query("ALTER TABLE usuario_login MODIFY COLUMN tipo_instrumento VARCHAR(500) NULL");
+        await pool.query("ALTER TABLE aluno MODIFY COLUMN curso VARCHAR(500) NULL DEFAULT 'Piano'");
+        await pool.query("ALTER TABLE aula MODIFY COLUMN instrumento VARCHAR(150) NULL");
+        console.log("✓ Colunas tipo_instrumento e curso ampliadas para VARCHAR(500) para suportar múltiplos cursos e especialidades.");
 
         // 4. Modificar status_parcela em financeiro_recebimento para incluir 'em_analise'
         await pool.query(`

@@ -44,6 +44,11 @@ const paginaInstrumentoController = {
     // Criar instrumento via formulário SSR do painel
     async criarInstrumento(req, res) {
         try {
+            const usuario = res.locals.usuario || (req.session && req.session.usuario) || req.user;
+            if (!ehAdmin(usuario)) {
+                return res.status(403).send("Acesso restrito à administração.");
+            }
+
             const {
                 nome,
                 categoria,
@@ -65,7 +70,7 @@ const paginaInstrumentoController = {
             }
 
             await instrumentoModel.criar({
-                nome: nome.trim(),
+                nome: (nome || "").trim(),
                 categoria: categoriaFinal,
                 icone: icone ? icone.trim() : "",
                 descricao: descricao ? descricao.trim() : "",
@@ -86,6 +91,11 @@ const paginaInstrumentoController = {
     // Atualizar instrumento via formulário SSR do painel
     async atualizarInstrumento(req, res) {
         try {
+            const usuario = res.locals.usuario || (req.session && req.session.usuario) || req.user;
+            if (!ehAdmin(usuario)) {
+                return res.status(403).send("Acesso restrito à administração.");
+            }
+
             const id = req.params.id;
             const {
                 nome,
@@ -108,7 +118,7 @@ const paginaInstrumentoController = {
             }
 
             await instrumentoModel.atualizar(id, {
-                nome: nome.trim(),
+                nome: (nome || "").trim(),
                 categoria: categoriaFinal,
                 icone: icone ? icone.trim() : "",
                 descricao: descricao !== undefined ? descricao.trim() : "",
@@ -129,8 +139,13 @@ const paginaInstrumentoController = {
     // Alternar status (ativo, aulas, eventos) via SSR
     async alternarStatus(req, res) {
         try {
+            const usuario = res.locals.usuario || (req.session && req.session.usuario) || req.user;
+            if (!ehAdmin(usuario)) {
+                return res.status(403).send("Acesso restrito à administração.");
+            }
+
             const id = req.params.id;
-            const campo = req.query.campo || req.body.campo || "ativo";
+            const campo = req.body.campo || req.query.campo || "ativo";
             await instrumentoModel.alternarStatus(id, campo);
             return res.redirect("/paginas/instrumentos?sucesso=" + encodeURIComponent(`Status de ${campo} atualizado!`));
         } catch (erro) {
@@ -142,6 +157,11 @@ const paginaInstrumentoController = {
     // Excluir instrumento via formulário SSR do painel
     async excluirInstrumento(req, res) {
         try {
+            const usuario = res.locals.usuario || (req.session && req.session.usuario) || req.user;
+            if (!ehAdmin(usuario)) {
+                return res.status(403).send("Acesso restrito à administração.");
+            }
+
             const id = req.params.id;
             await instrumentoModel.excluir(id);
             return res.redirect("/paginas/instrumentos?sucesso=" + encodeURIComponent("Instrumento excluído com sucesso!"));

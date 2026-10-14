@@ -5,6 +5,8 @@ const alunoModel = require("../models/alunoModel");
 const responsavelModel = require("../models/responsavelModel");
 const gerarSenhaTemporaria = require("../utils/gerarSenha");
 const { enviarEmailCadastrado } = require("../services/emailService");
+const { ehAdmin } = require("../utils/admin");
+const { validarCPF, validarEmail, validarTelefone, validarCEP } = require("../utils/validators");
 
 function calcularIdade(data_nascimento) {
     const hoje = new Date();
@@ -50,6 +52,9 @@ async function cadastrar(req, res) {
         email,
         telefone,
         tipo_instrumento,
+        curso,
+        cursos,
+        desconto_porcentagem,
         autorizacao_imagem,
         foto_url,
         CPF,
@@ -66,6 +71,34 @@ async function cadastrar(req, res) {
         return res.status(400).json({
             sucesso: false,
             mensagem: "Nome, email e data de nascimento são obrigatórios.",
+        });
+    }
+
+    if (!validarEmail(email)) {
+        return res.status(400).json({
+            sucesso: false,
+            mensagem: "E-mail inválido.",
+        });
+    }
+
+    if (CPF && !validarCPF(CPF)) {
+        return res.status(400).json({
+            sucesso: false,
+            mensagem: "CPF informado é inválido.",
+        });
+    }
+
+    if (telefone && !validarTelefone(telefone)) {
+        return res.status(400).json({
+            sucesso: false,
+            mensagem: "Telefone informado é inválido.",
+        });
+    }
+
+    if (endereco_cep && !validarCEP(endereco_cep)) {
+        return res.status(400).json({
+            sucesso: false,
+            mensagem: "CEP informado é inválido.",
         });
     }
 
@@ -96,13 +129,21 @@ async function cadastrar(req, res) {
 
         await conexao.beginTransaction();
 
+        const entradaCursos = cursos || curso || tipo_instrumento;
+        let cursosFinal = "Piano";
+        if (Array.isArray(entradaCursos)) {
+            cursosFinal = entradaCursos.filter(Boolean).map(c => String(c).trim()).join(", ");
+        } else if (typeof entradaCursos === "string" && entradaCursos.trim() !== "") {
+            cursosFinal = entradaCursos.trim();
+        }
+
         const idUsuario = await usuarioModel.inserir(conexao, {
             senha: senhaHash,
             tipo_usuario: "aluno",
             email,
             nome,
             telefone,
-            tipo_instrumento,
+            tipo_instrumento: cursosFinal,
             autorizacao_imagem,
             foto_url,
             primeiro_acesso: 1,
@@ -117,6 +158,8 @@ async function cadastrar(req, res) {
             endereco_cep,
             data_nascimento,
             usuario_login_id: idUsuario,
+            curso: cursosFinal,
+            desconto_porcentagem,
         });
 
         if (Array.isArray(responsaveis)) {
@@ -145,10 +188,9 @@ async function cadastrar(req, res) {
 
         return res.status(201).json({
             sucesso: true,
-            mensagem: "Aluno cadastrado com sucesso!",
+            mensagem: "Aluno cadastrado com sucesso! As instruções de acesso foram enviadas por e-mail.",
             idAluno,
             menorDeIdade,
-            senhaTemporaria, // Facilitador em ambiente de desenvolvimento/testes
         });
     } catch (error) {
         await conexao.rollback();
@@ -191,6 +233,15 @@ async function buscarPorId(req, res) {
             });
         }
 
+        const usuarioLogado = req.user || req.session?.usuario;
+        const isAdmin = ehAdmin(usuarioLogado);
+        if (!isAdmin && aluno.usuario_login_id !== usuarioLogado?.id_usuario) {
+            return res.status(403).json({
+                sucesso: false,
+                mensagem: "Você não tem permissão para visualizar os dados deste aluno.",
+            });
+        }
+
         return res.status(200).json({
             sucesso: true,
             aluno,
@@ -220,8 +271,45 @@ async function atualizar(req, res) {
 
         await conexao.beginTransaction();
 
-        await usuarioModel.atualizar(conexao, alunoExistente.id_usuario, req.body);
-        await alunoModel.atualizar(conexao, id, req.body);
+        const entradaCursos = req.body.cursos || req.body.curso || req.body.tipo_instrumento;
+        let cursosFinal = undefined;
+        if (entradaCursos !== undefined) {
+            if (Array.isArray(entradaCursos)) {
+                cursosFinal = entradaCursos.filter(Boolean).map(c => String(c).trim()).join(", ");
+            } else if (typeof entradaCursos === "string") {
+                cursosFinal = entradaCursos.trim();
+            }
+        }
+
+        const dadosUsuario = { ...req.body };
+        const dadosAluno = { ...req.body };
+        if (cursosFinal !== undefined) {
+            dadosUsuario.tipo_instrumento = cursosFinal;
+            dadosAluno.curso = cursosFinal;
+        }
+
+        await usuarioModel.atualizar(conexao, alunoExistente.id_usuario, dadosUsuario);
+        await alunoModel.atualizar(conexao, id, dadosAluno);
+
+        // Se alterou cursos ou desconto, recalcula parcelas pendentes / em análise
+        if (cursosFinal !== undefined || req.body.desconto_porcentagem !== undefined) {
+            const [alInfo] = await conexao.query("SELECT curso, desconto_porcentagem FROM aluno WHERE idaluno = ?", [id]);
+            if (alInfo.length > 0) {
+                const [cursosDb] = await conexao.query("SELECT nome, valor_mensalidade FROM curso_mensalidade WHERE ativo = 1");
+                const precosMap = {};
+                cursosDb.forEach(c => precosMap[c.nome.trim().toLowerCase()] = parseFloat(c.valor_mensalidade) || 180.00);
+                const listaNomes = String(alInfo[0].curso || "Piano").split(",").map(s => s.trim().toLowerCase()).filter(Boolean);
+                let somaBase = 0;
+                listaNomes.forEach(n => somaBase += (precosMap[n] !== undefined ? precosMap[n] : 180.00));
+                if (somaBase === 0) somaBase = 180.00;
+                const dPct = parseFloat(alInfo[0].desconto_porcentagem) || 0;
+                const valorFinal = Math.max(0, somaBase * (1 - dPct / 100));
+                await conexao.query(
+                    `UPDATE financeiro_recebimento SET valor = ? WHERE aluno_idaluno = ? AND status_parcela IN ('pendente', 'em_analise')`,
+                    [valorFinal, id]
+                );
+            }
+        }
 
         await conexao.commit();
 

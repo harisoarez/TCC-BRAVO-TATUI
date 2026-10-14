@@ -45,6 +45,11 @@ const paginaCardapioController = {
     // Criar item via formulário SSR do painel
     async criarItem(req, res) {
         try {
+            const usuario = res.locals.usuario || (req.session && req.session.usuario) || req.user;
+            if (!ehAdmin(usuario)) {
+                return res.status(403).send("Acesso restrito à administração.");
+            }
+
             const { nome, descricao, preco, categoria, categoria_nova, imagem_url, disponivel, destaque, ordem } = req.body;
 
             const categoriaFinal = (categoria === "__nova__" && categoria_nova) ? categoria_nova.trim() : (categoria || "Cafés");
@@ -75,6 +80,11 @@ const paginaCardapioController = {
     // Atualizar item via formulário SSR do painel
     async atualizarItem(req, res) {
         try {
+            const usuario = res.locals.usuario || (req.session && req.session.usuario) || req.user;
+            if (!ehAdmin(usuario)) {
+                return res.status(403).send("Acesso restrito à administração.");
+            }
+
             const id = req.params.id;
             const { nome, descricao, preco, categoria, categoria_nova, imagem_url, disponivel, destaque, ordem } = req.body;
 
@@ -106,6 +116,11 @@ const paginaCardapioController = {
     // Alternar status de disponibilidade
     async alternarStatus(req, res) {
         try {
+            const usuario = res.locals.usuario || (req.session && req.session.usuario) || req.user;
+            if (!ehAdmin(usuario)) {
+                return res.status(403).send("Acesso restrito à administração.");
+            }
+
             const id = req.params.id;
             const novoStatus = await cardapioModel.alternarStatus(id);
 
@@ -123,6 +138,11 @@ const paginaCardapioController = {
     // Excluir item
     async excluirItem(req, res) {
         try {
+            const usuario = res.locals.usuario || (req.session && req.session.usuario) || req.user;
+            if (!ehAdmin(usuario)) {
+                return res.status(403).send("Acesso restrito à administração.");
+            }
+
             const id = req.params.id;
             await cardapioModel.excluir(id);
 

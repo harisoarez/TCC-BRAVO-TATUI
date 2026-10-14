@@ -201,7 +201,8 @@
                                     </a>
 
                                     <button type="button" 
-                                            onclick='abrirModalEditarInstrumento(<%= JSON.stringify(inst).replace(/\'/g, "&#39;") %>)' 
+                                            data-inst="<%- Buffer.from(JSON.stringify(inst)).toString('base64') %>"
+                                            onclick="abrirModalEditarInstrumento(JSON.parse(atob(this.dataset.inst)))" 
                                             class="btn-acao-tabela" 
                                             style="padding: 6px 10px; background: rgba(245, 214, 150, 0.15); color: #F5D696; border: 1px solid rgba(245, 214, 150, 0.3); border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;"
                                             title="Editar dados deste instrumento">
@@ -209,7 +210,7 @@
                                     </button>
 
                                     <button type="button" 
-                                            onclick="confirmarExclusao(<%= inst.id_instrumento %>, '<%= inst.nome.replace(/\'/g, "\\\'") %>')" 
+                                            onclick="confirmarExclusao(<%= Number(inst.id_instrumento) %>, decodeURIComponent('<%= encodeURIComponent(inst.nome) %>'))" 
                                             class="btn-acao-tabela" 
                                             style="padding: 6px 10px; background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;"
                                             title="Excluir instrumento">

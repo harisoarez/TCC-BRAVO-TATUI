@@ -7,7 +7,15 @@ function authMiddleware(req, res, next) {
         const token = authHeader.replace("Bearer ", "").trim();
         try {
             const segredo = process.env.JWT_SECRET || "instituto-bravo-segredo-jwt-2026";
-            const usuarioDecodificado = jwt.verify(token, segredo);
+            const usuarioDecodificado = jwt.verify(token, segredo, { algorithms: ["HS256"] });
+
+            if (usuarioDecodificado && usuarioDecodificado.acao === "reset_senha") {
+                return res.status(401).json({
+                    sucesso: false,
+                    mensagem: "Token inválido para esta operação (uso exclusivo para redefinição de senha).",
+                });
+            }
+
             req.user = usuarioDecodificado;
             return next();
         } catch (erro) {

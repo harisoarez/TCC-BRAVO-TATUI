@@ -257,7 +257,7 @@
 
         // Sincroniza usuário ativo da sessão no localStorage
         <% if (locals.usuario) { %>
-            const usuarioSessao = <%- JSON.stringify(locals.usuario) %>;
+            const usuarioSessao = <%- JSON.stringify(locals.usuario || {}).replace(/</g, '\\u003c').replace(/>/g, '\\u003e') %>;
             try {
                 const uAtual = JSON.parse(localStorage.getItem('usuario') || '{}');
                 if (uAtual.email !== usuarioSessao.email || uAtual.tipo_usuario !== usuarioSessao.tipo_usuario) {

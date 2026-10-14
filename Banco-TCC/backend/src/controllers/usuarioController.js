@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const pool = require("../config/database");
 const { ehOwner, ehAdmin } = require("../utils/admin");
+const { validarCPF, validarEmail, validarTelefone } = require("../utils/validators");
 
 async function criarConta(req, res) {
     try {
@@ -11,6 +12,34 @@ async function criarConta(req, res) {
             return res.status(400).json({
                 sucesso: false,
                 mensagem: "E-mail e senha são obrigatórios.",
+            });
+        }
+
+        if (!validarEmail(email)) {
+            return res.status(400).json({
+                sucesso: false,
+                mensagem: "Formato de e-mail inválido.",
+            });
+        }
+
+        if (senha.length < 8) {
+            return res.status(400).json({
+                sucesso: false,
+                mensagem: "A senha deve ter no mínimo 8 caracteres.",
+            });
+        }
+
+        if (cpf && !validarCPF(cpf)) {
+            return res.status(400).json({
+                sucesso: false,
+                mensagem: "CPF informado é inválido.",
+            });
+        }
+
+        if (telefone && !validarTelefone(telefone)) {
+            return res.status(400).json({
+                sucesso: false,
+                mensagem: "Telefone informado é inválido.",
             });
         }
 
@@ -151,7 +180,6 @@ async function criarConta(req, res) {
                     telefone: telefone || null,
                     cursos: cursosFormatados,
                     especialidades: especialidadesFormatadas,
-                    senhaGerada: senha,
                 },
             });
         } catch (err) {
@@ -369,6 +397,27 @@ async function editarUsuario(req, res) {
                             `UPDATE aluno SET ${setClausulas.join(", ")} WHERE usuario_login_id = ?`,
                             paramsUpdate
                         );
+
+                        // Recalcular mensalidades pendentes / em análise se alterou curso ou desconto
+                        if (cursosFinal || (isOwner && desconto_porcentagem !== undefined && desconto_porcentagem !== null && desconto_porcentagem !== "")) {
+                            const idAluno = alunoExistente[0].idaluno;
+                            const [dadosRec] = await conexao.query("SELECT curso, desconto_porcentagem FROM aluno WHERE idaluno = ?", [idAluno]);
+                            if (dadosRec.length > 0) {
+                                const [cursosDb] = await conexao.query("SELECT nome, valor_mensalidade FROM curso_mensalidade WHERE ativo = 1");
+                                const precosMap = {};
+                                cursosDb.forEach(c => precosMap[c.nome.trim().toLowerCase()] = parseFloat(c.valor_mensalidade) || 180.00);
+                                const listaNomes = String(dadosRec[0].curso || "Piano").split(",").map(s => s.trim().toLowerCase()).filter(Boolean);
+                                let somaBase = 0;
+                                listaNomes.forEach(n => somaBase += (precosMap[n] !== undefined ? precosMap[n] : 180.00));
+                                if (somaBase === 0) somaBase = 180.00;
+                                const dPct = parseFloat(dadosRec[0].desconto_porcentagem) || 0;
+                                const valorFinal = Math.max(0, somaBase * (1 - dPct / 100));
+                                await conexao.query(
+                                    `UPDATE financeiro_recebimento SET valor = ? WHERE aluno_idaluno = ? AND status_parcela IN ('pendente', 'em_analise')`,
+                                    [valorFinal, idAluno]
+                                );
+                            }
+                        }
                     }
                 } else {
                     await conexao.query(

@@ -9,7 +9,9 @@ async function cadastrar(connection, dadosAluno) {
             endereco_cidade,
             endereco_cep,
             data_nascimento,
-            usuario_login_id
+            usuario_login_id,
+            curso,
+            desconto_porcentagem,
         } = dadosAluno;
 
 
@@ -22,9 +24,11 @@ async function cadastrar(connection, dadosAluno) {
             endereco_cidade,
             endereco_cep,
             data_nascimento,
-            usuario_login_id
+            usuario_login_id,
+            curso,
+            desconto_porcentagem
         ) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
             CPF,
             endereco_rua,
@@ -33,7 +37,9 @@ async function cadastrar(connection, dadosAluno) {
             endereco_cidade,
             endereco_cep,
             data_nascimento,
-            usuario_login_id
+            usuario_login_id,
+            curso || 'Piano',
+            desconto_porcentagem ? parseFloat(desconto_porcentagem) : 0,
         ]
     );
 
@@ -90,7 +96,9 @@ async function atualizar(conexao, idaluno, dados) {
         'endereco_bairro',
         'endereco_cidade',
         'endereco_cep',
-        'data_nascimento', 
+        'data_nascimento',
+        'curso',
+        'desconto_porcentagem',
     ];
 
     const campos = [];

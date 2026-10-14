@@ -109,6 +109,27 @@
         // Se idParam estiver ausente, carrega instrumento 1 (Piano por padrão)
         const idFinal = idParam || 1;
 
+        // Pré-carregamento imediato via cache do catálogo (0ms) para evitar qualquer flash
+        try {
+            const cachedList = sessionStorage.getItem("bravo_instrumentos_aulas_cache");
+            if (cachedList) {
+                const parsed = JSON.parse(cachedList);
+                const achei = parsed.find(i => String(i.id_instrumento) === String(idFinal));
+                if (achei) {
+                    instrumentoAtual = {
+                        id_instrumento: achei.id_instrumento,
+                        nome: achei.nome,
+                        categoria: achei.categoria,
+                        icone: achei.icone,
+                        descricao: achei.descricao || "",
+                        imagem_url: achei.imagem_url || ""
+                    };
+                    descricaoOriginal = instrumentoAtual.descricao;
+                    renderizarInstrumentoNaTela();
+                }
+            }
+        } catch (e) {}
+
         try {
             const resp = await fetch(`${API_BASE}/api/instrumentos/item/${idFinal}`);
             const dados = await resp.json();

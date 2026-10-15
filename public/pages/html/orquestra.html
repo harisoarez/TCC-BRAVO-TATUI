@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orquestra Bravo Tatuí | Instituto Musical Bravo Tatuí</title>
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/orquestra.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container-orquestra">
+        <!-- Barra de Redes / Header Superior -->
+        <header class="header">
+            <img src="../images/Instagram_icon.png" alt="Instagram" width="18" height="18" style="margin-right:5px;">
+            <a href="https://www.instagram.com/bravo_tatui/" target="_blank" rel="noopener noreferrer">@bravo_tatui</a>
+        </header>
+
+        <!-- Navbar Central Unificada -->
+        <div id="nav-bar"></div>
+
+        <!-- Barra de Ações Superior (Botão Voltar no canto superior esquerdo sob a logo + Card Admin Centralizado) -->
+        <div class="orquestra-topo-acoes-wrapper">
+            <a href="./instrumentos.html" class="btn-voltar-orquestra" title="Voltar para Aulas no IMBT">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                <span>Voltar para Aulas no IMBT</span>
+            </a>
+
+            <!-- Card de Edição Administrativa (Centralizado) -->
+            <div id="barraAdminOrquestra" class="barra-admin-orquestra" style="display: none;">
+                <div class="admin-pill-content">
+                    <span class="admin-status-dot" aria-hidden="true"></span>
+                    <span class="admin-texto">Você tem permissão para gerenciar o conteúdo desta página.</span>
+                </div>
+                <button type="button" class="btn-admin-editar" onclick="abrirModalEdicaoOrquestra()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                    <span>Editar Conteúdo</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Conteúdo Principal da Página -->
+        <main class="orquestra-main">
+            <!-- Título Principal com Estilo Nobre Suave -->
+            <section class="orquestra-titulo-bloco">
+                <h1 class="orquestra-titulo" id="displayTitulo">
+                    <span class="palavra-orquestra">ORQUESTRA</span>
+                    <span class="palavra-bravo">BRAVO TATUÍ</span>
+                </h1>
+                <p class="orquestra-subtitulo" id="displaySubtitulo">
+                    A excelência da música sinfônica e a formação de concerto na Capital da Música
+                </p>
+            </section>
+
+            <!-- Imagem Hero em Destaque com Moldura Nobre -->
+            <section class="orquestra-hero-section" aria-label="Apresentação da Orquestra">
+                <div class="hero-image-wrapper">
+                    <img src="../images/orquestra/orquestra_hero.jpg" alt="Orquestra Bravo Tatuí em concerto no teatro da cidade" class="hero-image" id="heroOrquestraImg">
+                    <div class="hero-glow-overlay"></div>
+                </div>
+                <p class="hero-caption" id="displayLegendaHero">Nossa Orquestra em concerto no teatro da cidade</p>
+            </section>
+
+            <!-- Layout Central em Duas Colunas com Disposição Aprimorada -->
+            <div class="orquestra-content-grid">
+                <!-- Coluna Principal Esquerda (História, Divisor, Vídeos) -->
+                <div class="coluna-principal">
+                    <!-- Seção Nossa História -->
+                    <section class="secao-historia">
+                        <div class="secao-header-com-linha">
+                            <h2 class="secao-titulo">NOSSA HISTÓRIA</h2>
+                            <div class="linha-decorativa-titulo"></div>
+                        </div>
+
+                        <div class="historia-destaque-frase">
+                            "A música sinfônica como elo de formação artística, emoção e evolução na Capital da Música."
+                        </div>
+
+                        <div class="historia-texto">
+                            <p id="displayHistoriaP1">
+                                A Orquestra Bravo Tatuí viabiliza a formação e a evolução e a realização em harmonia no Instituto Musical Bravo Tatuí, e é a orquestra mais uma evolução musical a passo do encanto cultural e celeiro de música, como elemento-evolução no Instituto Musical Bravo Tatuí.
+                            </p>
+                            <p id="displayHistoriaP2">
+                                Nossa missão contemporânea abraça músicos com repertório ativo e sinfônico, a orquestra é de um orgulho imenso para quem ouve e um orgulho de fazer música na Capital da Música (Tatuí).
+                            </p>
+                        </div>
+
+                        <!-- Pílulas de Destaque da Trajetória -->
+                        <div class="historia-pilulas">
+                            <span class="pilula-destaque">Repertório Clássico & Contemporâneo</span>
+                            <span class="pilula-destaque">Concertos em Teatros & Igrejas</span>
+                            <span class="pilula-destaque">Formação de Novos Músicos</span>
+                        </div>
+                    </section>
+
+                    <!-- Divisor Ornamental Marsala Nobre -->
+                    <div class="divisor-ornamental" aria-hidden="true">
+                        <span class="linha-ornamento"></span>
+                        <div class="flourish-svg">
+                            <svg width="74" height="20" viewBox="0 0 74 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2 10C16 10 22 2 37 10C52 18 58 10 72 10" stroke="#f43f5e" stroke-width="1.2" stroke-linecap="round"/>
+                                <circle cx="37" cy="10" r="3.5" fill="#be123c"/>
+                                <circle cx="37" cy="10" r="7" stroke="#f43f5e" stroke-width="0.8" opacity="0.6"/>
+                            </svg>
+                        </div>
+                        <span class="linha-ornamento"></span>
+                    </div>
+
+                    <!-- Seção Vídeos e Apresentações -->
+                    <section class="secao-videos">
+                        <div class="secao-header-com-linha">
+                            <h2 class="secao-titulo">VÍDEOS E APRESENTAÇÕES</h2>
+                            <div class="linha-decorativa-titulo"></div>
+                        </div>
+
+                        <div class="grid-videos" id="containerGridVideos">
+                            <!-- Cards de Vídeos Populam Dinamicamente via JS ou Fallback -->
+                            <article class="card-video" onclick="abrirVideoModal('Concerto de Primavera - 2025', 'https://www.youtube.com/embed/jfKfPfyJRdk')" title="Assistir Concerto de Primavera">
+                                <div class="video-thumbnail-container">
+                                    <img src="../images/orquestra/video1.jpg" alt="Concerto de Primavera - 2025" class="video-thumb">
+                                    <div class="video-overlay-gradient"></div>
+                                    <span class="video-badge-temporada">Temporada 2025</span>
+                                    <div class="video-play-btn" aria-label="Reproduzir vídeo">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#0c0c0c" style="margin-left: 2px;">
+                                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="video-info-box">
+                                    <h3 class="video-titulo">Concerto de Primavera - 2025</h3>
+                                    <span class="video-subtitulo">Gravação Oficial • Teatro da Cidade</span>
+                                </div>
+                            </article>
+
+                            <article class="card-video" onclick="abrirVideoModal('Apresentação Especial de Fim de Ano', 'https://www.youtube.com/embed/5qap5aO4i9A')" title="Assistir Apresentação de Fim de Ano">
+                                <div class="video-thumbnail-container">
+                                    <img src="../images/orquestra/video2.jpg" alt="Apresentação Especial de Fim de Ano" class="video-thumb">
+                                    <div class="video-overlay-gradient"></div>
+                                    <span class="video-badge-temporada">Gala de Natal</span>
+                                    <div class="video-play-btn" aria-label="Reproduzir vídeo">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#0c0c0c" style="margin-left: 2px;">
+                                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="video-info-box">
+                                    <h3 class="video-titulo">Apresentação Especial de Fim de Ano</h3>
+                                    <span class="video-subtitulo">Concerto Comemorativo de Gala</span>
+                                </div>
+                            </article>
+
+                            <article class="card-video" onclick="abrirVideoModal('Ensaio Geral Aberto', 'https://www.youtube.com/embed/kJQP7kiw5Fk')" title="Assistir Ensaio Geral Aberto">
+                                <div class="video-thumbnail-container">
+                                    <img src="../images/orquestra/video3.jpg" alt="Ensaio Geral Aberto" class="video-thumb">
+                                    <div class="video-overlay-gradient"></div>
+                                    <span class="video-badge-temporada">Prática Coletiva</span>
+                                    <div class="video-play-btn" aria-label="Reproduzir vídeo">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#0c0c0c" style="margin-left: 2px;">
+                                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="video-info-box">
+                                    <h3 class="video-titulo">Ensaio Geral Aberto</h3>
+                                    <span class="video-subtitulo">Preparação e Regência ao Vivo</span>
+                                </div>
+                            </article>
+                        </div>
+
+                        <!-- Botão Ver mais no YouTube -->
+                        <div class="youtube-btn-wrapper">
+                            <a id="linkYoutubeOficial" href="https://www.youtube.com/@bravo_tatui" target="_blank" rel="noopener noreferrer" class="btn-youtube">
+                                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
+                                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                                </svg>
+                                <span>Ver mais no YouTube</span>
+                            </a>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Coluna Lateral Direita (Cards Informativos e Maestro) -->
+                <aside class="coluna-lateral">
+                    <!-- Card 1: Informações Gerais -->
+                    <div class="card-lateral card-informacoes">
+                        <div class="card-lateral-header">
+                            <h3 class="card-lateral-titulo">INFORMAÇÕES GERAIS</h3>
+                        </div>
+                        <div class="card-lateral-conteudo">
+                            <div class="info-item">
+                                <span class="info-label">Ensaios:</span>
+                                <span class="info-valor" id="displayEnsaios">Sábados, das 14h às 17h</span>
+                            </div>
+
+                            <div class="info-item">
+                                <span class="info-label">Quem pode participar:</span>
+                                <span class="info-valor" id="displayParticipacao">Alunos e músicos da comunidade</span>
+                            </div>
+
+                            <div class="info-item">
+                                <span class="info-label">Inscrições:</span>
+                                <span class="info-valor" id="displayInscricoes">Abertas no início de cada semestre</span>
+                            </div>
+
+                            <div class="info-item">
+                                <span class="info-label">Instrumentos:</span>
+                                <span class="info-valor" id="displayInstrumentos">Cordas, Sopros e Percussão</span>
+                            </div>
+                        </div>
+
+                        <div class="card-lateral-rodape">
+                            <a href="https://wa.me/5515998124032" target="_blank" rel="noopener noreferrer" class="btn-card-lateral">
+                                <span>Tirar Dúvidas sobre Ensaios</span>
+                                <span class="seta-lateral">→</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: O Maestro -->
+                    <div class="card-lateral card-maestro">
+                        <div class="maestro-header">
+                            <div class="maestro-foto-box">
+                                <img src="../images/orquestra/maestro.jpg" alt="Maestro Gabriel Lima" id="displayMaestroFoto" class="maestro-foto" onerror="this.onerror=null; this.src='../images/logo_bravo.png';">
+                            </div>
+                            <div class="maestro-identificacao">
+                                <span class="maestro-tag" id="displayMaestroCargo">O MAESTRO</span>
+                                <h4 class="maestro-nome" id="displayMaestroNome">Maestro Gabriel Lima</h4>
+                                <span class="maestro-subtitulo-cargo" id="displayMaestroSubtitulo">Regente Titular & Diretor Musical</span>
+                            </div>
+                        </div>
+                        <div class="maestro-bio-box">
+                            <span class="aspas-douradas">“</span>
+                            <p class="maestro-bio" id="displayMaestroBio">
+                                Maestro Gabriel Lima possui uma expressiva trajetória na regência e formação orquestral. Com paixão pela música de concerto e realização no Instituto Musical Bravo Tatuí, lidera a orquestra unindo técnica, emoção e excelência artística na Capital da Música.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Convite para Audições / Fazer Parte -->
+                    <div class="card-lateral card-audicoes">
+                        <div class="card-lateral-header">
+                            <h3 class="card-lateral-titulo" style="font-size: 14px;">VENHA TOCAR CONOSCO</h3>
+                        </div>
+                        <p class="audicoes-texto">
+                            Tem experiência em instrumento de orquestra e deseja tocar no corpo sinfônico de Tatuí? Acompanhe as audições abertas semestrais.
+                        </p>
+                        <a href="./instrumentos.html" class="btn-audicao-link">
+                            <span>Conhecer Aulas de Aperfeiçoamento</span>
+                            <span>→</span>
+                        </a>
+                    </div>
+                </aside>
+            </div>
+        </main>
+
+        <!-- Modal Interativo de Vídeo -->
+        <div id="videoModal" class="video-modal" aria-hidden="true" role="dialog" aria-labelledby="modalTitulo">
+            <div class="video-modal-backdrop" onclick="fecharVideoModal()"></div>
+            <div class="video-modal-container">
+                <button type="button" class="video-modal-fechar" onclick="fecharVideoModal()" aria-label="Fechar vídeo">✕</button>
+                <div class="video-modal-header">
+                    <h4 id="modalTitulo" class="modal-titulo-texto">Vídeo da Orquestra</h4>
+                </div>
+                <div class="video-modal-iframe-wrapper">
+                    <iframe id="videoIframe" src="" title="Vídeo Orquestra Bravo Tatuí" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- =========================================================
+             MODAL CRUD ADMINISTRATIVO (IN-PAGE PARA OWNER & ADMIN)
+             ========================================================= -->
+        <div id="modalAdminOrquestra" class="modal-admin-backdrop" style="display: none;" role="dialog" aria-labelledby="tituloModalAdmin">
+            <div class="modal-admin-janela">
+                <div class="modal-admin-topo">
+                    <div>
+                        <h3 id="tituloModalAdmin" class="modal-admin-titulo">Gerenciar Conteúdo da Orquestra</h3>
+                        <p class="modal-admin-sub">Edição em tempo real exclusiva para Administradores e Owner</p>
+                    </div>
+                    <button type="button" class="btn-fechar-admin" onclick="fecharModalEdicaoOrquestra()" aria-label="Fechar edição">✕</button>
+                </div>
+
+                <!-- Abas do Modal -->
+                <div class="modal-admin-tabs">
+                    <button type="button" class="tab-btn ativa" onclick="trocarAbaAdmin('textos')">Textos & História</button>
+                    <button type="button" class="tab-btn" onclick="trocarAbaAdmin('info')">Informações & Maestro</button>
+                    <button type="button" class="tab-btn" onclick="trocarAbaAdmin('videos')">Vídeos & Mídia</button>
+                </div>
+
+                <!-- Conteúdo das Abas -->
+                <form id="formAdminOrquestra" onsubmit="salvarConteudoViaApi(event)">
+                    <!-- ABA 1: Textos & História -->
+                    <div id="aba-textos" class="aba-conteudo ativa">
+                        <div class="form-campo">
+                            <label>Título Principal:</label>
+                            <input type="text" id="adminInputTitulo" required>
+                        </div>
+                        <div class="form-campo">
+                            <label>Subtítulo / Slogan:</label>
+                            <input type="text" id="adminInputSubtitulo">
+                        </div>
+                        <div class="form-grid-dupla">
+                            <div class="form-campo">
+                                <label>URL da Foto Hero:</label>
+                                <input type="text" id="adminInputHeroImg" required>
+                            </div>
+                            <div class="form-campo">
+                                <label>Legenda da Foto Hero:</label>
+                                <input type="text" id="adminInputHeroLegenda">
+                            </div>
+                        </div>
+                        <div class="form-campo">
+                            <label>Nossa História (1º Parágrafo):</label>
+                            <textarea id="adminInputHistoriaP1" rows="3"></textarea>
+                        </div>
+                        <div class="form-campo">
+                            <label>Nossa História (2º Parágrafo):</label>
+                            <textarea id="adminInputHistoriaP2" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- ABA 2: Informações & Maestro -->
+                    <div id="aba-info" class="aba-conteudo">
+                        <div class="form-grid-dupla">
+                            <div class="form-campo">
+                                <label>Dias e Horário dos Ensaios:</label>
+                                <input type="text" id="adminInputEnsaios">
+                            </div>
+                            <div class="form-campo">
+                                <label>Quem Pode Participar:</label>
+                                <input type="text" id="adminInputParticipacao">
+                            </div>
+                        </div>
+                        <div class="form-grid-dupla">
+                            <div class="form-campo">
+                                <label>Inscrições / Audições:</label>
+                                <input type="text" id="adminInputInscricoes">
+                            </div>
+                            <div class="form-campo">
+                                <label>Instrumentos / Naipes:</label>
+                                <input type="text" id="adminInputInstrumentos">
+                            </div>
+                        </div>
+                        <div class="divisor-campos"></div>
+                        <div class="form-grid-dupla">
+                            <div class="form-campo">
+                                <label>Nome do Maestro:</label>
+                                <input type="text" id="adminInputMaestroNome">
+                            </div>
+                            <div class="form-campo">
+                                <label>Cargo / Subtítulo do Maestro:</label>
+                                <input type="text" id="adminInputMaestroSubtitulo">
+                            </div>
+                        </div>
+                        <div class="form-campo">
+                            <label>Foto do Maestro (URL):</label>
+                            <input type="text" id="adminInputMaestroFoto">
+                        </div>
+                        <div class="form-campo">
+                            <label>Biografia / Descrição do Maestro:</label>
+                            <textarea id="adminInputMaestroBio" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- ABA 3: Vídeos & YouTube -->
+                    <div id="aba-videos" class="aba-conteudo">
+                        <div class="form-campo">
+                            <label>Canal Oficial do YouTube (Link):</label>
+                            <input type="text" id="adminInputYoutube">
+                        </div>
+
+                        <div class="topo-gerenciador-videos">
+                            <span class="rotulo-secao-videos">Vídeos em Exibição</span>
+                            <button type="button" class="btn-novo-video-modal" onclick="mostrarFormNovoVideo()">+ Novo Vídeo</button>
+                        </div>
+
+                        <!-- Form Rápido de Novo Vídeo dentro do Modal -->
+                        <div id="boxNovoVideoRapido" class="box-novo-video" style="display: none;">
+                            <h4 style="color: #F5D696; font-size: 13px; margin-bottom: 8px;">Adicionar Novo Vídeo</h4>
+                            <div class="form-campo">
+                                <input type="text" id="novoVideoTitulo" placeholder="Título (Ex: Concerto de Primavera)">
+                            </div>
+                            <div class="form-campo">
+                                <input type="text" id="novoVideoUrl" placeholder="Link do YouTube (watch ou embed)">
+                            </div>
+                            <div class="form-grid-dupla">
+                                <input type="text" id="novoVideoThumb" placeholder="Thumbnail URL (ou deixe em branco)">
+                                <input type="text" id="novoVideoTemporada" placeholder="Temporada (Ex: Temporada 2025)">
+                            </div>
+                            <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px;">
+                                <button type="button" onclick="esconderFormNovoVideo()" class="btn-cancelar-pequeno">Cancelar</button>
+                                <button type="button" onclick="adicionarVideoViaApi()" class="btn-salvar-pequeno">Salvar Vídeo</button>
+                            </div>
+                        </div>
+
+                        <!-- Lista de Vídeos com Ações de Excluir -->
+                        <div class="lista-videos-admin" id="adminListaVideosContainer">
+                            <!-- Gerado dinamicamente -->
+                        </div>
+                    </div>
+
+                    <div class="modal-admin-rodape">
+                        <span id="toastStatusAdmin" class="toast-status"></span>
+                        <div style="display: flex; gap: 10px;">
+                            <button type="button" class="btn-admin-cancelar" onclick="fecharModalEdicaoOrquestra()">Cancelar</button>
+                            <button type="submit" id="btnSalvarModalAdmin" class="btn-admin-salvar">
+                                Salvar Todas as Alterações
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts da Aplicação -->
+    <script src="../script/navbar.js"></script>
+    <script src="../script/orquestra.js"></script>
+</body>
+</html>

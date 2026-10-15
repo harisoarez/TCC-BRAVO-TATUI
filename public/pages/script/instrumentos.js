@@ -123,7 +123,6 @@
             }
 
             const subtitulo = obterSubtituloInstrumento(inst);
-            const precoFormatado = formatarPreco(inst);
 
             return `
                 <div class="card" onclick="window.location.href='./instSelecionado.html?id=${inst.id_instrumento}'" style="cursor: pointer;" title="Clique para saber mais sobre as aulas de ${inst.nome}">
@@ -134,10 +133,6 @@
                         <div class="conteudo-topo">
                             <h3 class="card-titulo">${inst.nome}</h3>
                             <span class="card-subtitulo">${subtitulo}</span>
-                        </div>
-                        <div class="card-preco-linha">
-                            <span class="card-preco">${precoFormatado}</span>
-                            <span class="card-preco-periodo">/mês</span>
                         </div>
                         <div class="card-link">
                             <span>Ver detalhes</span>

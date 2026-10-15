@@ -80,6 +80,13 @@
     box-shadow: 0 4px 22px rgba(9, 11, 18, 0.55);
 }
 
+/* 9. Orquestra Bravo Tatuí (Paleta Vinho Veludo / Marsala Nobre) */
+#nav-bar.nav-tema-orquestra {
+    background: linear-gradient(180deg, #240711 0%, #150309 100%);
+    border-bottom: 1px solid rgba(244, 63, 94, 0.22);
+    box-shadow: 0 4px 24px rgba(18, 3, 8, 0.75);
+}
+
 /* Logo Oficial Bravo Tatuí */
 #nav-bar .logo-container {
     display: flex;
@@ -691,6 +698,11 @@
 .drawer-nav-tema-inst-selecionado .menu-mobile-drawer {
     background: #120f0d;
     border-left-color: rgba(245, 214, 150, 0.28);
+}
+
+.drawer-nav-tema-orquestra .menu-mobile-drawer {
+    background: #18040b;
+    border-left-color: rgba(244, 63, 94, 0.35);
 }
 
 .menu-mobile-logo-link {

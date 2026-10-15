@@ -1,0 +1,365 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+
+<main class="dashboard-container">
+    <header class="painel-header">
+        <div class="header-title-col">
+            <h1>
+                Gestão da Orquestra — Bravo Tatuí
+            </h1>
+            <p>Instituto Musical Bravo Tatuí • Edição de conteúdo, história, informações e acervo audiovisual</p>
+        </div>
+
+        <div class="header-meta-col" style="display: flex; gap: 10px; align-items: center;">
+            <a href="/site/orquestra.html" target="_blank" class="btn-visualizar-site" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; background: #1e293b; color: #F5D696; border: 1px solid rgba(245, 214, 150, 0.3); border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 600;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                Ver Página Pública da Orquestra
+            </a>
+            <button type="button" onclick="abrirModalNovoVideo()" class="btn-novo-item" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: #F5D696; color: #0b0d13; border: none; border-radius: 6px; font-size: 13.5px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 8px rgba(245, 214, 150, 0.3);">
+                + Adicionar Novo Vídeo
+            </button>
+        </div>
+    </header>
+
+    <!-- Feedback de Sucesso ou Erro -->
+    <% if (sucesso) { %>
+        <div style="background: #dcfce7; border: 1px solid #bbf7d0; color: #15803d; padding: 12px 18px; border-radius: 8px; font-size: 13.5px; font-weight: 600; margin-bottom: 20px;">
+            ✓ <%= sucesso %>
+        </div>
+    <% } %>
+    <% if (erro) { %>
+        <div style="background: #fee2e2; border: 1px solid #fecaca; color: #b91c1c; padding: 12px 18px; border-radius: 8px; font-size: 13.5px; font-weight: 600; margin-bottom: 20px;">
+            ✕ <%= erro %>
+        </div>
+    <% } %>
+
+    <!-- Cards de Resumo -->
+    <section class="kpi-grid" style="margin-bottom: 24px;">
+        <div class="kpi-card destaque-ouro">
+            <div class="kpi-header">
+                <span class="kpi-label">Apresentações & Vídeos</span>
+                <span class="kpi-badge neutro">Catálogo</span>
+            </div>
+            <div class="kpi-valor"><%= videos ? videos.length : 0 %> cadastrados</div>
+            <div class="kpi-subtexto">Concertos, galas e ensaios públicos</div>
+        </div>
+
+        <div class="kpi-card destaque-verde">
+            <div class="kpi-header">
+                <span class="kpi-label">Status da Página</span>
+                <span class="kpi-badge positivo">No Ar</span>
+            </div>
+            <div class="kpi-valor">Ativa</div>
+            <div class="kpi-subtexto">Disponível ao público e alunos</div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <span class="kpi-label">Regente Responsável</span>
+                <span class="kpi-badge neutro">Direção</span>
+            </div>
+            <div class="kpi-valor" style="font-size: 18px;"><%= conteudo ? conteudo.maestro_nome : 'Maestro Gabriel Lima' %></div>
+            <div class="kpi-subtexto"><%= conteudo ? conteudo.maestro_cargo : 'O MAESTRO' %></div>
+        </div>
+    </section>
+
+    <!-- FORMULÁRIO 1: Edição de Conteúdo Geral e Textos da Página -->
+    <section class="painel-secao" style="background: #111422; border: 1px solid rgba(245, 214, 150, 0.22); border-radius: 12px; padding: 24px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(245, 214, 150, 0.15); padding-bottom: 14px; margin-bottom: 20px;">
+            <div>
+                <h2 style="font-size: 18px; font-weight: 700; color: #FFF8EB; font-family: 'Cinzel', serif;">Conteúdo & Textos da Orquestra</h2>
+                <p style="font-size: 13px; color: #94a3b8; margin-top: 4px;">Edite as seções institucionais, história, informações de ensaio e dados do maestro</p>
+            </div>
+            <span style="font-size: 12px; color: #F5D696; background: rgba(212, 175, 55, 0.12); padding: 4px 10px; border-radius: 14px; border: 1px solid rgba(212, 175, 55, 0.3);">
+                Edição em Tempo Real
+            </span>
+        </div>
+
+        <form action="/paginas/orquestra/salvar" method="POST" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+            <!-- Bloco Título Principal & Subtítulo -->
+            <div style="grid-column: span 1;">
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #e2e8f0; margin-bottom: 6px;">Título Principal da Página:</label>
+                <input type="text" name="titulo" value="<%= conteudo ? conteudo.titulo : 'ORQUESTRA BRAVO TATUÍ' %>" required style="width: 100%; padding: 10px 14px; background: #0b0d17; border: 1px solid rgba(245, 214, 150, 0.25); border-radius: 8px; color: #FFF; font-size: 14px; box-sizing: border-box;">
+            </div>
+
+            <div style="grid-column: span 1;">
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #e2e8f0; margin-bottom: 6px;">Subtítulo da Página / Slogan:</label>
+                <input type="text" name="subtitulo" value="<%= conteudo ? (conteudo.subtitulo || '') : '' %>" style="width: 100%; padding: 10px 14px; background: #0b0d17; border: 1px solid rgba(245, 214, 150, 0.25); border-radius: 8px; color: #FFF; font-size: 14px; box-sizing: border-box;">
+            </div>
+
+            <!-- Bloco Foto Hero e Legenda -->
+            <div style="grid-column: span 1;">
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #e2e8f0; margin-bottom: 6px;">URL da Foto Hero (Palco / Concerto):</label>
+                <input type="text" name="imagem_hero" value="<%= conteudo ? conteudo.imagem_hero : '../images/orquestra/orquestra_hero.jpg' %>" required style="width: 100%; padding: 10px 14px; background: #0b0d17; border: 1px solid rgba(245, 214, 150, 0.25); border-radius: 8px; color: #FFF; font-size: 14px; box-sizing: border-box;">
+            </div>
+
+            <div style="grid-column: span 1;">
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #e2e8f0; margin-bottom: 6px;">Legenda da Foto Hero:</label>
+                <input type="text" name="legenda_hero" value="<%= conteudo ? conteudo.legenda_hero : 'Nossa Orquestra em concerto no teatro da cidade' %>" style="width: 100%; padding: 10px 14px; background: #0b0d17; border: 1px solid rgba(245, 214, 150, 0.25); border-radius: 8px; color: #FFF; font-size: 14px; box-sizing: border-box;">
+            </div>
+
+            <!-- Bloco Nossa História: Parágrafo 1 e 2 -->
+            <div style="grid-column: span 2;">
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #e2e8f0; margin-bottom: 6px;">Nossa História — 1º Parágrafo:</label>
+                <textarea name="historia_p1" rows="3" style="width: 100%; padding: 10px 14px; background: #0b0d17; border: 1px solid rgba(245, 214, 150, 0.25); border-radius: 8px; color: #FFF; font-size: 13.5px; line-height: 1.5; box-sizing: border-box;"><%= conteudo ? conteudo.historia_p1 : '' %></textarea>
+            </div>
+
+            <div style="grid-column: span 2;">
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #e2e8f0; margin-bottom: 6px;">Nossa História — 2º Parágrafo:</label>
+                <textarea name="historia_p2" rows="3" style="width: 100%; padding: 10px 14px; background: #0b0d17; border: 1px solid rgba(245, 214, 150, 0.25); border-radius: 8px; color: #FFF; font-size: 13.5px; line-height: 1.5; box-sizing: border-box;"><%= conteudo ? conteudo.historia_p2 : '' %></textarea>
+            </div>
+
+            <!-- Bloco Informações Gerais (Sidebar) -->
+            <div style="grid-column: span 1;">
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #e2e8f0; margin-bottom: 6px;">Horário dos Ensaios:</label>
+                <input type="text" name="ensaios" value="<%= conteudo ? conteudo.ensaios : 'Sábados, das 14h às 17h' %>" style="width: 100%; padding: 10px 14px; background: #0b0d17; border: 1px solid rgba(245, 214, 150, 0.25); border-radius: 8px; color: #FFF; font-size: 14px; box-sizing: border-box;">
+            </div>
+
+            <div style="grid-column: span 1;">
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #e2e8f0; margin-bottom: 6px;">Quem Pode Participar:</label>
+                <input type="text" name="participacao" value="<%= conteudo ? conteudo.participacao : 'Alunos e músicos da comunidade' %>" style="width: 100%; padding: 10px 14px; background: #0b0d17; border: 1px solid rgba(245, 214, 150, 0.25); border-radius: 8px; color: #FFF; font-size: 14px; box-sizing: border-box;">
+            </div>
+
+            <div style="grid-column: span 1;">
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #e2e8f0; margin-bottom: 6px;">Status das Inscrições / Audições:</label>
+                <input type="text" name="inscricoes" value="<%= conteudo ? conteudo.inscricoes : 'Abertas no início de cada semestre' %>" style="width: 100%; padding: 10px 14px; background: #0b0d17; border: 1px solid rgba(245, 214, 150, 0.25); border-radius: 8px; color: #FFF; font-size: 14px; box-sizing: border-box;">
+            </div>
+
+            <div style="grid-column: span 1;">
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #e2e8f0; margin-bottom: 6px;">Naipes / Instrumentos Aceitos:</label>
+                <input type="text" name="instrumentos" value="<%= conteudo ? conteudo.instrumentos : 'Cordas, Sopros e Percussão' %>" style="width: 100%; padding: 10px 14px; background: #0b0d17; border: 1px solid rgba(245, 214, 150, 0.25); border-radius: 8px; color: #FFF; font-size: 14px; box-sizing: border-box;">
+            </div>
+
+            <!-- Bloco O Maestro -->
+            <div style="grid-column: span 1;">
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #e2e8f0; margin-bottom: 6px;">Nome do Maestro:</label>
+                <input type="text" name="maestro_nome" value="<%= conteudo ? conteudo.maestro_nome : 'Maestro Gabriel Lima' %>" style="width: 100%; padding: 10px 14px; background: #0b0d17; border: 1px solid rgba(245, 214, 150, 0.25); border-radius: 8px; color: #FFF; font-size: 14px; box-sizing: border-box;">
+            </div>
+
+            <div style="grid-column: span 1;">
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #e2e8f0; margin-bottom: 6px;">Cargo / Subtítulo do Maestro:</label>
+                <input type="text" name="maestro_subtitulo" value="<%= conteudo ? (conteudo.maestro_subtitulo || 'Regente Titular & Diretor Musical') : 'Regente Titular & Diretor Musical' %>" style="width: 100%; padding: 10px 14px; background: #0b0d17; border: 1px solid rgba(245, 214, 150, 0.25); border-radius: 8px; color: #FFF; font-size: 14px; box-sizing: border-box;">
+            </div>
+
+            <div style="grid-column: span 1;">
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #e2e8f0; margin-bottom: 6px;">Foto do Maestro (URL):</label>
+                <input type="text" name="maestro_foto" value="<%= conteudo ? conteudo.maestro_foto : '../images/orquestra/maestro.jpg' %>" style="width: 100%; padding: 10px 14px; background: #0b0d17; border: 1px solid rgba(245, 214, 150, 0.25); border-radius: 8px; color: #FFF; font-size: 14px; box-sizing: border-box;">
+            </div>
+
+            <div style="grid-column: span 1;">
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #e2e8f0; margin-bottom: 6px;">Link do Canal no YouTube:</label>
+                <input type="text" name="youtube_url" value="<%= conteudo ? conteudo.youtube_url : 'https://www.youtube.com/@bravo_tatui' %>" style="width: 100%; padding: 10px 14px; background: #0b0d17; border: 1px solid rgba(245, 214, 150, 0.25); border-radius: 8px; color: #FFF; font-size: 14px; box-sizing: border-box;">
+            </div>
+
+            <div style="grid-column: span 2;">
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #e2e8f0; margin-bottom: 6px;">Biografia / Descrição do Maestro:</label>
+                <textarea name="maestro_bio" rows="3" style="width: 100%; padding: 10px 14px; background: #0b0d17; border: 1px solid rgba(245, 214, 150, 0.25); border-radius: 8px; color: #FFF; font-size: 13.5px; line-height: 1.5; box-sizing: border-box;"><%= conteudo ? conteudo.maestro_bio : '' %></textarea>
+            </div>
+
+            <div style="grid-column: span 2; display: flex; justify-content: flex-end; gap: 12px; margin-top: 10px;">
+                <button type="submit" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; background: linear-gradient(135deg, #D4AF37 0%, #F5D696 100%); color: #0c0a07; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 14px rgba(212, 175, 55, 0.35);">
+                    Salvar Alterações de Conteúdo
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <!-- TABELA / CRUD 2: Gestão de Vídeos e Apresentações -->
+    <section class="painel-secao" style="background: #111422; border: 1px solid rgba(245, 214, 150, 0.22); border-radius: 12px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(245, 214, 150, 0.15); padding-bottom: 14px; margin-bottom: 20px;">
+            <div>
+                <h2 style="font-size: 18px; font-weight: 700; color: #FFF8EB; font-family: 'Cinzel', serif;">Vídeos e Apresentações em Exibição</h2>
+                <p style="font-size: 13px; color: #94a3b8; margin-top: 4px;">Gerencie os vídeos exibidos no carrossel/grade da página da orquestra</p>
+            </div>
+            <button type="button" onclick="abrirModalNovoVideo()" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: #F5D696; color: #0b0d13; border: none; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer;">
+                + Adicionar Vídeo
+            </button>
+        </div>
+
+        <div style="overflow-x: auto;">
+            <table class="tabela-gestao" style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr style="border-bottom: 1px solid rgba(245, 214, 150, 0.2); color: #F5D696; font-size: 12px; text-transform: uppercase;">
+                        <th style="padding: 12px 14px;">Miniatura</th>
+                        <th style="padding: 12px 14px;">Título da Apresentação</th>
+                        <th style="padding: 12px 14px;">Link do Vídeo</th>
+                        <th style="padding: 12px 14px;">Data / Temporada</th>
+                        <th style="padding: 12px 14px;">Ordem</th>
+                        <th style="padding: 12px 14px;">Status</th>
+                        <th style="padding: 12px 14px; text-align: right;">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (!videos || videos.length === 0) { %>
+                        <tr>
+                            <td colspan="7" style="padding: 30px; text-align: center; color: #94a3b8;">
+                                Nenhum vídeo cadastrado no momento. Clique em "+ Adicionar Novo Vídeo" para começar.
+                            </td>
+                        </tr>
+                    <% } else { %>
+                        <% videos.forEach(v => { %>
+                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.06); color: #cbd5e1; font-size: 13px;">
+                                <td style="padding: 10px 14px; width: 80px;">
+                                    <div style="width: 70px; height: 42px; border-radius: 6px; overflow: hidden; border: 1px solid rgba(212, 175, 55, 0.3); background: #000;">
+                                        <img src="<%= v.thumbnail_url || '../images/orquestra/video1.jpg' %>" alt="<%= v.titulo %>" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null; this.src='../images/orquestra/video1.jpg';">
+                                    </div>
+                                </td>
+                                <td style="padding: 10px 14px; font-weight: 600; color: #FFF;">
+                                    <%= v.titulo %>
+                                </td>
+                                <td style="padding: 10px 14px;">
+                                    <a href="<%= v.video_url %>" target="_blank" style="color: #38bdf8; text-decoration: none; font-size: 12px; display: inline-flex; align-items: center; gap: 4px;">
+                                        Abrir Link ↗
+                                    </a>
+                                </td>
+                                <td style="padding: 10px 14px; font-size: 12px;">
+                                    <%= v.data_apresentacao || '—' %>
+                                </td>
+                                <td style="padding: 10px 14px; font-weight: 600; color: #F5D696;">
+                                    <%= v.ordem || 0 %>
+                                </td>
+                                <td style="padding: 10px 14px;">
+                                    <% if (v.ativo) { %>
+                                        <span style="background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: 600;">Ativo</span>
+                                    <% } else { %>
+                                        <span style="background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: 600;">Inativo</span>
+                                    <% } %>
+                                </td>
+                                <td style="padding: 10px 14px; text-align: right;">
+                                    <div style="display: inline-flex; gap: 6px;">
+                                        <button type="button" onclick="abrirModalEditarVideo(<%= JSON.stringify(v) %>)" style="padding: 6px 12px; background: #1e293b; color: #F5D696; border: 1px solid rgba(245, 214, 150, 0.25); border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;">
+                                            Editar
+                                        </button>
+                                        <form action="/paginas/orquestra/videos/excluir/<%= v.id_video %>" method="POST" onsubmit="return confirm('Deseja realmente remover o vídeo \'<%= v.titulo %>\'?');" style="display: inline;">
+                                            <button type="submit" style="padding: 6px 12px; background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;">
+                                                Excluir
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<!-- MODAL 1: Adicionar Novo Vídeo -->
+<div id="modalNovoVideo" style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 9999; padding: 20px;">
+    <div style="background: #14110d; border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 14px; width: 100%; max-width: 540px; padding: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.9);">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(212, 175, 55, 0.2); padding-bottom: 12px; margin-bottom: 16px;">
+            <h3 style="color: #F5D696; font-family: 'Cinzel', serif; font-size: 16px; margin: 0;">Adicionar Vídeo da Orquestra</h3>
+            <button type="button" onclick="fecharModalNovoVideo()" style="background: none; border: none; color: #94a3b8; font-size: 20px; cursor: pointer;">✕</button>
+        </div>
+
+        <form action="/paginas/orquestra/videos/criar" method="POST" style="display: flex; flex-direction: column; gap: 14px;">
+            <div>
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #cbd5e1; margin-bottom: 4px;">Título da Apresentação:</label>
+                <input type="text" name="titulo" placeholder="Ex: Concerto de Primavera - 2025" required style="width: 100%; padding: 10px; background: #0c0a07; border: 1px solid rgba(212,175,55,0.3); border-radius: 6px; color: #FFF; box-sizing: border-box;">
+            </div>
+
+            <div>
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #cbd5e1; margin-bottom: 4px;">Link do Vídeo (YouTube):</label>
+                <input type="text" name="video_url" placeholder="https://www.youtube.com/watch?v=... ou embed" required style="width: 100%; padding: 10px; background: #0c0a07; border: 1px solid rgba(212,175,55,0.3); border-radius: 6px; color: #FFF; box-sizing: border-box;">
+            </div>
+
+            <div>
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #cbd5e1; margin-bottom: 4px;">URL da Miniatura (Thumbnail):</label>
+                <input type="text" name="thumbnail_url" placeholder="../images/orquestra/video1.jpg ou link da imagem" style="width: 100%; padding: 10px; background: #0c0a07; border: 1px solid rgba(212,175,55,0.3); border-radius: 6px; color: #FFF; box-sizing: border-box;">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div>
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: #cbd5e1; margin-bottom: 4px;">Data / Temporada:</label>
+                    <input type="text" name="data_apresentacao" placeholder="Ex: Temporada 2025" style="width: 100%; padding: 10px; background: #0c0a07; border: 1px solid rgba(212,175,55,0.3); border-radius: 6px; color: #FFF; box-sizing: border-box;">
+                </div>
+                <div>
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: #cbd5e1; margin-bottom: 4px;">Ordem de Exibição:</label>
+                    <input type="number" name="ordem" value="1" style="width: 100%; padding: 10px; background: #0c0a07; border: 1px solid rgba(212,175,55,0.3); border-radius: 6px; color: #FFF; box-sizing: border-box;">
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px;">
+                <button type="button" onclick="fecharModalNovoVideo()" style="padding: 10px 18px; background: #1e1b16; color: #cbd5e1; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; cursor: pointer;">Cancelar</button>
+                <button type="submit" style="padding: 10px 22px; background: #F5D696; color: #0c0a07; font-weight: 700; border: none; border-radius: 6px; cursor: pointer;">Adicionar Vídeo</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL 2: Editar Vídeo Existente -->
+<div id="modalEditarVideo" style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 9999; padding: 20px;">
+    <div style="background: #14110d; border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 14px; width: 100%; max-width: 540px; padding: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.9);">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(212, 175, 55, 0.2); padding-bottom: 12px; margin-bottom: 16px;">
+            <h3 style="color: #F5D696; font-family: 'Cinzel', serif; font-size: 16px; margin: 0;">Editar Vídeo</h3>
+            <button type="button" onclick="fecharModalEditarVideo()" style="background: none; border: none; color: #94a3b8; font-size: 20px; cursor: pointer;">✕</button>
+        </div>
+
+        <form id="formEditarVideo" action="" method="POST" style="display: flex; flex-direction: column; gap: 14px;">
+            <div>
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #cbd5e1; margin-bottom: 4px;">Título da Apresentação:</label>
+                <input type="text" id="editTitulo" name="titulo" required style="width: 100%; padding: 10px; background: #0c0a07; border: 1px solid rgba(212,175,55,0.3); border-radius: 6px; color: #FFF; box-sizing: border-box;">
+            </div>
+
+            <div>
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #cbd5e1; margin-bottom: 4px;">Link do Vídeo (YouTube):</label>
+                <input type="text" id="editVideoUrl" name="video_url" required style="width: 100%; padding: 10px; background: #0c0a07; border: 1px solid rgba(212,175,55,0.3); border-radius: 6px; color: #FFF; box-sizing: border-box;">
+            </div>
+
+            <div>
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #cbd5e1; margin-bottom: 4px;">URL da Miniatura (Thumbnail):</label>
+                <input type="text" id="editThumbnailUrl" name="thumbnail_url" style="width: 100%; padding: 10px; background: #0c0a07; border: 1px solid rgba(212,175,55,0.3); border-radius: 6px; color: #FFF; box-sizing: border-box;">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div>
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: #cbd5e1; margin-bottom: 4px;">Data / Temporada:</label>
+                    <input type="text" id="editDataApresentacao" name="data_apresentacao" style="width: 100%; padding: 10px; background: #0c0a07; border: 1px solid rgba(212,175,55,0.3); border-radius: 6px; color: #FFF; box-sizing: border-box;">
+                </div>
+                <div>
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: #cbd5e1; margin-bottom: 4px;">Ordem de Exibição:</label>
+                    <input type="number" id="editOrdem" name="ordem" style="width: 100%; padding: 10px; background: #0c0a07; border: 1px solid rgba(212,175,55,0.3); border-radius: 6px; color: #FFF; box-sizing: border-box;">
+                </div>
+            </div>
+
+            <div>
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #cbd5e1; margin-bottom: 4px;">Status de Exibição:</label>
+                <select id="editAtivo" name="ativo" style="width: 100%; padding: 10px; background: #0c0a07; border: 1px solid rgba(212,175,55,0.3); border-radius: 6px; color: #FFF; box-sizing: border-box;">
+                    <option value="1">Ativo (Visível na Página)</option>
+                    <option value="0">Inativo (Oculto)</option>
+                </select>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px;">
+                <button type="button" onclick="fecharModalEditarVideo()" style="padding: 10px 18px; background: #1e1b16; color: #cbd5e1; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; cursor: pointer;">Cancelar</button>
+                <button type="submit" style="padding: 10px 22px; background: #F5D696; color: #0c0a07; font-weight: 700; border: none; border-radius: 6px; cursor: pointer;">Salvar Alterações</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function abrirModalNovoVideo() {
+        document.getElementById('modalNovoVideo').style.display = 'flex';
+    }
+    function fecharModalNovoVideo() {
+        document.getElementById('modalNovoVideo').style.display = 'none';
+    }
+    function abrirModalEditarVideo(v) {
+        document.getElementById('formEditarVideo').action = '/paginas/orquestra/videos/editar/' + v.id_video;
+        document.getElementById('editTitulo').value = v.titulo || '';
+        document.getElementById('editVideoUrl').value = v.video_url || '';
+        document.getElementById('editThumbnailUrl').value = v.thumbnail_url || '';
+        document.getElementById('editDataApresentacao').value = v.data_apresentacao || '';
+        document.getElementById('editOrdem').value = v.ordem || 0;
+        document.getElementById('editAtivo').value = v.ativo ? "1" : "0";
+        document.getElementById('modalEditarVideo').style.display = 'flex';
+    }
+    function fecharModalEditarVideo() {
+        document.getElementById('modalEditarVideo').style.display = 'none';
+    }
+</script>
+
+<%- include('../partials/footer') %>

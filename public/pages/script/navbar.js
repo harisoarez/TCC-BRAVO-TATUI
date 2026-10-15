@@ -60,19 +60,21 @@
         const usuario = obterUsuarioLogado();
         const paginaAtual = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
 
-        // Determinar links ativos
+        const isOrquestra = paginaAtual.includes("orquestra");
         const isIndex = paginaAtual === "index.html" || paginaAtual === "" || paginaAtual === "index";
         const isFormacaoSelecionada = paginaAtual.includes("formacaoselecionada");
         const isFormacoes = paginaAtual.includes("formacao");
         const isInstSelecionado = paginaAtual.includes("instselecionado");
-        const isInstrumentos = paginaAtual.includes("inst");
+        const isInstrumentos = paginaAtual.includes("inst") || isOrquestra;
         const isCardapio = paginaAtual.includes("cardapio");
         const isCalendario = paginaAtual.includes("calendario");
         const isLogin = paginaAtual.includes("login");
 
         // Identificar tema cromático específico da página
         let temaPagina = "nav-tema-index";
-        if (isCardapio) {
+        if (isOrquestra) {
+            temaPagina = "nav-tema-orquestra";
+        } else if (isCardapio) {
             temaPagina = "nav-tema-cardapio";
         } else if (isCalendario) {
             temaPagina = "nav-tema-calendario";
@@ -91,6 +93,7 @@
         // Aplica o tema visual sutil na navbar
         nav.classList.remove(
             "nav-tema-index",
+            "nav-tema-orquestra",
             "nav-tema-cardapio",
             "nav-tema-calendario",
             "nav-tema-formacoes",

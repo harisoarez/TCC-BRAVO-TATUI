@@ -232,6 +232,16 @@ body{
     background: linear-gradient(90deg,rgba(17, 0, 31, 1) 35%, rgba(0, 212, 255, 0) 100%);
 }
 
+#electro .destaque {
+    -webkit-text-stroke: 0.7px #ffffff;
+    paint-order: stroke fill;
+    text-shadow: 
+        -0.5px -0.5px 0 #ffffff,
+         0.5px -0.5px 0 #ffffff,
+        -0.5px  0.5px 0 #ffffff,
+         0.5px  0.5px 0 #ffffff;
+}
+
 #personalizada{
     background: #6E6E6E;
     background: linear-gradient(90deg,rgba(110, 110, 110, 1) 35%, rgba(0, 212, 255, 0) 100%);

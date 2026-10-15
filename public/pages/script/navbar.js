@@ -137,7 +137,7 @@
             <div class="nav-links-center">
                 <a href="./index.html" class="${isIndex ? 'link-ativo' : ''}">Início</a>
                 <a href="./formacoes.html" class="${isFormacoes ? 'link-ativo' : ''}">Bravo Tatuí</a>
-                <a href="./instrumentos.html" class="${isInstrumentos ? 'link-ativo' : ''}">Aulas no IMBT</a>
+                <a href="./instrumentos.html" class="${isInstrumentos ? 'link-ativo' : ''}">Instituto Musical Bravo Tatuí</a>
                 <a href="./cardapio.html" class="${isCardapio ? 'link-ativo' : ''}">Coffee Bravo</a>
                 ${linkCalendarioHtml}
                 ${linkPainelAdminHtml}
@@ -362,6 +362,16 @@
         }
 
         const drawerTemaClasse = paginas.temaPagina ? `drawer-${paginas.temaPagina}` : "";
+        let instaLinkDrawer = "https://www.instagram.com/bravo_tatui/";
+        let instaNomeDrawer = "@bravo_tatui";
+        if (paginas.isInstrumentos || paginas.isOrquestra || paginas.isInstSelecionado) {
+            instaLinkDrawer = "https://www.instagram.com/imbtoficial/";
+            instaNomeDrawer = "@imbt_oficial";
+        } else if (paginas.isCardapio) {
+            instaLinkDrawer = "https://www.instagram.com/coffee_bravo/";
+            instaNomeDrawer = "@coffee_bravo";
+        }
+
         const drawerHtml = `
             <div id="menuMobileDrawer" class="menu-mobile-drawer-overlay ${drawerTemaClasse}" role="dialog" aria-modal="true" aria-label="Menu de Navegação">
                 <div class="menu-mobile-drawer">
@@ -387,7 +397,7 @@
                             </a>
                             <a href="./instrumentos.html" class="menu-mobile-link ${paginas.isInstrumentos ? 'link-ativo-mobile' : ''}" onclick="window.fecharMenuMobile();">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
-                                <span>Aulas no IMBT</span>
+                                <span>Instituto Musical Bravo Tatuí</span>
                             </a>
                             <a href="./cardapio.html" class="menu-mobile-link ${paginas.isCardapio ? 'link-ativo-mobile' : ''}" onclick="window.fecharMenuMobile();">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
@@ -404,9 +414,9 @@
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                                 <span>WhatsApp: (15) 99625-7683</span>
                             </a>
-                            <a href="https://www.instagram.com/bravo_tatui/" target="_blank" class="btn-drawer-insta">
+                            <a href="${instaLinkDrawer}" target="_blank" rel="noopener noreferrer" class="btn-drawer-insta">
                                 <img src="../images/Instagram_icon.png" alt="Instagram" width="16" height="16">
-                                <span>@bravo_tatui</span>
+                                <span>${instaNomeDrawer}</span>
                             </a>
                         </div>
                     </div>

@@ -459,7 +459,7 @@
 
         personalizada: {
             id: "personalizada",
-            nome: "Faça do seu Jeito",
+            nome: "Personalize sua Formação Musical",
             prefixo: "",
             cor: "#F5D696",
             badge: "PROJETO ARTÍSTICO SOB MEDIDA",

@@ -43,6 +43,29 @@ body {
     overflow-y: visible;
 }
 
+/* Barra de rolagem discreta e escura */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #080808;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #18181d;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #282830;
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #18181d #080808;
+}
+
 .container {
     height: 100%;
     min-height: 100vh;
@@ -73,11 +96,18 @@ body {
     color: #F5D696;
 }
 
-/* Fundo e Banner */
+/* Hero Wrapper, Fundo e Banner */
+.hero-cards-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 90px;
+}
+
 #background {
     display: flex;
     flex-direction: column;
     height: 91vh;
+    min-height: 700px;
     position: relative;
     z-index: 1;
     top: 0;
@@ -134,7 +164,8 @@ body {
 }
 
 /* Cards */
-.container #cards {
+.container #cards,
+.hero-cards-wrapper #cards {
     position: absolute;
     z-index: 10;
     top: 45%;
@@ -217,6 +248,10 @@ body {
 
 /* Responsividade */
 @media (max-width: 960px) {
+    .hero-cards-wrapper {
+        margin-bottom: 0 !important;
+    }
+
     #background {
         display: none !important;
     }
@@ -226,7 +261,8 @@ body {
         min-height: 100vh;
     }
 
-    .container #cards {
+    .container #cards,
+    .hero-cards-wrapper #cards {
         position: static !important;
         transform: none !important;
         width: 100% !important;
@@ -336,4 +372,378 @@ body {
     .card p, .card .card-desc {
         display: none !important;
     }
+
+    /* Ajustes da Seção Sobre Nós no mobile */
+    .secao-sobre {
+        padding: 60px 6% 70px 6%;
+    }
+
+    .sobre-container {
+        grid-template-columns: 1fr;
+        gap: 38px;
+    }
+
+    .sobre-titulo {
+        font-size: 1.85rem;
+    }
+
+    .sobre-paragrafo {
+        font-size: 15px;
+        text-align: left;
+    }
+
+    .sobre-citacao {
+        padding: 18px 20px;
+        margin: 14px 0 20px 0;
+    }
+
+    .sobre-citacao-texto {
+        font-size: 17px;
+    }
+
+    .sobre-midia {
+        margin-top: 10px;
+    }
+
+    .sobre-imagem-moldura {
+        max-width: 100%;
+        height: 360px;
+    }
+
+    .sobre-badge-flutuante {
+        left: 10px;
+        bottom: -16px;
+        padding: 12px 16px;
+    }
+
+    .badge-numero {
+        font-size: 22px;
+    }
+
+    .sobre-reveal-left {
+        transform: translateX(-35px);
+    }
+
+    .sobre-reveal-right {
+        transform: translateX(35px);
+    }
+}
+
+/* ==========================================================================
+   Seção Sobre Nós (Filosofia Übermensch de Nietzsche)
+   ========================================================================== */
+.secao-sobre {
+    position: relative;
+    width: 100%;
+    background-color: #0b0c10;
+    padding: 110px 6% 120px 6%;
+    border-top: 1px solid rgba(245, 214, 150, 0.14);
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.secao-sobre::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 8%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(245, 214, 150, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.sobre-container {
+    max-width: 1240px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 64px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+/* Coluna de Texto */
+.sobre-conteudo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.sobre-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(245, 214, 150, 0.08);
+    border: 1px solid rgba(245, 214, 150, 0.25);
+    padding: 6px 14px;
+    border-radius: 999px;
+    width: fit-content;
+    margin-bottom: 22px;
+}
+
+.sobre-tag-ponto {
+    width: 6px;
+    height: 6px;
+    background-color: #F5D696;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #F5D696;
+}
+
+.sobre-tag-texto {
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #F5D696;
+}
+
+.sobre-titulo {
+    font-family: 'julius', 'Cinzel', serif;
+    font-size: clamp(2rem, 3.4vw, 2.9rem);
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.18;
+    letter-spacing: 1.5px;
+    margin-bottom: 24px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+
+.sobre-paragrafo {
+    font-family: 'inter', sans-serif;
+    font-size: 15.5px;
+    line-height: 1.8;
+    color: #cbd5e1;
+    margin-bottom: 22px;
+    text-align: justify;
+}
+
+.sobre-paragrafo strong {
+    color: #F5D696;
+    font-weight: 600;
+}
+
+.sobre-paragrafo em {
+    color: #f1f5f9;
+    font-style: italic;
+}
+
+/* Citação de Nietzsche */
+.sobre-citacao {
+    position: relative;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(245, 214, 150, 0.04) 100%);
+    border-left: 3px solid #F5D696;
+    border-radius: 0 12px 12px 0;
+    padding: 22px 26px 20px 32px;
+    margin: 16px 0 26px 0;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.sobre-citacao-aspas {
+    position: absolute;
+    top: -12px;
+    left: 12px;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 52px;
+    color: rgba(245, 214, 150, 0.22);
+    line-height: 1;
+    pointer-events: none;
+}
+
+.sobre-citacao-texto {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: 19px;
+    line-height: 1.45;
+    color: #ffffff;
+    letter-spacing: 0.3px;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+}
+
+.sobre-citacao-autor {
+    display: block;
+    font-family: 'inter', sans-serif;
+    font-size: 13px;
+    color: #F5D696;
+    font-style: normal;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+}
+
+.sobre-citacao-autor em {
+    color: #94a3b8;
+    font-style: italic;
+}
+
+/* Coluna Direita (Imagem) */
+.sobre-midia {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sobre-imagem-moldura {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    height: 520px;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid rgba(245, 214, 150, 0.28);
+    box-shadow: 0 24px 50px rgba(0, 0, 0, 0.65), 0 0 30px rgba(245, 214, 150, 0.1);
+}
+
+.sobre-imagem {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
+    filter: brightness(0.92) contrast(1.05);
+}
+
+.sobre-midia:hover .sobre-imagem {
+    transform: scale(1.04);
+    filter: brightness(1);
+}
+
+.sobre-imagem-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0) 40%,
+        rgba(11, 12, 16, 0.65) 100%
+    );
+    pointer-events: none;
+}
+
+.sobre-badge-flutuante {
+    position: absolute;
+    bottom: -22px;
+    left: -20px;
+    background: rgba(18, 18, 24, 0.92);
+    border: 1px solid rgba(245, 214, 150, 0.35);
+    backdrop-filter: blur(12px);
+    border-radius: 14px;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65);
+    z-index: 2;
+    transition: transform 0.3s ease;
+}
+
+.sobre-midia:hover .sobre-badge-flutuante {
+    transform: translateY(-4px);
+}
+
+.badge-numero {
+    font-family: 'julius', 'Cinzel', serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: #F5D696;
+    line-height: 1;
+}
+
+.badge-texto {
+    font-family: 'inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: #e2e8f0;
+}
+
+/* ==========================================================================
+   Animações de Transição Vindo de Lado (Scroll Reveal)
+   ========================================================================== */
+.sobre-reveal-left {
+    opacity: 0;
+    transform: translateX(-70px);
+    filter: blur(6px);
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity, filter;
+}
+
+.sobre-reveal-left.revealed {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+}
+
+.sobre-reveal-right {
+    opacity: 0;
+    transform: translateX(70px);
+    filter: blur(6px);
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s,
+                transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s,
+                filter 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+    will-change: transform, opacity, filter;
+}
+
+.sobre-reveal-right.revealed {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+}
+
+/* ==========================================================================
+   Rodapé Minimalista (Apenas Ícones do Instagram, YouTube e Spotify)
+   ========================================================================== */
+.index-footer {
+    width: 100%;
+    background-color: #060608;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 38px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.footer-social-icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+}
+
+.social-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #94a3b8;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.social-icon-btn:hover {
+    color: #F5D696;
+    background: rgba(245, 214, 150, 0.12);
+    border-color: rgba(245, 214, 150, 0.45);
+    transform: translateY(-4px) scale(1.08);
+    box-shadow: 0 10px 22px rgba(245, 214, 150, 0.22);
+}
+
+.social-icon-btn svg {
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.social-icon-btn:hover svg {
+    transform: scale(1.06);
 }

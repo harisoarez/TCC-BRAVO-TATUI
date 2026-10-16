@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 /* Formação Selecionada */
 
 :root {
@@ -25,7 +26,7 @@
 }
 
 @font-face {
-    font-family: 'inter';
+    font-family: 'Plus Jakarta Sans';
     src: url(../fonts/Inter/Inter-VariableFont_opsz\,wght.ttf);
 }
 
@@ -45,7 +46,7 @@
 body {
     background-color: var(--bg-dark);
     color: var(--text-primary);
-    font-family: 'inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     min-height: 100vh;
     overflow-x: clip;
     overflow-y: visible;
@@ -66,7 +67,7 @@ a {
     display: flex;
     align-items: center;
     padding: 0 3%;
-    font-family: 'inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 12px;
     color: #94a3b8;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -267,7 +268,7 @@ a {
 
 .section-sub {
     display: block;
-    font-family: 'inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 11.5px;
     color: var(--text-muted);
     font-weight: normal;
@@ -303,7 +304,7 @@ a {
 .instrument-pill:hover {
     background: var(--formation-light-overlay);
     border-color: var(--formation-border);
-    transform: translateY(-2px);
+    /* hover float removed */
 }
 
 .inst-icon {
@@ -389,7 +390,7 @@ a {
 .custom-inst-card:hover {
     background: rgba(255, 255, 255, 0.07);
     border-color: var(--formation-border);
-    transform: translateY(-2px);
+    /* hover float removed */
 }
 
 .custom-inst-card.selecionado {
@@ -557,7 +558,7 @@ a {
     color: #ffffff;
     padding: 10px 12px;
     border-radius: 8px;
-    font-family: 'inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 12.5px;
     resize: vertical;
     outline: none;
@@ -888,7 +889,7 @@ a {
 #btnWhatsapp:hover {
     background: linear-gradient(135deg, #2bf074 0%, #20b859 100%) !important;
     color: #ffffff !important;
-    transform: translateY(-2px);
+    /* hover float removed */
     box-shadow: 0 8px 26px rgba(37, 211, 102, 0.6) !important;
     filter: brightness(1.05);
 }
@@ -941,7 +942,7 @@ a {
 .btn-nav-step:hover {
     background: rgba(255, 255, 255, 0.06);
     border-color: var(--formation-border);
-    transform: translateY(-2px);
+    /* hover float removed */
 }
 
 .btn-nav-step.text-right {
@@ -1015,7 +1016,7 @@ a {
     color: #ffffff;
     background: rgba(255, 255, 255, 0.08);
     border-color: var(--pill-color, var(--formation-border));
-    transform: translateY(-2px);
+    /* hover float removed */
 }
 
 .pill-link.ativo {
@@ -1087,5 +1088,21 @@ a {
 
     .pill-link {
         flex-shrink: 0;
+    }
+}
+
+/* ==========================================================================
+   ACESSIBILIDADE: FOCO & REDUÇÃO DE MOVIMENTO
+   ========================================================================== */
+:focus-visible {
+    outline: 2px solid #F5D696;
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }

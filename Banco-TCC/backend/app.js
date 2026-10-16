@@ -111,6 +111,31 @@ app.get("/uploads/comprovantes/:arquivo", async (req, res) => {
     return res.status(403).send("Acesso não autorizado para visualizar este comprovante.");
 });
 
+const verificarSessao = require("./src/middleware/verificarSessao");
+
+// Rota de acesso restrito institucional estilizada
+app.get(["/teste-restrito", "/site/acesso-restrito"], (req, res) => {
+    const { gerarHtmlAcessoRestrito } = require("./src/utils/renderAcessoRestrito");
+    const recurso = req.query.recurso;
+    const ehCalendario = recurso === "calendario";
+    return res.status(401).send(
+        gerarHtmlAcessoRestrito({
+            titulo: "Acesso Restrito",
+            subtitulo: "Identificação Necessária",
+            mensagem: ehCalendario
+                ? "O Calendário Acadêmico e a grade de aulas do Instituto Musical Bravo Tatuí são de acesso exclusivo para alunos, professores e administradores cadastrados. Por favor, faça login para continuar."
+                : "Para acessar este recurso ou painel administrativo do Instituto Musical Bravo Tatuí, é necessário efetuar login no sistema.",
+            urlLogin: "/site/login.html",
+            urlInicio: "/site/index.html",
+        })
+    );
+});
+
+// Proteção da página de calendário (apenas usuários autenticados)
+app.get(["/calendario", "/site/calendario.html", "/calendario.html", "/html/calendario.html"], verificarSessao, (req, res) => {
+    res.sendFile(path.join(__dirname, "../../public/pages/html/calendario.html"));
+});
+
 // Servir arquivos estáticos do painel administrativo (CSS, imagens públicas)
 app.use(express.static(path.join(__dirname, "src/public")));
 
@@ -125,9 +150,6 @@ app.get("/", (req, res) => {
 });
 app.get("/login", (req, res) => {
     res.redirect("/site/login.html");
-});
-app.get("/calendario", (req, res) => {
-    res.redirect("/site/calendario.html");
 });
 app.get("/cardapio", (req, res) => {
     res.redirect("/site/cardapio.html");

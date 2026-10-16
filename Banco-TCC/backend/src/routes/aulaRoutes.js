@@ -5,8 +5,8 @@ const aulaController = require("../controllers/aulaController");
 const authMiddleware = require("../middleware/authMiddleware");
 const verificarAdmin = require("../middleware/verificarAdmin");
 
-// Leitura pública/geral: todos os usuários (alunos, professores e visitantes) podem ver a grade
-router.get("/", aulaController.listar);
+// Leitura da grade de aulas: restrita a usuários autenticados (alunos, professores, administradores)
+router.get("/", authMiddleware, aulaController.listar);
 
 // Ações restritas: apenas administradores podem criar, editar, alterar status e excluir aulas
 router.post("/", authMiddleware, verificarAdmin, aulaController.cadastrar);

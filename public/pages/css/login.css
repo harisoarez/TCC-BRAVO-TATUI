@@ -1,24 +1,42 @@
-* {
+/* ==========================================================================
+   INSTITUTO BRAVO TATUÍ — TELA DE LOGIN & AUTENTICAÇÃO
+   Direção Visual: Editorial Clássica / Erudita
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+@font-face {
+    font-family: "julius";
+    src: url(../fonts/Julius_Sans_One/JuliusSansOne-Regular.ttf) format('truetype');
+    font-display: swap;
+}
+
+:root {
+    --login-bg: #08090d;
+    --login-surface: #10131c;
+    --login-surface-elevated: #161a26;
+    --login-border: rgba(255, 255, 255, 0.08);
+    --login-border-focus: #F5D696;
+    --login-text: #f2efe9;
+    --login-text-muted: #8892a4;
+    --login-gold: #F5D696;
+    --login-gold-hover: #e2c178;
+    
+    --radius-sharp: 2px;
+    --radius-subtle: 4px;
+}
+
+*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     -webkit-font-smoothing: antialiased;
 }
 
-@font-face {
-    font-family: "julius";
-    src: url(../fonts/Julius_Sans_One/JuliusSansOne-Regular.ttf) format('truetype');
-}
-
-@font-face {
-    font-family: "inter";
-    src: url(../fonts/Inter/Inter-VariableFont_opsz,wght.ttf) format('truetype');
-}
-
 body {
-    background-color: #0b0d13;
-    color: #ffffff;
-    font-family: 'inter', sans-serif;
+    background-color: var(--login-bg);
+    color: var(--login-text);
+    font-family: 'Plus Jakarta Sans', sans-serif;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -29,150 +47,168 @@ a {
     color: inherit;
 }
 
-/* Header Instagram */
+:focus-visible {
+    outline: 2px solid var(--login-gold);
+    outline-offset: 2px;
+}
+
+/* Header Superior */
 .header {
-    background-color: #121217;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    height: 32px;
+    background-color: #0c0d12;
+    border-bottom: 1px solid var(--login-border);
+    height: 34px;
     display: flex;
     align-items: center;
     padding: 0 3%;
     font-size: 12px;
-    color: #94a3b8;
+    color: var(--login-text-muted);
 }
 
 .header a {
-    color: #94a3b8;
+    color: var(--login-text-muted);
     transition: color 0.2s ease;
 }
 
 .header a:hover {
-    color: #ffffff;
+    color: var(--login-gold);
 }
 
-/* Login Container */
+/* Wrapper Central */
 .login-wrapper {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 40px 20px;
+    padding: 48px 20px;
 }
 
+/* Card de Login Editorial (Estrutura Arquitetônica Sóbria) */
 .login-card {
-    background: #141926;
-    border: 1px solid #232a3d;
-    border-radius: 12px;
+    background: var(--login-surface);
+    border: 1px solid var(--login-border);
+    border-radius: var(--radius-subtle);
     width: 100%;
     max-width: 440px;
-    padding: 35px 30px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    padding: 38px 32px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
 }
 
 .login-header {
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 28px;
 }
 
 .login-header h1 {
-    font-family: 'julius', serif;
-    color: #F5D696;
-    font-size: 22px;
-    letter-spacing: 1px;
+    font-family: 'julius', 'Cinzel', serif;
+    color: var(--login-gold);
+    font-size: 24px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
     margin-bottom: 8px;
 }
 
 .login-header p {
-    color: #8c97ad;
-    font-size: 13px;
+    color: var(--login-text-muted);
+    font-size: 13.5px;
+    font-weight: 400;
 }
 
+/* Formulário e Campos de Entrada */
 .form-group {
     margin-bottom: 18px;
 }
 
 .form-group label {
     display: block;
-    font-size: 13px;
-    color: #ccd4e5;
+    font-size: 12px;
+    color: #cfd6e4;
     margin-bottom: 6px;
-    font-weight: 500;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
 .form-group input {
     width: 100%;
-    padding: 12px 14px;
-    background: #0b0e17;
-    border: 1px solid #2c354d;
-    border-radius: 6px;
-    color: #fff;
+    padding: 11px 14px;
+    background: #090b10;
+    border: 1px solid var(--login-border);
+    border-radius: var(--radius-sharp);
+    color: #ffffff;
     font-size: 14px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     outline: none;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s ease;
 }
 
 .form-group input:focus {
-    border-color: #F5D696;
+    border-color: var(--login-border-focus);
 }
 
+/* Botão de Autenticação */
 .btn-login {
     width: 100%;
     padding: 13px;
-    background: #F5D696;
-    color: #0d111b;
+    background: var(--login-gold);
+    color: #08090d;
     border: none;
-    border-radius: 6px;
-    font-size: 15px;
-    font-weight: bold;
+    border-radius: var(--radius-sharp);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
     cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
+    transition: background 0.2s ease;
     margin-top: 10px;
 }
 
 .btn-login:hover {
-    background: #ebd091;
+    background: var(--login-gold-hover);
 }
 
 .btn-login:active {
     transform: scale(0.99);
 }
 
-/* Mensagem de Feedback */
+/* Mensagens de Feedback */
 .mensagem-feedback {
-    padding: 10px 14px;
-    border-radius: 6px;
+    padding: 11px 14px;
+    border-radius: var(--radius-sharp);
     font-size: 13px;
-    margin-bottom: 15px;
+    margin-bottom: 16px;
     display: none;
 }
 
 .mensagem-feedback.erro {
     display: block;
-    background: rgba(220, 38, 38, 0.15);
+    background: rgba(220, 38, 38, 0.12);
     border: 1px solid #dc2626;
     color: #fca5a5;
 }
 
 .mensagem-feedback.sucesso {
     display: block;
-    background: rgba(34, 197, 94, 0.15);
+    background: rgba(34, 197, 94, 0.12);
     border: 1px solid #22c55e;
     color: #86efac;
 }
 
-/* Área de Demonstração / Testes Rápidos */
+/* Seção de Contas de Demonstração */
 .demo-box {
-    margin-top: 25px;
-    padding-top: 20px;
-    border-top: 1px dashed #232a3d;
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid var(--login-border);
     text-align: center;
 }
 
 .demo-box span {
     display: block;
-    font-size: 12px;
-    color: #7b869e;
-    margin-bottom: 10px;
+    font-size: 11.5px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--login-text-muted);
+    margin-bottom: 12px;
 }
 
 .demo-buttons {
@@ -183,35 +219,31 @@ a {
 }
 
 .btn-demo {
-    background: #1d2436;
-    color: #cbd5e1;
-    border: 1px solid #2c3650;
-    border-radius: 6px;
+    background: #141724;
+    color: #cfd6e4;
+    border: 1px solid var(--login-border);
+    border-radius: var(--radius-sharp);
     padding: 8px 12px;
     font-size: 11.5px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
     display: inline-flex;
     align-items: center;
     justify-content: center;
 }
 
 .btn-demo:hover {
-    background: #2b354d;
-    color: #F5D696;
+    background: #1b2030;
+    color: var(--login-gold);
     border-color: rgba(245, 214, 150, 0.4);
 }
 
-/* Modal */
+/* Modal de Feedback do Sistema */
 .modal-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(4px);
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -224,36 +256,38 @@ a {
 }
 
 .modal-content {
-    background: #141926;
-    border: 1px solid #2a344d;
-    border-radius: 12px;
-    padding: 26px;
+    background: var(--login-surface);
+    border: 1px solid var(--login-border);
+    border-radius: var(--radius-subtle);
+    padding: 28px 24px;
     width: 100%;
     max-width: 420px;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
 }
 
 .modal-content h2 {
+    font-family: 'julius', 'Cinzel', serif;
     font-size: 18px;
-    color: #F5D696;
+    color: var(--login-gold);
     margin-bottom: 12px;
+    letter-spacing: 1px;
 }
 
 .modal-content p {
-    font-size: 13px;
+    font-size: 13.5px;
     color: #a3adc2;
-    margin-bottom: 15px;
+    margin-bottom: 16px;
     line-height: 1.5;
 }
 
+/* Responsividade Mobile */
 @media (max-width: 520px) {
     .login-wrapper {
-        padding: 20px 14px 40px 14px;
+        padding: 24px 14px 44px 14px;
     }
 
     .login-card {
-        padding: 26px 18px;
-        border-radius: 12px;
+        padding: 28px 18px;
     }
 
     .demo-buttons {
@@ -269,6 +303,15 @@ a {
 
     .btn-login {
         padding: 14px;
-        font-size: 15px;
+        font-size: 14px;
+    }
+}
+
+/* Redução de Movimento */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }

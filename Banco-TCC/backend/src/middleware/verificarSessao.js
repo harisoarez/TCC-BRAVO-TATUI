@@ -45,16 +45,22 @@ function verificarSessao(req, res, next) {
         return next();
     }
 
-    // 4. Caso não autenticado
+    // 4. Caso não autenticado (ou simulação de teste via query param)
     const ehRequisicaoApi = req.method !== "GET" || req.xhr || req.headers.accept?.includes("application/json");
     if (!ehRequisicaoApi && req.accepts("html")) {
-        return res.status(401).send(`
-            <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 80px; background: #0b0d13; color: #fff; min-height: 100vh; padding: 40px;">
-                <h2 style="color: #F5D696; font-size: 24px;">Acesso Restrito - Instituto Bravo Tatuí</h2>
-                <p style="color: #94a3b8; font-size: 15px; margin: 15px 0 25px 0;">É necessário realizar login como Administrador ou Owner para acessar o Painel.</p>
-                <a href="/site/login.html" style="display: inline-block; padding: 10px 24px; background: #F5D696; color: #0d111b; font-weight: bold; text-decoration: none; border-radius: 6px;">Fazer Login</a>
-            </div>
-        `);
+        const { gerarHtmlAcessoRestrito } = require("../utils/renderAcessoRestrito");
+        const ehCalendario = (req.originalUrl || req.url || "").includes("calendario");
+        return res.status(401).send(
+            gerarHtmlAcessoRestrito({
+                titulo: "Acesso Restrito",
+                subtitulo: "Identificação Necessária",
+                mensagem: ehCalendario
+                    ? "O Calendário Acadêmico e a grade de aulas do Instituto Musical Bravo Tatuí são de acesso exclusivo para alunos, professores e administradores cadastrados. Por favor, faça login para continuar."
+                    : "Para acessar este recurso ou painel administrativo do Instituto Musical Bravo Tatuí, é necessário efetuar login no sistema.",
+                urlLogin: "/site/login.html",
+                urlInicio: "/site/index.html",
+            })
+        );
     }
 
     return res.status(401).json({

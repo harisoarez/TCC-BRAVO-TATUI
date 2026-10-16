@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 /* Instrumento Selecionado */
 
 *, *::before, *::after {
@@ -13,7 +14,7 @@
 }
 
 @font-face {
-    font-family: 'inter';
+    font-family: 'Plus Jakarta Sans';
     src: url(../fonts/Inter/Inter-VariableFont_opsz\,wght.ttf);
 }
 
@@ -37,12 +38,29 @@ html {
 body {
     background-color: #080808;
     color: #f1f5f9;
-    font-family: 'inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     min-height: 100vh;
     overflow-x: clip;
     overflow-y: visible;
     width: 100%;
     line-height: 1.5;
+    position: relative;
+}
+
+/* Ambient Golden Glow no Topo (Semelhante às Formações) */
+body::before {
+    content: "";
+    position: fixed;
+    top: -150px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 950px;
+    height: 550px;
+    background: radial-gradient(ellipse at center, rgba(245, 214, 150, 0.22) 0%, rgba(245, 214, 150, 0.08) 45%, rgba(8, 8, 8, 0) 70%);
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(60px);
+    opacity: 0.85;
 }
 
 a {
@@ -55,6 +73,7 @@ a {
     width: 100%;
     max-width: 100%;
     position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     overflow-x: clip;
@@ -62,12 +81,13 @@ a {
 
 /* Cabeçalho */
 .container .header {
-    background-color: #1A1A1A;
+    background-color: #12100d;
+    border-bottom: 1px solid rgba(245, 214, 150, 0.15);
     min-height: 32px;
     display: flex;
     align-items: center;
     padding: 6px 3%;
-    font-family: 'inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 13px;
     color: #cbd5e1;
     overflow-x: hidden;
@@ -100,7 +120,7 @@ a {
     align-items: center;
     gap: 8px;
     color: #94a3b8;
-    font-family: 'inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 13.5px;
     text-decoration: none;
     padding: 8px 16px;
@@ -125,7 +145,7 @@ a {
     border: 1px solid rgba(245, 214, 150, 0.3);
     padding: 6px 14px;
     border-radius: 20px;
-    font-family: 'inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 12px;
     font-weight: 600;
     color: #F5D696;
@@ -228,7 +248,7 @@ a {
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.12);
     color: #cbd5e1;
-    font-family: 'inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: clamp(11.5px, 2vw, 12.5px);
     padding: 5px 12px;
     border-radius: 20px;
@@ -273,7 +293,7 @@ a {
 .badge-admin-tag {
     background: #F5D696;
     color: #080808;
-    font-family: 'inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 11px;
     font-weight: 800;
     text-transform: uppercase;
@@ -284,7 +304,7 @@ a {
 
 .badge-admin-info {
     color: #94a3b8;
-    font-family: 'inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 12px;
 }
 
@@ -302,7 +322,7 @@ a {
     background: #F5D696;
     color: #080808;
     border: none;
-    font-family: 'inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 12.5px;
     font-weight: 700;
     padding: 8px 16px;
@@ -326,7 +346,7 @@ a {
     background: rgba(255, 255, 255, 0.06);
     color: #cbd5e1;
     border: 1px solid rgba(255, 255, 255, 0.12);
-    font-family: 'inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 12px;
     font-weight: 600;
     padding: 7px 12px;
@@ -411,7 +431,7 @@ a {
     border: 1px solid rgba(245, 214, 150, 0.25);
     border-radius: 20px;
     padding: 6px 14px;
-    font-family: 'inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: clamp(11.5px, 2vw, 13px);
     color: #f1f5f9;
 }
@@ -437,7 +457,7 @@ a {
     gap: 10px;
     background: linear-gradient(135deg, #25D366 0%, #1ea952 100%);
     color: #ffffff;
-    font-family: 'inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 700;
     font-size: clamp(12.5px, 2.2vw, 14px);
     padding: 12px 24px;
@@ -453,7 +473,7 @@ a {
 .btn-matricular-cta:hover {
     background: linear-gradient(135deg, #2bf074 0%, #20b859 100%);
     color: #ffffff;
-    transform: translateY(-2px);
+    /* hover float removed */
     box-shadow: 0 8px 24px rgba(37, 211, 102, 0.6);
 }
 
@@ -536,7 +556,7 @@ a {
 
 .modal-subtitulo-inst {
     color: #94a3b8;
-    font-family: 'inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 13px;
     margin-top: 2px;
 }
@@ -579,14 +599,14 @@ a {
 }
 
 .label-com-dica label {
-    font-family: 'inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 13.5px;
     font-weight: 600;
     color: #e2e8f0;
 }
 
 .dica-contador {
-    font-family: 'inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 12px;
     color: #94a3b8;
 }
@@ -614,7 +634,7 @@ a {
 }
 
 .instrucoes-form-inst {
-    font-family: 'inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 12px;
     color: #94a3b8;
     margin-top: 8px;
@@ -625,7 +645,7 @@ a {
     margin-top: 14px;
     padding: 10px 14px;
     border-radius: 8px;
-    font-family: 'inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 13px;
 }
 
@@ -665,7 +685,7 @@ a {
     background: #1e2433;
     color: #cbd5e1;
     border-radius: 6px;
-    font-family: 'inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 13.5px;
     font-weight: 600;
     cursor: pointer;
@@ -683,7 +703,7 @@ a {
     background: transparent;
     color: #94a3b8;
     border-radius: 6px;
-    font-family: 'inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 12.5px;
     font-weight: 500;
     cursor: pointer;
@@ -704,7 +724,7 @@ a {
     background: #F5D696;
     color: #080808;
     border-radius: 6px;
-    font-family: 'inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 13.5px;
     font-weight: 700;
     cursor: pointer;
@@ -731,7 +751,7 @@ a {
     max-width: 440px;
     padding: 12px 20px;
     border-radius: 8px;
-    font-family: 'inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 14px;
     font-weight: 600;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
@@ -951,5 +971,22 @@ a {
     .btn-matricular-cta {
         padding: 11px 16px;
         font-size: 13px;
+    }
+}
+
+
+/* ==========================================================================
+   ACESSIBILIDADE: FOCO & REDUÇÃO DE MOVIMENTO
+   ========================================================================== */
+:focus-visible {
+    outline: 2px solid #F5D696;
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }

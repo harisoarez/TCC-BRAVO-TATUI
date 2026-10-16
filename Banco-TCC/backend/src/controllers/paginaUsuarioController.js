@@ -7,7 +7,18 @@ async function paginaListarUsuarios(req, res) {
     const tipo = (usuario?.tipo_usuario || "").toLowerCase();
 
     if (tipo !== "admin" && tipo !== "owner") {
-        return res.status(403).send("Acesso restrito à administração.");
+        const { gerarHtmlAcessoRestrito } = require("../utils/renderAcessoRestrito");
+        return res.status(403).send(
+            gerarHtmlAcessoRestrito({
+                tipo: "permissao_insuficiente",
+                usuario,
+                titulo: "Acesso Restrito",
+                subtitulo: "Permissão de Administração Requerida",
+                mensagem: "A gestão de usuários e cadastros é restrita a Administradores e ao Owner.",
+                urlLogin: "/site/login.html",
+                urlInicio: "/site/index.html",
+            })
+        );
     }
 
     const isOwner = tipo === "owner";

@@ -10,13 +10,18 @@ router.use(verificarSessao);
 router.use((req, res, next) => {
     const tipo = (req.session?.usuario?.tipo_usuario || "").toLowerCase();
     if (tipo !== "owner") {
-        return res.status(403).send(`
-            <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; background: #0b0d13; color: #fff; min-height: 100vh; padding: 40px;">
-                <h2 style="color: #ef4444;">Acesso Restrito ao Owner (Proprietário)</h2>
-                <p style="color: #94a3b8; font-size: 15px;">Administradores possuem permissão apenas para o Dashboard e gestão de mensalidades.</p>
-                <a href="/paginas/dashboard" style="display: inline-block; margin-top: 20px; padding: 10px 22px; background: #F5D696; color: #0d111b; font-weight: bold; text-decoration: none; border-radius: 6px;">← Voltar ao Dashboard</a>
-            </div>
-        `);
+        const { gerarHtmlAcessoRestrito } = require("../utils/renderAcessoRestrito");
+        return res.status(403).send(
+            gerarHtmlAcessoRestrito({
+                tipo: "permissao_insuficiente",
+                usuario: req.session?.usuario,
+                titulo: "Acesso Exclusivo ao Owner",
+                subtitulo: "Permissão de Proprietário Requerida",
+                mensagem: "Esta seção é de gerenciamento exclusivo do <strong>Proprietário (Owner)</strong> do Instituto Musical Bravo Tatuí. Administradores possuem acesso apenas ao Dashboard e gestão de mensalidades.",
+                urlLogin: "/site/login.html",
+                urlInicio: "/paginas/dashboard",
+            })
+        );
     }
     next();
 });

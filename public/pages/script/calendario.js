@@ -47,7 +47,8 @@ const aulasFallback = [
 ];
 
 document.addEventListener("DOMContentLoaded", async () => {
-    inicializarAutenticacao();
+    const autenticado = inicializarAutenticacao();
+    if (!autenticado) return; // Interrompe execução para visitantes não logados
     configurarNavegacao();
     await carregarProfessores();
     await carregarAulas();
@@ -60,10 +61,9 @@ function isPrivilegiado() {
 function inicializarAutenticacao() {
     token = localStorage.getItem("authToken");
     if (!token) {
-        usuarioAtivo = { tipo: "visitante", nome: "Visitante" };
-        renderizarAreaUsuario();
-        aplicarPermissoesUI();
-        return;
+        // Redireciona imediatamente para a tela de acesso restrito estilizada
+        window.location.replace("/site/acesso-restrito?recurso=calendario");
+        return false;
     }
 
     const payload = decodificarToken(token);
@@ -193,7 +193,8 @@ async function carregarProfessores() {
     if (!selectProf) return;
 
     try {
-        const resp = await fetch(`${API_BASE}/api/professores`);
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        const resp = await fetch(`${API_BASE}/api/professores`, { headers, credentials: "include" });
         const dados = await resp.json();
 
         if (dados.sucesso && Array.isArray(dados.professores) && dados.professores.length > 0) {
@@ -219,7 +220,8 @@ async function carregarProfessores() {
 
 async function carregarAulas() {
     try {
-        const resp = await fetch(`${API_BASE}/api/aulas`);
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        const resp = await fetch(`${API_BASE}/api/aulas`, { headers, credentials: "include" });
         const dados = await resp.json();
 
         if (dados.sucesso && Array.isArray(dados.aulas)) {

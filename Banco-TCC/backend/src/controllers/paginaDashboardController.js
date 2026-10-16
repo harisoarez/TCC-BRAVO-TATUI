@@ -5,7 +5,18 @@ async function paginaDashboard(req, res) {
     const tipo = (usuario?.tipo_usuario || "").toLowerCase();
 
     if (tipo !== "admin" && tipo !== "owner") {
-        return res.status(403).send("Acesso restrito à administração.");
+        const { gerarHtmlAcessoRestrito } = require("../utils/renderAcessoRestrito");
+        return res.status(403).send(
+            gerarHtmlAcessoRestrito({
+                tipo: "permissao_insuficiente",
+                usuario,
+                titulo: "Acesso Restrito",
+                subtitulo: "Nível de Permissão Insuficiente",
+                mensagem: `Você está conectado como <strong>${usuario?.nome || "Usuário"}</strong> (${(usuario?.tipo_usuario || "Aluno").toUpperCase()}), porém o Painel Administrativo é exclusivo para <strong>Administradores</strong> e <strong>Owner</strong>. Para acessar, faça login com uma conta autorizada.`,
+                urlLogin: "/site/login.html",
+                urlInicio: "/site/index.html",
+            })
+        );
     }
 
     const isOwner = tipo === "owner";

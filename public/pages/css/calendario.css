@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 /* ================================================================
    INSTITUTO MUSICAL BRAVO TATUÍ - CALENDÁRIO ACADÊMICO
    TEMA DARK ELEGANTE E UNIFICADO PARA NOTEBOOK, CELULARES E TABLETS
@@ -1123,5 +1124,21 @@ body {
     .btn-admin {
         width: 100%;
         text-align: center;
+    }
+}
+
+/* ==========================================================================
+   ACESSIBILIDADE: FOCO & REDUÇÃO DE MOVIMENTO
+   ========================================================================== */
+:focus-visible {
+    outline: 2px solid #F5D696;
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }

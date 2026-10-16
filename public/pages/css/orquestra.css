@@ -1,29 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&display=swap');
 
 :root {
-    /* Paleta Sinfônica Vinho Veludo Marsala - Exclusiva da Orquestra */
-    --orq-bg-principal: #120308;       /* Base profunda de sombra do veludo */
-    --orq-bg-card: #280913;            /* Tom encorpado aveludado dos cards */
-    --orq-bg-card-hover: #380e1c;      /* Destaque aveludado mais quente no hover */
-    --orq-bg-elevated: #1e050e;        /* Fundo elevado / caixas internas */
-    --orq-borda-sutil: #3d0e1c;        /* Borda vinho discreta */
-    --orq-borda-suave: rgba(244, 63, 94, 0.25); /* Borda rosé luminosa sutil */
-    --orq-borda-destaque: #be123c;     /* Carmim nobre */
-    --orq-borda-hover: #f43f5e;        /* Rosa vivo / brilho acetinado */
+    /* Paleta Nobre Dourada Sinfônica - Instituto Bravo Tatuí */
+    --orq-bg-principal: #090807;       /* Base profunda escura clássica */
+    --orq-bg-card: #181511;            /* Tom escuro com toque nobre dourado */
+    --orq-bg-card-hover: #241e16;      /* Destaque dourado nobre no hover */
+    --orq-bg-elevated: #12100d;        /* Fundo elevado / caixas internas */
+    --orq-borda-sutil: rgba(245, 214, 150, 0.14); /* Borda dourada discreta */
+    --orq-borda-suave: rgba(245, 214, 150, 0.25); /* Borda dourada luminosa sutil */
+    --orq-borda-destaque: #d4af37;     /* Dourado nobre clássico */
+    --orq-borda-hover: #F5D696;        /* Dourado Instituto Bravo Tatuí */
 
-    /* Gradiente de Fundo com as Cores da Imagem (Vinho Veludo Profundo & Nobre) */
-    --orq-gradiente-bg-1: #3a0e19;   /* Cor média da imagem - centro iluminado do veludo */
-    --orq-gradiente-bg-2: #22060f;   /* Transição marsala profunda nas dobras */
-    --orq-gradiente-bg-3: #0f0206;   /* Base ultra fechada nas sombras do tecido */
+    /* Gradiente de Fundo com as Cores Institucionais Douradas & Ébano */
+    --orq-gradiente-bg-1: #1a1610;   /* Cor central iluminada com nuance dourada */
+    --orq-gradiente-bg-2: #100e0a;   /* Transição escura suave */
+    --orq-gradiente-bg-3: #080706;   /* Base ultra profunda clássica */
 
-    /* Tipografia e Textos Suaves (Sem degradês metálicos) */
-    --orq-texto-principal: #fce7f3;   /* Rosé suave claríssimo / seda suave */
+    /* Tipografia e Textos Suaves */
+    --orq-texto-principal: #f5f0e6;   /* Marfim suave claríssimo */
     --orq-texto-titulo: #ffffff;      /* Branco puro para títulos */
-    --orq-texto-secundario: #e2cad2; /* Ardósia com nuance rosé aconchegante */
-    --orq-texto-muted: #a37a88;      /* Tom atenuado elegante */
-    --orq-acento-vinho: #be123c;      /* Carmim vibrante */
-    --orq-acento-rosa: #fecdd3;       /* Rosé champanhe */
-    --orq-acento-gelo: #ffe4e6;       /* Rosa suave acetinado */
+    --orq-texto-secundario: #d1c7b7; /* Tom quente elegante */
+    --orq-texto-muted: #968e82;      /* Tom atenuado elegante */
+    --orq-acento-vinho: #c59f48;      /* Dourado de destaque */
+    --orq-acento-rosa: #F5D696;       /* Dourado Instituto Bravo Tatuí */
+    --orq-acento-gelo: #fff5dd;       /* Champanhe dourado claríssimo */
 }
 
 * {
@@ -34,19 +35,19 @@
 }
 
 body {
-    background-color: var(--orq-bg-principal, #120308);
+    background-color: var(--orq-bg-principal, #090807);
     background-image: radial-gradient(circle at 50% 15%, var(--orq-gradiente-bg-1) 0%, var(--orq-gradiente-bg-2) 55%, var(--orq-gradiente-bg-3) 100%);
     background-attachment: fixed;
     background-repeat: no-repeat;
     background-size: cover;
-    color: var(--orq-texto-principal, #fce7f3);
-    font-family: 'Inter', sans-serif;
+    color: var(--orq-texto-principal, #f5f0e6);
+    font-family: 'Plus Jakarta Sans', sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
 }
 
-/* Fundo com iluminação pontilhada ambiente sutil na trama do veludo */
+/* Fundo com iluminação pontilhada ambiente sutil na trama */
 body::before {
     content: "";
     position: fixed;
@@ -54,11 +55,27 @@ body::before {
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: radial-gradient(rgba(244, 63, 94, 0.08) 1px, transparent 1px);
+    background-image: radial-gradient(rgba(245, 214, 150, 0.08) 1px, transparent 1px);
     background-size: 24px 24px;
     opacity: 0.45;
     pointer-events: none;
     z-index: 0;
+}
+
+/* Ambient Golden Glow no Topo (Semelhante às Formações) */
+body::after {
+    content: "";
+    position: fixed;
+    top: -150px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 950px;
+    height: 550px;
+    background: radial-gradient(ellipse at center, rgba(245, 214, 150, 0.22) 0%, rgba(245, 214, 150, 0.08) 45%, rgba(8, 8, 8, 0) 70%);
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(60px);
+    opacity: 0.85;
 }
 
 .container-orquestra {
@@ -71,27 +88,27 @@ body::before {
 
 /* Barra superior com Instagram */
 .header {
-    background-color: #17040a;
-    border-bottom: 1px solid rgba(244, 63, 94, 0.2);
+    background-color: #12100d;
+    border-bottom: 1px solid rgba(245, 214, 150, 0.2);
     height: 3vh;
     min-height: 28px;
     display: flex;
     align-items: center;
     padding-left: 2%;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 13px;
-    color: var(--orq-texto-secundario, #e2cad2);
+    color: var(--orq-texto-secundario, #d1c7b7);
 }
 
 .header a {
-    color: var(--orq-texto-secundario, #e2cad2);
+    color: var(--orq-texto-secundario, #d1c7b7);
     text-decoration: none;
     font-size: 12px;
     transition: color 0.2s ease;
 }
 
 .header a:hover {
-    color: var(--orq-acento-rosa, #fecdd3);
+    color: var(--orq-acento-rosa, #F5D696);
 }
 
 /* =========================================================
@@ -117,14 +134,14 @@ body::before {
     align-items: center;
     gap: 8px;
     color: var(--orq-texto-secundario, #cbd5e1);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 13.5px;
     font-weight: 500;
     text-decoration: none;
     padding: 8px 16px;
     border-radius: 8px;
-    background: rgba(46, 12, 23, 0.45);
-    border: 1px solid var(--orq-borda-suave, rgba(244, 63, 94, 0.25));
+    background: rgba(36, 30, 20, 0.45);
+    border: 1px solid var(--orq-borda-suave, rgba(245, 214, 150, 0.25));
     transition: all 0.22s ease;
     white-space: nowrap;
     flex-shrink: 0;
@@ -132,10 +149,10 @@ body::before {
 
 .btn-voltar-orquestra:hover {
     color: #ffffff;
-    border-color: #f43f5e;
-    background: rgba(190, 18, 60, 0.25);
+    border-color: #F5D696;
+    background: rgba(245, 214, 150, 0.15);
     transform: translateX(-3px);
-    box-shadow: 0 4px 14px rgba(190, 18, 60, 0.35);
+    box-shadow: 0 4px 14px rgba(245, 214, 150, 0.25);
 }
 
 /* Card de Edição Administrativa (Centralizado, Sofisticado e Limpo) */
@@ -145,21 +162,21 @@ body::before {
     margin: 0 auto;
     padding: 7px 8px 7px 20px;
     box-sizing: border-box;
-    background: linear-gradient(135deg, rgba(38, 9, 18, 0.90) 0%, rgba(20, 4, 9, 0.95) 100%);
-    border: 1px solid rgba(244, 63, 94, 0.30);
+    background: linear-gradient(135deg, rgba(28, 24, 17, 0.90) 0%, rgba(16, 14, 10, 0.95) 100%);
+    border: 1px solid rgba(245, 214, 150, 0.30);
     border-radius: 40px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(190, 18, 60, 0.12), inset 0 1px 0 rgba(254, 205, 211, 0.16);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(245, 214, 150, 0.12), inset 0 1px 0 rgba(245, 214, 150, 0.16);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     animation: slideDownBar 0.3s ease;
 }
 
 @keyframes slideDownBar {
-    from { opacity: 0; transform: translateY(-8px); }
+    from { opacity: 0; /* hover float removed */ }
     to { opacity: 1; transform: translateY(0); }
 }
 
@@ -175,8 +192,8 @@ body::before {
     height: 8px;
     min-width: 8px;
     border-radius: 50%;
-    background: #f43f5e;
-    box-shadow: 0 0 10px #f43f5e, 0 0 3px #fda4af;
+    background: #F5D696;
+    box-shadow: 0 0 10px #F5D696, 0 0 3px #d4af37;
     animation: pulseDotAdmin 2s infinite ease-in-out;
 }
 
@@ -186,7 +203,7 @@ body::before {
 }
 
 .admin-texto {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 12.5px;
     font-weight: 500;
     color: #e2e8f0;
@@ -201,26 +218,26 @@ body::before {
     align-items: center;
     gap: 7px;
     padding: 7px 18px;
-    background: linear-gradient(135deg, #be123c 0%, #9f1239 100%);
-    color: #ffffff;
-    border: 1px solid rgba(254, 205, 211, 0.35);
+    background: linear-gradient(135deg, #d4af37 0%, #a68423 100%);
+    color: #080808;
+    border: 1px solid rgba(245, 214, 150, 0.35);
     border-radius: 24px;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 12.5px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
     transition: all 0.22s ease;
-    box-shadow: 0 2px 10px rgba(190, 18, 60, 0.45);
+    box-shadow: 0 2px 10px rgba(245, 214, 150, 0.35);
     white-space: nowrap;
     flex-shrink: 0;
     margin-left: auto;
 }
 
 .btn-admin-editar:hover {
-    background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+    background: linear-gradient(135deg, #F5D696 0%, #d4af37 100%);
     transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(244, 63, 94, 0.55);
-    border-color: rgba(254, 205, 211, 0.6);
+    box-shadow: 0 4px 16px rgba(245, 214, 150, 0.45);
+    border-color: rgba(245, 214, 150, 0.6);
 }
 
 /* =========================================================
@@ -258,9 +275,9 @@ body::before {
     line-height: 1.2;
 }
 
-/* Palavra ORQUESTRA com cor sólida rosé/champanhe suave - SEM degradê de fonte */
+/* Palavra ORQUESTRA com cor sólida dourada nobre - SEM degradê de fonte */
 .palavra-orquestra {
-    color: var(--orq-acento-rosa, #fecdd3);
+    color: var(--orq-acento-rosa, #F5D696);
     background: none !important;
     -webkit-background-clip: initial !important;
     -webkit-text-fill-color: initial !important;
@@ -275,7 +292,7 @@ body::before {
 }
 
 .orquestra-subtitulo {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 14px;
     color: var(--orq-texto-secundario, #cbd5e1);
     max-width: 680px;
@@ -301,9 +318,9 @@ body::before {
     position: relative;
     border-radius: 14px;
     overflow: hidden;
-    border: 1px solid rgba(244, 63, 94, 0.28);
-    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.8), 0 0 24px rgba(225, 29, 72, 0.16);
-    background-color: var(--orq-bg-elevated, #20060f);
+    border: 1px solid rgba(245, 214, 150, 0.28);
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.8), 0 0 24px rgba(245, 214, 150, 0.16);
+    background-color: var(--orq-bg-elevated, #12100d);
 }
 
 .hero-image {
@@ -327,7 +344,7 @@ body::before {
 }
 
 .hero-caption {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 13.5px;
     color: var(--orq-texto-secundario, #94a3b8);
     margin-top: 12px;
@@ -361,7 +378,7 @@ body::before {
     font-family: 'Cinzel', 'Playfair Display', serif;
     font-size: 19px;
     font-weight: 700;
-    color: var(--orq-acento-rosa, #fecdd3);
+    color: var(--orq-acento-rosa, #F5D696);
     letter-spacing: 1.3px;
     text-transform: uppercase;
     white-space: nowrap;
@@ -370,7 +387,7 @@ body::before {
 .linha-decorativa-titulo {
     flex: 1;
     height: 1px;
-    background: linear-gradient(90deg, rgba(244, 63, 94, 0.4) 0%, rgba(244, 63, 94, 0.04) 100%);
+    background: linear-gradient(90deg, rgba(245, 214, 150, 0.4) 0%, rgba(245, 214, 150, 0.04) 100%);
 }
 
 /* =========================================================
@@ -385,11 +402,11 @@ body::before {
     font-style: italic;
     font-size: 15px;
     color: #ffffff;
-    border-left: 3px solid #be123c;
+    border-left: 3px solid #d4af37;
     padding-left: 14px;
     margin-bottom: 16px;
     line-height: 1.5;
-    background: rgba(225, 29, 72, 0.08);
+    background: rgba(245, 214, 150, 0.08);
     padding-top: 6px;
     padding-bottom: 6px;
     border-radius: 0 6px 6px 0;
@@ -420,9 +437,9 @@ body::before {
 .pilula-destaque {
     font-size: 11.5px;
     font-weight: 500;
-    color: #fecdd3;
-    background: rgba(36, 7, 17, 0.85);
-    border: 1px solid rgba(244, 63, 94, 0.22);
+    color: #F5D696;
+    background: rgba(28, 23, 16, 0.85);
+    border: 1px solid rgba(245, 214, 150, 0.22);
     padding: 5px 12px;
     border-radius: 6px;
 }
@@ -442,7 +459,7 @@ body::before {
 .linha-ornamento {
     flex: 1;
     height: 1px;
-    background: linear-gradient(90deg, rgba(244, 63, 94, 0) 0%, rgba(244, 63, 94, 0.4) 50%, rgba(244, 63, 94, 0) 100%);
+    background: linear-gradient(90deg, rgba(245, 214, 150, 0) 0%, rgba(245, 214, 150, 0.4) 50%, rgba(245, 214, 150, 0) 100%);
 }
 
 .flourish-svg {
@@ -473,16 +490,16 @@ body::before {
     position: relative;
     border-radius: 10px;
     overflow: hidden;
-    border: 1px solid rgba(244, 63, 94, 0.25);
-    background-color: var(--orq-bg-elevated, #20060f);
+    border: 1px solid rgba(245, 214, 150, 0.25);
+    background-color: var(--orq-bg-elevated, #12100d);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.65);
     transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .card-video:hover .video-thumbnail-container {
-    transform: translateY(-4px);
-    border-color: #f43f5e;
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.8), 0 0 16px rgba(225, 29, 72, 0.35);
+    /* hover float removed */
+    border-color: #F5D696;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.8), 0 0 16px rgba(245, 214, 150, 0.25);
 }
 
 .video-thumb {
@@ -510,9 +527,9 @@ body::before {
     left: 8px;
     font-size: 9.5px;
     font-weight: 700;
-    color: #fecdd3;
-    background: rgba(30, 6, 14, 0.92);
-    border: 1px solid rgba(244, 63, 94, 0.3);
+    color: #F5D696;
+    background: rgba(22, 18, 12, 0.92);
+    border: 1px solid rgba(245, 214, 150, 0.3);
     padding: 2px 7px;
     border-radius: 4px;
     backdrop-filter: blur(4px);
@@ -540,7 +557,7 @@ body::before {
 .card-video:hover .video-play-btn {
     transform: translate(-50%, -50%) scale(1.15);
     background-color: #ffffff;
-    box-shadow: 0 6px 18px rgba(244, 63, 94, 0.65);
+    box-shadow: 0 6px 18px rgba(245, 214, 150, 0.55);
 }
 
 .video-info-box {
@@ -551,7 +568,7 @@ body::before {
 }
 
 .video-titulo {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 12.5px;
     font-weight: 600;
     color: var(--orq-texto-principal, #e2e8f0);
@@ -560,7 +577,7 @@ body::before {
 }
 
 .card-video:hover .video-titulo {
-    color: #fecdd3;
+    color: #F5D696;
 }
 
 .video-subtitulo {
@@ -579,8 +596,8 @@ body::before {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background-color: #2e0c17;
-    border: 1px solid rgba(244, 63, 94, 0.3);
+    background-color: #241e15;
+    border: 1px solid rgba(245, 214, 150, 0.3);
     color: #ffffff;
     padding: 8px 24px;
     border-radius: 20px;
@@ -593,11 +610,11 @@ body::before {
 }
 
 .btn-youtube:hover {
-    background-color: #4a1022;
-    border-color: #f43f5e;
+    background-color: #382e1e;
+    border-color: #F5D696;
     color: #ffffff;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(225, 29, 72, 0.3);
+    /* hover float removed */
+    box-shadow: 0 6px 18px rgba(245, 214, 150, 0.25);
 }
 
 /* =========================================================
@@ -610,13 +627,13 @@ body::before {
 }
 
 .card-lateral {
-    background: linear-gradient(180deg, rgba(46, 11, 22, 0.92) 0%, rgba(22, 4, 11, 0.98) 100%);
+    background: linear-gradient(180deg, rgba(28, 24, 18, 0.92) 0%, rgba(16, 14, 10, 0.98) 100%);
     backdrop-filter: blur(12px);
-    border: 1px solid var(--orq-borda-suave, rgba(244, 63, 94, 0.28));
+    border: 1px solid var(--orq-borda-suave, rgba(245, 214, 150, 0.28));
     border-radius: 14px;
     padding: 22px 24px;
     box-sizing: border-box;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.72), inset 0 1px 0 rgba(254, 205, 211, 0.16);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.72), inset 0 1px 0 rgba(245, 214, 150, 0.16);
     position: relative;
     overflow: hidden;
 }
@@ -628,14 +645,14 @@ body::before {
     left: 0;
     right: 0;
     height: 2px;
-    background: linear-gradient(90deg, rgba(244, 63, 94, 0) 0%, rgba(225, 29, 72, 0.7) 40%, rgba(244, 63, 94, 0.9) 60%, rgba(244, 63, 94, 0) 100%);
+    background: linear-gradient(90deg, rgba(245, 214, 150, 0) 0%, rgba(245, 214, 150, 0.7) 40%, rgba(245, 214, 150, 0.95) 60%, rgba(245, 214, 150, 0) 100%);
 }
 
 .card-lateral-titulo {
     font-family: 'Cinzel', 'Playfair Display', serif;
     font-size: 15px;
     font-weight: 700;
-    color: #fecdd3;
+    color: #F5D696;
     letter-spacing: 1.1px;
     text-transform: uppercase;
 }
@@ -652,7 +669,7 @@ body::before {
     flex-direction: column;
     gap: 2px;
     padding-bottom: 10px;
-    border-bottom: 1px solid rgba(244, 63, 94, 0.12);
+    border-bottom: 1px solid rgba(245, 214, 150, 0.12);
 }
 
 .info-item:last-child {
@@ -661,7 +678,7 @@ body::before {
 }
 
 .info-label {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 12.5px;
     font-weight: 700;
     color: var(--orq-texto-titulo, #ffffff);
@@ -669,7 +686,7 @@ body::before {
 }
 
 .info-valor {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 12.5px;
     color: #cbd5e1;
     line-height: 1.45;
@@ -678,7 +695,7 @@ body::before {
 .card-lateral-rodape {
     margin-top: 16px;
     padding-top: 14px;
-    border-top: 1px solid rgba(244, 63, 94, 0.15);
+    border-top: 1px solid rgba(245, 214, 150, 0.15);
 }
 
 .btn-card-lateral {
@@ -687,7 +704,7 @@ body::before {
     justify-content: space-between;
     font-size: 12px;
     font-weight: 600;
-    color: #fecdd3;
+    color: #F5D696;
     text-decoration: none;
     transition: color 0.2s ease;
 }
@@ -718,9 +735,9 @@ body::before {
     min-width: 48px;
     border-radius: 50%;
     position: relative;
-    border: 1.5px solid #be123c;
-    box-shadow: 0 2px 10px rgba(190, 18, 60, 0.4);
-    background-color: var(--orq-bg-elevated, #20060f);
+    border: 1.5px solid #d4af37;
+    box-shadow: 0 2px 10px rgba(245, 214, 150, 0.35);
+    background-color: var(--orq-bg-elevated, #12100d);
 }
 
 .maestro-foto {
@@ -740,13 +757,13 @@ body::before {
     font-family: 'Cinzel', serif;
     font-size: 11px;
     font-weight: 700;
-    color: #fda4af;
+    color: #F5D696;
     letter-spacing: 1px;
     text-transform: uppercase;
 }
 
 .maestro-nome {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 14px;
     font-weight: 700;
     color: var(--orq-texto-titulo, #ffffff);
@@ -765,14 +782,14 @@ body::before {
 .aspas-douradas {
     font-family: 'Playfair Display', serif;
     font-size: 28px;
-    color: rgba(244, 63, 94, 0.35);
+    color: rgba(245, 214, 150, 0.35);
     line-height: 1;
     display: block;
     margin-bottom: -10px;
 }
 
 .maestro-bio {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 12px;
     line-height: 1.6;
     color: #cbd5e1;
@@ -781,9 +798,9 @@ body::before {
 
 /* Card 3: Audições */
 .card-audicoes {
-    background: linear-gradient(180deg, rgba(54, 13, 26, 0.92) 0%, rgba(24, 5, 12, 0.98) 100%);
-    border-color: rgba(244, 63, 94, 0.32);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(254, 205, 211, 0.18);
+    background: linear-gradient(180deg, rgba(32, 27, 19, 0.92) 0%, rgba(16, 14, 10, 0.98) 100%);
+    border-color: rgba(245, 214, 150, 0.32);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(245, 214, 150, 0.18);
 }
 
 .audicoes-texto {
@@ -799,19 +816,19 @@ body::before {
     justify-content: space-between;
     font-size: 11.5px;
     font-weight: 600;
-    color: #fecdd3;
+    color: #F5D696;
     text-decoration: none;
-    background: rgba(225, 29, 72, 0.18);
-    border: 1px solid rgba(244, 63, 94, 0.3);
+    background: rgba(245, 214, 150, 0.12);
+    border: 1px solid rgba(245, 214, 150, 0.3);
     padding: 7px 12px;
     border-radius: 8px;
     transition: all 0.2s ease;
 }
 
 .btn-audicao-link:hover {
-    background: #be123c;
-    border-color: #f43f5e;
-    color: #ffffff;
+    background: #d4af37;
+    border-color: #F5D696;
+    color: #080808;
 }
 
 /* =========================================================
@@ -847,11 +864,11 @@ body::before {
     z-index: 1;
     width: 100%;
     max-width: 780px;
-    background: #1c050c;
-    border: 1px solid rgba(244, 63, 94, 0.3);
+    background: #14110d;
+    border: 1px solid rgba(245, 214, 150, 0.3);
     border-radius: 14px;
     overflow: hidden;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95), 0 0 30px rgba(225, 29, 72, 0.2);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95), 0 0 30px rgba(245, 214, 150, 0.15);
     animation: modalScaleUp 0.3s ease;
 }
 
@@ -865,15 +882,15 @@ body::before {
     align-items: center;
     justify-content: space-between;
     padding: 14px 20px;
-    border-bottom: 1px solid rgba(244, 63, 94, 0.2);
-    background-color: #260812;
+    border-bottom: 1px solid rgba(245, 214, 150, 0.2);
+    background-color: #1e1913;
 }
 
 .modal-titulo-texto {
     font-family: 'Cinzel', serif;
     font-size: 14px;
     font-weight: 600;
-    color: #fecdd3;
+    color: #F5D696;
 }
 
 .video-modal-fechar {
@@ -882,7 +899,7 @@ body::before {
     right: 14px;
     background: none;
     border: none;
-    color: #fecdd3;
+    color: #F5D696;
     font-size: 20px;
     cursor: pointer;
     width: 32px;
@@ -896,7 +913,7 @@ body::before {
 }
 
 .video-modal-fechar:hover {
-    background-color: rgba(244, 63, 94, 0.2);
+    background-color: rgba(245, 214, 150, 0.2);
     transform: rotate(90deg);
 }
 
@@ -933,23 +950,23 @@ body::before {
 }
 
 .modal-admin-janela {
-    background: #1c050c;
-    border: 1px solid rgba(244, 63, 94, 0.3);
+    background: #14110d;
+    border: 1px solid rgba(245, 214, 150, 0.3);
     border-radius: 14px;
     width: 100%;
     max-width: 680px;
     max-height: 90vh;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.95), 0 0 30px rgba(225, 29, 72, 0.2);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.95), 0 0 30px rgba(245, 214, 150, 0.15);
     animation: modalScaleUp 0.3s ease;
     overflow: hidden;
 }
 
 .modal-admin-topo {
     padding: 18px 24px;
-    background: #260812;
-    border-bottom: 1px solid rgba(244, 63, 94, 0.2);
+    background: #1e1913;
+    border-bottom: 1px solid rgba(245, 214, 150, 0.2);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -959,7 +976,7 @@ body::before {
     font-family: 'Cinzel', serif;
     font-size: 16px;
     font-weight: 700;
-    color: #fecdd3;
+    color: #F5D696;
     margin: 0;
 }
 
@@ -984,8 +1001,8 @@ body::before {
 
 .modal-admin-tabs {
     display: flex;
-    border-bottom: 1px solid rgba(244, 63, 94, 0.2);
-    background: #140308;
+    border-bottom: 1px solid rgba(245, 214, 150, 0.2);
+    background: #100e0a;
 }
 
 .tab-btn {
@@ -1002,13 +1019,13 @@ body::before {
 }
 
 .tab-btn:hover {
-    color: #fecdd3;
+    color: #F5D696;
 }
 
 .tab-btn.ativa {
     color: #ffffff;
-    border-bottom-color: #be123c;
-    background: rgba(190, 18, 60, 0.18);
+    border-bottom-color: #F5D696;
+    background: rgba(245, 214, 150, 0.16);
 }
 
 #formAdminOrquestra {
@@ -1048,10 +1065,10 @@ body::before {
 .form-campo select {
     width: 100%;
     padding: 9px 12px;
-    background: #140308;
-    border: 1px solid rgba(244, 63, 94, 0.22);
+    background: #0f0d0a;
+    border: 1px solid rgba(245, 214, 150, 0.22);
     border-radius: 6px;
-    color: var(--orq-texto-principal, #e2e8f0);
+    color: var(--orq-texto-principal, #f5f0e6);
     font-size: 13px;
     font-family: inherit;
     box-sizing: border-box;
@@ -1062,8 +1079,8 @@ body::before {
 .form-campo textarea:focus,
 .form-campo select:focus {
     outline: none;
-    border-color: #f43f5e;
-    box-shadow: 0 0 8px rgba(225, 29, 72, 0.35);
+    border-color: #F5D696;
+    box-shadow: 0 0 8px rgba(245, 214, 150, 0.35);
 }
 
 .form-grid-dupla {
@@ -1074,7 +1091,7 @@ body::before {
 
 .divisor-campos {
     height: 1px;
-    background: rgba(244, 63, 94, 0.15);
+    background: rgba(245, 214, 150, 0.15);
     margin: 14px 0;
 }
 
@@ -1085,20 +1102,20 @@ body::before {
     margin-top: 14px;
     margin-bottom: 10px;
     padding-bottom: 8px;
-    border-bottom: 1px solid rgba(244, 63, 94, 0.2);
+    border-bottom: 1px solid rgba(245, 214, 150, 0.2);
 }
 
 .rotulo-secao-videos {
     font-size: 13px;
     font-weight: 700;
-    color: #fecdd3;
+    color: #F5D696;
     text-transform: uppercase;
 }
 
 .btn-novo-video-modal {
     padding: 5px 12px;
-    background: #be123c;
-    color: #ffffff;
+    background: #d4af37;
+    color: #080808;
     border: none;
     border-radius: 4px;
     font-size: 11.5px;
@@ -1107,12 +1124,12 @@ body::before {
 }
 
 .btn-novo-video-modal:hover {
-    background: #e11d48;
+    background: #F5D696;
 }
 
 .box-novo-video {
-    background: #260812;
-    border: 1px solid rgba(244, 63, 94, 0.25);
+    background: #1c1812;
+    border: 1px solid rgba(245, 214, 150, 0.25);
     border-radius: 8px;
     padding: 14px;
     margin-bottom: 14px;
@@ -1120,9 +1137,9 @@ body::before {
 
 .btn-cancelar-pequeno {
     padding: 6px 12px;
-    background: #140308;
-    border: 1px solid rgba(244, 63, 94, 0.2);
-    color: var(--orq-texto-secundario, #cbd5e1);
+    background: #100e0a;
+    border: 1px solid rgba(245, 214, 150, 0.2);
+    color: var(--orq-texto-secundario, #d1c7b7);
     border-radius: 4px;
     font-size: 12px;
     cursor: pointer;
@@ -1130,9 +1147,9 @@ body::before {
 
 .btn-salvar-pequeno {
     padding: 6px 14px;
-    background: #be123c;
+    background: #d4af37;
     border: none;
-    color: #ffffff;
+    color: #080808;
     font-weight: 700;
     border-radius: 4px;
     font-size: 12px;
@@ -1140,7 +1157,7 @@ body::before {
 }
 
 .btn-salvar-pequeno:hover {
-    background: #e11d48;
+    background: #F5D696;
 }
 
 .lista-videos-admin {
@@ -1155,11 +1172,11 @@ body::before {
     align-items: center;
     justify-content: space-between;
     padding: 8px 12px;
-    background: #150309;
-    border: 1px solid rgba(244, 63, 94, 0.2);
+    background: #12100d;
+    border: 1px solid rgba(245, 214, 150, 0.2);
     border-radius: 6px;
     font-size: 12.5px;
-    color: var(--orq-texto-principal, #e2e8f0);
+    color: var(--orq-texto-principal, #f5f0e6);
 }
 
 .btn-excluir-video-admin {
@@ -1174,8 +1191,8 @@ body::before {
 
 .modal-admin-rodape {
     padding: 14px 24px;
-    background: #260812;
-    border-top: 1px solid rgba(244, 63, 94, 0.2);
+    background: #1e1913;
+    border-top: 1px solid rgba(245, 214, 150, 0.2);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1188,9 +1205,9 @@ body::before {
 
 .btn-admin-cancelar {
     padding: 8px 16px;
-    background: #140308;
-    border: 1px solid rgba(244, 63, 94, 0.25);
-    color: var(--orq-texto-secundario, #cbd5e1);
+    background: #100e0a;
+    border: 1px solid rgba(245, 214, 150, 0.25);
+    color: var(--orq-texto-secundario, #d1c7b7);
     border-radius: 6px;
     font-size: 13px;
     cursor: pointer;
@@ -1198,18 +1215,18 @@ body::before {
 
 .btn-admin-salvar {
     padding: 8px 20px;
-    background: #be123c;
-    color: #ffffff;
+    background: linear-gradient(135deg, #F5D696 0%, #d4af37 100%);
+    color: #080808;
     border: none;
     border-radius: 6px;
     font-size: 13px;
     font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(190, 18, 60, 0.45);
+    box-shadow: 0 4px 12px rgba(245, 214, 150, 0.35);
 }
 
 .btn-admin-salvar:hover {
-    background: #e11d48;
+    background: linear-gradient(135deg, #fff0cf 0%, #F5D696 100%);
 }
 
 /* =========================================================
@@ -1312,5 +1329,22 @@ body::before {
 
     .hero-caption {
         font-size: 12px;
+    }
+}
+
+
+/* ==========================================================================
+   ACESSIBILIDADE: FOCO & REDUÇÃO DE MOVIMENTO
+   ========================================================================== */
+:focus-visible {
+    outline: 2px solid #F5D696;
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }

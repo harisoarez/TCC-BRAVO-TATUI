@@ -10,7 +10,18 @@ router.use(verificarSessao);
 function exigirAdmin(req, res, next) {
     const usuario = req.session?.usuario || res.locals?.usuario || req.user;
     if (!usuario || !ehAdmin(usuario)) {
-        return res.status(403).send("Acesso negado. Apenas administradores e o Owner podem gerenciar a Orquestra.");
+        const { gerarHtmlAcessoRestrito } = require("../utils/renderAcessoRestrito");
+        return res.status(403).send(
+            gerarHtmlAcessoRestrito({
+                tipo: "permissao_insuficiente",
+                usuario,
+                titulo: "Acesso Restrito",
+                subtitulo: "Permissão de Administração Requerida",
+                mensagem: "Apenas administradores e o Owner podem gerenciar a Orquestra.",
+                urlLogin: "/site/login.html",
+                urlInicio: "/site/orquestra.html",
+            })
+        );
     }
     next();
 }

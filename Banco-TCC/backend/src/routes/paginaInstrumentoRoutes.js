@@ -24,7 +24,18 @@ const { ehAdmin } = require("../utils/admin");
 function exigirAdmin(req, res, next) {
     const usuario = req.session?.usuario || res.locals?.usuario || req.user;
     if (!usuario || !ehAdmin(usuario)) {
-        return res.status(403).send("Acesso negado. Apenas administradores podem modificar instrumentos.");
+        const { gerarHtmlAcessoRestrito } = require("../utils/renderAcessoRestrito");
+        return res.status(403).send(
+            gerarHtmlAcessoRestrito({
+                tipo: "permissao_insuficiente",
+                usuario,
+                titulo: "Acesso Restrito",
+                subtitulo: "Permissão de Administração Requerida",
+                mensagem: "Apenas administradores e o Owner podem modificar os instrumentos do acervo.",
+                urlLogin: "/site/login.html",
+                urlInicio: "/site/instrumentos.html",
+            })
+        );
     }
     next();
 }

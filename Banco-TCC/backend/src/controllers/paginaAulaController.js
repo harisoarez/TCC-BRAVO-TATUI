@@ -13,7 +13,18 @@ async function paginaKanban(req, res) {
 async function paginaFormCadastro(req, res) {
     const tipo = req.session?.usuario?.tipo_usuario;
     if (tipo !== "admin" && tipo !== "owner") {
-        return res.status(403).send("Acesso restrito à administração.");
+        const { gerarHtmlAcessoRestrito } = require("../utils/renderAcessoRestrito");
+        return res.status(403).send(
+            gerarHtmlAcessoRestrito({
+                tipo: "permissao_insuficiente",
+                usuario: req.session?.usuario,
+                titulo: "Acesso Restrito",
+                subtitulo: "Permissão de Administração Requerida",
+                mensagem: "O agendamento e cadastro de aulas é restrito a Administradores e ao Owner.",
+                urlLogin: "/site/login.html",
+                urlInicio: "/site/index.html",
+            })
+        );
     }
 
     const alunos = await alunoModel.buscarTodos();

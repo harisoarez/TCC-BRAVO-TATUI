@@ -26,7 +26,6 @@ function authMiddleware(req, res, next) {
         }
     }
 
-    // Se não veio Bearer header, autenticar via sessão ativa do Express
     if (req.session && req.session.usuario) {
         req.user = req.session.usuario;
         return next();

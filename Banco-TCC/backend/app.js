@@ -157,6 +157,9 @@ app.get("/cardapio", (req, res) => {
 app.get("/orquestra", (req, res) => {
     res.redirect("/site/orquestra.html");
 });
+app.get(["/instrumentos", "/aulas"], (req, res) => {
+    res.redirect("/site/instrumentos.html");
+});
 app.get("/logout", (req, res) => {
     if (req.session) {
         req.session.destroy(() => {});

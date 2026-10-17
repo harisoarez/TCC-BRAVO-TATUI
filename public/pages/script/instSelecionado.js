@@ -39,15 +39,122 @@
     const elModalFeedback = document.getElementById("modalFeedbackMsg");
     const elToast = document.getElementById("toastNotificacao");
 
-    // Estado da Aplicação
-    let instrumentoAtual = {
-        id_instrumento: 1,
-        nome: "Piano",
-        categoria: "Teclas & Harmonia",
-        descricao: "",
-        imagem_url: ""
+    // Mapa oficial das imagens da página de instrumentos
+    const IMAGENS_INSTRUMENTOS_PAGINA = {
+        "1": "../images/piano.png",
+        "2": "../images/violino.png",
+        "3": "../images/violoncelo.png",
+        "4": "../images/viola-arco.png",
+        "5": "../images/contra-acustico.png",
+        "6": "../images/flauta.png",
+        "7": "../images/saxofone.png",
+        "8": "../images/clarinete.png",
+        "9": "../images/trompete.png",
+        "10": "../images/Bateria.png"
     };
-    let descricaoOriginal = "";
+
+    function resolverImagemInstrumento(id, nome, imagemCadastrada) {
+        if (imagemCadastrada && imagemCadastrada.startsWith("/uploads/")) {
+            return `${API_BASE}${imagemCadastrada}`;
+        }
+        if (imagemCadastrada && (imagemCadastrada.startsWith("../images/") || imagemCadastrada.startsWith("http://") || imagemCadastrada.startsWith("https://")) && !imagemCadastrada.includes("instSelecionado.png")) {
+            return imagemCadastrada;
+        }
+        if (id && IMAGENS_INSTRUMENTOS_PAGINA[String(id)]) {
+            return IMAGENS_INSTRUMENTOS_PAGINA[String(id)];
+        }
+        const n = (nome || "").toLowerCase();
+        if (n.includes("piano") || n.includes("teclado")) return "../images/piano.png";
+        if (n.includes("violino")) return "../images/violino.png";
+        if (n.includes("violoncelo") || n.includes("cello")) return "../images/violoncelo.png";
+        if (n.includes("viola")) return "../images/viola-arco.png";
+        if (n.includes("contra")) return "../images/contra-acustico.png";
+        if (n.includes("flauta")) return "../images/flauta.png";
+        if (n.includes("sax")) return "../images/saxofone.png";
+        if (n.includes("clarinete")) return "../images/clarinete.png";
+        if (n.includes("trompete")) return "../images/trompete.png";
+        if (n.includes("bateria") || n.includes("percussão")) return "../images/Bateria.png";
+        return "../images/exemplo_bravo.jpg";
+    }
+
+    const CATALOGO_PADRAO = {
+        "1": {
+            id_instrumento: 1,
+            nome: "Piano",
+            categoria: "Teclas & Harmonia",
+            imagem_url: "../images/piano.png",
+            descricao: "O piano é um instrumento de teclado fascinante e completo, essencial para o desenvolvimento da percepção harmônica e rítmica. No IMBT, oferecemos formação completa desde os primeiros acordes até a técnica avançada clássica e popular."
+        },
+        "2": {
+            id_instrumento: 2,
+            nome: "Violino",
+            categoria: "Cordas de Arco & Harpa",
+            imagem_url: "../images/violino.png",
+            descricao: "O violino é o líder melódico da família das cordas, dono de um timbre aveludado, expressivo e brilhante. Nossos professores trabalham postura, afinação pura, técnica de arco e repertório clássico e contemporâneo."
+        },
+        "3": {
+            id_instrumento: 3,
+            nome: "Violoncelo",
+            categoria: "Cordas de Arco & Harpa",
+            imagem_url: "../images/violoncelo.png",
+            descricao: "Com graves profundos e ressonância emocional incomparável, o violoncelo emociona pela sua semelhança com a voz humana. Aulas com metodologia direcionada à afinação, leitura musical e prática de câmara."
+        },
+        "4": {
+            id_instrumento: 4,
+            nome: "Viola de Arco",
+            categoria: "Cordas de Arco & Harpa",
+            imagem_url: "../images/viola-arco.png",
+            descricao: "A alma intermediária do quarteto de cordas. Possui timbre nobre, caloroso e levemente nostálgico, fundamental para orquestras e música de câmara."
+        },
+        "5": {
+            id_instrumento: 5,
+            nome: "Contrabaixo Acústico",
+            categoria: "Cordas de Arco & Harpa",
+            imagem_url: "../images/contra-acustico.png",
+            descricao: "O gigante das cordas acústicas. Fornece sustentação harmônica e condução rítmica tanto na música sinfônica quanto no jazz e na MPB."
+        },
+        "6": {
+            id_instrumento: 6,
+            nome: "Flauta Transversal",
+            categoria: "Sopros (Metais & Madeiras)",
+            imagem_url: "../images/flauta.png",
+            descricao: "Instrumento de sopro de sonoridade lírica, doce e ágil. Desenvolve o controle de respiração, embocadura e expressividade melódica."
+        },
+        "7": {
+            id_instrumento: 7,
+            nome: "Saxofone",
+            categoria: "Sopros (Metais & Madeiras)",
+            imagem_url: "../images/saxofone.png",
+            descricao: "Extremamente versátil, o saxofone brilha no jazz, no pop, na música clássica e em celebrações ao ar livre com solos cativantes e envolventes."
+        },
+        "8": {
+            id_instrumento: 8,
+            nome: "Clarinete",
+            categoria: "Sopros (Metais & Madeiras)",
+            imagem_url: "../images/clarinete.png",
+            descricao: "Com uma das maiores extensões de notas entre os instrumentos de sopro, o clarinete entrega desde graves aveludados até agudos cheios de brilho."
+        },
+        "9": {
+            id_instrumento: 9,
+            nome: "Trompete",
+            categoria: "Sopros (Metais & Madeiras)",
+            imagem_url: "../images/trompete.png",
+            descricao: "O brilho triunfal da família dos metais. Ideal para fanfarras de casamento, marchas clássicas solenes e solos vibrantes."
+        },
+        "10": {
+            id_instrumento: 10,
+            nome: "Bateria",
+            categoria: "Percussão & Ritmo",
+            imagem_url: "../images/Bateria.png",
+            descricao: "O coração rítmico da música contemporânea. Aulas focadas em coordenação motora, precisão de tempo, grooves e dinâmica musical."
+        }
+    };
+
+    // Estado da Aplicação
+    const idInicial = idParam || "1";
+    const instInicial = CATALOGO_PADRAO[String(idInicial)] || CATALOGO_PADRAO["1"];
+    let instrumentoAtual = { ...instInicial };
+    let descricaoOriginal = instrumentoAtual.descricao;
     let usuarioLogado = null;
     let isAdmin = false;
 
@@ -108,8 +215,20 @@
     async function carregarDetalhesInstrumento() {
         // Se idParam estiver ausente, carrega instrumento 1 (Piano por padrão)
         const idFinal = idParam || 1;
+        const padrao = CATALOGO_PADRAO[String(idFinal)] || {
+            id_instrumento: idFinal,
+            nome: "Instrumento Musical",
+            categoria: "Aulas & Formações",
+            imagem_url: "../images/exemplo_bravo.jpg",
+            descricao: "Carregando informações e detalhes do instrumento no Instituto Bravo Tatuí..."
+        };
 
-        // Pré-carregamento imediato via cache do catálogo (0ms) para evitar qualquer flash
+        // Pré-carregamento imediato via catálogo padrão (0ms) para evitar qualquer flash
+        instrumentoAtual = { ...padrao };
+        descricaoOriginal = instrumentoAtual.descricao;
+        renderizarInstrumentoNaTela();
+
+        // Tenta enriquecer via cache da sessão se disponível
         try {
             const cachedList = sessionStorage.getItem("bravo_instrumentos_aulas_cache");
             if (cachedList) {
@@ -118,11 +237,11 @@
                 if (achei) {
                     instrumentoAtual = {
                         id_instrumento: achei.id_instrumento,
-                        nome: achei.nome,
-                        categoria: achei.categoria,
-                        icone: achei.icone,
-                        descricao: achei.descricao || "",
-                        imagem_url: achei.imagem_url || ""
+                        nome: achei.nome || padrao.nome,
+                        categoria: achei.categoria || padrao.categoria,
+                        icone: achei.icone || "",
+                        descricao: (achei.descricao && achei.descricao.trim()) ? achei.descricao : padrao.descricao,
+                        imagem_url: resolverImagemInstrumento(achei.id_instrumento, achei.nome, achei.imagem_url)
                     };
                     descricaoOriginal = instrumentoAtual.descricao;
                     renderizarInstrumentoNaTela();
@@ -138,24 +257,25 @@
                 const inst = dados.dados;
                 instrumentoAtual = {
                     id_instrumento: inst.id_instrumento,
-                    nome: inst.nome,
-                    categoria: inst.categoria,
-                    icone: inst.icone,
-                    descricao: inst.descricao || "",
-                    imagem_url: inst.imagem_url || ""
+                    nome: inst.nome || padrao.nome,
+                    categoria: inst.categoria || padrao.categoria,
+                    icone: inst.icone || "",
+                    descricao: (inst.descricao && inst.descricao.trim()) ? inst.descricao : `Aulas e formação de ${inst.nome} no Instituto Bravo Tatuí. Metodologia pedagógica e prática instrumental completa.`,
+                    imagem_url: resolverImagemInstrumento(inst.id_instrumento, inst.nome, inst.imagem_url)
                 };
                 descricaoOriginal = instrumentoAtual.descricao;
 
                 renderizarInstrumentoNaTela();
             } else {
-                // Fallback caso ID não exista na base
-                instrumentoAtual.descricao = (elDescricao && elDescricao.textContent) ? elDescricao.textContent.trim() : "";
+                instrumentoAtual = { ...padrao };
                 descricaoOriginal = instrumentoAtual.descricao;
+                renderizarInstrumentoNaTela();
             }
         } catch (erro) {
-            console.warn("Falha ao carregar detalhes dinâmicos do instrumento, mantendo dados estáticos:", erro);
-            instrumentoAtual.descricao = (elDescricao && elDescricao.textContent) ? elDescricao.textContent.trim() : "";
+            console.warn("Usando catálogo estático oficial do Instituto Bravo:", erro);
+            instrumentoAtual = { ...padrao };
             descricaoOriginal = instrumentoAtual.descricao;
+            renderizarInstrumentoNaTela();
         } finally {
             carregarInformacoesProfessores();
         }
@@ -177,13 +297,14 @@
             elDescricao.textContent = instrumentoAtual.descricao || "Descrição em atualização pela coordenação pedagógica do Instituto Bravo Tatuí.";
         }
 
-        if (elImagem && instrumentoAtual.imagem_url) {
-            let img = instrumentoAtual.imagem_url;
-            if (img.startsWith("/uploads/")) {
-                img = `${API_BASE}${img}`;
-            }
-            elImagem.src = img;
+        if (elImagem) {
+            const imgSrc = resolverImagemInstrumento(instrumentoAtual.id_instrumento, instrumentoAtual.nome, instrumentoAtual.imagem_url);
+            elImagem.src = imgSrc;
             elImagem.alt = `Foto do instrumento ${instrumentoAtual.nome}`;
+            elImagem.onerror = function () {
+                this.onerror = null;
+                this.src = "../images/exemplo_bravo.jpg";
+            };
         }
     }
 

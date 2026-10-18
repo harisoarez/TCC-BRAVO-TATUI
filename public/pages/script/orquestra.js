@@ -233,7 +233,7 @@
             if (el) el.value = val !== undefined && val !== null ? val : padrao;
         };
 
-        setVal("adminInputTitulo", c.titulo, "ORQUESTRA BRAVO TATUÍ");
+        setVal("adminInputTitulo", c.titulo, "ORQUESTRA DO INSTITUTO MUSICAL BRAVO TATUÍ");
         setVal("adminInputSubtitulo", c.subtitulo, "A excelência da música sinfônica e a formação de concerto na Capital da Música");
         setVal("adminInputHeroImg", c.imagem_hero, "../images/orquestra/orquestra_hero.jpg");
         setVal("adminInputHeroLegenda", c.legenda_hero, "Nossa Orquestra em concerto no teatro da cidade");

@@ -11,7 +11,7 @@ const orquestraController = {
                 sucesso: true,
                 dados: {
                     conteudo: conteudo || {
-                        titulo: "ORQUESTRA BRAVO TATUÍ",
+                        titulo: "ORQUESTRA DO INSTITUTO MUSICAL BRAVO TATUÍ",
                         subtitulo: "A excelência da música sinfônica e a formação de concerto na Capital da Música",
                         imagem_hero: "../images/orquestra/orquestra_hero.jpg",
                         legenda_hero: "Nossa Orquestra em concerto no teatro da cidade",

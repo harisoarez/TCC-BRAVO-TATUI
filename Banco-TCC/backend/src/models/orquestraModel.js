@@ -8,7 +8,7 @@ const orquestraModel = {
             await pool.query(`
                 CREATE TABLE IF NOT EXISTS orquestra_conteudo (
                     id_conteudo INT PRIMARY KEY AUTO_INCREMENT,
-                    titulo VARCHAR(150) NOT NULL DEFAULT 'ORQUESTRA BRAVO TATUÍ',
+                    titulo VARCHAR(150) NOT NULL DEFAULT 'ORQUESTRA DO INSTITUTO MUSICAL BRAVO TATUÍ',
                     subtitulo VARCHAR(255) DEFAULT 'A excelência da música sinfônica e a formação de concerto na Capital da Música',
                     imagem_hero VARCHAR(500) DEFAULT '../images/orquestra/orquestra_hero.jpg',
                     legenda_hero VARCHAR(255) DEFAULT 'Nossa Orquestra em concerto no teatro da cidade',
@@ -55,7 +55,7 @@ const orquestraModel = {
                         maestro_nome, maestro_cargo, maestro_subtitulo, maestro_foto, maestro_bio,
                         youtube_url
                     ) VALUES (
-                        'ORQUESTRA BRAVO TATUÍ',
+                        'ORQUESTRA DO INSTITUTO MUSICAL BRAVO TATUÍ',
                         'A excelência da música sinfônica e a formação de concerto na Capital da Música',
                         '../images/orquestra/orquestra_hero.jpg',
                         'Nossa Orquestra em concerto no teatro da cidade',

@@ -15,23 +15,23 @@
         </div>
         <div id="nav-bar"></div>
 
-        <!-- Barra superior com botão estilizado da Playlist -->
-        <div class="top-barra-playlist">
-            <button type="button" class="btn-playlist-top" title="Conheça nossa playlist">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 18V5l12-2v13"></path>
-                    <circle cx="6" cy="18" r="3"></circle>
-                    <circle cx="18" cy="16" r="3"></circle>
-                </svg>
-                <span>Conheça nossa playlist</span>
-            </button>
-        </div>
-
-        <!-- Seção de Título da Página -->
-        <div class="secao-titulo-formacoes">
-            <h1 class="titulo-pagina-formacoes">Formações</h1>
-            <p class="subtitulo-pagina-formacoes">Diversidade de conjuntos e arranjos instrumentais sob medida para o seu evento</p>
-        </div>
+        <!-- Cabeçalho de Formações: Título Editorial e Botão da Playlist Integrados -->
+        <header class="secao-topo-formacoes">
+            <div class="secao-titulo-formacoes">
+                <h1 class="titulo-pagina-formacoes">Formações</h1>
+                <p class="subtitulo-pagina-formacoes">Diversidade de conjuntos e arranjos instrumentais sob medida para o seu evento</p>
+            </div>
+            <div class="top-barra-playlist">
+                <button type="button" class="btn-playlist-top" title="Conheça nossa playlist">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 18V5l12-2v13"></path>
+                        <circle cx="6" cy="18" r="3"></circle>
+                        <circle cx="18" cy="16" r="3"></circle>
+                    </svg>
+                    <span>Conheça nossa playlist</span>
+                </button>
+            </div>
+        </header>
 
         <div class="container-formacoes">
             <div class="opcao" id="plus" onclick="window.location.href='./formacaoSelecionada.html?id=plus'">
@@ -78,14 +78,14 @@
 
             <div class="opcao" id="basic" onclick="window.location.href='./formacaoSelecionada.html?id=basic'">
                 <div class="text">
-                    <h1 style="color:black;">Bravo <span class="destaque" style="color:#042742;">basic</span></h1>
-                    <h2 style="color:black;">Violino, violoncelo, piano elétrico e percussão/voz </h2>
+                    <h1>Bravo <span class="destaque" style="color:#38BDF8;">basic</span></h1>
+                    <h2>Violino, violoncelo, piano elétrico e percussão/voz </h2>
                 </div>
             </div>
 
             <div class="opcao" id="solo" onclick="window.location.href='./formacaoSelecionada.html?id=solo'">
                 <div class="text">
-                    <h1>Bravo <span class="destaque" style="color:#0D4544;">solo</span></h1>
+                    <h1>Bravo <span class="destaque" style="color:#2DD4BF;">solo</span></h1>
                     <h2>Apenas um instrumento acompanhado por playback</h2>
                 </div>
             </div>
@@ -99,14 +99,14 @@
 
             <div class="opcao" id="folk" onclick="window.location.href='./formacaoSelecionada.html?id=folk'">
                 <div class="text">
-                    <h1>Bravo <span class="destaque" style="color:#2F1D13">folk</span></h1>
+                    <h1>Bravo <span class="destaque" style="color:#EAA775;">folk</span></h1>
                     <h2>Acordeon, ukulelê, gaita, violão, contrabaixo e cajon</h2>
                 </div>
             </div>
 
             <div class="opcao" id="tutti" onclick="window.location.href='./formacaoSelecionada.html?id=tutti'">
                 <div class="text">
-                    <h1>Bravo <span class="destaque" style="color:#250404;">tutti</span></h1>
+                    <h1>Bravo <span class="destaque" style="color:#FB7185;">tutti</span></h1>
                     <h2>Voz, quarteto de cordas, piano elétrico, percussão e dois clarins</h2>
                 </div>
             </div>
@@ -127,8 +127,8 @@
 
             <div class="opcao" id="orquestra" onclick="window.location.href='./formacaoSelecionada.html?id=orquestra'">
                 <div class="text">
-                    <h1 style="color:black;">Bravo <span class="destaque" style="color:#431806;">orquestra</span></h1>
-                    <h2 style="color:black;">Orquestra sinfônica completa</h2>
+                    <h1>Bravo <span class="destaque" style="color:#F5D696;">orquestra</span></h1>
+                    <h2>Orquestra sinfônica completa</h2>
                 </div>
             </div>
 

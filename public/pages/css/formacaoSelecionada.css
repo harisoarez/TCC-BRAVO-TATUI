@@ -298,13 +298,6 @@ a {
     border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 12px;
     padding: 10px 14px;
-    transition: all 0.25s ease;
-}
-
-.instrument-pill:hover {
-    background: var(--formation-light-overlay);
-    border-color: var(--formation-border);
-    /* hover float removed */
 }
 
 .inst-icon {
@@ -601,12 +594,6 @@ a {
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 10px;
     padding: 12px 16px;
-    transition: all 0.2s ease;
-}
-
-.occasion-item:hover {
-    border-color: var(--formation-border);
-    background: var(--formation-light-overlay);
 }
 
 .occasion-indicator {
@@ -646,13 +633,6 @@ a {
     padding: 6px 14px;
     font-size: 12.5px;
     color: var(--text-secondary);
-    transition: all 0.2s ease;
-}
-
-.style-chip:hover {
-    color: #ffffff;
-    border-color: var(--formation-border);
-    background: var(--formation-badge-bg);
 }
 
 .chip-bullet {

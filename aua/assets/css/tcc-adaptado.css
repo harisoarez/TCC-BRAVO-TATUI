@@ -1,0 +1,698 @@
+/* ==========================================================================
+   BRAVO TATUÍ — VERSÃO TCC ADAPTADA AO DESIGN EDITORIAL
+   Harmonização visual da Página Inicial do TCC
+   ========================================================================== */
+
+/* --- Barra Superior Social --- */
+.top-social-bar {
+  background-color: #050505;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 0.5rem 0;
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.top-social-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.social-tag {
+  font-family: var(--font-display);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  color: var(--gold-dim);
+}
+
+.top-instagram-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text-secondary);
+  transition: color var(--transition-smooth);
+}
+
+.top-instagram-link:hover {
+  color: var(--gold-primary);
+}
+
+/* --- Botão Alternador no Header --- */
+.nav-btn-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--gold-primary);
+  background: rgba(245, 214, 150, 0.08);
+  border: 1px solid var(--gold-border);
+  padding: 0.35rem 0.85rem;
+  transition: background-color var(--transition-smooth), border-color var(--transition-smooth), color var(--transition-smooth), transform var(--transition-smooth);
+}
+
+.nav-btn-switcher:hover {
+  background-color: var(--gold-primary);
+  color: #000000;
+  transform: translateY(-1px);
+}
+
+.mobile-btn-highlight {
+  color: var(--gold-primary) !important;
+  border-bottom: 1px solid var(--gold-border);
+  padding-bottom: 0.5rem;
+}
+
+/* ==========================================================================
+   HERO ADAPTADO DO TCC
+   ========================================================================== */
+.tcc-hero-section {
+  position: relative;
+  min-height: 82vh;
+  display: flex;
+  align-items: center;
+  background-color: #000000;
+  padding-top: 7rem;
+  padding-bottom: 6rem;
+  overflow: hidden;
+}
+
+.tcc-hero-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.tcc-hero-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 60%;
+  filter: brightness(0.4) contrast(1.15) saturate(1.1);
+  transform: scale(1.02);
+  transition: transform 10s ease-out;
+}
+
+.tcc-hero-section:hover .tcc-hero-bg-img {
+  transform: scale(1.05);
+}
+
+.tcc-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.82) 50%, #000000 100%),
+    radial-gradient(circle at 50% 40%, rgba(245, 214, 150, 0.08) 0%, transparent 70%);
+}
+
+.tcc-hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  text-align: center;
+}
+
+.tcc-hero-text {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.tcc-hero-eyebrow {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold-primary);
+  margin-bottom: 1.5rem;
+}
+
+.tcc-hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.8rem, 5.8vw, 5rem);
+  font-weight: 300; /* Tipografia fina, esguia e nobre */
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  color: #ffffff;
+  margin-bottom: 1.75rem;
+  text-rendering: optimizeLegibility;
+}
+
+.tcc-hero-subtitle {
+  font-family: var(--font-sans);
+  font-size: clamp(1rem, 1.25vw, 1.2rem);
+  font-weight: 300;
+  line-height: 1.85;
+  color: var(--text-secondary);
+  max-width: 680px;
+  margin: 0 auto 3rem;
+}
+
+.tcc-hero-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-switch-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.75rem 1.4rem;
+  transition: border-color var(--transition-smooth), color var(--transition-smooth), background var(--transition-smooth);
+}
+
+.btn-switch-secondary:hover {
+  border-color: var(--gold-primary);
+  color: var(--gold-light);
+  background: rgba(245, 214, 150, 0.05);
+}
+
+.btn-switch-secondary .arrow-symbol {
+  transition: transform var(--transition-smooth);
+}
+
+.btn-switch-secondary:hover .arrow-symbol {
+  transform: translateX(4px);
+}
+
+/* ==========================================================================
+   OS 3 CARDS DE SERVIÇOS DO TCC
+   ========================================================================== */
+.tcc-services-section {
+  position: relative;
+  background-color: #000000;
+  padding-top: 5rem;
+  padding-bottom: 8.5rem;
+  border-top: 1px solid var(--gold-border-subtle);
+}
+
+.tcc-services-header {
+  text-align: center;
+  max-width: 780px;
+  margin: 0 auto 5rem;
+}
+
+.tcc-services-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.4vw, 2.9rem);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+  margin-top: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.tcc-services-desc {
+  font-family: var(--font-sans);
+  font-size: 1.02rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+  line-height: 1.8;
+}
+
+.tcc-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1.5rem, 3vw, 2.75rem);
+}
+
+.tcc-service-card {
+  background-color: #0c0c0c;
+  border: 1px solid rgba(245, 214, 150, 0.16);
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition-smooth), border-color var(--transition-smooth), box-shadow var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+  outline: none;
+}
+
+.tcc-service-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(245, 214, 150, 0.45);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(245, 214, 150, 0.12);
+}
+
+.tcc-card-media {
+  position: relative;
+  width: 100%;
+  height: 230px;
+  overflow: hidden;
+}
+
+.tcc-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.7) contrast(1.1);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease;
+}
+
+.tcc-service-card:hover .tcc-card-media img {
+  transform: scale(1.06);
+  filter: brightness(0.85) contrast(1.15);
+}
+
+.tcc-card-media-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(12, 12, 12, 0.95) 100%);
+  pointer-events: none;
+}
+
+.tcc-card-tag {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-primary);
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(245, 214, 150, 0.25);
+  padding: 0.35rem 0.75rem;
+}
+
+.tcc-card-body {
+  padding: 2.25rem 2rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.tcc-card-number {
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  color: var(--gold-dim);
+  margin-bottom: 0.75rem;
+}
+
+.tcc-card-title {
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: var(--gold-primary);
+  margin-bottom: 0.45rem;
+  transition: color var(--transition-smooth);
+}
+
+.tcc-service-card:hover .tcc-card-title {
+  color: var(--gold-light);
+}
+
+.tcc-card-subtitle {
+  font-family: var(--font-sans);
+  font-size: 0.84rem;
+  letter-spacing: 0.04em;
+  color: #94a3b8;
+  margin-bottom: 1.25rem;
+}
+
+.tcc-card-desc {
+  font-family: var(--font-sans);
+  font-size: 0.94rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  font-weight: 300;
+  margin-bottom: 2rem;
+  flex: 1;
+}
+
+.tcc-card-footer {
+  margin-top: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 1.25rem;
+}
+
+.tcc-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  color: var(--gold-primary);
+  transition: color var(--transition-smooth), transform var(--transition-smooth);
+}
+
+.tcc-card-link .arrow-symbol {
+  transition: transform var(--transition-smooth);
+}
+
+.tcc-card-link:hover {
+  color: var(--gold-light);
+}
+
+.tcc-card-link:hover .arrow-symbol {
+  transform: translateX(5px);
+}
+
+/* ==========================================================================
+   SEÇÃO SOBRE NÓS DO TCC (Filosofia de Nietzsche & Música)
+   ========================================================================== */
+.tcc-sobre-section {
+  position: relative;
+  background-color: #050505;
+  padding-top: 2rem;
+  padding-bottom: 9rem;
+  border-top: 1px solid var(--gold-border-subtle);
+}
+
+.tcc-sobre-container {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: clamp(3rem, 6vw, 6.5rem);
+  align-items: center;
+}
+
+.tcc-sobre-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.4rem, 4.2vw, 3.8rem);
+  font-weight: 300; /* Fino, nobre, sem negrito */
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: #ffffff;
+  margin-top: 0.5rem;
+  margin-bottom: 2rem;
+  text-rendering: optimizeLegibility;
+}
+
+.tcc-sobre-paragraph {
+  font-family: var(--font-sans);
+  font-size: 1.02rem;
+  line-height: 1.9;
+  color: var(--text-secondary);
+  font-weight: 300;
+  margin-bottom: 1.75rem;
+}
+
+.tcc-sobre-paragraph strong {
+  color: var(--gold-primary);
+  font-weight: 500;
+}
+
+.tcc-sobre-paragraph em {
+  color: #f1f5f9;
+  font-style: italic;
+}
+
+/* Citação de Nietzsche */
+.tcc-sobre-quote {
+  position: relative;
+  background: linear-gradient(135deg, rgba(245, 214, 150, 0.04) 0%, rgba(0, 0, 0, 0.6) 100%);
+  border-left: 2px solid var(--gold-primary);
+  padding: 2rem 2.25rem 1.75rem 2.5rem;
+  margin: 2.25rem 0 2.5rem;
+}
+
+.quote-mark {
+  position: absolute;
+  top: -15px;
+  left: 15px;
+  font-family: var(--font-serif);
+  font-size: 4rem;
+  color: rgba(245, 214, 150, 0.25);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.quote-body {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.35rem, 2vw, 1.75rem);
+  line-height: 1.45;
+  color: #ffffff;
+  margin-bottom: 0.65rem;
+  position: relative;
+  z-index: 1;
+}
+
+.quote-author {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--gold-primary);
+  font-style: normal;
+  letter-spacing: 0.06em;
+}
+
+.quote-author em {
+  color: #94a3b8;
+}
+
+.tcc-sobre-cta {
+  margin-top: 2.5rem;
+}
+
+/* Moldura de Mídia */
+.tcc-sobre-media-col {
+  position: relative;
+}
+
+.tcc-media-frame {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  height: 540px;
+  margin: 0 auto;
+  border: 1px solid rgba(245, 214, 150, 0.28);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(245, 214, 150, 0.1);
+  overflow: hidden;
+}
+
+.tcc-media-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.85) contrast(1.1);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease;
+}
+
+.tcc-media-frame:hover .tcc-media-img {
+  transform: scale(1.05);
+  filter: brightness(0.95);
+}
+
+.tcc-media-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(0, 0, 0, 0.75) 100%);
+  pointer-events: none;
+}
+
+.tcc-media-floating-badge {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  right: 2rem;
+  background: rgba(10, 10, 10, 0.92);
+  border: 1px solid rgba(245, 214, 150, 0.3);
+  backdrop-filter: blur(10px);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8);
+}
+
+.badge-num {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--gold-primary);
+  line-height: 1;
+}
+
+.badge-desc {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+/* Ícones Sociais do Rodapé */
+.tcc-social-icons-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.tcc-social-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background: #121212;
+  border: 1px solid var(--gold-border-subtle);
+  color: var(--text-secondary);
+  transition: background-color var(--transition-smooth), border-color var(--transition-smooth), color var(--transition-smooth), transform var(--transition-smooth);
+}
+
+.tcc-social-btn:hover {
+  background: var(--gold-primary);
+  border-color: var(--gold-primary);
+  color: #000000;
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   PÍLULA FLUTUANTE DE ALTERNÂNCIA DE PÁGINAS
+   Fixa no canto inferior direito para acesso instantâneo em 1 clique
+   ========================================================================== */
+.floating-page-switcher {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 999;
+}
+
+.switcher-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(12, 12, 12, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--gold-primary);
+  padding: 0.85rem 1.4rem;
+  color: #ffffff;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(245, 214, 150, 0.2);
+  transition: transform var(--transition-smooth), background-color var(--transition-smooth), box-shadow var(--transition-smooth);
+}
+
+.switcher-pill-btn:hover {
+  background: var(--gold-primary);
+  color: #000000;
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.9), 0 0 30px rgba(245, 214, 150, 0.4);
+}
+
+.switcher-pill-btn:hover .switcher-icon {
+  transform: rotate(180deg);
+}
+
+.switcher-icon {
+  font-size: 1.1rem;
+  color: var(--gold-primary);
+  transition: transform 0.4s ease;
+}
+
+.switcher-pill-btn:hover .switcher-icon {
+  color: #000000;
+}
+
+.switcher-label strong {
+  color: var(--gold-primary);
+  transition: color var(--transition-smooth);
+}
+
+.switcher-pill-btn:hover .switcher-label strong {
+  color: #000000;
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE DA PÁGINA ADAPTADA DO TCC
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .tcc-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    max-width: 580px;
+    margin: 0 auto;
+  }
+
+  .tcc-sobre-container {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+
+  .tcc-media-frame {
+    max-width: 100%;
+    height: 440px;
+  }
+}
+
+@media (max-width: 768px) {
+  .top-social-bar {
+    display: none;
+  }
+
+  .tcc-hero-section {
+    padding-top: 6rem;
+    padding-bottom: 4rem;
+  }
+
+  .tcc-hero-actions {
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .floating-page-switcher {
+    bottom: 1rem;
+    right: 1rem;
+    left: 1rem;
+  }
+
+  .switcher-pill-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.85rem 1rem;
+  }
+}
+
+/* Botão de transição rápida na Hero da Versão Editorial */
+.hero-cta-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.hero-switch-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  padding: 0.65rem 1.15rem;
+  border: 1px solid rgba(245, 214, 150, 0.25);
+  background: rgba(245, 214, 150, 0.04);
+  transition: all var(--transition-smooth);
+}
+
+.hero-switch-secondary:hover {
+  color: #000000;
+  background-color: var(--gold-primary);
+  border-color: var(--gold-primary);
+}
+
+.hero-switch-secondary .arrow-symbol {
+  transition: transform var(--transition-smooth);
+}
+
+.hero-switch-secondary:hover .arrow-symbol {
+  transform: translateX(4px);
+}

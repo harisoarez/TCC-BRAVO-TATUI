@@ -2,12 +2,16 @@
 
 (function () {
     const API_BASE = (window.location.port === "3000" || (!window.location.port && window.location.protocol === "http:")) ? "" : "http://localhost:3000";
+    const STORAGE_CARRINHO_KEY = "coffee_bravo_carrinho_v1";
+    const STORAGE_CLIENTE_KEY = "coffee_bravo_cliente_v1";
 
     let todosItens = [];
+    let carrinho = [];
     let categoriaAtiva = "Todos";
     let termoBusca = "";
     let usuarioLogado = null;
     let isAdmin = false;
+    let toastTimer = null;
 
     function escapeHtml(str) {
         if (str === null || str === undefined) return "";
@@ -205,26 +209,38 @@
                     ? `<img src="${encodeURI(item.imagem_url)}" alt="${nomeEscapado}" loading="lazy">`
                     : `<div class="produto-imagem-placeholder"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg></div>`;
 
-                const badgeDestaqueHtml = estaDestaque
+                const badgeDestaqueHtml = (estaDestaque && estaDisponivel)
                     ? `<span class="badge-destaque">Destaque</span>`
                     : "";
 
-                const badgeStatusHtml = `<span class="badge-status ${estaDisponivel ? 'disponivel' : 'esgotado'}">${estaDisponivel ? 'Disponível' : 'Esgotado'}</span>`;
+                const badgeStatusHtml = !estaDisponivel
+                    ? `<span class="badge-status esgotado">Esgotado</span>`
+                    : "";
 
-                const botaoPedirHtml = estaDisponivel
-                    ? `<a href="https://wa.me/5515996257683?text=${encodeURIComponent('Olá! Gostaria de pedir no Coffee Bravo: ' + item.nome)}" target="_blank" class="btn-pedir-whats" title="Pedir no WhatsApp">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                        </svg>
-                        <span>Pedir</span>
-                    </a>`
-                    : `<button type="button" class="btn-pedir-whats btn-esgotado" disabled title="Este produto está esgotado no momento e não pode ser pedido">
+                const qtdNoCarrinho = obterQtdNoCarrinho(idSanitizado);
+
+                const botaoAcaoHtml = estaDisponivel
+                    ? (qtdNoCarrinho > 0
+                        ? `<div class="card-qtd-controle" id="card-qtd-${idSanitizado}">
+                            <button type="button" class="btn-card-qtd-step" onclick="window.alterarQtdCarrinho(${idSanitizado}, -1)" title="Diminuir quantidade" aria-label="Diminuir">−</button>
+                            <span class="card-qtd-num">${qtdNoCarrinho}</span>
+                            <button type="button" class="btn-card-qtd-step" onclick="window.alterarQtdCarrinho(${idSanitizado}, 1)" title="Aumentar quantidade" aria-label="Aumentar">+</button>
+                           </div>`
+                        : `<button type="button" class="btn-adicionar-carrinho" onclick="window.adicionarAoCarrinho(${idSanitizado})" title="Adicionar ao carrinho">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            <span>Adicionar</span>
+                           </button>`
+                      )
+                    : `<button type="button" class="btn-pedir-whats btn-esgotado" disabled title="Este produto está esgotado no momento e não pode ser adicionado ao carrinho">
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="10"></circle>
                             <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
                         </svg>
                         <span>Esgotado</span>
-                    </button>`;
+                       </button>`;
 
                 // Botões de administração exibidos se o usuário for Admin ou Owner
                 const adminAcoesHtml = isAdmin
@@ -258,7 +274,7 @@
                                 <div class="produto-preco">
                                     <span class="produto-preco-prefixo">R$</span>${precoFormatado}
                                 </div>
-                                ${botaoPedirHtml}
+                                ${botaoAcaoHtml}
                             </div>
                         </div>
                         ${adminAcoesHtml}
@@ -298,6 +314,28 @@
         if (form) {
             form.addEventListener("submit", processarSalvarItem);
         }
+
+        // Salvar preferências do cliente no carrinho
+        const campoNome = document.getElementById("carrinhoNomeCliente");
+        const campoObs = document.getElementById("carrinhoObservacoes");
+        if (campoNome) {
+            campoNome.addEventListener("input", salvarPreferenciasCliente);
+        }
+        if (campoObs) {
+            campoObs.addEventListener("input", salvarPreferenciasCliente);
+        }
+        document.querySelectorAll('input[name="tipoConsumo"]').forEach((r) => {
+            r.addEventListener("change", salvarPreferenciasCliente);
+        });
+
+        // Fechar gaveta do carrinho ou modais com tecla ESC
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") {
+                window.fecharCarrinho();
+                window.fecharModalPublicItem();
+                window.fecharModalPublicExclusao();
+            }
+        });
     }
 
     // Funções de administração
@@ -475,10 +513,400 @@
         }
     }
 
+    // =========================================================================
+    // SISTEMA DE CARRINHO — COFFEE BRAVO
+    // =========================================================================
+
+    function carregarCarrinhoStorage() {
+        try {
+            const salvo = localStorage.getItem(STORAGE_CARRINHO_KEY);
+            if (salvo) {
+                const parsed = JSON.parse(salvo);
+                if (Array.isArray(parsed)) {
+                    carrinho = parsed;
+                }
+            }
+        } catch (e) {
+            carrinho = [];
+        }
+    }
+
+    function salvarCarrinhoStorage() {
+        try {
+            localStorage.setItem(STORAGE_CARRINHO_KEY, JSON.stringify(carrinho));
+        } catch (e) {}
+    }
+
+    function salvarPreferenciasCliente() {
+        try {
+            const campoNome = document.getElementById("carrinhoNomeCliente");
+            const campoObs = document.getElementById("carrinhoObservacoes");
+            const radioConsumo = document.querySelector('input[name="tipoConsumo"]:checked');
+            localStorage.setItem(
+                STORAGE_CLIENTE_KEY,
+                JSON.stringify({
+                    nome: (campoNome?.value || "").trim(),
+                    tipoConsumo: radioConsumo?.value || "No Local",
+                    observacoes: (campoObs?.value || "").trim(),
+                })
+            );
+        } catch (e) {}
+    }
+
+    function carregarPreferenciasCliente() {
+        try {
+            const dados = localStorage.getItem(STORAGE_CLIENTE_KEY);
+            if (dados) {
+                const parsed = JSON.parse(dados);
+                const campoNome = document.getElementById("carrinhoNomeCliente");
+                if (campoNome && parsed.nome) campoNome.value = parsed.nome;
+
+                const campoObs = document.getElementById("carrinhoObservacoes");
+                if (campoObs && parsed.observacoes) campoObs.value = parsed.observacoes;
+
+                if (parsed.tipoConsumo) {
+                    const radio = document.querySelector(`input[name="tipoConsumo"][value="${parsed.tipoConsumo}"]`);
+                    if (radio) radio.checked = true;
+                }
+            }
+        } catch (e) {}
+    }
+
+    function obterQtdNoCarrinho(id) {
+        const item = carrinho.find((i) => Number(i.id_item) === Number(id));
+        return item ? item.quantidade : 0;
+    }
+
+    function calcularTotaisCarrinho() {
+        let totalItens = 0;
+        let totalPreco = 0;
+        carrinho.forEach((item) => {
+            totalItens += item.quantidade;
+            totalPreco += item.quantidade * Number(item.preco);
+        });
+        return { totalItens, totalPreco };
+    }
+
+    function atualizarUiCarrinho(animarBump = false) {
+        const { totalItens, totalPreco } = calcularTotaisCarrinho();
+        const totalFormatado = "R$ " + totalPreco.toFixed(2).replace(".", ",");
+
+        // Atualiza botão flutuante no canto inferior
+        const badge = document.getElementById("carrinhoBadgeContador");
+        const totalPreview = document.getElementById("carrinhoTotalPreco");
+        const btnFlutuante = document.getElementById("btnAbrirCarrinho");
+
+        if (badge) {
+            badge.textContent = totalItens;
+            if (totalItens > 0) {
+                badge.classList.add("tem-itens");
+            } else {
+                badge.classList.remove("tem-itens");
+            }
+        }
+
+        if (totalPreview) {
+            totalPreview.textContent = totalFormatado;
+        }
+
+        if (btnFlutuante && animarBump) {
+            btnFlutuante.classList.remove("animar-bump");
+            void btnFlutuante.offsetWidth;
+            btnFlutuante.classList.add("animar-bump");
+        }
+
+        // Atualiza cabeçalho e rodapé do drawer/painel
+        const subtitulo = document.getElementById("carrinhoQtdSubtitulo");
+        if (subtitulo) {
+            subtitulo.textContent = `${totalItens} ${totalItens === 1 ? "item selecionado" : "itens selecionados"}`;
+        }
+
+        const valorFinal = document.getElementById("carrinhoValorFinal");
+        if (valorFinal) {
+            valorFinal.textContent = totalFormatado;
+        }
+
+        const btnFinalizar = document.getElementById("btnFinalizarPedidoWhats");
+        if (btnFinalizar) {
+            btnFinalizar.disabled = totalItens === 0;
+        }
+
+        renderizarItensPainelCarrinho();
+    }
+
+    function atualizarBotaoCard(id) {
+        const card = document.getElementById(`card-item-${id}`);
+        if (!card) return;
+        const rodape = card.querySelector(".produto-rodape");
+        if (!rodape) return;
+
+        const item = todosItens.find((i) => Number(i.id_item) === Number(id));
+        if (!item) return;
+
+        const estaDisponivel = item.disponivel === 1 || item.disponivel === true;
+        const qtd = obterQtdNoCarrinho(id);
+
+        const elementoAntigo = rodape.querySelector(".btn-adicionar-carrinho, .card-qtd-controle, .btn-pedir-whats");
+        if (!elementoAntigo) return;
+
+        let novoHtml = "";
+        if (!estaDisponivel) {
+            novoHtml = `<button type="button" class="btn-pedir-whats btn-esgotado" disabled title="Este produto está esgotado no momento e não pode ser adicionado ao carrinho">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+                </svg>
+                <span>Esgotado</span>
+            </button>`;
+        } else if (qtd > 0) {
+            novoHtml = `<div class="card-qtd-controle" id="card-qtd-${id}">
+                <button type="button" class="btn-card-qtd-step" onclick="window.alterarQtdCarrinho(${id}, -1)" title="Diminuir quantidade" aria-label="Diminuir">−</button>
+                <span class="card-qtd-num">${qtd}</span>
+                <button type="button" class="btn-card-qtd-step" onclick="window.alterarQtdCarrinho(${id}, 1)" title="Aumentar quantidade" aria-label="Aumentar">+</button>
+            </div>`;
+        } else {
+            novoHtml = `<button type="button" class="btn-adicionar-carrinho" onclick="window.adicionarAoCarrinho(${id})" title="Adicionar ao carrinho">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                <span>Adicionar</span>
+            </button>`;
+        }
+
+        const temp = document.createElement("div");
+        temp.innerHTML = novoHtml;
+        elementoAntigo.replaceWith(temp.firstElementChild);
+    }
+
+    function renderizarItensPainelCarrinho() {
+        const lista = document.getElementById("carrinhoListaItens");
+        if (!lista) return;
+
+        if (carrinho.length === 0) {
+            lista.innerHTML = `
+                <div class="carrinho-vazio">
+                    <div class="carrinho-vazio-icone">☕</div>
+                    <h4>Seu carrinho está vazio</h4>
+                    <p>Adicione cafés, lanches ou sobremesas do cardápio para pedir tudo junto de uma só vez pelo WhatsApp!</p>
+                </div>
+            `;
+            return;
+        }
+
+        lista.innerHTML = carrinho
+            .map((item) => {
+                const idSanitizado = Number(item.id_item) || 0;
+                const precoUnFormatado = Number(item.preco).toFixed(2).replace(".", ",");
+                const subtotalFormatado = (Number(item.preco) * item.quantidade).toFixed(2).replace(".", ",");
+                const nomeEscapado = escapeHtml(item.nome);
+
+                const fotoHtml = item.imagem_url
+                    ? `<img src="${encodeURI(item.imagem_url)}" alt="${nomeEscapado}" loading="lazy">`
+                    : `<span class="carrinho-item-sem-foto">☕</span>`;
+
+                return `
+                    <div class="carrinho-item-linha" data-id="${idSanitizado}">
+                        <div class="carrinho-item-foto">
+                            ${fotoHtml}
+                        </div>
+                        <div class="carrinho-item-info">
+                            <h4 class="carrinho-item-nome" title="${nomeEscapado}">${nomeEscapado}</h4>
+                            <div class="carrinho-item-preco-un">R$ ${precoUnFormatado} un.</div>
+                            <div class="carrinho-item-subtotal">Subtotal: R$ ${subtotalFormatado}</div>
+                        </div>
+                        <div class="carrinho-item-controles">
+                            <div class="carrinho-qtd-stepper">
+                                <button type="button" class="btn-carrinho-step" onclick="window.alterarQtdCarrinho(${idSanitizado}, -1)" title="Diminuir quantidade" aria-label="Diminuir">−</button>
+                                <span class="carrinho-qtd-display">${item.quantidade}</span>
+                                <button type="button" class="btn-carrinho-step" onclick="window.alterarQtdCarrinho(${idSanitizado}, 1)" title="Aumentar quantidade" aria-label="Aumentar">+</button>
+                            </div>
+                            <button type="button" class="btn-carrinho-remover" onclick="window.removerItemCarrinho(${idSanitizado})" title="Remover item do carrinho" aria-label="Remover">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            })
+            .join("");
+    }
+
+    function mostrarToastCarrinho(mensagem) {
+        const toast = document.getElementById("carrinhoToast");
+        if (!toast) return;
+
+        toast.textContent = mensagem;
+        toast.classList.add("mostrar");
+
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+            toast.classList.remove("mostrar");
+        }, 3200);
+    }
+
+    // Ações globais do Carrinho
+    window.adicionarAoCarrinho = function (id) {
+        const item = todosItens.find((i) => Number(i.id_item) === Number(id));
+        if (!item) return;
+
+        if (!(item.disponivel === 1 || item.disponivel === true)) {
+            mostrarToastCarrinho("Este produto está esgotado no momento.");
+            return;
+        }
+
+        const existente = carrinho.find((i) => Number(i.id_item) === Number(id));
+        if (existente) {
+            existente.quantidade += 1;
+        } else {
+            carrinho.push({
+                id_item: item.id_item,
+                nome: item.nome,
+                preco: Number(item.preco),
+                imagem_url: item.imagem_url || "",
+                categoria: item.categoria || "",
+                quantidade: 1,
+            });
+        }
+
+        salvarCarrinhoStorage();
+        atualizarUiCarrinho(true);
+        atualizarBotaoCard(id);
+        mostrarToastCarrinho(`✓ "${item.nome}" adicionado ao pedido!`);
+    };
+
+    window.alterarQtdCarrinho = function (id, delta) {
+        const index = carrinho.findIndex((i) => Number(i.id_item) === Number(id));
+        if (index === -1) {
+            if (delta > 0) window.adicionarAoCarrinho(id);
+            return;
+        }
+
+        const novaQtd = carrinho[index].quantidade + delta;
+        const nomeItem = carrinho[index].nome;
+
+        if (novaQtd <= 0) {
+            carrinho.splice(index, 1);
+            mostrarToastCarrinho(`"${nomeItem}" removido do pedido.`);
+        } else {
+            carrinho[index].quantidade = novaQtd;
+        }
+
+        salvarCarrinhoStorage();
+        atualizarUiCarrinho(true);
+        atualizarBotaoCard(id);
+    };
+
+    window.removerItemCarrinho = function (id) {
+        const index = carrinho.findIndex((i) => Number(i.id_item) === Number(id));
+        if (index !== -1) {
+            const nome = carrinho[index].nome;
+            carrinho.splice(index, 1);
+            salvarCarrinhoStorage();
+            atualizarUiCarrinho(false);
+            atualizarBotaoCard(id);
+            mostrarToastCarrinho(`"${nome}" removido do pedido.`);
+        }
+    };
+
+    window.limparCarrinho = function () {
+        if (carrinho.length === 0) return;
+        const idsAnteriores = carrinho.map((i) => i.id_item);
+        carrinho = [];
+        salvarCarrinhoStorage();
+        atualizarUiCarrinho(false);
+        idsAnteriores.forEach((id) => atualizarBotaoCard(id));
+        mostrarToastCarrinho("Carrinho esvaziado.");
+    };
+
+    window.alternarCarrinho = function () {
+        const painel = document.getElementById("painelCarrinho");
+        if (!painel) return;
+        if (painel.classList.contains("aberto")) {
+            window.fecharCarrinho();
+        } else {
+            window.abrirCarrinho();
+        }
+    };
+
+    window.abrirCarrinho = function () {
+        const painel = document.getElementById("painelCarrinho");
+        if (!painel) return;
+        painel.classList.add("aberto");
+        painel.setAttribute("aria-hidden", "false");
+        renderizarItensPainelCarrinho();
+    };
+
+    window.fecharCarrinho = function () {
+        const painel = document.getElementById("painelCarrinho");
+        if (!painel) return;
+        painel.classList.remove("aberto");
+        painel.setAttribute("aria-hidden", "true");
+    };
+
+    window.enviarPedidoWhatsapp = function () {
+        if (carrinho.length === 0) {
+            mostrarToastCarrinho("Seu carrinho está vazio! Adicione itens antes de pedir.");
+            return;
+        }
+
+        salvarPreferenciasCliente();
+
+        const campoNome = document.getElementById("carrinhoNomeCliente");
+        const campoObs = document.getElementById("carrinhoObservacoes");
+        const radioConsumo = document.querySelector('input[name="tipoConsumo"]:checked');
+
+        const nomeCliente = (campoNome?.value || "").trim();
+        const tipoConsumo = radioConsumo?.value || "No Local";
+        const observacoes = (campoObs?.value || "").trim();
+
+        const { totalItens, totalPreco } = calcularTotaisCarrinho();
+        const valorFormatado = "R$ " + totalPreco.toFixed(2).replace(".", ",");
+
+        // Monta a mensagem completa formatada para o WhatsApp do Coffee Bravo
+        let msg = `☕ *PEDIDO — COFFEE BRAVO*\n`;
+        msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
+        if (nomeCliente) {
+            msg += `👤 *Cliente:* ${nomeCliente}\n`;
+        }
+        msg += `🍽️ *Consumo:* ${tipoConsumo}\n`;
+        msg += `📅 *Horário:* ${new Date().toLocaleDateString("pt-BR")} às ${new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}\n`;
+        msg += `━━━━━━━━━━━━━━━━━━━━━\n\n`;
+        msg += `📋 *ITENS DO PEDIDO:*\n`;
+
+        carrinho.forEach((item) => {
+            const subtotal = (Number(item.preco) * item.quantidade).toFixed(2).replace(".", ",");
+            const unFormatado = Number(item.preco).toFixed(2).replace(".", ",");
+            msg += `• ${item.quantidade}x ${item.nome} (R$ ${unFormatado} un.) = R$ ${subtotal}\n`;
+        });
+
+        msg += `\n━━━━━━━━━━━━━━━━━━━━━\n`;
+        msg += `📦 *Total de itens:* ${totalItens}\n`;
+        msg += `💰 *VALOR TOTAL: ${valorFormatado}*\n`;
+        msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
+
+        if (observacoes) {
+            msg += `📝 *Observações:*\n${observacoes}\n`;
+            msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
+        }
+
+        msg += `\nOlá! Gostaria de confirmar meu pedido acima com a equipe do Coffee Bravo.`;
+
+        const numeroWhatsapp = "5515996257683";
+        const url = `https://wa.me/${numeroWhatsapp}?text=${encodeURIComponent(msg)}`;
+
+        window.open(url, "_blank");
+    };
+
     // Inicialização da página
     function iniciar() {
+        carregarCarrinhoStorage();
         checarPermissoesAdmin();
         configurarEventos();
+        carregarPreferenciasCliente();
+        atualizarUiCarrinho(false);
         carregarCardapio();
     }
 

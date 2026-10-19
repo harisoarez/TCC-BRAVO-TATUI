@@ -277,7 +277,7 @@ a {
 .admin-inst-controles {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     gap: 12px;
     margin-bottom: 18px;
     padding: 10px 14px;

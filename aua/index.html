@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instituto Musical Bravo — Tatuí | Excelência no Ensino Musical</title>
+  <meta name="description" content="Formação instrumental e vocal para quem não busca apenas tocar notas, mas compreender a fundo a arte da interpretação. Na capital da música, em Tatuí.">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>𝄞</text></svg>">
+
+  <!-- Google Fonts: Cormorant Garamond (Fine/Light Classical Serif), Julius Sans One, Cinzel, Inter & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cinzel:wght@400;500;600&family=Julius+Sans+One&family=Inter:wght@200;300;400;500&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/tcc-adaptado.css">
+</head>
+<body>
+
+  <!-- [NAVEGAÇÃO SUPERIOR] -->
+  <header class="site-header" id="header">
+    <div class="nav-container">
+      <a href="#hero" class="brand-logo" aria-label="Instituto Musical Bravo Início">
+        INSTITUTO MUSICAL BRAVO
+      </a>
+
+      <nav class="main-nav" id="main-nav" aria-label="Navegação Principal">
+        <ul class="nav-list">
+          <li><a href="#manifesto" class="nav-link">O Instituto</a></li>
+          <li class="nav-sep" aria-hidden="true">·</li>
+          <li><a href="#instrumentos" class="nav-link">Instrumentos</a></li>
+          <li class="nav-sep" aria-hidden="true">·</li>
+          <li><a href="#diferencial" class="nav-link">Corpo Docente</a></li>
+          <li class="nav-sep" aria-hidden="true">·</li>
+          <li><button type="button" class="nav-link nav-btn-text open-modal-btn" data-modal="agendar">Agendar Visita</button></li>
+          <li class="nav-sep" aria-hidden="true">·</li>
+          <li>
+            <a href="tcc-home.html" class="nav-btn-switcher" title="Ver Versão Adaptada da Página Inicial do TCC">
+              Ver Versão TCC ⟶
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Mobile Hamburger Toggle -->
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Alternar menu de navegação" aria-expanded="false">
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Drawer -->
+  <div class="mobile-drawer" id="mobile-drawer" aria-hidden="true">
+    <div class="mobile-drawer-inner">
+      <ul class="mobile-nav-list">
+        <li><a href="#manifesto" class="mobile-nav-link">O Instituto</a></li>
+        <li><a href="#instrumentos" class="mobile-nav-link">Instrumentos</a></li>
+        <li><a href="#diferencial" class="mobile-nav-link">Corpo Docente</a></li>
+        <li><button type="button" class="mobile-nav-link mobile-btn-text open-modal-btn" data-modal="agendar">Agendar Visita</button></li>
+        <li><a href="tcc-home.html" class="mobile-nav-link mobile-btn-highlight">Ver Versão TCC ⟶</a></li>
+      </ul>
+      <div class="mobile-drawer-footer">
+        <p class="drawer-location">Tatuí · Capital da Música</p>
+        <p class="drawer-contact">(15) 99812-3456</p>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <!-- [PRIMEIRA DOBRA — HERO] -->
+    <section class="hero-section" id="hero">
+      <div class="hero-backdrop" aria-hidden="true">
+        <img src="assets/images/hero.jpg" alt="" class="hero-img">
+        <div class="hero-overlay"></div>
+      </div>
+
+      <div class="container hero-content">
+        <div class="hero-text-wrap">
+          <span class="hero-location-badge">Tatuí — São Paulo</span>
+          <h1 class="hero-title">
+            Na capital da música, a técnica encontra a sua própria voz.
+          </h1>
+          <p class="hero-subtitle">
+            Formação instrumental e vocal para quem não busca apenas tocar notas, mas compreender a fundo a arte da interpretação. Do primeiro contato ao aperfeiçoamento técnico em Tatuí.
+          </p>
+          <div class="hero-cta-wrapper">
+            <a href="#agendamento" class="hero-cta-link open-modal-btn" data-modal="agendar">
+              <span>Agendar uma aula experimental presencial</span>
+              <span class="arrow-symbol" aria-hidden="true">⟶</span>
+            </a>
+            <a href="tcc-home.html" class="hero-switch-secondary" title="Ver Versão Adaptada da Página Inicial do TCC">
+              <span>Ver Página Inicial TCC Adaptada</span>
+              <span class="arrow-symbol" aria-hidden="true">⟶</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- [SEGUNDA DOBRA — MANIFESTO] -->
+    <section class="manifesto-section" id="manifesto">
+      <!-- Linha fina vertical dourada dividindo a dobra anterior desta -->
+      <div class="gold-vertical-divider" aria-hidden="true"></div>
+
+      <div class="container manifesto-container">
+        <div class="manifesto-content">
+          <p class="section-eyebrow">FILOSOFIA DE ENSINO</p>
+          
+          <div class="manifesto-body">
+            <p class="manifesto-lead">
+              A música não aceita atalhos. Em uma cidade que respira tradição sonora como Tatuí, ensinar exige responsabilidade. O Instituto Musical Bravo nasceu com um propósito claro: oferecer um ambiente onde o rigor técnico caminha lado a lado com a liberdade artística de cada aluno.
+            </p>
+            <p class="manifesto-text">
+              Não acreditamos em métodos engessados ou aulas em linha de produção. Aqui, o ensino é moldado pelo repertório que move você, pelo seu ritmo de assimilação e pelo respeito absoluto à acústica, à postura e à expressividade de cada instrumento.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- [TERCEIRA DOBRA — OS INSTRUMENTOS] -->
+    <section class="instrumentos-section" id="instrumentos">
+      <!-- Backgrounds interativos que mudam suavemente com o hover -->
+      <div class="instrument-bg-layer" aria-hidden="true">
+        <div class="instrument-bg-item is-active" data-bg="default" style="background-image: url('assets/images/teclas.jpg');"></div>
+        <div class="instrument-bg-item" data-bg="teclas" style="background-image: url('assets/images/teclas.jpg');"></div>
+        <div class="instrument-bg-item" data-bg="cordas" style="background-image: url('assets/images/cordas.jpg');"></div>
+        <div class="instrument-bg-item" data-bg="sopros" style="background-image: url('assets/images/sopros.jpg');"></div>
+        <div class="instrument-bg-item" data-bg="percussao" style="background-image: url('assets/images/percussao.jpg');"></div>
+        <div class="instrument-bg-item" data-bg="canto" style="background-image: url('assets/images/canto.jpg');"></div>
+        <div class="instrument-bg-overlay"></div>
+      </div>
+
+      <div class="container instrumentos-container">
+        <div class="instrumentos-header">
+          <h2 class="section-title">Prática & Repertório</h2>
+          <span class="section-meta-hint">Passe o cursor sobre os instrumentos</span>
+        </div>
+
+        <!-- Lista tipográfica larga, separada apenas por linhas horizontais finíssimas -->
+        <div class="instruments-list" role="list">
+          
+          <!-- 01. Teclas -->
+          <article class="instrument-item is-highlighted" data-instrument="teclas" role="listitem" tabindex="0">
+            <div class="instrument-row">
+              <div class="instrument-number">01.</div>
+              <div class="instrument-heading-wrap">
+                <h3 class="instrument-name">Teclas</h3>
+                <span class="instrument-spec">Piano Clássico, Popular e Teclado</span>
+              </div>
+              <div class="instrument-desc-wrap">
+                <p class="instrument-desc">
+                  Domínio de leitura, independência das mãos, harmonia aplicada e construção de repertório. Do toque erudito à linguagem contemporânea.
+                </p>
+              </div>
+              <div class="instrument-arrow-indicator" aria-hidden="true">⟶</div>
+            </div>
+          </article>
+
+          <!-- 02. Cordas -->
+          <article class="instrument-item" data-instrument="cordas" role="listitem" tabindex="0">
+            <div class="instrument-row">
+              <div class="instrument-number">02.</div>
+              <div class="instrument-heading-wrap">
+                <h3 class="instrument-name">Cordas</h3>
+                <span class="instrument-spec">Violão, Guitarra, Baixo, Violino e Violoncelo</span>
+              </div>
+              <div class="instrument-desc-wrap">
+                <p class="instrument-desc">
+                  Postura, precisão de afinação, timbragem e condução rítmica. O estudo detalhado da mecânica do instrumento aliado à sensibilidade da execução.
+                </p>
+              </div>
+              <div class="instrument-arrow-indicator" aria-hidden="true">⟶</div>
+            </div>
+          </article>
+
+          <!-- 03. Sopros -->
+          <article class="instrument-item" data-instrument="sopros" role="listitem" tabindex="0">
+            <div class="instrument-row">
+              <div class="instrument-number">03.</div>
+              <div class="instrument-heading-wrap">
+                <h3 class="instrument-name">Sopros</h3>
+                <span class="instrument-spec">Saxofone, Flauta Transversal e Trompete</span>
+              </div>
+              <div class="instrument-desc-wrap">
+                <p class="instrument-desc">
+                  Controle de embocadura, coluna de ar, projeção sonora e improvisação. A construção de um som limpo, encorpado e com identidade própria.
+                </p>
+              </div>
+              <div class="instrument-arrow-indicator" aria-hidden="true">⟶</div>
+            </div>
+          </article>
+
+          <!-- 04. Percussão & Bateria -->
+          <article class="instrument-item" data-instrument="percussao" role="listitem" tabindex="0">
+            <div class="instrument-row">
+              <div class="instrument-number">04.</div>
+              <div class="instrument-heading-wrap">
+                <h3 class="instrument-name">Percussão & Bateria</h3>
+                <span class="instrument-spec">Bateria Acústica e Ritmos Brasileiros & Universais</span>
+              </div>
+              <div class="instrument-desc-wrap">
+                <p class="instrument-desc">
+                  Dinâmica, precisão métrica, leitura rítmica e coordenação motora aplicada a diferentes gêneros musicais e práticas em conjunto.
+                </p>
+              </div>
+              <div class="instrument-arrow-indicator" aria-hidden="true">⟶</div>
+            </div>
+          </article>
+
+          <!-- 05. Canto & Técnica Vocal -->
+          <article class="instrument-item" data-instrument="canto" role="listitem" tabindex="0">
+            <div class="instrument-row">
+              <div class="instrument-number">05.</div>
+              <div class="instrument-heading-wrap">
+                <h3 class="instrument-name">Canto & Técnica Vocal</h3>
+                <span class="instrument-spec">Canto Popular, Lírico e Prática Coral</span>
+              </div>
+              <div class="instrument-desc-wrap">
+                <p class="instrument-desc">
+                  Fisiologia da voz, respiração, ressonância, dicção e presença de palco. O desenvolvimento seguro da sua extensão vocal sem esforço ou desgaste.
+                </p>
+              </div>
+              <div class="instrument-arrow-indicator" aria-hidden="true">⟶</div>
+            </div>
+          </article>
+
+        </div>
+
+        <!-- Link de apoio no final da lista -->
+        <div class="instruments-footer">
+          <a href="#horarios" class="secondary-gold-link open-modal-btn" data-modal="horarios">
+            <span>Consultar disponibilidade de horários por instrumento</span>
+            <span class="arrow-symbol" aria-hidden="true">⟶</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- [QUARTA DOBRA — O DIFERENCIAL BRAVO] -->
+    <section class="diferencial-section" id="diferencial">
+      <div class="container diferencial-container">
+        
+        <!-- Coluna da Esquerda (Título fixo em dourado) -->
+        <div class="diferencial-col-left">
+          <div class="sticky-title-wrapper">
+            <span class="diferencial-badge">CORPO DOCENTE & AMBIENTE</span>
+            <h2 class="diferencial-title">
+              O padrão Bravo de ensino.
+            </h2>
+          </div>
+        </div>
+
+        <!-- Coluna da Direita (Três blocos de texto corrido sem caixas de contorno) -->
+        <div class="diferencial-col-right">
+          
+          <div class="diferencial-block">
+            <span class="block-index">01</span>
+            <h3 class="diferencial-block-title">Aulas Individuais de Verdade</h3>
+            <p class="diferencial-block-text">
+              A evolução musical acontece no detalhe: na correção sutil do pulso, no ajuste dos dedos, na escuta atenta. Nossas aulas priorizam o acompanhamento individual para que o professor atue exatamente onde você precisa avançar.
+            </p>
+          </div>
+
+          <div class="diferencial-block">
+            <span class="block-index">02</span>
+            <h3 class="diferencial-block-title">Salas Preparadas Acusticamente</h3>
+            <p class="diferencial-block-text">
+              Aprender música exige ouvir com clareza. Nosso espaço em Tatuí foi projetado com tratamento acústico adequado e instrumentos revisados, garantindo que cada aula seja uma experiência sonora fiel.
+            </p>
+          </div>
+
+          <div class="diferencial-block">
+            <span class="block-index">03</span>
+            <h3 class="diferencial-block-title">Vivência de Palco e Prática em Conjunto</h3>
+            <p class="diferencial-block-text">
+              A música se completa quando é compartilhada. Ao longo do ano, promovemos audições comentadas, recitais e práticas coletivas para que o aluno desenvolva segurança, escuta de grupo e domínio emocional diante do público.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- [QUINTA DOBRA — PARA QUEM É O INSTITUTO] -->
+    <section class="publico-section" id="publico">
+      <div class="container publico-container">
+        <div class="publico-header">
+          <p class="section-eyebrow">DESENVOLVIMENTO CONTÍNUO</p>
+          <h2 class="section-title">Para quem é o Instituto</h2>
+        </div>
+
+        <!-- Três colunas limpas, apenas tipografia branca sobre preto, com títulos em dourado -->
+        <div class="publico-grid">
+          
+          <div class="publico-col">
+            <div class="publico-number-tag">A</div>
+            <h3 class="publico-col-title">Iniciantes (Crianças, Jovens e Adultos)</h3>
+            <p class="publico-col-text">
+              Para quem nunca tocou um instrumento ou acredita que "já passou da idade". Começamos da base, sem pressa e sem vícios posturais, construindo autonomia desde as primeiras semanas.
+            </p>
+          </div>
+
+          <div class="publico-col">
+            <div class="publico-number-tag">B</div>
+            <h3 class="publico-col-title">Músicos em Retorno ou Aperfeiçoamento</h3>
+            <p class="publico-col-text">
+              Para quem já toca de ouvido ou parou os estudos há anos e deseja estruturar o conhecimento em harmonia, leitura, improvisação e técnica avançada.
+            </p>
+          </div>
+
+          <div class="publico-col">
+            <div class="publico-number-tag">C</div>
+            <h3 class="publico-col-title">Preparação Específica</h3>
+            <p class="publico-col-text">
+              Mentoria direcionada para estudantes que buscam provas de aptidão, ingresso em conservatórios, gravações ou atuação profissional na música.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- [DOBRA FINAL — CONVITE & RODAPÉ] -->
+    <section class="convite-section" id="agendamento">
+      <div class="container convite-container">
+        <div class="convite-card">
+          <div class="convite-accent-mark" aria-hidden="true"></div>
+          <h2 class="convite-title">Ouça a diferença pessoalmente.</h2>
+          <p class="convite-text">
+            Antes de qualquer matrícula, convidamos você a conhecer nossa estrutura em Tatuí, conversar com nossos professores e testar o instrumento de sua preferência.
+          </p>
+
+          <!-- Chamada de Ação Principal (Botão sólido em dourado fosco, letras pretas, cantos retos) -->
+          <div class="convite-action">
+            <a href="https://wa.me/5515998123456?text=Ol%C3%A1%2C%20gostaria%20de%20conversar%20com%20a%20secretaria%20do%20Instituto%20Musical%20Bravo%20e%20agendar%20uma%20visita%20em%20Tatu%C3%AD." 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="btn-gold-solid">
+              FALAR COM A SECRETARIA PELO WHATSAPP
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Rodapé (Minimalista, três colunas na base da página) -->
+  <footer class="site-footer">
+    <div class="container footer-container">
+      
+      <!-- Coluna 1 -->
+      <div class="footer-col footer-col-brand">
+        <p class="footer-brand-title">Instituto Musical Bravo Tatuí</p>
+        <p class="footer-brand-sub">Excelência no ensino musical.</p>
+        <p class="footer-tagline">Tradição acústica, sensibilidade e rigor técnico na Capital da Música.</p>
+      </div>
+
+      <!-- Coluna 2 -->
+      <div class="footer-col footer-col-address">
+        <span class="footer-label">Localização</span>
+        <p class="footer-data">Rua Capitão Lisboa, 450 — Centro</p>
+        <p class="footer-data">Tatuí – SP · CEP 18270-070</p>
+        <a href="https://maps.google.com/?q=Tatui+SP" target="_blank" rel="noopener noreferrer" class="footer-map-link">Ver mapa de acesso ↗</a>
+      </div>
+
+      <!-- Coluna 3 -->
+      <div class="footer-col footer-col-hours">
+        <span class="footer-label">Atendimento</span>
+        <p class="footer-data">Segunda a Sexta, das 08h às 21h</p>
+        <p class="footer-data">Sábados, das 08h às 14h</p>
+        <div class="footer-contacts">
+          <p class="footer-data">Contato: <a href="tel:+5515998123456" class="footer-inline-link">(15) 99812-3456</a></p>
+          <p class="footer-data">Instagram: <a href="https://instagram.com/institutomusicalbravo" target="_blank" rel="noopener noreferrer" class="footer-inline-link">@institutomusicalbravo</a></p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="container footer-bottom">
+      <div class="footer-bottom-line"></div>
+      <div class="footer-bottom-flex">
+        <p class="copyright">© 2026 Instituto Musical Bravo. Todos os direitos reservados.</p>
+        <p class="footer-credit">Tatuí / SP — Brasil</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal Interativo: Agendar Aula / Visita -->
+  <div class="modal-backdrop" id="modal-agendar" aria-hidden="true" role="dialog" aria-labelledby="modal-agendar-title">
+    <div class="modal-dialog">
+      <button class="modal-close-btn" aria-label="Fechar janela" data-close-modal>✕</button>
+      <div class="modal-header">
+        <span class="modal-eyebrow">ENSINO PERSONALIZADO</span>
+        <h3 class="modal-title" id="modal-agendar-title">Agendar Aula Experimental</h3>
+        <p class="modal-subtitle">Venha conhecer o Instituto Musical Bravo em Tatuí, testar o instrumento e conversar diretamente com o professor responsável.</p>
+      </div>
+
+      <form id="form-agendar" class="modal-form">
+        <div class="form-group">
+          <label for="nome" class="form-label">Seu Nome Completo</label>
+          <input type="text" id="nome" name="nome" class="form-input" placeholder="Ex: Clara Albuquerque" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="instrumento-select" class="form-label">Instrumento de Interesse</label>
+            <select id="instrumento-select" name="instrumento" class="form-select" required>
+              <option value="" disabled selected>Selecione um instrumento...</option>
+              <option value="Piano Clássico / Popular (Teclas)">Teclas — Piano e Teclado</option>
+              <option value="Violão / Violino / Cello (Cordas)">Cordas — Violão, Guitarra, Violino ou Violoncelo</option>
+              <option value="Saxofone / Flauta / Trompete (Sopros)">Sopros — Saxofone, Flauta ou Trompete</option>
+              <option value="Bateria & Percussão">Percussão & Bateria</option>
+              <option value="Canto & Técnica Vocal">Canto & Técnica Vocal</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="nivel-select" class="form-label">Nível Atual</label>
+            <select id="nivel-select" name="nivel" class="form-select" required>
+              <option value="Iniciante do zero">Iniciante (começando do zero)</option>
+              <option value="Já toco um pouco / Autodidata">Já toco um pouco / Autodidata</option>
+              <option value="Intermediário ou Avançado">Intermediário ou Avançado</option>
+              <option value="Preparação para Conservatório / Profissional">Preparação para Conservatório / Vestibular</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="periodo-select" class="form-label">Período de Preferência para Visita</label>
+          <select id="periodo-select" name="periodo" class="form-select" required>
+            <option value="Manhã (08h às 12h)">Manhã (08h às 12h)</option>
+            <option value="Tarde (13h às 18h)">Tarde (13h às 18h)</option>
+            <option value="Noite (18h às 21h)">Noite (18h às 21h)</option>
+            <option value="Sábados (08h às 13h)">Sábados (08h às 13h)</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-gold-solid modal-submit-btn">
+          CONTINUAR NO WHATSAPP COM OS DADOS PREENCHIDOS ⟶
+        </button>
+        <p class="modal-privacy-note">Atendimento direto pela secretaria acadêmica do Instituto Bravo.</p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Interativo: Consultar Disponibilidade de Horários -->
+  <div class="modal-backdrop" id="modal-horarios" aria-hidden="true" role="dialog" aria-labelledby="modal-horarios-title">
+    <div class="modal-dialog">
+      <button class="modal-close-btn" aria-label="Fechar janela" data-close-modal>✕</button>
+      <div class="modal-header">
+        <span class="modal-eyebrow">GRADE & DISPONIBILIDADE</span>
+        <h3 class="modal-title" id="modal-horarios-title">Disponibilidade por Instrumento</h3>
+        <p class="modal-subtitle">Como nossas aulas são estritamente individuais, as vagas são limitadas por turno e professor.</p>
+      </div>
+
+      <div class="instrument-schedule-list">
+        <div class="schedule-card" data-instrument-query="Teclas">
+          <div class="schedule-card-info">
+            <h4>Teclas (Piano Clássico, Popular e Teclado)</h4>
+            <p>Salas com piano de cauda e armário acústico. Turnos: Manhã, Tarde e Noite.</p>
+          </div>
+          <a href="https://wa.me/5515998123456?text=Ol%C3%A1!%20Gostaria%20de%20consultar%20vagas%20e%20hor%C3%A1rios%20dispon%C3%ADveis%20para%20aulas%20de%20Teclas%20(Piano)%20no%20Instituto%20Bravo." target="_blank" rel="noopener noreferrer" class="schedule-action-btn">Consultar Vagas ↗</a>
+        </div>
+
+        <div class="schedule-card" data-instrument-query="Cordas">
+          <div class="schedule-card-info">
+            <h4>Cordas (Violão, Guitarra, Violino, Cello e Baixo)</h4>
+            <p>Salas equipadas e isolamento acústico especial. Turnos: Tarde e Noite.</p>
+          </div>
+          <a href="https://wa.me/5515998123456?text=Ol%C3%A1!%20Gostaria%20de%20consultar%20vagas%20e%20hor%C3%A1rios%20dispon%C3%ADveis%20para%20aulas%20de%20Cordas%20no%20Instituto%20Bravo." target="_blank" rel="noopener noreferrer" class="schedule-action-btn">Consultar Vagas ↗</a>
+        </div>
+
+        <div class="schedule-card" data-instrument-query="Sopros">
+          <div class="schedule-card-info">
+            <h4>Sopros (Saxofone, Flauta e Trompete)</h4>
+            <p>Trabalho focado em embocadura e afinação. Turnos: Manhã e Noite.</p>
+          </div>
+          <a href="https://wa.me/5515998123456?text=Ol%C3%A1!%20Gostaria%20de%20consultar%20vagas%20e%20hor%C3%A1rios%20dispon%C3%ADveis%20para%20aulas%20de%20Sopros%20no%20Instituto%20Bravo." target="_blank" rel="noopener noreferrer" class="schedule-action-btn">Consultar Vagas ↗</a>
+        </div>
+
+        <div class="schedule-card" data-instrument-query="Percussão">
+          <div class="schedule-card-info">
+            <h4>Percussão & Bateria</h4>
+            <p>Estúdio com bateria acústica profissional e tratamento de graves. Turnos: Tarde e Noite.</p>
+          </div>
+          <a href="https://wa.me/5515998123456?text=Ol%C3%A1!%20Gostaria%20de%20consultar%20vagas%20e%20hor%C3%A1rios%20dispon%C3%ADveis%20para%20aulas%20de%20Bateria%20e%20Percuss%C3%A3o%20no%20Instituto%20Bravo." target="_blank" rel="noopener noreferrer" class="schedule-action-btn">Consultar Vagas ↗</a>
+        </div>
+
+        <div class="schedule-card" data-instrument-query="Canto">
+          <div class="schedule-card-info">
+            <h4>Canto & Técnica Vocal</h4>
+            <p>Acompanhamento ao piano, retorno monitorado e fisiologia da voz. Turnos: Manhã, Tarde e Noite.</p>
+          </div>
+          <a href="https://wa.me/5515998123456?text=Ol%C3%A1!%20Gostaria%20de%20consultar%20vagas%20e%20hor%C3%A1rios%20dispon%C3%ADveis%20para%20aulas%20de%20Canto%20e%20T%C3%A9cnica%20Vocal%20no%20Instituto%20Bravo." target="_blank" rel="noopener noreferrer" class="schedule-action-btn">Consultar Vagas ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PÍLULA FLUTUANTE DE ALTERNÂNCIA DE PÁGINAS (Sempre visível no canto inferior direito) -->
+  <aside class="floating-page-switcher" aria-label="Alternar página">
+    <a href="tcc-home.html" class="switcher-pill-btn" title="Alternar para a Versão TCC Adaptada">
+      <span class="switcher-icon" aria-hidden="true">⇄</span>
+      <span class="switcher-label">Alternar para <strong>Versão TCC Adaptada</strong></span>
+    </a>
+  </aside>
+
+  <!-- JavaScript -->
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

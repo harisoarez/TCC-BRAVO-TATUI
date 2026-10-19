@@ -169,14 +169,12 @@
 
         container.innerHTML = videos.map(v => {
             const thumb = v.thumbnail_url || "../images/orquestra/video1.jpg";
-            const tempBadge = v.data_apresentacao ? `<span class="video-badge-temporada">${v.data_apresentacao}</span>` : "";
 
             return `
                 <article class="card-video" onclick="abrirVideoModal('${v.titulo.replace(/'/g, "\\'")}', '${v.video_url}')" title="Assistir ${v.titulo}">
                     <div class="video-thumbnail-container">
                         <img src="${thumb}" alt="${v.titulo}" class="video-thumb" onerror="this.onerror=null; this.src='../images/orquestra/video1.jpg';">
                         <div class="video-overlay-gradient"></div>
-                        ${tempBadge}
                         <div class="video-play-btn" aria-label="Reproduzir vídeo">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="#0c0c0c" style="margin-left: 2px;">
                                 <polygon points="5 3 19 12 5 21 5 3"></polygon>

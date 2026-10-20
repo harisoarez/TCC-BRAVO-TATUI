@@ -1,153 +1,289 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bravo Tatuí</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/navbar.css">
-    <link rel="stylesheet" href="../css/index.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instituto Musical Bravo — Tatuí | Excelência no Ensino Musical</title>
+  <meta name="description" content="Instituto Musical Bravo Tatuí: Eventos & Casamentos, Ensino Musical IMBT e Coffee Bravo. A arte da autossuperação na Capital da Música.">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>𝄞</text></svg>">
+
+  <!-- Google Fonts: Cormorant Garamond, Julius Sans One, Cinzel, Inter & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cinzel:wght@400;500;600;700&family=Julius+Sans+One&family=Inter:wght@200;300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../css/navbar.css">
+  <link rel="stylesheet" href="../css/index.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="header-social">
-                <img src="../images/Instagram_icon.png" alt="Instagram" width="18px" style="margin-right:5px;">
-                <a href="https://www.instagram.com/bravo_tatui/" target="_blank">@bravo_tatui</a>
-            </div>
+
+  <!-- Cabeçalho Superior Instagram (Navbar Global) -->
+  <div class="header">
+      <img src="../images/Instagram_icon.png" alt="Instagram" width="18" height="18" style="margin-right:6px;">
+      <a href="https://www.instagram.com/bravo_tatui/" target="_blank" rel="noopener noreferrer">@bravo_tatui</a>
+  </div>
+
+  <!-- Navbar Global do Projeto (Intocada, conforme solicitado) -->
+  <div id="nav-bar"></div>
+
+  <main>
+    <!-- [PRIMEIRA DOBRA — HERO] -->
+    <section class="hero-section" id="hero">
+      <div class="hero-backdrop" aria-hidden="true">
+        <img src="../images/indexBackground.jpeg" alt="Instituto Musical Bravo em Tatuí" class="hero-img">
+        <div class="hero-overlay"></div>
+      </div>
+
+      <div class="container hero-content">
+        <div class="hero-text-wrap">
+          <span class="hero-location-badge">Tatuí — São Paulo</span>
+          <h1 class="hero-title">
+            Na capital da música, a técnica encontra a sua própria voz.
+          </h1>
+          <p class="hero-subtitle">
+            Formação instrumental e vocal para quem não busca apenas tocar notas, mas compreender a fundo a arte da interpretação. Do primeiro contato ao aperfeiçoamento técnico em Tatuí.
+          </p>
+          <div class="hero-cta-wrapper">
+            <a href="https://wa.me/5515998123456?text=Ol%C3%A1%2C%20gostaria%20de%20agendar%20uma%20aula%20experimental%20presencial%20no%20Instituto%20Musical%20Bravo%20em%20Tatu%C3%AD." target="_blank" rel="noopener noreferrer" class="hero-cta-link">
+              <span>Agendar uma aula experimental presencial</span>
+              <span class="arrow-symbol" aria-hidden="true">⟶</span>
+            </a>
+            <a href="#servicos" class="hero-switch-secondary" title="Conhecer Nossos Serviços">
+              <span>Conhecer Nossos Serviços</span>
+              <span class="arrow-symbol" aria-hidden="true">↓</span>
+            </a>
+          </div>
         </div>
-        <!-- Navbar Global -->
-        <div id="nav-bar"></div>
+      </div>
+    </section>
 
-        <div class="hero-cards-wrapper">
-            <div id="background">
-                <div class="top">
-                    <h2 style="color: #F5D696;">INSTITUTO MUSICAL BRAVO TATUÍ</h2>
-                    <h1>CONHEÇA NOSSOS SERVIÇOS</h1>
-                </div>
-                <div class="bottom"></div>
-            </div>
-
-            <div id="cards">
-                <!-- Card 1: Bravo Tatuí (Eventos e Casamentos) -->
-                <a class="card card-bravo" href="./formacoes.html">
-                    <img src="../images/exemplo_bravo.jpg" alt="Imagem dos músicos da Bravo Tatuí">
-                    <div class="card-text-wrapper">
-                        <h1 class="card-titulo">Bravo Tatuí</h1>
-                        <span class="card-subtitulo">Ideal para eventos e casamentos</span>
-                        <p class="card-desc">O ‘Bravo Tatuí’ possui uma diversidade de formações instrumentais para seu evento e também a chance de personalizar sua orquestra para o momento perfeito!</p>
-                    </div>
-                </a>
-                
-                <!-- Card 2: IMBT (Aulas de Música) -->
-                <a class="card card-imbt" href="./instrumentos.html">
-                    <img src="../images/exemplo_imbt.jfif" alt="Imagem dos alunos do IMBT">
-                    <div class="card-text-wrapper">
-                        <h1 class="card-titulo">IMBT</h1>
-                        <span class="card-subtitulo">Para quem quer estudar música</span>
-                        <p class="card-desc">O ‘Instituto Musical Bravo Tatuí’ oferece aulas de uma grande variedade de instrumentos e níveis para todas as idades!</p>
-                    </div>
-                </a>
-
-                <!-- Card 3: Coffee Bravo (Cafeteria) -->
-                <a class="card card-coffee" href="./cardapio.html">
-                    <img src="../images/exemplo_coffe.jpeg" alt="Imagem do Coffee Bravo">
-                    <div class="card-text-wrapper">
-                        <h1 class="card-titulo">Coffee Bravo</h1>
-                        <span class="card-subtitulo">Aproveite nosso cardápio</span>
-                        <p class="card-desc">Venha se deliciar com nosso cardápio em um espaço acolhedor e aconchegante, ideal para as suas melhores manhãs e tardes!</p>
-                    </div>
-                </a>
-            </div>
+    <!-- [OS 3 CARDS DE SERVIÇOS DO TCC] -->
+    <section class="tcc-services-section" id="servicos">
+      <div class="container">
+        
+        <div class="tcc-services-header">
+          <p class="section-eyebrow">ECOSSISTEMA BRAVO</p>
+          <h2 class="tcc-services-title">Excelência para cada momento</h2>
+          <p class="tcc-services-desc">Conheça as três experiências integradas que tornam o Instituto Musical Bravo uma referência cultural completa em Tatuí.</p>
         </div>
 
-        <!-- Seção Sobre Nós: Filosofia do Übermensch -->
-        <section class="secao-sobre" id="sobre-nos">
-            <div class="sobre-container">
-                <!-- Coluna Esquerda: Textos sobre a Filosofia de Nietzsche e o Bravo Tatuí -->
-                <div class="sobre-conteudo sobre-reveal-left">
-                    <h2 class="sobre-titulo">A ARTE DA AUTOSSUPERAÇÃO</h2>
-
-                    <p class="sobre-paragrafo">
-                        Na filosofia de Friedrich Nietzsche, o ser humano não é concebido como um fim estático, mas sim como uma ponte contínua em direção ao <strong>Übermensch</strong> (o Além-do-Homem). Essa visão desafia cada indivíduo a transcender a mediocridade cotidiana, quebrar limitações pré-estabelecidas e exercitar a autossuperação constante (<em>Selbstüberwindung</em>), tornando-se artífice de seus próprios valores e transformando a existência em arte viva.
-                    </p>
-
-                    <blockquote class="sobre-citacao">
-                        <div class="sobre-citacao-aspas">“</div>
-                        <p class="sobre-citacao-texto">Sem a música, a vida seria um erro.</p>
-                        <cite class="sobre-citacao-autor">— Friedrich Nietzsche, <em>Crepúsculo dos Ídolos</em></cite>
-                    </blockquote>
-
-                    <p class="sobre-paragrafo">
-                        No <strong>Instituto Musical Bravo Tatuí</strong>, acolhemos essa sabedoria em sua mais sublime essência. Acreditamos que a maestria instrumental não se resume a notas em uma partitura: é a expressão pura da paixão disciplinada e da busca pela perfeição humana. Do primeiro contato com um instrumento às apresentações orquestrais inesquecíveis, impulsionamos cada aluno e músico a superar a si mesmo e a realizar os sonhos mais grandiosos através da arte do som.
-                    </p>
-                </div>
-
-                <!-- Coluna Direita: Imagem com moldura estilizada -->
-                <div class="sobre-midia sobre-reveal-right">
-                    <div class="sobre-imagem-moldura">
-                        <img src="../images/sobre_nos.jpg" alt="Músicos do Instituto Musical Bravo Tatuí" class="sobre-imagem">
-                        <div class="sobre-imagem-overlay"></div>
-                    </div>
-                </div>
+        <div class="tcc-cards-grid">
+          
+          <!-- Card 1: Bravo Tatuí (Eventos e Casamentos) -->
+          <article class="tcc-service-card" tabindex="0">
+            <div class="tcc-card-media tcc-card-media--eventos">
+              <img src="../images/exemplo_bravo.jpg" alt="Músicos da Bravo Tatuí em apresentação">
+              <div class="tcc-card-media-overlay"></div>
+              <span class="tcc-card-tag">Eventos &amp; Casamentos</span>
             </div>
-        </section>
-
-        <!-- Rodapé Minimalista: Apenas os ícones solicitados -->
-        <footer class="index-footer">
-            <div class="footer-social-icons">
-                <!-- Instagram -->
-                <a href="https://www.instagram.com/bravo_tatui/" target="_blank" rel="noopener noreferrer" class="social-icon-btn" aria-label="Instagram">
-                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                    </svg>
+            <div class="tcc-card-body">
+              <span class="tcc-card-number">01</span>
+              <div class="tcc-card-header-block">
+                <h3 class="tcc-card-title">Bravo Tatuí</h3>
+                <p class="tcc-card-subtitle">Ideal para eventos e celebrações inesquecíveis</p>
+              </div>
+              <p class="tcc-card-desc">
+                O ‘Bravo Tatuí’ possui uma diversidade de formações instrumentais para seu evento e também a chance de personalizar sua orquestra para o momento perfeito!
+              </p>
+              <div class="tcc-card-footer">
+                <a href="./formacoes.html" class="tcc-card-link">
+                  <span>Consultar Formações Musicais</span>
+                  <span class="arrow-symbol" aria-hidden="true">⟶</span>
                 </a>
-
-                <!-- YouTube -->
-                <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" class="social-icon-btn" aria-label="YouTube">
-                    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
-                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                    </svg>
-                </a>
-
-                <!-- Spotify -->
-                <a href="https://open.spotify.com" target="_blank" rel="noopener noreferrer" class="social-icon-btn" aria-label="Spotify">
-                    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
-                        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
-                    </svg>
-                </a>
+              </div>
             </div>
-        </footer>
-    </div>
-    <script src="../script/navbar.js"></script>
-    <script>
-        // Animação de entrada vindo de lado ao rolar (Scroll Reveal)
-        (function() {
-            const leftEl = document.querySelector('.sobre-reveal-left');
-            const rightEl = document.querySelector('.sobre-reveal-right');
-            const revealElements = [leftEl, rightEl].filter(Boolean);
+          </article>
 
-            if ('IntersectionObserver' in window && revealElements.length) {
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach((entry) => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('revealed');
-                        }
-                    });
-                }, {
-                    threshold: 0.15,
-                    rootMargin: '0px 0px -40px 0px'
-                });
+          <!-- Card 2: IMBT (Aulas de Música) -->
+          <article class="tcc-service-card" tabindex="0">
+            <div class="tcc-card-media">
+              <img src="../images/exemplo_imbt.jfif" alt="Alunos em aula instrumental no IMBT">
+              <div class="tcc-card-media-overlay"></div>
+              <span class="tcc-card-tag">Ensino Musical</span>
+            </div>
+            <div class="tcc-card-body">
+              <span class="tcc-card-number">02</span>
+              <div class="tcc-card-header-block">
+                <h3 class="tcc-card-title">IMBT</h3>
+                <p class="tcc-card-subtitle">Para quem quer estudar música de verdade</p>
+              </div>
+              <p class="tcc-card-desc">
+                O ‘Instituto Musical Bravo Tatuí’ oferece aulas de uma grande variedade de instrumentos e níveis para todas as idades, com rigor técnico e sensibilidade artística.
+              </p>
+              <div class="tcc-card-footer">
+                <a href="./instrumentos.html" class="tcc-card-link">
+                  <span>Conhecer os Instrumentos</span>
+                  <span class="arrow-symbol" aria-hidden="true">⟶</span>
+                </a>
+              </div>
+            </div>
+          </article>
 
-                revealElements.forEach(el => observer.observe(el));
-            } else {
-                revealElements.forEach(el => el.classList.add('revealed'));
+          <!-- Card 3: Coffee Bravo (Cafeteria) -->
+          <article class="tcc-service-card" tabindex="0">
+            <div class="tcc-card-media">
+              <img src="../images/exemplo_coffe.jpeg" alt="Espaço aconchegante da cafeteria Coffee Bravo">
+              <div class="tcc-card-media-overlay"></div>
+              <span class="tcc-card-tag">Cafeteria &amp; Convivência</span>
+            </div>
+            <div class="tcc-card-body">
+              <span class="tcc-card-number">03</span>
+              <div class="tcc-card-header-block">
+                <h3 class="tcc-card-title">Coffee Bravo</h3>
+                <p class="tcc-card-subtitle">Aproveite nosso cardápio especial</p>
+              </div>
+              <p class="tcc-card-desc">
+                Venha se deliciar com nosso cardápio em um espaço acolhedor e aconchegante, ideal para as suas melhores manhãs e tardes no ambiente sonoro da escola.
+              </p>
+              <div class="tcc-card-footer">
+                <a href="./cardapio.html" class="tcc-card-link">
+                  <span>Conhecer o Espaço</span>
+                  <span class="arrow-symbol" aria-hidden="true">⟶</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- [SEÇÃO SOBRE NÓS — A ARTE DA AUTOSSUPERAÇÃO / NIETZSCHE] -->
+    <section class="tcc-sobre-section" id="sobre-nos">
+      <div class="gold-vertical-divider" aria-hidden="true">
+        <span class="divider-icon">𝄞</span>
+      </div>
+
+      <div class="container tcc-sobre-container">
+        
+        <!-- Coluna Esquerda: Texto Editorial e Filosofia -->
+        <div class="tcc-sobre-text-col sobre-reveal-left">
+          <span class="section-eyebrow">FILOSOFIA &amp; IDENTIDADE</span>
+          <h2 class="tcc-sobre-title">A arte da autossuperação</h2>
+          
+          <p class="tcc-sobre-paragraph">
+            Na filosofia de Friedrich Nietzsche, o ser humano não é concebido como um fim estático, mas sim como uma ponte contínua em direção ao <strong>Übermensch</strong> (o Além-do-Homem). Essa visão desafia cada indivíduo a transcender a mediocridade cotidiana, quebrar limitações pré-estabelecidas e exercitar a autossuperação constante (<em>Selbstüberwindung</em>), tornando-se artífice de seus próprios valores e transformando a existência em arte viva.
+          </p>
+
+          <!-- Citação com Aspas Douradas e Tipografia Fina -->
+          <blockquote class="tcc-sobre-quote">
+            <span class="quote-mark" aria-hidden="true">“</span>
+            <p class="quote-body">Sem a música, a vida seria um erro.</p>
+            <cite class="quote-author">— Friedrich Nietzsche, <em>Crepúsculo dos Ídolos</em></cite>
+          </blockquote>
+
+          <p class="tcc-sobre-paragraph">
+            No <strong>Instituto Musical Bravo Tatuí</strong>, acolhemos essa sabedoria em sua mais sublime essência. Acreditamos que a maestria instrumental não se resume a notas em uma partitura: é a expressão pura da paixão disciplinada e da busca pela perfeição humana. Do primeiro contato com um instrumento às apresentações orquestrais inesquecíveis, impulsionamos cada aluno e músico a superar a si mesmo e a realizar os sonhos mais grandiosos através da arte do som.
+          </p>
+
+          <div class="tcc-sobre-cta">
+            <a href="https://wa.me/5515998123456?text=Ol%C3%A1%2C%20gostaria%20de%20conversar%20sobre%20o%20Instituto%20Musical%20Bravo%20Tatu%C3%AD." target="_blank" rel="noopener noreferrer" class="btn-gold-solid">
+              CONVERSAR COM A NOSSA EQUIPE
+            </a>
+          </div>
+        </div>
+
+        <!-- Coluna Direita: Imagem com moldura artística escura -->
+        <div class="tcc-sobre-media-col sobre-reveal-right">
+          <div class="tcc-media-frame">
+            <img src="../images/piano_filosofia.jpg" alt="Partituras ao piano — Instituto Musical Bravo Tatuí" class="tcc-media-img">
+            <div class="tcc-media-overlay"></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- [RODAPÉ INTEGRADO COM DESIGN BRAVO] -->
+    <footer class="site-footer" id="contato">
+      <div class="container footer-container">
+        
+        <!-- Coluna 1 -->
+        <div class="footer-col footer-col-brand">
+          <p class="footer-brand-title">Bravo Tatuí</p>
+          <p class="footer-brand-sub">Instituto Musical · Eventos · Coffee</p>
+          <p class="footer-tagline">Rigor técnico, paixão orquestral e ambiente acolhedor na Capital da Música.</p>
+          
+          <!-- Ícones de Redes Sociais -->
+          <div class="tcc-social-icons-row">
+            <a href="https://www.instagram.com/bravo_tatui/" target="_blank" rel="noopener noreferrer" class="tcc-social-btn" aria-label="Instagram Bravo Tatuí">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
+            <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" class="tcc-social-btn" aria-label="YouTube">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+              </svg>
+            </a>
+            <a href="https://open.spotify.com" target="_blank" rel="noopener noreferrer" class="tcc-social-btn" aria-label="Spotify">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Coluna 2 -->
+        <div class="footer-col footer-col-address">
+          <span class="footer-label">Localização</span>
+          <p class="footer-data">R. Stélio Machado Loureiro, 276 — Centro</p>
+          <p class="footer-data">Tatuí – SP · CEP 18270-810</p>
+          <a href="https://www.google.com/maps/search/?api=1&query=R.+St%C3%A9lio+Machado+Loureiro%2C+276+-+Centro%2C+Tatu%C3%AD+-+SP%2C+18270-810" target="_blank" rel="noopener noreferrer" class="footer-map-link">Ver mapa de acesso ↗</a>
+        </div>
+
+        <!-- Coluna 3 -->
+        <div class="footer-col footer-col-hours">
+          <span class="footer-label">Atendimento</span>
+          <p class="footer-data">Segunda a Sexta, das 08h às 21h</p>
+          <p class="footer-data">Sábados, das 08h às 14h</p>
+          <div class="footer-contacts">
+            <p class="footer-data">Contato: <a href="tel:+5515998123456" class="footer-inline-link">(15) 99812-3456</a></p>
+            <p class="footer-data">Instagram: <a href="https://www.instagram.com/bravo_tatui/" target="_blank" rel="noopener noreferrer" class="footer-inline-link">@bravo_tatui</a></p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="container footer-bottom">
+        <div class="footer-bottom-line"></div>
+        <div class="footer-bottom-flex">
+          <p class="copyright">© 2026 Instituto Musical Bravo. Todos os direitos reservados.</p>
+          <p class="footer-credit">Tatuí / SP — Brasil</p>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script src="../script/navbar.js"></script>
+  <script>
+    (function() {
+      const leftEl = document.querySelector('.sobre-reveal-left');
+      const rightEl = document.querySelector('.sobre-reveal-right');
+      const revealElements = [leftEl, rightEl].filter(Boolean);
+
+      if ('IntersectionObserver' in window && revealElements.length) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('revealed');
             }
-        })();
-    </script>
+          });
+        }, {
+          threshold: 0.15,
+          rootMargin: '0px 0px -40px 0px'
+        });
+
+        revealElements.forEach(el => observer.observe(el));
+      } else {
+        revealElements.forEach(el => el.classList.add('revealed'));
+      }
+    })();
+  </script>
 </body>
 </html>

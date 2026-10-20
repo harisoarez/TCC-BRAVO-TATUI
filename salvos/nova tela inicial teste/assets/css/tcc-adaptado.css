@@ -1,43 +1,6 @@
 /* ==========================================================================
    BRAVO TATUÍ — VERSÃO TCC ADAPTADA AO DESIGN EDITORIAL
-   Harmonização visual da Página Inicial do TCC
    ========================================================================== */
-
-/* --- Barra Superior Social --- */
-.top-social-bar {
-  background-color: #050505;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-  padding: 0.5rem 0;
-  font-size: 0.76rem;
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
-}
-
-.top-social-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.social-tag {
-  font-family: var(--font-display);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  font-size: 0.72rem;
-  color: var(--gold-dim);
-}
-
-.top-instagram-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  color: var(--text-secondary);
-  transition: color var(--transition-smooth);
-}
-
-.top-instagram-link:hover {
-  color: var(--gold-primary);
-}
 
 /* --- Botão Alternador no Header --- */
 .nav-btn-switcher {
@@ -68,129 +31,18 @@
 }
 
 /* ==========================================================================
-   HERO ADAPTADO DO TCC
+   HERO — AJUSTE DE IMAGEM DE FUNDO PARA O TCC
    ========================================================================== */
-.tcc-hero-section {
-  position: relative;
-  min-height: 82vh;
-  display: flex;
-  align-items: center;
-  background-color: #000000;
-  padding-top: 7rem;
-  padding-bottom: 6rem;
-  overflow: hidden;
-}
 
-.tcc-hero-backdrop {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
-
-.tcc-hero-bg-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 60%;
-  filter: brightness(0.4) contrast(1.15) saturate(1.1);
-  transform: scale(1.02);
-  transition: transform 10s ease-out;
-}
-
-.tcc-hero-section:hover .tcc-hero-bg-img {
-  transform: scale(1.05);
-}
-
-.tcc-hero-overlay {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.82) 50%, #000000 100%),
-    radial-gradient(circle at 50% 40%, rgba(245, 214, 150, 0.08) 0%, transparent 70%);
-}
-
-.tcc-hero-content {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  text-align: center;
-}
-
-.tcc-hero-text {
-  max-width: 860px;
-  margin: 0 auto;
-}
-
-.tcc-hero-eyebrow {
-  display: inline-block;
-  font-family: var(--font-display);
-  font-size: 0.85rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--gold-primary);
-  margin-bottom: 1.5rem;
-}
-
-.tcc-hero-title {
-  font-family: var(--font-serif);
-  font-size: clamp(2.8rem, 5.8vw, 5rem);
-  font-weight: 300; /* Tipografia fina, esguia e nobre */
-  line-height: 1.12;
-  letter-spacing: -0.015em;
-  color: #ffffff;
-  margin-bottom: 1.75rem;
-  text-rendering: optimizeLegibility;
-}
-
-.tcc-hero-subtitle {
-  font-family: var(--font-sans);
-  font-size: clamp(1rem, 1.25vw, 1.2rem);
-  font-weight: 300;
-  line-height: 1.85;
-  color: var(--text-secondary);
-  max-width: 680px;
-  margin: 0 auto 3rem;
-}
-
-.tcc-hero-actions {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 2.5rem;
-  flex-wrap: wrap;
-}
-
-.btn-switch-secondary {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.65rem;
-  font-family: var(--font-sans);
-  font-size: 0.92rem;
-  color: var(--text-secondary);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 0.75rem 1.4rem;
-  transition: border-color var(--transition-smooth), color var(--transition-smooth), background var(--transition-smooth);
-}
-
-.btn-switch-secondary:hover {
-  border-color: var(--gold-primary);
-  color: var(--gold-light);
-  background: rgba(245, 214, 150, 0.05);
-}
-
-.btn-switch-secondary .arrow-symbol {
-  transition: transform var(--transition-smooth);
-}
-
-.btn-switch-secondary:hover .arrow-symbol {
-  transform: translateX(4px);
+.hero-section .hero-img {
+  object-position: center 55%;
+  filter: brightness(0.68) contrast(1.1) saturate(1.1);
 }
 
 /* ==========================================================================
    OS 3 CARDS DE SERVIÇOS DO TCC
    ========================================================================== */
+
 .tcc-services-section {
   position: relative;
   background-color: #000000;
@@ -249,7 +101,7 @@
 .tcc-card-media {
   position: relative;
   width: 100%;
-  height: 230px;
+  height: 190px;
   overflow: hidden;
 }
 
@@ -273,33 +125,79 @@
   pointer-events: none;
 }
 
+/* Tratamento de imagem específico no Card 01 (Eventos & Casamentos) */
+.tcc-card-media--eventos img {
+  filter: brightness(0.62) contrast(1.08) saturate(0.9) sepia(0.12);
+}
+
+.tcc-service-card:hover .tcc-card-media--eventos img {
+  filter: brightness(0.75) contrast(1.12) saturate(0.98) sepia(0.08);
+}
+
+.tcc-card-media--eventos .tcc-card-media-overlay {
+  background:
+    linear-gradient(180deg, rgba(12, 10, 8, 0.65) 0%, rgba(12, 10, 8, 0.25) 45%, rgba(12, 12, 12, 0.98) 100%),
+    radial-gradient(ellipse at 40% 15%, rgba(35, 25, 15, 0.5) 0%, transparent 65%);
+}
+
+/* Refinamento das etiquetas (Badges) superiores com vidro fosco */
 .tcc-card-tag {
   position: absolute;
-  top: 1rem;
-  left: 1rem;
+  top: 1.15rem;
+  left: 1.15rem;
+  z-index: 2;
   font-family: var(--font-display);
-  font-size: 0.68rem;
-  letter-spacing: 0.2em;
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--gold-primary);
-  background: rgba(0, 0, 0, 0.75);
+  color: var(--gold-light);
+  background: rgba(15, 12, 10, 0.65);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(245, 214, 150, 0.25);
-  padding: 0.35rem 0.75rem;
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  padding: 0.4rem 0.85rem;
+  transition: border-color var(--transition-smooth), background-color var(--transition-smooth), transform var(--transition-smooth);
+}
+
+.tcc-service-card:hover .tcc-card-tag {
+  border-color: rgba(212, 175, 55, 0.55);
+  background: rgba(15, 12, 10, 0.82);
 }
 
 .tcc-card-body {
-  padding: 2.25rem 2rem 2.5rem;
+  padding: 1.6rem 1.6rem 1.8rem;
   display: flex;
   flex-direction: column;
   flex: 1;
 }
 
+/* Numeração (01, 02, 03) em estilo editorial */
 .tcc-card-number {
-  font-family: var(--font-display);
-  font-size: 0.88rem;
-  color: var(--gold-dim);
-  margin-bottom: 0.75rem;
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--gold-primary);
+  opacity: 0.35;
+  margin-bottom: 0.35rem;
+  transition: opacity var(--transition-smooth), transform var(--transition-smooth);
+  display: inline-block;
+}
+
+.tcc-service-card:hover .tcc-card-number {
+  opacity: 0.75;
+  transform: translateY(-2px);
+}
+
+/* Alinhamento horizontal dos blocos de texto: altura mínima para título + subtítulo */
+.tcc-card-header-block {
+  min-height: 4.8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-bottom: 1.25rem;
 }
 
 .tcc-card-title {
@@ -316,28 +214,32 @@
   color: var(--gold-light);
 }
 
+/* Subtítulo elegante com tom champanhe quente */
 .tcc-card-subtitle {
-  font-family: var(--font-sans);
-  font-size: 0.84rem;
-  letter-spacing: 0.04em;
-  color: #94a3b8;
-  margin-bottom: 1.25rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.18rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+  color: #D6CFC7;
+  margin-bottom: 0;
 }
 
 .tcc-card-desc {
   font-family: var(--font-sans);
-  font-size: 0.94rem;
-  line-height: 1.75;
+  font-size: 0.92rem;
+  line-height: 1.65;
   color: var(--text-secondary);
   font-weight: 300;
-  margin-bottom: 2rem;
+  margin-bottom: 1.4rem;
   flex: 1;
 }
 
 .tcc-card-footer {
   margin-top: auto;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
-  padding-top: 1.25rem;
+  padding-top: 1rem;
 }
 
 .tcc-card-link {
@@ -366,25 +268,63 @@
 /* ==========================================================================
    SEÇÃO SOBRE NÓS DO TCC (Filosofia de Nietzsche & Música)
    ========================================================================== */
+
 .tcc-sobre-section {
   position: relative;
   background-color: #050505;
-  padding-top: 2rem;
+  padding-top: 2.5rem;
   padding-bottom: 9rem;
   border-top: 1px solid var(--gold-border-subtle);
+}
+
+/* Divisor vertical com símbolo musical entre os Cards e a Filosofia */
+.gold-vertical-divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 4.5rem;
+  position: relative;
+}
+
+.gold-vertical-divider::before,
+.gold-vertical-divider::after {
+  content: "";
+  display: block;
+  width: 1px;
+  height: 48px;
+  background: linear-gradient(180deg, transparent, var(--gold-primary));
+}
+
+.gold-vertical-divider::after {
+  background: linear-gradient(180deg, var(--gold-primary), transparent);
+}
+
+.divider-icon {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--gold-primary);
+  margin: 0.4rem 0;
+  text-shadow: 0 0 18px rgba(245, 214, 150, 0.5);
+  user-select: none;
 }
 
 .tcc-sobre-container {
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
-  gap: clamp(3rem, 6vw, 6.5rem);
+  gap: clamp(2.5rem, 5vw, 5.5rem);
   align-items: center;
+}
+
+.tcc-sobre-text-col {
+  max-width: 580px;
 }
 
 .tcc-sobre-title {
   font-family: var(--font-serif);
   font-size: clamp(2.4rem, 4.2vw, 3.8rem);
-  font-weight: 300; /* Fino, nobre, sem negrito */
+  font-weight: 300;
   line-height: 1.15;
   letter-spacing: -0.015em;
   color: #ffffff;
@@ -464,14 +404,18 @@
 /* Moldura de Mídia */
 .tcc-sobre-media-col {
   position: relative;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
 }
 
 .tcc-media-frame {
   position: relative;
   width: 100%;
   max-width: 480px;
-  height: 540px;
-  margin: 0 auto;
+  height: 600px;
+  margin-left: auto;
+  text-align: left;
   border: 1px solid rgba(245, 214, 150, 0.28);
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(245, 214, 150, 0.1);
   overflow: hidden;
@@ -481,49 +425,21 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: brightness(0.85) contrast(1.1);
+  object-position: center 30%;
+  filter: brightness(0.9) contrast(1.08);
   transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease;
 }
 
 .tcc-media-frame:hover .tcc-media-img {
-  transform: scale(1.05);
-  filter: brightness(0.95);
+  transform: scale(1.04);
+  filter: brightness(0.98);
 }
 
 .tcc-media-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, transparent 40%, rgba(0, 0, 0, 0.75) 100%);
+  box-shadow: inset 0 0 35px 12px #000000;
   pointer-events: none;
-}
-
-.tcc-media-floating-badge {
-  position: absolute;
-  bottom: 2rem;
-  left: 2rem;
-  right: 2rem;
-  background: rgba(10, 10, 10, 0.92);
-  border: 1px solid rgba(245, 214, 150, 0.3);
-  backdrop-filter: blur(10px);
-  padding: 1.25rem 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8);
-}
-
-.badge-num {
-  font-family: var(--font-display);
-  font-size: 2rem;
-  color: var(--gold-primary);
-  line-height: 1;
-}
-
-.badge-desc {
-  font-family: var(--font-sans);
-  font-size: 0.82rem;
-  line-height: 1.45;
-  color: var(--text-secondary);
 }
 
 /* Ícones Sociais do Rodapé */
@@ -555,8 +471,8 @@
 
 /* ==========================================================================
    PÍLULA FLUTUANTE DE ALTERNÂNCIA DE PÁGINAS
-   Fixa no canto inferior direito para acesso instantâneo em 1 clique
    ========================================================================== */
+
 .floating-page-switcher {
   position: fixed;
   bottom: 2rem;
@@ -614,12 +530,14 @@
 /* ==========================================================================
    RESPONSIVIDADE DA PÁGINA ADAPTADA DO TCC
    ========================================================================== */
+
 @media (max-width: 1024px) {
   .tcc-cards-grid {
     grid-template-columns: 1fr;
     gap: 2.5rem;
     max-width: 580px;
-    margin: 0 auto;
+    margin: 0;
+    text-align: left;
   }
 
   .tcc-sobre-container {
@@ -629,25 +547,11 @@
 
   .tcc-media-frame {
     max-width: 100%;
-    height: 440px;
+    height: 500px;
   }
 }
 
 @media (max-width: 768px) {
-  .top-social-bar {
-    display: none;
-  }
-
-  .tcc-hero-section {
-    padding-top: 6rem;
-    padding-bottom: 4rem;
-  }
-
-  .tcc-hero-actions {
-    flex-direction: column;
-    gap: 1.25rem;
-  }
-
   .floating-page-switcher {
     bottom: 1rem;
     right: 1rem;
@@ -661,7 +565,7 @@
   }
 }
 
-/* Botão de transição rápida na Hero da Versão Editorial */
+/* Botão de transição rápida na Hero */
 .hero-cta-wrapper {
   display: flex;
   align-items: center;

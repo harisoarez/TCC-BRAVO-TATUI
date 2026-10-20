@@ -13,8 +13,8 @@ INSERT IGNORE INTO usuario_login
 (id_usuario, senha, tipo_usuario, email, nome, telefone, tipo_instrumento, primeiro_acesso, data_cadastro)
 VALUES 
 (1, '$2a$10$CcrHzBQVRlUAQuH0dIrLkeffKyhfOd7hYWUQutzpbHuKn8t6sgU92', 'admin', 'admin@institutobravo.com.br', 'Administrador Bravo', '15999990001', 'Direção', 0, NOW()),
-(2, '$2a$10$7DnGfqSLwETZ6s0zGJpnL.drS0i/tcn62LjoK2IuMMnvUyixu2eLK', 'professor', 'professor@institutobravo.com.br', 'Carlos Eduardo (Professor)', '15999990002', 'Piano', 0, NOW()),
-(3, '$2a$10$65Syo6avD.8ynFanZD8HreQyR3/ywYBhs6LZOCvVAkBxydSR2Izdi', 'aluno', 'aluno@institutobravo.com.br', 'Lucas Silva (Aluno)', '15999990003', 'Piano', 0, NOW());
+(2, '$2a$10$7DnGfqSLwETZ6s0zGJpnL.drS0i/tcn62LjoK2IuMMnvUyixu2eLK', 'professor', 'professor@institutobravo.com.br', 'Carlos Eduardo', '15999990002', 'Piano', 0, NOW()),
+(3, '$2a$10$65Syo6avD.8ynFanZD8HreQyR3/ywYBhs6LZOCvVAkBxydSR2Izdi', 'aluno', 'aluno@institutobravo.com.br', 'Lucas Silva', '15999990003', 'Piano', 0, NOW());
 
 -- 2. Tabela Professor
 INSERT IGNORE INTO professor (idprofessor, CPF, CNPJ, usuario_login_id)

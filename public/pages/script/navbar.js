@@ -1,6 +1,4 @@
-// ================================================================
-// INSTITUTO MUSICAL BRAVO TATUÍ - CONTROLE CENTRAL DA NAVBAR
-// ================================================================
+// Navbar
 
 (function () {
     const API_BASE = (window.location.port === "3000" || (!window.location.port && window.location.protocol === "http:")) ? "" : "http://localhost:3000";
@@ -70,7 +68,7 @@
         const isCalendario = paginaAtual.includes("calendario");
         const isLogin = paginaAtual.includes("login");
 
-        // Identificar tema cromático específico da página
+        // Tema da página
         let temaPagina = "nav-tema-index";
         if (isOrquestra) {
             temaPagina = "nav-tema-orquestra";
@@ -90,7 +88,7 @@
             temaPagina = "nav-tema-login";
         }
 
-        // Aplica o tema visual sutil na navbar
+        
         nav.classList.remove(
             "nav-tema-index",
             "nav-tema-orquestra",
@@ -104,7 +102,7 @@
         );
         nav.classList.add(temaPagina);
 
-        // 1. Logo Oficial Bravo Tatuí
+        // Logo
         const logoHtml = `
             <div class="logo-container">
                 <a href="./index.html" class="logo-link" title="Instituto Musical Bravo Tatuí">
@@ -114,7 +112,7 @@
             </div>
         `;
 
-        // 2. Links Centrais (Sem Emojis nos Botões da Navbar)
+        // Links
         const linkCalendarioHtml = usuario ? `
             <a href="./calendario.html?token=${encodeURIComponent(usuario.token)}" class="${isCalendario ? 'link-ativo' : ''}">
                 Calendário
@@ -145,11 +143,11 @@
             </div>
         `;
 
-        // 3. Canto Superior Direito (Área de Usuário)
+        // Usuário
         let areaUsuarioHtml = "";
 
         if (!usuario) {
-            // DESLOGADO: Ícone de pessoa cinza e botão de entrar
+            // Não autenticado
             areaUsuarioHtml = `
                 <div class="nav-user-area">
                     <div class="user-guest-box">
@@ -164,17 +162,17 @@
             `;
         } else {
             // LOGADO: Borda colorida por tipo de usuário (Sem Emojis nos Badges):
-            // Owner = Borda Preta
-            // Admin = Borda Amarela
-            // Professor = Borda Amarela
-            // Normal / Aluno = Borda Azul Claro
+            
+            
+            
+            
             let classeBorda = "borda-normal";
             let rotuloCargo = "Aluno";
             let badgeClass = "normal";
 
             if (usuario.tipo === "owner") {
                 classeBorda = "borda-owner";
-                rotuloCargo = "Owner";
+                rotuloCargo = "Proprietário";
                 badgeClass = "owner";
             } else if (usuario.tipo === "admin") {
                 classeBorda = "borda-admin";
@@ -188,7 +186,7 @@
 
             const primeiroNome = usuario.nome.split(" ")[0];
 
-            // Botão Adicionar Conta (para Owner ou Admin)
+            // Botão adicionar conta
             const botaoAdicionarConta = (usuario.tipo === "owner" || usuario.tipo === "admin") ? `
                 <button type="button" class="btn-nav-adicionar-conta" onclick="window.abrirModalCriarConta()">
                     + Adicionar Conta
@@ -222,7 +220,7 @@
             `;
         }
 
-        // Injeta o HTML estruturado dentro do #nav-bar
+        
         nav.innerHTML = `
             ${logoHtml}
             ${linksCentraisHtml}
@@ -236,7 +234,7 @@
             </div>
         `;
 
-        // Injeta o Drawer do Menu Hamburguer para Mobile e Tablet
+        // Menu mobile
         injetarMenuMobileDrawer(usuario, {
             isIndex,
             isFormacoes,
@@ -247,20 +245,18 @@
             temaPagina
         });
 
-        // Se estiver logado, injeta o modal de perfil em todas as páginas do site
+        // Modal de perfil
         if (usuario) {
             injetarModalPerfilGlobal(usuario);
         }
 
-        // Se for Admin ou Owner, injeta o modal de criação de conta no documento
+        // Modal criar conta
         if (usuario && (usuario.tipo === "owner" || usuario.tipo === "admin")) {
             injetarModalCriarConta(usuario);
         }
     }
 
-    // ================================================================
-    // GESTÃO DO MENU HAMBÚRGUER MOBILE & TABLET
-    // ================================================================
+    // Navbar
     window.abrirMenuMobile = function () {
         const drawer = document.getElementById("menuMobileDrawer");
         if (drawer) {
@@ -332,7 +328,7 @@
         } else {
             let rotuloCargo = "Aluno";
             let badgeClass = "normal";
-            if (usuario.tipo === "owner") { rotuloCargo = "Owner"; badgeClass = "owner"; }
+            if (usuario.tipo === "owner") { rotuloCargo = "Proprietário"; badgeClass = "owner"; }
             else if (usuario.tipo === "admin") { rotuloCargo = "Admin"; badgeClass = "admin"; }
             else if (usuario.tipo === "professor") { rotuloCargo = "Professor"; badgeClass = "admin"; }
 
@@ -443,7 +439,7 @@
         }
     }
 
-    // Modal de Adicionar Conta
+    // Modal adicionar conta
     function injetarModalCriarConta(usuarioLogado) {
         if (document.getElementById("modalCriarContaGlobal")) return;
 
@@ -451,19 +447,19 @@
 
         const campoTipoUsuario = isOwner ? `
             <div class="form-grupo-conta">
-                <label for="campoNovoTipo">Tipo de Conta (Permissão Owner)</label>
+                <label for="campoNovoTipo">Tipo de Conta (Permissão do Proprietário)</label>
                 <select id="campoNovoTipo" onchange="window.alternarTipoContaGlobal(this.value)">
-                    <option value="normal">Normal (Aluno)</option>
+                    <option value="normal">Aluno</option>
                     <option value="professor">Professor (Docente)</option>
                     <option value="admin">Administrador</option>
                 </select>
-                <small style="color: #94a3b8; font-size: 11px;">Como Owner, você pode criar contas com nível de Administrador, Professor ou Aluno.</small>
+                <small style="color: #94a3b8; font-size: 11px;">Como Proprietário, você pode criar contas com nível de Administrador, Professor ou Aluno.</small>
             </div>
         ` : `
             <div class="form-grupo-conta">
                 <label for="campoNovoTipo">Tipo de Conta</label>
                 <select id="campoNovoTipo" onchange="window.alternarTipoContaGlobal(this.value)">
-                    <option value="normal">Normal (Aluno)</option>
+                    <option value="normal">Aluno</option>
                     <option value="professor">Professor (Docente)</option>
                 </select>
                 <small style="color: #94a3b8; font-size: 11px;">Administradores podem criar contas de Alunos e Professores.</small>
@@ -530,7 +526,7 @@
                     <!-- Seção Aluno -->
                     <div id="grupoAlunoContaGlobal">
                         <div class="form-grupo-conta" id="grupoDataNascConta">
-                            <label for="campoDataNascimento">Data de Nascimento (Aluno)</label>
+                            <label for="campoDataNascimento">Data de Nascimento</label>
                             <input type="date" id="campoDataNascimento">
                             <small style="color: #94a3b8; font-size: 11px;">Usada para controle acadêmico e aniversários do aluno.</small>
                         </div>
@@ -576,7 +572,7 @@
 
         document.body.appendChild(modalDiv);
 
-        // Listener dinâmico de chips
+        
         modalDiv.addEventListener("change", function(e) {
             if (e.target.matches('.tag-check-chip input[type="checkbox"]')) {
                 const label = e.target.closest('.tag-check-chip');
@@ -586,7 +582,7 @@
             }
         });
 
-        // Listener do formulário
+        
         document.getElementById("formCriarContaGlobal").addEventListener("submit", processarCriacaoConta);
     }
 
@@ -605,7 +601,7 @@
         }
     };
 
-    // Gerador de Senhas Seguras (10 caracteres com letras, números e símbolo)
+    // Gerar senha
     function gerarSenhaAleatoria() {
         const maiusculas = "ABCDEFGHJKLMNPQRSTUVWXYZ";
         const minusculas = "abcdefghijkmnpqrstuvwxyz";
@@ -623,7 +619,7 @@
             senha += todos.charAt(Math.floor(Math.random() * todos.length));
         }
 
-        // Embaralha
+        
         return senha.split("").sort(() => 0.5 - Math.random()).join("");
     }
 
@@ -764,7 +760,7 @@
         modalDiv.style.cssText = "position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); display:none; align-items:center; justify-content:center; z-index:99999;";
 
         let rotuloCargo = "Aluno";
-        if (usuarioLogado.tipo === "owner") rotuloCargo = "Owner";
+        if (usuarioLogado.tipo === "owner") rotuloCargo = "Proprietário";
         else if (usuarioLogado.tipo === "admin") rotuloCargo = "Administrador";
         else if (usuarioLogado.tipo === "professor") rotuloCargo = "Professor";
 
@@ -864,7 +860,7 @@
                         const novoTel = document.getElementById("campoSiteTelefone").value;
                         if (novoTel) usuarioLogado.telefone = novoTel;
 
-                        // Salva preservando estritamente id_usuario e tipo_usuario
+                        
                         const dadosSalvar = {
                             id_usuario: usuarioLogado.id_usuario || usuarioLogado.id,
                             id: usuarioLogado.id_usuario || usuarioLogado.id,
@@ -911,7 +907,7 @@
         window.location.href = "./login.html";
     };
 
-    // Executa ao carregar o DOM
+    
     if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", inicializarNavbar);
     } else {

@@ -78,6 +78,36 @@ body::after {
     opacity: 0.85;
 }
 
+
+/* Cabeçalho Superior Instagram - Branco Puro */
+.container-orquestra .header,
+.header {
+    background-color: #090807 !important;
+    border-bottom: 1px solid rgba(245, 214, 150, 0.15) !important;
+}
+
+.container-orquestra .header img,
+.header img {
+    filter: brightness(0) invert(1) !important;
+    opacity: 0.95 !important;
+}
+
+.container-orquestra .header a,
+.container-orquestra .header a:visited,
+.container-orquestra .header a:link,
+.header a,
+.header a:visited,
+.header a:link {
+    color: #ffffff !important;
+    text-decoration: none !important;
+    text-shadow: none !important;
+}
+
+.container-orquestra .header a:hover,
+.header a:hover {
+    color: #F5D696 !important;
+}
+
 .container-orquestra {
     position: relative;
     z-index: 1;
@@ -86,35 +116,9 @@ body::after {
     flex-direction: column;
 }
 
-/* Barra superior com Instagram */
-.header {
-    background-color: #12100d;
-    border-bottom: 1px solid rgba(245, 214, 150, 0.2);
-    height: 3vh;
-    min-height: 28px;
-    display: flex;
-    align-items: center;
-    padding-left: 2%;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 13px;
-    color: var(--orq-texto-secundario, #d1c7b7);
-}
 
-.header a {
-    color: var(--orq-texto-secundario, #d1c7b7);
-    text-decoration: none;
-    font-size: 12px;
-    transition: color 0.2s ease;
-}
 
-.header a:hover {
-    color: var(--orq-acento-rosa, #F5D696);
-}
-
-/* =========================================================
-   Barra Superior de Ações:
-   Botão Voltar no canto superior esquerdo + Card de Edição Centralizado
-   ========================================================= */
+/* Topo e Ações */
 .orquestra-topo-acoes-wrapper {
     width: 100%;
     padding: 16px 2% 0 2%;

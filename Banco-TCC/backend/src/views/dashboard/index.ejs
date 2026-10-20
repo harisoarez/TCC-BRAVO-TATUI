@@ -4,10 +4,7 @@
 <main class="dashboard-container">
     <header class="painel-header">
         <div class="header-title-col">
-            <h1>
-                <span class="estrela">★</span> 
-                Dashboard Geral & Indicadores
-            </h1>
+            <h1>Dashboard Geral</h1>
             <p>Instituto Musical Bravo Tatuí • Gestão Acadêmica e Controle Operacional</p>
         </div>
 
@@ -38,9 +35,7 @@
             <div class="kpi-card destaque-verde">
                 <div class="kpi-header">
                     <span class="kpi-label">Total Recebido (Mês Atual)</span>
-                    <span class="kpi-badge <%= resumoFinanceiro.variacaoPercentual >= 0 ? 'positivo' : 'alerta' %>">
-                        <%= resumoFinanceiro.variacaoPercentual >= 0 ? '+' : '' %><%= resumoFinanceiro.variacaoPercentual %>% vs mês ant.
-                    </span>
+                    
                 </div>
                 <div class="kpi-valor">R$ <%= Number(resumoFinanceiro.totalRecebidoMesAtual).toFixed(2) %></div>
                 <div class="kpi-subtexto"><%= resumoFinanceiro.qtdRecebidoMesAtual %> mensalidades liquidadas em Outubro</div>
@@ -49,7 +44,7 @@
             <div class="kpi-card destaque-ouro">
                 <div class="kpi-header">
                     <span class="kpi-label">Mensalidades a Receber</span>
-                    <span class="kpi-badge neutro">Aguardando</span>
+                    
                 </div>
                 <div class="kpi-valor">R$ <%= Number(resumoFinanceiro.totalPendente).toFixed(2) %></div>
                 <div class="kpi-subtexto"><%= resumoFinanceiro.qtdPendente %> alunos pendentes / em análise</div>
@@ -58,7 +53,7 @@
             <div class="kpi-card destaque-vermelho">
                 <div class="kpi-header">
                     <span class="kpi-label">Mensalidades Vencidas</span>
-                    <span class="kpi-badge alerta">Atenção</span>
+                    
                 </div>
                 <div class="kpi-valor">R$ <%= Number(resumoFinanceiro.totalVencido).toFixed(2) %></div>
                 <div class="kpi-subtexto"><%= resumoFinanceiro.qtdVencido %> mensalidades em atraso</div>
@@ -67,7 +62,7 @@
             <div class="kpi-card destaque-azul">
                 <div class="kpi-header">
                     <span class="kpi-label">Total de Alunos Matriculados</span>
-                    <span class="kpi-badge positivo"><%= totalProfessores %> professores</span>
+                    
                 </div>
                 <div class="kpi-valor"><%= totalAlunos %> alunos</div>
                 <div class="kpi-subtexto">Corpo discente do Instituto Bravo</div>
@@ -77,7 +72,7 @@
             <div class="kpi-card destaque-verde">
                 <div class="kpi-header">
                     <span class="kpi-label">Mensalidades em Dia</span>
-                    <span class="kpi-badge positivo">Regular</span>
+                    
                 </div>
                 <div class="kpi-valor"><%= totaisMensalidades.qtdPagos %> alunos</div>
                 <div class="kpi-subtexto">Pagamento do mês confirmado</div>
@@ -86,7 +81,7 @@
             <div class="kpi-card destaque-ouro">
                 <div class="kpi-header">
                     <span class="kpi-label">Aguardando Pagamento</span>
-                    <span class="kpi-badge neutro">Pendentes</span>
+                    
                 </div>
                 <div class="kpi-valor"><%= totaisMensalidades.qtdPendentes %> alunos</div>
                 <div class="kpi-subtexto">Vencimento próximo no mês</div>
@@ -95,7 +90,7 @@
             <div class="kpi-card destaque-vermelho">
                 <div class="kpi-header">
                     <span class="kpi-label">Mensalidades Vencidas</span>
-                    <span class="kpi-badge alerta">Cobrança</span>
+                    
                 </div>
                 <div class="kpi-valor"><%= totaisMensalidades.qtdVencidos %> alunos</div>
                 <div class="kpi-subtexto">Requer contato da secretaria</div>
@@ -104,7 +99,7 @@
             <div class="kpi-card destaque-azul">
                 <div class="kpi-header">
                     <span class="kpi-label">Aniversariantes do Mês</span>
-                    <span class="kpi-badge positivo">Festivo</span>
+                    
                 </div>
                 <div class="kpi-valor"><%= aniversariantes.length %> comemorações</div>
                 <div class="kpi-subtexto">Alunos celebrando em Outubro</div>

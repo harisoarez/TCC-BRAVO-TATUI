@@ -10,7 +10,7 @@
 
         <div class="header-meta-col">
             <% if (isOwner) { %>
-                <span class="badge-cargo owner">Proprietário (Owner)</span>
+                <span class="badge-cargo owner">Proprietário</span>
             <% } else { %>
                 <span class="badge-cargo admin">Administrador</span>
             <% } %>
@@ -262,7 +262,7 @@
                             <td>
                                 <% if (adm.tipo_usuario === 'owner') { %>
                                     <span style="background: #0f172a; color: #ffffff; padding: 3px 8px; border-radius: 6px; font-weight: 700; font-size: 12px;">
-                                        Owner (Proprietário)
+                                        Proprietário
                                     </span>
                                 <% } else { %>
                                     <span style="background: #fef3c7; color: #92400e; padding: 3px 8px; border-radius: 6px; font-weight: 700; font-size: 12px;">
@@ -458,7 +458,7 @@
 
             <% if (isOwner) { %>
                 <div class="form-grupo">
-                    <label for="editModalTipoUsuario">Cargo / Nível de Acesso (Exclusivo Owner)</label>
+                    <label for="editModalTipoUsuario">Cargo / Nível de Acesso (Exclusivo Proprietário)</label>
                     <select id="editModalTipoUsuario" onchange="alternarCamposEdicao(this.value)">
                         <option value="normal">Aluno (Normal)</option>
                         <option value="professor">Professor</option>

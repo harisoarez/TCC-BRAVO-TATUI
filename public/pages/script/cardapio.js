@@ -23,7 +23,7 @@
             .replace(/'/g, "&#39;");
     }
 
-    // Decodifica JWT localmente
+    
     function decodificarToken(token) {
         if (!token) return null;
         try {
@@ -42,7 +42,7 @@
         }
     }
 
-    // Identifica se o usuário atual é Administrador ou Owner
+    // Permissões
     function checarPermissoesAdmin() {
         const token = localStorage.getItem("authToken");
         let u = null;
@@ -77,7 +77,7 @@
         }
     }
 
-    // Carrega dados da API do cardápio
+    // Carregar cardápio
     async function carregarCardapio() {
         const grid = document.getElementById("gridProdutos");
         if (!grid) return;
@@ -116,12 +116,12 @@
         }
     }
 
-    // Constrói as abas de categoria dinamicamente
+    // Categorias
     function construirAbasCategorias() {
         const container = document.getElementById("categoriasTabs");
         if (!container) return;
 
-        // Categorias fixas recomendadas + outras que existam nos itens
+        
         const categoriasSet = new Set(["Todos", "Cafés", "Bebidas Geladas", "Salgados & Lanches", "Doces & Sobremesas", "Combos"]);
         todosItens.forEach((item) => {
             if (item.categoria) categoriasSet.add(item.categoria);
@@ -136,7 +136,7 @@
             })
             .join("");
 
-        // Atualiza também o <select> do modal de cadastro/edição
+        
         const selModal = document.getElementById("modalCampoCategoria");
         if (selModal) {
             const opcoes = ["Cafés", "Bebidas Geladas", "Salgados & Lanches", "Doces & Sobremesas", "Combos"];
@@ -150,7 +150,7 @@
             `;
         }
 
-        // Event listener para as abas
+        
         container.querySelectorAll(".categoria-tab-btn").forEach((btn) => {
             btn.addEventListener("click", function () {
                 container.querySelectorAll(".categoria-tab-btn").forEach((b) => b.classList.remove("ativo"));
@@ -161,7 +161,7 @@
         });
     }
 
-    // Renderiza os produtos filtrados na tela
+    // Renderizar produtos
     function renderizarProdutos() {
         const grid = document.getElementById("gridProdutos");
         const contador = document.getElementById("contadorTotalItens");
@@ -206,7 +206,7 @@
                 const descricaoEscapada = escapeHtml(item.descricao || "Sem descrição disponível.");
 
                 const imagemHtml = item.imagem_url
-                    ? `<img src="${encodeURI(item.imagem_url)}" alt="${nomeEscapado}" loading="lazy">`
+                    ? `<img src="${encodeURI(item.imagem_url)}" alt="${nomeEscapado}" loading="lazy" onerror="this.onerror=null;this.src='../images/mocha.jpg';">`
                     : `<div class="produto-imagem-placeholder"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg></div>`;
 
                 const badgeDestaqueHtml = (estaDestaque && estaDisponivel)
@@ -242,7 +242,7 @@
                         <span>Esgotado</span>
                        </button>`;
 
-                // Botões de administração exibidos se o usuário for Admin ou Owner
+                
                 const adminAcoesHtml = isAdmin
                     ? `
                     <div class="admin-card-acoes">
@@ -284,7 +284,7 @@
             .join("");
     }
 
-    // Configura os ouvintes de busca e modais
+    // Eventos de busca e modais
     function configurarEventos() {
         const inputBusca = document.getElementById("campoBuscaCardapio");
         if (inputBusca) {
@@ -294,7 +294,7 @@
             });
         }
 
-        // Categoria nova no modal
+        
         const selCat = document.getElementById("modalCampoCategoria");
         const boxNova = document.getElementById("modalBoxNovaCategoria");
         if (selCat && boxNova) {
@@ -309,13 +309,13 @@
             });
         }
 
-        // Formulário de Criar/Editar
+        
         const form = document.getElementById("formCardapioPublic");
         if (form) {
             form.addEventListener("submit", processarSalvarItem);
         }
 
-        // Salvar preferências do cliente no carrinho
+        
         const campoNome = document.getElementById("carrinhoNomeCliente");
         const campoObs = document.getElementById("carrinhoObservacoes");
         if (campoNome) {
@@ -328,7 +328,7 @@
             r.addEventListener("change", salvarPreferenciasCliente);
         });
 
-        // Fechar gaveta do carrinho ou modais com tecla ESC
+        
         document.addEventListener("keydown", function (e) {
             if (e.key === "Escape") {
                 window.fecharCarrinho();
@@ -338,7 +338,7 @@
         });
     }
 
-    // Funções de administração
+    // Funções administrativas
     window.abrirModalPublicNovo = function () {
         const modal = document.getElementById("modalPublicItem");
         const form = document.getElementById("formCardapioPublic");
@@ -408,7 +408,7 @@
 
         const formData = new FormData(this);
 
-        // Se categoria for nova, ajustar
+        
         const catSelect = document.getElementById("modalCampoCategoria").value;
         if (catSelect === "__nova__") {
             const catNova = document.getElementById("modalCampoNovaCategoria").value.trim();
@@ -513,9 +513,7 @@
         }
     }
 
-    // =========================================================================
-    // SISTEMA DE CARRINHO — COFFEE BRAVO
-    // =========================================================================
+    // Carrinho
 
     function carregarCarrinhoStorage() {
         try {
@@ -591,7 +589,7 @@
         const { totalItens, totalPreco } = calcularTotaisCarrinho();
         const totalFormatado = "R$ " + totalPreco.toFixed(2).replace(".", ",");
 
-        // Atualiza botão flutuante no canto inferior
+        
         const badge = document.getElementById("carrinhoBadgeContador");
         const totalPreview = document.getElementById("carrinhoTotalPreco");
         const btnFlutuante = document.getElementById("btnAbrirCarrinho");
@@ -615,7 +613,7 @@
             btnFlutuante.classList.add("animar-bump");
         }
 
-        // Atualiza cabeçalho e rodapé do drawer/painel
+        
         const subtitulo = document.getElementById("carrinhoQtdSubtitulo");
         if (subtitulo) {
             subtitulo.textContent = `${totalItens} ${totalItens === 1 ? "item selecionado" : "itens selecionados"}`;
@@ -747,7 +745,7 @@
         }, 3200);
     }
 
-    // Ações globais do Carrinho
+    // Ações do carrinho
     window.adicionarAoCarrinho = function (id) {
         const item = todosItens.find((i) => Number(i.id_item) === Number(id));
         if (!item) return;
@@ -865,7 +863,7 @@
         const { totalItens, totalPreco } = calcularTotaisCarrinho();
         const valorFormatado = "R$ " + totalPreco.toFixed(2).replace(".", ",");
 
-        // Monta a mensagem completa formatada para o WhatsApp do Coffee Bravo
+        
         let msg = `☕ *PEDIDO — COFFEE BRAVO*\n`;
         msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
         if (nomeCliente) {
@@ -900,7 +898,7 @@
         window.open(url, "_blank");
     };
 
-    // Inicialização da página
+    // Inicialização
     function iniciar() {
         carregarCarrinhoStorage();
         checarPermissoesAdmin();

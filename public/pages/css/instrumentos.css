@@ -5,18 +5,12 @@
     margin: 0;
     padding: 0;
     -webkit-font-smoothing: antialiased;
-    font-weight: normal;
     box-sizing: border-box;
 }
 
 @font-face {
     font-family: 'julius';
     src: url(../fonts/Julius_Sans_One/JuliusSansOne-Regular.ttf);
-}
-
-@font-face {
-    font-family: 'Plus Jakarta Sans';
-    src: url(../fonts/Inter/Inter-VariableFont_opsz\,wght.ttf);
 }
 
 @font-face {
@@ -50,18 +44,7 @@ body {
     color: white;
 }
 
-/* Cabeçalho */
-.container .header {
-    background-color: #12100d;
-    border-bottom: 1px solid rgba(245, 214, 150, 0.15);
-    height: 3vh;
-    min-height: 28px;
-    display: flex;
-    align-items: center;
-    padding-left: 2%;
-    font-family: 'Plus Jakarta Sans';
-    font-size: small;
-}
+
 
 /* =========================================================
    Banner / Card em Destaque no Topo: Orquestra Bravo Tatuí
@@ -343,6 +326,18 @@ body {
     user-select: none;
     pointer-events: none;
     filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.7));
+}
+
+/* Imagens completas de Piano e Bateria preenchem o card com perfeição */
+.card .imagem img[src*="piano"],
+.card .imagem img[src*="Bateria"] {
+    max-width: 100% !important;
+    max-height: 100% !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-radius: 0 !important;
+    filter: brightness(0.95) contrast(1.05) !important;
 }
 
 .card:hover .imagem img {

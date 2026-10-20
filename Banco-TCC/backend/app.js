@@ -5,6 +5,10 @@ const path = require("path");
 const fs = require("fs");
 const helmet = require("helmet");
 const jwt = require("jsonwebtoken");
+const envBackend = path.resolve(__dirname, ".env");
+const envRoot = path.resolve(__dirname, "../../.env");
+if (fs.existsSync(envBackend)) require("dotenv").config({ path: envBackend });
+if (fs.existsSync(envRoot)) require("dotenv").config({ path: envRoot });
 require("dotenv").config();
 
 // Inicializa a conexão com o MySQL

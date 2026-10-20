@@ -356,13 +356,15 @@ button {
    ========================================================================== */
 .hero-section {
   position: relative;
-  min-height: 100vh;
+  height: 100vh;
+  min-height: 700px;
   display: flex;
   align-items: center;
   background-color: #000000;
-  padding-top: 6rem;
-  padding-bottom: 4rem;
+  padding-top: 7rem;
+  padding-bottom: 5rem;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .hero-backdrop {

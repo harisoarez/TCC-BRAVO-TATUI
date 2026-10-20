@@ -1,0 +1,750 @@
+/* Página Inicial */
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+@font-face {
+    font-family: "julius";
+    src: url(../fonts/Julius_Sans_One/JuliusSansOne-Regular.ttf) format('truetype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "inter";
+    src: url(../fonts/Inter/Inter-VariableFont_opsz\,wght.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: "jaldi";
+    src: url(../fonts/Jaldi/Jaldi-Regular.ttf) format('truetype');
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+html {
+    overflow-x: clip;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #080808;
+    color: white;
+    font-family: 'inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: clip;
+    overflow-y: visible;
+}
+
+/* Barra de rolagem discreta e escura */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #080808;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #18181d;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #282830;
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #18181d #080808;
+}
+
+.container {
+    height: 100%;
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Cabeçalho */
+.container .header {
+    background-color: #1A1A1A;
+    min-height: 28px;
+    height: 3.5vh;
+    display: flex;
+    align-items: center;
+    padding-left: 2%;
+    font-family: 'inter', sans-serif;
+    font-size: small;
+}
+
+.container .header a {
+    color: #cbd5e1;
+    transition: color 0.2s ease;
+}
+
+.container .header a:hover {
+    color: #F5D696;
+}
+
+/* Hero Wrapper, Fundo e Banner */
+.hero-cards-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 90px;
+}
+
+#background {
+    display: flex;
+    flex-direction: column;
+    height: 91vh;
+    min-height: 700px;
+    position: relative;
+    z-index: 1;
+    top: 0;
+    left: 0;
+}
+
+#background .top {
+    background-image: url(../images/indexBackground.jpeg);
+    background-position: 0 70%;
+    background-size: cover;
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: "julius", serif;
+    position: relative;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+#background .top::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.78);
+    z-index: 1;
+}
+
+#background .top h1, 
+#background .top h2 {
+    position: relative;
+    z-index: 2;
+}
+
+#background .top h1 {
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    margin-top: 6px;
+    letter-spacing: 1px;
+}
+
+#background .top h2 {
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    letter-spacing: 0.5px;
+}
+
+#background .bottom {
+    background-color: #080808;
+    height: 50%;
+}
+
+/* Cards */
+.container #cards,
+.hero-cards-wrapper #cards {
+    position: absolute;
+    z-index: 10;
+    top: 45%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    height: auto;
+    width: 90%;
+    max-width: 1100px;
+    justify-content: center;
+    gap: 40px;
+    box-sizing: border-box;
+}
+
+.card {
+    background-color: #212121;
+    width: 280px;
+    max-width: 300px;
+    min-height: 360px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 16px 22px 16px;
+    box-sizing: border-box;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    text-decoration: none;
+    color: white;
+}
+
+.card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 16px 32px rgba(245, 214, 150, 0.25);
+    border-color: rgba(245, 214, 150, 0.3);
+}
+
+.card img {
+    width: 100%;
+    height: 145px;
+    border-radius: 12px;
+    object-fit: cover;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.card-text-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.card h1, .card .card-titulo {
+    color: rgb(245, 214, 150);
+    font-family: "julius", serif;
+    font-size: 1.4em;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.card .card-subtitulo {
+    display: none; /* Em desktop fica oculto, visível no mobile */
+}
+
+.card p, .card .card-desc {
+    font-family: "Jaldi", sans-serif;
+    line-height: 1.45;
+    font-size: 16px;
+    text-align: justify;
+    text-align-last: center;
+    -moz-text-align-last: center;
+    padding: 0 4px;
+    color: #e5e7eb;
+    margin-top: 4px;
+    margin-bottom: auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Responsividade */
+@media (max-width: 960px) {
+    .hero-cards-wrapper {
+        margin-bottom: 0 !important;
+    }
+
+    #background {
+        display: none !important;
+    }
+
+    .container {
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .container #cards,
+    .hero-cards-wrapper #cards {
+        position: static !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        min-height: calc(100vh - 60px) !important;
+        flex: 1 !important;
+        z-index: 2 !important;
+    }
+
+    .card {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 1 1 0 !important;
+        min-height: clamp(190px, 31vh, 360px) !important;
+        border-radius: 0 !important;
+        border: none !important;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.45) !important;
+        position: relative !important;
+        overflow: hidden !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        padding: 24px 16px !important;
+        box-shadow: none !important;
+        transform: none !important;
+    }
+
+    .card:hover {
+        transform: none !important;
+        box-shadow: none !important;
+    }
+
+    /* Imagem de fundo cobrindo o card inteiro */
+    .card img {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+        z-index: 1 !important;
+        filter: brightness(0.62) contrast(1.08) !important;
+        transition: transform 0.4s ease, filter 0.4s ease !important;
+    }
+
+    .card:active img,
+    .card:hover img {
+        transform: scale(1.04) !important;
+        filter: brightness(0.72) contrast(1.08) !important;
+    }
+
+    /* Gradiente escuro para legibilidade perfeita do texto sobre a foto */
+    .card::before {
+        content: "" !important;
+        position: absolute !important;
+        inset: 0 !important;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.58) 100%) !important;
+        z-index: 2 !important;
+        pointer-events: none !important;
+    }
+
+    .card-text-wrapper {
+        position: relative !important;
+        z-index: 3 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        width: 100% !important;
+        pointer-events: none !important;
+    }
+
+    /* Título destacado no centro */
+    .card h1, .card .card-titulo {
+        font-family: 'julius', serif !important;
+        font-size: clamp(2.1rem, 6.2vw, 3.2rem) !important;
+        color: #ffffff !important;
+        letter-spacing: 2.2px !important;
+        text-transform: uppercase !important;
+        margin: 0 0 6px 0 !important;
+        text-shadow: 0 3px 12px rgba(0, 0, 0, 0.95), 0 0 24px rgba(0, 0, 0, 0.7) !important;
+        line-height: 1.15 !important;
+    }
+
+    /* Subtítulo centralizado da imagem de referência */
+    .card .card-subtitulo {
+        display: block !important;
+        font-family: 'inter', sans-serif !important;
+        font-size: clamp(1rem, 3.2vw, 1.25rem) !important;
+        color: #f8fafc !important;
+        font-weight: 400 !important;
+        letter-spacing: 0.5px !important;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95) !important;
+    }
+
+    /* Esconde o texto longo no mobile para ficar idêntico ao modelo */
+    .card p, .card .card-desc {
+        display: none !important;
+    }
+
+    /* Ajustes da Seção Sobre Nós no mobile */
+    .secao-sobre {
+        padding: 60px 6% 70px 6%;
+    }
+
+    .sobre-container {
+        grid-template-columns: 1fr;
+        gap: 38px;
+    }
+
+    .sobre-titulo {
+        font-size: 1.85rem;
+    }
+
+    .sobre-paragrafo {
+        font-size: 15px;
+        text-align: left;
+    }
+
+    .sobre-citacao {
+        padding: 18px 20px;
+        margin: 14px 0 20px 0;
+    }
+
+    .sobre-citacao-texto {
+        font-size: 17px;
+    }
+
+    .sobre-midia {
+        margin-top: 10px;
+    }
+
+    .sobre-imagem-moldura {
+        max-width: 100%;
+        height: 360px;
+    }
+
+    .sobre-badge-flutuante {
+        left: 10px;
+        bottom: -16px;
+        padding: 12px 16px;
+    }
+
+    .badge-numero {
+        font-size: 22px;
+    }
+
+    .sobre-reveal-left {
+        transform: translateX(-35px);
+    }
+
+    .sobre-reveal-right {
+        transform: translateX(35px);
+    }
+}
+
+/* ==========================================================================
+   Seção Sobre Nós (Filosofia Übermensch de Nietzsche)
+   ========================================================================== */
+.secao-sobre {
+    position: relative;
+    width: 100%;
+    background-color: #080808;
+    padding: 100px 6% 120px 6%;
+    border-top: none;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.secao-sobre::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 8%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(245, 214, 150, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.sobre-container {
+    max-width: 1240px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 64px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+/* Coluna de Texto */
+.sobre-conteudo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.sobre-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(245, 214, 150, 0.08);
+    border: 1px solid rgba(245, 214, 150, 0.25);
+    padding: 6px 14px;
+    border-radius: 999px;
+    width: fit-content;
+    margin-bottom: 22px;
+}
+
+.sobre-tag-ponto {
+    width: 6px;
+    height: 6px;
+    background-color: #F5D696;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #F5D696;
+}
+
+.sobre-tag-texto {
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #F5D696;
+}
+
+.sobre-titulo {
+    font-family: 'julius', 'Cinzel', serif;
+    font-size: clamp(2rem, 3.4vw, 2.9rem);
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.18;
+    letter-spacing: 1.5px;
+    margin-bottom: 24px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+
+.sobre-paragrafo {
+    font-family: 'inter', sans-serif;
+    font-size: 15.5px;
+    line-height: 1.8;
+    color: #cbd5e1;
+    margin-bottom: 22px;
+    text-align: justify;
+}
+
+.sobre-paragrafo strong {
+    color: #F5D696;
+    font-weight: 600;
+}
+
+.sobre-paragrafo em {
+    color: #f1f5f9;
+    font-style: italic;
+}
+
+/* Citação de Nietzsche */
+.sobre-citacao {
+    position: relative;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(245, 214, 150, 0.04) 100%);
+    border-left: 3px solid #F5D696;
+    border-radius: 0 12px 12px 0;
+    padding: 22px 26px 20px 32px;
+    margin: 16px 0 26px 0;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.sobre-citacao-aspas {
+    position: absolute;
+    top: -12px;
+    left: 12px;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 52px;
+    color: rgba(245, 214, 150, 0.22);
+    line-height: 1;
+    pointer-events: none;
+}
+
+.sobre-citacao-texto {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: 19px;
+    line-height: 1.45;
+    color: #ffffff;
+    letter-spacing: 0.3px;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+}
+
+.sobre-citacao-autor {
+    display: block;
+    font-family: 'inter', sans-serif;
+    font-size: 13px;
+    color: #F5D696;
+    font-style: normal;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+}
+
+.sobre-citacao-autor em {
+    color: #94a3b8;
+    font-style: italic;
+}
+
+/* Coluna Direita (Imagem) */
+.sobre-midia {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sobre-imagem-moldura {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    height: 520px;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid rgba(245, 214, 150, 0.28);
+    box-shadow: 0 24px 50px rgba(0, 0, 0, 0.65), 0 0 30px rgba(245, 214, 150, 0.1);
+}
+
+.sobre-imagem {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
+    filter: brightness(0.92) contrast(1.05);
+}
+
+.sobre-midia:hover .sobre-imagem {
+    transform: scale(1.04);
+    filter: brightness(1);
+}
+
+.sobre-imagem-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0) 40%,
+        rgba(11, 12, 16, 0.65) 100%
+    );
+    pointer-events: none;
+}
+
+.sobre-badge-flutuante {
+    position: absolute;
+    bottom: -22px;
+    left: -20px;
+    background: rgba(18, 18, 24, 0.92);
+    border: 1px solid rgba(245, 214, 150, 0.35);
+    backdrop-filter: blur(12px);
+    border-radius: 14px;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65);
+    z-index: 2;
+    transition: transform 0.3s ease;
+}
+
+.sobre-midia:hover .sobre-badge-flutuante {
+    transform: translateY(-4px);
+}
+
+.badge-numero {
+    font-family: 'julius', 'Cinzel', serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: #F5D696;
+    line-height: 1;
+}
+
+.badge-texto {
+    font-family: 'inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: #e2e8f0;
+}
+
+/* ==========================================================================
+   Animações de Transição Vindo de Lado (Scroll Reveal)
+   ========================================================================== */
+.sobre-reveal-left {
+    opacity: 0;
+    transform: translateX(-70px);
+    filter: blur(6px);
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity, filter;
+}
+
+.sobre-reveal-left.revealed {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+}
+
+.sobre-reveal-right {
+    opacity: 0;
+    transform: translateX(70px);
+    filter: blur(6px);
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s,
+                transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s,
+                filter 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+    will-change: transform, opacity, filter;
+}
+
+.sobre-reveal-right.revealed {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+}
+
+/* ==========================================================================
+   Rodapé Minimalista (Apenas Ícones do Instagram, YouTube e Spotify)
+   ========================================================================== */
+.index-footer {
+    width: 100%;
+    background: linear-gradient(180deg, #0e0f14 0%, #08080a 100%);
+    border-top: 1px solid rgba(245, 214, 150, 0.12);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.45);
+    padding: 42px 20px 46px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.footer-social-icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+}
+
+.social-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #94a3b8;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.social-icon-btn:hover {
+    color: #F5D696;
+    background: rgba(245, 214, 150, 0.12);
+    border-color: rgba(245, 214, 150, 0.45);
+    transform: translateY(-4px) scale(1.08);
+    box-shadow: 0 10px 22px rgba(245, 214, 150, 0.22);
+}
+
+.social-icon-btn svg {
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.social-icon-btn:hover svg {
+    transform: scale(1.06);
+}

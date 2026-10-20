@@ -61,7 +61,7 @@ async function popularBanco() {
             const [resProfUser] = await conexao.query(
                 `INSERT INTO usuario_login 
                 (senha, tipo_usuario, email, nome, telefone, tipo_instrumento, primeiro_acesso, data_cadastro)
-                VALUES (?, 'professor', 'professor@institutobravo.com.br', 'Carlos Eduardo (Professor)', '15999990002', 'Piano', 0, NOW())`,
+                VALUES (?, 'professor', 'professor@institutobravo.com.br', 'Carlos Eduardo', '15999990002', 'Piano', 0, NOW())`,
                 [hashProf]
             );
 
@@ -93,7 +93,7 @@ async function popularBanco() {
             const [resAlunoUser] = await conexao.query(
                 `INSERT INTO usuario_login 
                 (senha, tipo_usuario, email, nome, telefone, tipo_instrumento, primeiro_acesso, data_cadastro)
-                VALUES (?, 'aluno', 'aluno@institutobravo.com.br', 'Lucas Silva (Aluno)', '15999990003', 'Piano', 0, NOW())`,
+                VALUES (?, 'aluno', 'aluno@institutobravo.com.br', 'Lucas Silva', '15999990003', 'Piano', 0, NOW())`,
                 [hashAluno]
             );
 

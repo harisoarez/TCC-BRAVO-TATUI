@@ -1,24 +1,90 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Julius+Sans+One&display=swap');
 
-/* ================================================================
-   INSTITUTO BRAVO TATUÍ - NAVBAR GLOBAL E CONTROLE DE USUÁRIOS
-   ================================================================ */
+@font-face {
+    font-family: 'julius';
+    src: url('../fonts/Julius_Sans_One/JuliusSansOne-Regular.ttf') format('truetype');
+    font-display: swap;
+}
+
+/* Cabeçalho Superior */
+.header,
+.header-top,
+.container .header,
+header.header {
+    height: 32px !important;
+    min-height: 32px !important;
+    max-height: 32px !important;
+    padding: 0 2% !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
+    width: 100% !important;
+    position: relative !important;
+    z-index: 1001 !important;
+}
+
+.header img,
+.header-top img,
+.container .header img,
+header.header img {
+    width: 18px !important;
+    height: 18px !important;
+    margin-right: 6px !important;
+    flex-shrink: 0 !important;
+}
+
+.header a,
+.header a:visited,
+.header a:link,
+.header-top a,
+.header-top a:visited,
+.header-top a:link,
+.container .header a,
+.container .header a:visited,
+.container .header a:link,
+header.header a,
+header.header a:visited,
+header.header a:link {
+    font-size: 12px !important;
+    line-height: 1 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    text-shadow: none !important;
+}
+
+.header a:hover,
+.header-top a:hover,
+.container .header a:hover,
+header.header a:hover {
+    color: #F5D696 !important;
+    text-decoration: none !important;
+}
+
+/* Navbar */
 
 #nav-bar {
     background-color: var(--navbar-bg, #0b0d13);
     border-bottom: 1px solid var(--navbar-border, #1c2233);
-    min-height: 65px;
-    display: flex;
-    align-items: center;
+    height: 65px !important;
+    min-height: 65px !important;
+    max-height: 65px !important;
+    display: flex !important;
+    align-items: center !important;
     justify-content: space-between !important;
-    padding: 0 2%;
-    box-sizing: border-box;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    padding: 0 2% !important;
+    box-sizing: border-box !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1000 !important;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    line-height: 1.2 !important;
     transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    width: 100% !important;
 }
 
 /* ================================================================
@@ -119,28 +185,37 @@
 }
 
 #nav-bar .logo-text {
-    font-family: 'julius', serif;
-    font-weight: bold;
+    font-family: 'julius', 'Julius Sans One', 'Cinzel', serif !important;
+    font-weight: 700 !important;
     color: #F5D696;
-    font-size: 19px;
-    letter-spacing: 1.5px;
+    font-size: 19px !important;
+    letter-spacing: 1.5px !important;
+    line-height: 1 !important;
 }
 
 /* Links de Navegação Centrais */
 #nav-bar .nav-links-center {
-    display: flex;
-    align-items: center;
-    gap: 22px;
+    display: flex !important;
+    align-items: center !important;
+    gap: clamp(10px, 1.6vw, 22px) !important;
+    flex-wrap: nowrap !important;
+    white-space: nowrap !important;
 }
 
 #nav-bar .nav-links-center a {
     color: #d1d5db;
     text-decoration: none;
-    font-size: 13.5px;
+    font-size: 13.5px !important;
     font-weight: 500;
+    line-height: 1 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
     transition: color 0.2s, transform 0.1s;
     padding: 6px 10px;
     border-radius: 6px;
+    box-sizing: border-box;
 }
 
 #nav-bar .nav-links-center a:hover {
@@ -975,8 +1050,10 @@
 /* ================================================================ */
 @media (max-width: 960px) {
     #nav-bar {
+        height: 58px !important;
         min-height: 58px !important;
-        padding: 6px 14px !important;
+        max-height: 58px !important;
+        padding: 0 14px !important;
     }
 
     #nav-bar .nav-links-center {
@@ -1036,6 +1113,7 @@
 html {
     overflow-y: auto;
     overflow-x: clip;
+    scrollbar-gutter: stable;
 }
 
 body {

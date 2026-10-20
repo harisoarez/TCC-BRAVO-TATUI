@@ -21,6 +21,11 @@ const cardapioModel = {
             `);
 
             // Verifica se a tabela já possui itens cadastrados
+            // Atualiza imagem do Mocha se estiver quebrada
+            await pool.query(
+                "UPDATE cardapio_item SET imagem_url = 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=600&auto=format&fit=crop&q=80' WHERE nome = 'Mocha Bravo Belga' AND (imagem_url LIKE '%photo-1578314670553-3335bc858485%' OR imagem_url IS NULL OR imagem_url = '')"
+            ).catch(() => {});
+            
             const [linhas] = await pool.query("SELECT COUNT(*) AS total FROM cardapio_item");
             if (linhas[0].total === 0) {
                 console.log("Cardápio vazio. Inserindo itens iniciais do Coffee Bravo...");
@@ -60,7 +65,7 @@ const cardapioModel = {
                         descricao: "Espresso encorpado, calda artesanal de chocolate belga meio amargo e chantilly da casa.",
                         preco: 15.00,
                         categoria: "Cafés",
-                        imagem_url: "https://images.unsplash.com/photo-1578314670553-3335bc858485?w=600&auto=format&fit=crop&q=80",
+                        imagem_url: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=600&auto=format&fit=crop&q=80",
                         disponivel: 1,
                         destaque: 0,
                         ordem: 4

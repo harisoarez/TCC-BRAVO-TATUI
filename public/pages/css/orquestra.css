@@ -86,11 +86,7 @@ body::after {
     border-bottom: 1px solid rgba(245, 214, 150, 0.15) !important;
 }
 
-.container-orquestra .header img,
-.header img {
-    filter: brightness(0) invert(1) !important;
-    opacity: 0.95 !important;
-}
+
 
 .container-orquestra .header a,
 .container-orquestra .header a:visited,

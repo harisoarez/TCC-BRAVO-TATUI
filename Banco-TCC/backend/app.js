@@ -232,6 +232,10 @@ const paginaOrquestraRoutes = require("./src/routes/paginaOrquestraRoutes");
 app.use("/paginas/orquestra", paginaOrquestraRoutes);
 
 // Inicializa tabela do cardápio e itens padrão se necessário
+// Auto-inicializa tabelas essenciais (usuario_login, aluno, financeiro, etc.) se o banco for novo
+const autoInicializarBanco = require("./src/config/databaseAutoInit");
+autoInicializarBanco().catch((err) => console.error("Erro na auto-inicialização do banco:", err));
+
 const cardapioModel = require("./src/models/cardapioModel");
 cardapioModel.garantirTabela().catch((err) => console.error("Erro ao inicializar cardápio:", err));
 

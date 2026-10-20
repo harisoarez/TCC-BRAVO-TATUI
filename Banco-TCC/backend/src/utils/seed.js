@@ -149,7 +149,9 @@ async function popularBanco() {
         console.error("Erro ao popular banco:", erro.message);
     } finally {
         conexao.release();
-        process.exit(0);
+        if (require.main === module) {
+            process.exit(0);
+        }
     }
 }
 

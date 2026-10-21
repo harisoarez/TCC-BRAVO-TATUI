@@ -27,7 +27,7 @@ require('dotenv').config();
 
 const dbHost = process.env.DB_HOST || 'localhost';
 const dbUser = process.env.DB_USER || 'root';
-let dbPass = process.env.DB_PASS !== undefined ? process.env.DB_PASS : '1234';
+let dbPass = process.env.DB_PASS !== '';
 const dbName = process.env.DB_NAME || 'instituto_bravo';
 
 let poolConfig = {

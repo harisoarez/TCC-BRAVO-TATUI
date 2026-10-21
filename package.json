@@ -6,7 +6,6 @@
     "start": "npm --prefix Banco-TCC/backend start",
     "dev": "npm --prefix Banco-TCC/backend run dev",
     "seed": "npm --prefix Banco-TCC/backend run seed",
-    "install:backend": "npm --prefix Banco-TCC/backend install",
-    "postinstall": "npm --prefix Banco-TCC/backend install"
+    "install:backend": "npm --prefix Banco-TCC/backend install"
   }
 }

@@ -20,7 +20,7 @@
         { id_instrumento: 7, nome: "Saxofone", categoria: "Sopros (Metais & Madeiras)", valor_mensalidade: 195, imagem_url: "../images/saxofone.png" },
         { id_instrumento: 8, nome: "Clarinete", categoria: "Sopros (Metais & Madeiras)", valor_mensalidade: 185, imagem_url: "../images/clarinete.png" },
         { id_instrumento: 9, nome: "Trompete", categoria: "Sopros (Metais & Madeiras)", valor_mensalidade: 195, imagem_url: "../images/trompete.png" },
-        { id_instrumento: 10, nome: "Bateria", categoria: "Percussão & Ritmo", valor_mensalidade: 220, imagem_url: "../images/Bateria.png" }
+        { id_instrumento: 10, nome: "Bateria", categoria: "Percussão & Ritmo", valor_mensalidade: 220, imagem_url: "../images/bateria.png" }
     ];
 
     // Subtítulos refinados inspirados na tradição musical do conservatório
@@ -90,7 +90,7 @@
         if (nome.includes("sax")) return "../images/saxofone.png";
         if (nome.includes("clarinete")) return "../images/clarinete.png";
         if (nome.includes("trompete")) return "../images/trompete.png";
-        if (nome.includes("bateria") || nome.includes("percussão")) return "../images/Bateria.png";
+        if (nome.includes("bateria") || nome.includes("percussão")) return "../images/bateria.png";
 
         return "../images/exemplo_bravo.jpg";
     }

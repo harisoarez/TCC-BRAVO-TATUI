@@ -69,6 +69,82 @@
                 <button id="btnNovaAula" class="btn-admin oculto">+ Agendar aula</button>
             </header>
 
+            <!-- Seletor / Filtro por Sala em Menu Dropdown (Para Owner, Admin e Professor) -->
+            <div id="secaoFiltroSalas" class="secao-filtro-salas oculto">
+                <div class="dropdown-salas-container">
+                    <div class="dropdown-salas-label">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="3" y1="9" x2="21" y2="9"></line>
+                            <line x1="9" y1="21" x2="9" y2="9"></line>
+                        </svg>
+                        <span>Filtrar por Sala:</span>
+                    </div>
+
+                    <!-- Dropdown Interativo de Salas -->
+                    <div class="dropdown-menu-sala" id="dropdownMenuSala">
+                        <button type="button" class="btn-dropdown-sala-trigger" id="btnDropdownSalaTrigger" aria-haspopup="true" aria-expanded="false" title="Clique para selecionar a sala desejada">
+                            <span class="trigger-sala-esquerda">
+                                <span class="texto-sala-selecionada" id="textoSalaSelecionada">Todas as Salas</span>
+                            </span>
+                            <span class="trigger-sala-direita">
+                                <span class="badge-contagem-dropdown" id="countSalaSelecionada">0</span>
+                                <svg class="chevron-dropdown" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </span>
+                        </button>
+
+                        <div class="dropdown-salas-opcoes oculto" id="dropdownSalasOpcoes" role="menu">
+                            <button type="button" class="dropdown-item-sala active" data-sala="todas" role="menuitem">
+                                <span class="item-sala-nome">Todas as Salas</span>
+                                <span class="item-sala-badge" id="countSalaTodas">0</span>
+                            </button>
+                            <button type="button" class="dropdown-item-sala" data-sala="1" role="menuitem">
+                                <span class="item-sala-nome">Sala 1</span>
+                                <span class="item-sala-badge" id="countSala1">0</span>
+                            </button>
+                            <button type="button" class="dropdown-item-sala" data-sala="2" role="menuitem">
+                                <span class="item-sala-nome">Sala 2</span>
+                                <span class="item-sala-badge" id="countSala2">0</span>
+                            </button>
+                            <button type="button" class="dropdown-item-sala" data-sala="3" role="menuitem">
+                                <span class="item-sala-nome">Sala 3</span>
+                                <span class="item-sala-badge" id="countSala3">0</span>
+                            </button>
+                            <button type="button" class="dropdown-item-sala" data-sala="4" role="menuitem">
+                                <span class="item-sala-nome">Sala 4</span>
+                                <span class="item-sala-badge" id="countSala4">0</span>
+                            </button>
+                            <button type="button" class="dropdown-item-sala item-sala-bateria" data-sala="5" role="menuitem">
+                                <span class="item-sala-nome">Sala de Bateria</span>
+                                <span class="item-sala-badge" id="countSala5">0</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="indicador-sala-ativa" id="indicadorSalaAtual">
+                    Exibindo: <strong>Todas as Salas</strong>
+                </div>
+            </div>
+
+            <!-- Banner Exclusivo do Aluno (Visualização Individual) -->
+            <div id="secaoBannerAluno" class="secao-banner-aluno oculto">
+                <div class="card-aluno-info">
+                    <div class="card-aluno-icone">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                            <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                        </svg>
+                    </div>
+                    <div class="card-aluno-texto">
+                        <h4>Minhas Aulas Agendadas</h4>
+                        <p>Visualização restrita: este calendário exibe exclusivamente as suas aulas individuais e em grupo.</p>
+                    </div>
+                </div>
+            </div>
+
             <div class="calendar-grid">
                 <div class="weekdays">
                     <span class="col-dom"><span class="txt-desk">Dom</span><span class="txt-mob">D</span></span>
@@ -158,7 +234,7 @@
                 <input type="hidden" id="aulaId">
                 <div class="campo campo-grande">
                     <label>Título da Aula</label>
-                    <input type="text" id="formTitulo" placeholder="Ex: Aula de Iniciação" required>
+                    <input type="text" id="formTitulo" placeholder="Ex: Aula de Iniciação ao Piano" required>
                 </div>
                 <div class="campo">
                     <label>Professor</label>
@@ -167,8 +243,24 @@
                     </select>
                 </div>
                 <div class="campo">
+                    <label>Aluno (opcional)</label>
+                    <select id="formAluno">
+                        <option value="">Nenhum aluno / Aula em Grupo</option>
+                    </select>
+                </div>
+                <div class="campo">
                     <label>Instrumento</label>
-                    <input type="text" id="formInstrumento" required>
+                    <input type="text" id="formInstrumento" placeholder="Ex: Piano, Violino, Bateria..." required>
+                </div>
+                <div class="campo">
+                    <label>Sala de Aula</label>
+                    <select id="formSala" required>
+                        <option value="1">Sala 1</option>
+                        <option value="2">Sala 2</option>
+                        <option value="3">Sala 3</option>
+                        <option value="4">Sala 4</option>
+                        <option value="5">Sala de Bateria</option>
+                    </select>
                 </div>
                 <div class="campo">
                     <label>Data</label>
@@ -177,10 +269,6 @@
                 <div class="campo">
                     <label>Hora</label>
                     <input type="time" id="formHora" required>
-                </div>
-                <div class="campo">
-                    <label>Sala</label>
-                    <input type="number" id="formSala" required>
                 </div>
                 <div class="campo">
                     <label>Tipo de Aula</label>

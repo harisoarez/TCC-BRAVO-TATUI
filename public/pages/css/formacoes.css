@@ -136,6 +136,7 @@ a {
     letter-spacing: 0.8px;
     text-transform: uppercase;
     cursor: pointer;
+    text-decoration: none;
     transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -143,6 +144,7 @@ a {
     background: var(--formacoes-gold);
     border-color: var(--formacoes-gold);
     color: #080808;
+    text-decoration: none;
     transform: translateY(-1px);
     box-shadow: 0 4px 14px rgba(245, 214, 150, 0.25);
 }

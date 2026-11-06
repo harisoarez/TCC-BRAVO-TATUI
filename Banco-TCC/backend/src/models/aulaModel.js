@@ -1,6 +1,26 @@
 const pool = require("../config/database");
 
-async function buscarTodas() {
+async function buscarTodas(filtro = {}) {
+    const whereClauses = [];
+    const params = [];
+
+    // Se o filtro for para restringir ao aluno logado:
+    if (filtro.usuario_login_id) {
+        whereClauses.push("(al.usuario_login_id = ? OR a.aluno_idaluno IN (SELECT idaluno FROM aluno WHERE usuario_login_id = ?))");
+        params.push(filtro.usuario_login_id, filtro.usuario_login_id);
+    } else if (filtro.aluno_idaluno) {
+        whereClauses.push("(a.aluno_idaluno = ?)");
+        params.push(filtro.aluno_idaluno);
+    }
+
+    // Se o filtro for por sala específica:
+    if (filtro.sala !== undefined && filtro.sala !== null && filtro.sala !== "todas" && filtro.sala !== "") {
+        whereClauses.push("(a.sala = ?)");
+        params.push(filtro.sala);
+    }
+
+    const whereSql = whereClauses.length > 0 ? `WHERE ${whereClauses.join(" AND ")}` : "";
+
     const sql = `
         SELECT 
             a.idaula AS id,
@@ -8,6 +28,7 @@ async function buscarTodas() {
             a.instrumento,
             a.professor_idprofessor,
             a.aluno_idaluno,
+            al.usuario_login_id AS aluno_usuario_id,
             COALESCE(u.nome, 'Professor Geral') AS professor,
             COALESCE(ualuno.nome, 'Não vinculado') AS aluno_nome,
             DATE_FORMAT(a.data_aula, '%Y-%m-%d') AS data,
@@ -21,9 +42,10 @@ async function buscarTodas() {
         LEFT JOIN usuario_login u ON p.usuario_login_id = u.id_usuario
         LEFT JOIN aluno al ON a.aluno_idaluno = al.idaluno
         LEFT JOIN usuario_login ualuno ON al.usuario_login_id = ualuno.id_usuario
+        ${whereSql}
         ORDER BY a.data_aula ASC
     `;
-    const [linhas] = await pool.query(sql);
+    const [linhas] = await pool.query(sql, params);
     return linhas;
 }
 

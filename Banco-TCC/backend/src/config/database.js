@@ -27,7 +27,7 @@ require('dotenv').config();
 
 const dbHost = process.env.DB_HOST || 'localhost';
 const dbUser = process.env.DB_USER || 'root';
-let dbPass = process.env.DB_PASS !== '';
+const dbPass = process.env.DB_PASS !== undefined ? String(process.env.DB_PASS) : '12345678';
 const dbName = process.env.DB_NAME || 'instituto_bravo';
 
 let poolConfig = {
@@ -41,24 +41,55 @@ let poolConfig = {
 };
 
 let currentPool = mysql.createPool(poolConfig);
-let switchedFallback = false;
 let createdDbFallback = false;
 
-// Função inteligente de execução com recuperação automática para Laragon / PC da Escola
+// Senhas candidatas para recuperação automática entre Laragon, XAMPP e diferentes PCs
+const candidatePasswords = [...new Set([dbPass, '12345678', '', '1234', '277353', 'root'].filter(p => typeof p === 'string'))];
+let candidateIndex = 0;
+let switchingPromise = null;
+
+// Função inteligente de execução com recuperação automática para Laragon / PC da Escola / PC Pessoal
 async function executeSmart(prop, args) {
+  if (switchingPromise) {
+    await switchingPromise;
+  }
+
   try {
     return await currentPool[prop](...args);
   } catch (err) {
     const code = err.code || (err.errors && err.errors[0]?.code) || '';
 
-    // 1. Senha rejeitada (Ex: Laragon / XAMPP na escola usa senha vazia '', enquanto PC pessoal usa '1234')
-    if (code === 'ER_ACCESS_DENIED_ERROR' && !switchedFallback) {
-      switchedFallback = true;
-      const novaSenha = poolConfig.password === '' ? '1234' : '';
-      console.log(`[MySQL] Alternando credencial para ambiente Laragon/Local (senha '${novaSenha ? '1234' : 'vazia'}')...`);
-      poolConfig.password = novaSenha;
-      currentPool = mysql.createPool(poolConfig);
-      return await executeSmart(prop, args);
+    // 1. Senha rejeitada (Ex: Laragon usa senha vazia '', PC pessoal usa '1234' ou '12345678')
+    if (code === 'ER_ACCESS_DENIED_ERROR') {
+      if (!switchingPromise) {
+        switchingPromise = (async () => {
+          while (candidateIndex < candidatePasswords.length - 1) {
+            candidateIndex++;
+            const novaSenha = candidatePasswords[candidateIndex];
+            console.log(`[MySQL] Alternando credencial para ambiente Laragon/Local (senha '${novaSenha ? novaSenha : 'vazia'}')...`);
+            const novoPool = mysql.createPool({ ...poolConfig, password: novaSenha });
+            try {
+              const conn = await novoPool.getConnection();
+              conn.release();
+              poolConfig.password = novaSenha;
+              currentPool = novoPool;
+              console.log('[MySQL] Conexão restabelecida com sucesso!');
+              return;
+            } catch (retryErr) {
+              await novoPool.end().catch(() => {});
+              if (retryErr.code !== 'ER_ACCESS_DENIED_ERROR') {
+                throw retryErr;
+              }
+            }
+          }
+          console.error(`[MySQL] Erro: Acesso negado para o usuário '${dbUser}'. Verifique a senha configurada no arquivo .env.`);
+        })().finally(() => {
+          switchingPromise = null;
+        });
+      }
+
+      await switchingPromise;
+      return await currentPool[prop](...args);
     }
 
     // 2. Banco ainda não criado (ER_BAD_DB_ERROR - PC da escola com Laragon recém-iniciado)
@@ -81,11 +112,11 @@ async function executeSmart(prop, args) {
       }
     }
 
-    // Diagnóstico claro se o Laragon estiver desligado
+    // Diagnóstico claro se o Laragon/MySQL estiver desligado
     if (code === 'ECONNREFUSED') {
       console.error('\n=============================================================');
       console.error('[MySQL] ERRO: Conexão recusada na porta 3306 (ECONNREFUSED).');
-      console.error('-> Verifique se o LARAGON está aberto e clique em "Iniciar Tudo" (Start All).');
+      console.error('-> Verifique se o LARAGON ou o serviço MySQL está ativo.');
       console.error('=============================================================\n');
     }
 
@@ -93,7 +124,7 @@ async function executeSmart(prop, args) {
   }
 }
 
-// Smart Pool: Compatibilidade total automática entre PC pessoal (senha 1234)
+// Smart Pool: Compatibilidade total automática entre PC pessoal (senha 12345678 / 1234)
 // e computadores da escola / faculdade com Laragon ou XAMPP (senha vazia '')
 const smartPool = new Proxy(currentPool, {
   get(target, prop) {

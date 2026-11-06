@@ -25,9 +25,12 @@
                 <% aulas.filter(a => a.tipo === 'normal').forEach(function(aula) { %>
                     <div class="kanban-card" data-id="<%= aula.id %>">
                         <strong><%= aula.hora %> - <%= aula.titulo %></strong>
-                        <div class="kanban-card-instrumento"><%= aula.instrumento %> | Sala <%= aula.sala %></div>
+                        <div class="kanban-card-instrumento"><%= aula.instrumento %> | <%= aula.sala == 5 ? 'Sala de Bateria' : 'Sala ' + aula.sala %></div>
                         <div class="kanban-card-info">
                             Prof: <%= aula.professor %><br>
+                            <% if (aula.aluno_nome && aula.aluno_nome !== 'Não vinculado') { %>
+                                Aluno: <%= aula.aluno_nome %><br>
+                            <% } %>
                             Data: <%= aula.data %>
                         </div>
                         <% if (souAdmin) { %>
@@ -50,9 +53,12 @@
                 <% aulas.filter(a => a.tipo === 'reposicao').forEach(function(aula) { %>
                     <div class="kanban-card" data-id="<%= aula.id %>" style="border-left: 4px solid #d97706;">
                         <strong><%= aula.hora %> - <%= aula.titulo %></strong>
-                        <div class="kanban-card-instrumento"><%= aula.instrumento %> | Sala <%= aula.sala %></div>
+                        <div class="kanban-card-instrumento"><%= aula.instrumento %> | <%= aula.sala == 5 ? 'Sala de Bateria' : 'Sala ' + aula.sala %></div>
                         <div class="kanban-card-info">
                             Prof: <%= aula.professor %><br>
+                            <% if (aula.aluno_nome && aula.aluno_nome !== 'Não vinculado') { %>
+                                Aluno: <%= aula.aluno_nome %><br>
+                            <% } %>
                             Data: <%= aula.data %>
                         </div>
                         <% if (souAdmin) { %>
@@ -75,9 +81,12 @@
                 <% aulas.filter(a => a.tipo === 'cancelada').forEach(function(aula) { %>
                     <div class="kanban-card" data-id="<%= aula.id %>" style="opacity: 0.7; border-left: 4px solid #dc2626;">
                         <strong><%= aula.hora %> - <%= aula.titulo %></strong>
-                        <div class="kanban-card-instrumento"><%= aula.instrumento %> | Sala <%= aula.sala %></div>
+                        <div class="kanban-card-instrumento"><%= aula.instrumento %> | <%= aula.sala == 5 ? 'Sala de Bateria' : 'Sala ' + aula.sala %></div>
                         <div class="kanban-card-info">
                             Prof: <%= aula.professor %><br>
+                            <% if (aula.aluno_nome && aula.aluno_nome !== 'Não vinculado') { %>
+                                Aluno: <%= aula.aluno_nome %><br>
+                            <% } %>
                             Data: <%= aula.data %>
                         </div>
                         <% if (souAdmin) { %>

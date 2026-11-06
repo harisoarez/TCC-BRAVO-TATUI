@@ -39,7 +39,7 @@
             <label for="sala">Sala de Aula</label>
             <select id="sala" name="sala" required>
                 <% salas.forEach(function(s) { %>
-                    <option value="<%= s %>">Sala <%= s %></option>
+                    <option value="<%= typeof s === 'object' ? s.id : s %>"><%= typeof s === 'object' ? s.nome : (s === 5 ? 'Sala de Bateria' : 'Sala ' + s) %></option>
                 <% }); %>
             </select>
         </div>
@@ -56,7 +56,7 @@
         </div>
 
         <div class="campo">
-            <label for="tipo">Status / Modalidade</label>
+            <label for="tipo">Status / Tipo de Aula</label>
             <select id="tipo" name="tipo">
                 <option value="normal">Normal (Regular)</option>
                 <option value="reposicao">Reposição</option>
@@ -65,13 +65,18 @@
         </div>
 
         <div class="campo">
-            <label for="observacoes">Observações</label>
-            <textarea id="observacoes" name="observacoes" rows="3" placeholder="Informações adicionais, repertório, etc."></textarea>
+            <label for="duracao_minutos">Duração (minutos)</label>
+            <input type="number" id="duracao_minutos" name="duracao_minutos" value="60" min="15" step="15">
         </div>
 
-        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-            <button type="submit" class="botao botao-primario">Salvar Agendamento</button>
-            <a href="/paginas/aulas" class="botao" style="background: #9ca3af; color: #fff;">Cancelar</a>
+        <div class="campo">
+            <label for="observacoes">Observações Internas</label>
+            <textarea id="observacoes" name="observacoes" rows="3" placeholder="Informações pedagógicas ou observações da aula..."></textarea>
+        </div>
+
+        <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+            <button type="submit" class="botao">Salvar Agendamento</button>
+            <a href="/paginas/aulas" class="botao botao-secundario">Cancelar</a>
         </div>
     </form>
 </main>
@@ -79,30 +84,24 @@
 <script>
     document.getElementById("form-aula").addEventListener("submit", async function(e) {
         e.preventDefault();
-        const formData = new FormData(e.target);
+
+        const formData = new FormData(this);
         const corpo = Object.fromEntries(formData.entries());
 
-        const token = localStorage.getItem("authToken");
+        const resposta = await fetch("/api/aulas", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(corpo),
+        });
 
-        try {
-            const resp = await fetch("/api/aulas", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
-                },
-                body: JSON.stringify(corpo)
-            });
+        const dados = await resposta.json();
 
-            const dados = await resp.json();
-            if (dados.sucesso) {
-                alert("Aula agendada com sucesso!");
-                window.location.href = "/paginas/aulas";
-            } else {
-                alert(dados.mensagem || "Erro ao agendar aula.");
-            }
-        } catch (err) {
-            alert("Erro de comunicação com o servidor.");
+        if (dados.sucesso) {
+            window.location.href = "/paginas/aulas";
+        } else {
+            alert(dados.mensagem || "Erro ao salvar agendamento.");
         }
     });
 </script>

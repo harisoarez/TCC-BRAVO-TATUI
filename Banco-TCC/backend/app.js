@@ -147,6 +147,8 @@ app.use(express.static(path.join(__dirname, "src/public")));
 app.use(express.static(path.join(__dirname, "../../public/pages")));
 app.use("/site", express.static(path.join(__dirname, "../../public/pages/html")));
 app.use("/public", express.static(path.join(__dirname, "../../public")));
+app.use("/documentos", express.static(path.join(__dirname, "../../public/pages/documentos")));
+app.use("/site/documentos", express.static(path.join(__dirname, "../../public/pages/documentos")));
 
 // Atalhos para páginas institucionais
 app.get("/", (req, res) => {
@@ -163,6 +165,12 @@ app.get("/orquestra", (req, res) => {
 });
 app.get(["/instrumentos", "/aulas"], (req, res) => {
     res.redirect("/site/instrumentos.html");
+});
+app.get(["/formacoes", "/site/formacoes"], (req, res) => {
+    res.redirect("/site/formacoes.html");
+});
+app.get(["/playlist", "/playlist.pdf", "/site/playlist", "/site/playlist.pdf"], (req, res) => {
+    res.sendFile(path.join(__dirname, "../../public/pages/documentos/Playlist_Bravo_Tatui_2026.pdf"));
 });
 app.get("/logout", (req, res) => {
     if (req.session) {

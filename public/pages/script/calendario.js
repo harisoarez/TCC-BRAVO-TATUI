@@ -17,6 +17,8 @@ let dataSelecionada = new Date();
 let usuarioAtivo = { tipo: "visitante" };
 let token = null;
 let listaProfessores = [];
+let listaAlunos = [];
+let salaSelecionada = "todas"; // 'todas', '1', '2', '3', '4', '5' (Sala de Bateria)
 
 function decodificarToken(token) {
     if (!token) return null;
@@ -36,32 +38,85 @@ function decodificarToken(token) {
     }
 }
 
-// Base de aulas (inicia vazia e carrega do banco de dados via API)
+// Helpers de Perfil e Acesso
+function isStaff() {
+    return usuarioAtivo && (
+        usuarioAtivo.tipo === "owner" ||
+        usuarioAtivo.tipo === "admin" ||
+        usuarioAtivo.tipo === "professor"
+    );
+}
+
+function isPrivilegiado() {
+    return usuarioAtivo && (usuarioAtivo.tipo === "admin" || usuarioAtivo.tipo === "owner");
+}
+
+function isAluno() {
+    return usuarioAtivo && (usuarioAtivo.tipo === "aluno" || usuarioAtivo.tipo === "normal");
+}
+
+// Formatador padronizado de salas
+function formatarNomeSala(sala) {
+    if (sala === null || sala === undefined || sala === "") return "Sala não definida";
+    const s = String(sala).trim().toLowerCase();
+    if (s === "5" || s.includes("bateria")) {
+        return "Sala de Bateria";
+    }
+    if (["1", "2", "3", "4"].includes(s)) {
+        return `Sala ${s}`;
+    }
+    return `Sala ${sala}`;
+}
+
+function formatarNomeSalaCurto(sala) {
+    if (sala === null || sala === undefined || sala === "") return "Sala ?";
+    const s = String(sala).trim().toLowerCase();
+    if (s === "5" || s.includes("bateria")) {
+        return "Bateria";
+    }
+    if (["1", "2", "3", "4"].includes(s)) {
+        return `Sala ${s}`;
+    }
+    return `S.${sala}`;
+}
+
+function aulaPertenceASala(aula, salaFiltro) {
+    if (!salaFiltro || salaFiltro === "todas") return true;
+    const s = String(aula.sala).trim().toLowerCase();
+    const f = String(salaFiltro).trim().toLowerCase();
+
+    if (f === "5" || f === "bateria" || f.includes("bateria")) {
+        return s === "5" || s.includes("bateria") || String(aula.instrumento || "").toLowerCase().includes("bateria");
+    }
+    return s === f;
+}
+
+// Base de aulas carregada via API
 let aulas = [];
 
 // Fallback de aulas caso o servidor/banco esteja offline
 const aulasFallback = [
-    { id: 1, titulo: "Iniciação ao Piano", professor: "Carlos Eduardo", instrumento: "Piano", sala: 1, data: "2026-10-05", hora: "09:00", tipo: "normal", observacoes: "Módulo 1 - Postura e primeiras notas" },
-    { id: 2, titulo: "Prática de Escalas", professor: "Carlos Eduardo", instrumento: "Piano", sala: 2, data: "2026-10-06", hora: "14:00", tipo: "reposicao", observacoes: "Reposição da aula anterior" },
-    { id: 3, titulo: "Iniciação à Bateria", professor: "Carlos Eduardo", instrumento: "Bateria", sala: 3, data: "2026-10-05", hora: "16:30", tipo: "normal", observacoes: "Estudo de rítmica básica" }
+    { id: 1, titulo: "Iniciação ao Piano", professor: "Carlos Eduardo", instrumento: "Piano", sala: 1, aluno_idaluno: 1, aluno_nome: "Lucas Silva", aluno_usuario_id: 4, data: "2026-10-07", hora: "09:00", tipo: "normal", observacoes: "Módulo 1 - Postura e primeiras notas" },
+    { id: 2, titulo: "Prática de Violoncelo", professor: "Carlos Eduardo", instrumento: "Violoncelo", sala: 2, aluno_idaluno: 3, aluno_nome: "Gabriel Souza", aluno_usuario_id: 6, data: "2026-10-15", hora: "14:00", tipo: "reposicao", observacoes: "Reposição da aula anterior" },
+    { id: 3, titulo: "Iniciação à Bateria", professor: "Carlos Eduardo", instrumento: "Bateria", sala: 5, aluno_idaluno: 1, aluno_nome: "Lucas Silva", aluno_usuario_id: 4, data: "2026-10-07", hora: "16:30", tipo: "normal", observacoes: "Estudo de rítmica básica na Sala de Bateria" },
+    { id: 4, titulo: "Teoria e Flauta", professor: "Carlos Eduardo", instrumento: "Flauta", sala: 3, aluno_idaluno: 5, aluno_nome: "Rafael Moreira", aluno_usuario_id: 8, data: "2026-10-16", hora: "10:30", tipo: "normal", observacoes: "Respiração e escalas" },
+    { id: 5, titulo: "Canto e Técnica Vocal", professor: "Carlos Eduardo", instrumento: "Canto", sala: 4, aluno_idaluno: 4, aluno_nome: "Mariana Costa", aluno_usuario_id: 7, data: "2026-10-25", hora: "15:00", tipo: "normal", observacoes: "Aquecimento e dicção" },
+    { id: 6, titulo: "Ritmos Brasileiros na Bateria", professor: "Carlos Eduardo", instrumento: "Bateria", sala: 5, aluno_idaluno: 1, aluno_nome: "Lucas Silva", aluno_usuario_id: 4, data: "2026-10-28", hora: "16:00", tipo: "reposicao", observacoes: "Levadas de samba e bossa nova" }
 ];
 
 document.addEventListener("DOMContentLoaded", async () => {
     const autenticado = inicializarAutenticacao();
     if (!autenticado) return; // Interrompe execução para visitantes não logados
     configurarNavegacao();
+    configurarFiltroSalas();
     await carregarProfessores();
+    await carregarAlunos();
     await carregarAulas();
 });
-
-function isPrivilegiado() {
-    return usuarioAtivo && (usuarioAtivo.tipo === "admin" || usuarioAtivo.tipo === "owner");
-}
 
 function inicializarAutenticacao() {
     token = localStorage.getItem("authToken");
     if (!token) {
-        // Redireciona imediatamente para a tela de acesso restrito estilizada
         window.location.replace("/site/acesso-restrito?recurso=calendario");
         return false;
     }
@@ -92,10 +147,10 @@ function renderizarAreaUsuario() {
     const areaNav = document.getElementById("areaAuthNav");
     const linkAdmin = document.getElementById("linkPainelAdmin");
     const bannerModo = document.getElementById("bannerModo");
+    const secaoFiltroSalas = document.getElementById("secaoFiltroSalas");
+    const secaoBannerAluno = document.getElementById("secaoBannerAluno");
 
-    if (!areaNav) return;
-
-    if (usuarioAtivo.tipo !== "visitante") {
+    if (areaNav) {
         const rotulos = {
             owner: "Owner",
             admin: "Administrador",
@@ -107,42 +162,48 @@ function renderizarAreaUsuario() {
 
         areaNav.innerHTML = `
             <span class="badge-usuario ${usuarioAtivo.tipo}">
-                ${rotulo}: <strong>${usuarioAtivo.nome.split(" ")[0]}</strong>
+                ${rotulo}: <strong>${escapeHtml(usuarioAtivo.nome.split(" ")[0])}</strong>
             </span>
             <button type="button" class="btn-nav-auth btn-nav-sair" onclick="fazerLogout()">Sair</button>
         `;
 
-        if ((usuarioAtivo.tipo === "admin" || usuarioAtivo.tipo === "owner") && linkAdmin) {
+        if (isPrivilegiado() && linkAdmin) {
             linkAdmin.classList.remove("oculto");
             if (token) {
                 linkAdmin.href = `${API_BASE || 'http://localhost:3000'}/paginas/dashboard?token=${encodeURIComponent(token)}`;
             }
         }
-    } else {
-        areaNav.innerHTML = `
-            <a href="./login.html" class="btn-nav-auth">Entrar / Login</a>
-        `;
-        if (linkAdmin) linkAdmin.classList.add("oculto");
     }
 
-    // Banner informativo de Permissões
-    if (bannerModo) {
-        bannerModo.classList.remove("oculto");
-        if (isPrivilegiado()) {
-            const rotulo = usuarioAtivo.tipo === "owner" ? "Modo Owner (Proprietário)" : "Modo Administrador";
-            bannerModo.innerHTML = `
-                <span><strong>${rotulo}:</strong> Você tem permissão total para agendar, editar e cancelar aulas.</span>
-            `;
-            bannerModo.style.background = "#2a2a32";
+    // Regras Visuais de Acordo com o Perfil (Owner/Admin/Professor vs Aluno)
+    if (isStaff()) {
+        // Staff vê o filtro e o calendário das 5 salas
+        if (secaoFiltroSalas) secaoFiltroSalas.classList.remove("oculto");
+        if (secaoBannerAluno) secaoBannerAluno.classList.add("oculto");
+
+        if (bannerModo) {
+            bannerModo.classList.remove("oculto");
+            const rotuloPerfil = usuarioAtivo.tipo === "owner" ? "Owner" : (usuarioAtivo.tipo === "admin" ? "Administrador" : "Professor");
+            bannerModo.innerHTML = isPrivilegiado()
+                ? `<span><strong>Modo ${rotuloPerfil}:</strong> Você tem visão completa das salas (1 a 4 e Bateria) com permissão para agendar e gerenciar horários.</span>`
+                : `<span><strong>Visão Docente (${rotuloPerfil}):</strong> Exibindo a grade de ocupação das salas de aula do Instituto Bravo.</span>`;
+            bannerModo.style.background = "#23232b";
             bannerModo.style.borderColor = "#4c4c58";
             bannerModo.style.color = "#f4f4f6";
-        } else {
+        }
+    } else {
+        // Aluno vê estritamente as suas aulas
+        if (secaoFiltroSalas) secaoFiltroSalas.classList.add("oculto");
+        if (secaoBannerAluno) secaoBannerAluno.classList.remove("oculto");
+
+        if (bannerModo) {
+            bannerModo.classList.remove("oculto");
             bannerModo.innerHTML = `
-                <span><strong>Modo de Visualização:</strong> Você está visualizando a grade de aulas em modo somente leitura. Apenas a administração pode agendar ou alterar horários.</span>
+                <span><strong>Área do Aluno:</strong> Você está visualizando exclusivamente os horários das suas aulas agendadas.</span>
             `;
-            bannerModo.style.background = "#1e1e24";
-            bannerModo.style.borderColor = "#363640";
-            bannerModo.style.color = "#a1a1aa";
+            bannerModo.style.background = "rgba(56, 189, 248, 0.08)";
+            bannerModo.style.borderColor = "rgba(56, 189, 248, 0.3)";
+            bannerModo.style.color = "#bae6fd";
         }
     }
 }
@@ -156,22 +217,29 @@ function aplicarPermissoesUI() {
         if (isPrivilegiado()) {
             abrirNovoAgendamento();
         } else {
-            alert("Modo de Leitura: Apenas administradores e professores autorizados podem agendar novas aulas.");
+            alert("Modo de Leitura: Apenas administradores podem agendar novas aulas.");
         }
     };
 
     if (btnNovaDesk) {
         if (isPrivilegiado()) {
             btnNovaDesk.classList.remove("oculto");
+        } else {
+            btnNovaDesk.classList.add("oculto");
         }
         btnNovaDesk.onclick = acaoAgendar;
     }
 
     if (btnNovaMob) {
+        if (!isPrivilegiado()) btnNovaMob.classList.add("oculto");
         btnNovaMob.onclick = acaoAgendar;
     }
 
     if (btnMobAdd) {
+        if (!isPrivilegiado()) {
+            const bottomBar = document.getElementById("mobBottomBar");
+            if (bottomBar) bottomBar.classList.add("oculto");
+        }
         btnMobAdd.onclick = acaoAgendar;
     }
 }
@@ -187,7 +255,7 @@ async function fazerLogout() {
     window.location.href = "./login.html";
 }
 
-// Carregamento de dados
+// Carregamento de Professores e Alunos
 async function carregarProfessores() {
     const selectProf = document.getElementById("formProfessor");
     if (!selectProf) return;
@@ -202,22 +270,235 @@ async function carregarProfessores() {
             selectProf.innerHTML = `
                 <option value="">Selecione um professor</option>
                 ${listaProfessores.map(p => `
-                    <option value="${p.idprofessor}">${p.nome} (${p.tipo_instrumento || "Geral"})</option>
+                    <option value="${p.idprofessor}">${escapeHtml(p.nome)} (${escapeHtml(p.tipo_instrumento || "Geral")})</option>
                 `).join("")}
             `;
             return;
         }
     } catch (e) {
-        console.warn("API de professores indisponível no momento.");
+        console.warn("API de professores indisponível.");
     }
 
-    // Fallback padrão se não houver professores cadastrados
     selectProf.innerHTML = `
-        <option value="1">Prof. Carlos Eduardo (Piano)</option>
-        <option value="2">Prof. Mariana (Violão/Canto)</option>
+        <option value="1">Prof. Carlos Eduardo (Piano/Bateria)</option>
+        <option value="2">Prof. Mariana (Canto/Violino)</option>
     `;
 }
 
+async function carregarAlunos() {
+    const selectAluno = document.getElementById("formAluno");
+    if (!selectAluno || !isPrivilegiado()) return;
+
+    try {
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        const resp = await fetch(`${API_BASE}/api/alunos`, { headers, credentials: "include" });
+        const dados = await resp.json();
+
+        if (dados.sucesso && Array.isArray(dados.alunos) && dados.alunos.length > 0) {
+            listaAlunos = dados.alunos;
+            selectAluno.innerHTML = `
+                <option value="">Nenhum aluno / Aula em Grupo</option>
+                ${listaAlunos.map(a => `
+                    <option value="${a.idaluno}">${escapeHtml(a.nome)} (${escapeHtml(a.tipo_instrumento || "Música")})</option>
+                `).join("")}
+            `;
+            return;
+        }
+    } catch (e) {
+        console.warn("API de alunos indisponível:", e.message);
+    }
+}
+
+// ==========================================================================
+// FILTRO DE SALAS (DROPDOWN) - Owner, Admin, Professor
+// ==========================================================================
+const METADADOS_SALAS = {
+    todas: { nome: "Todas as Salas", rotulo: "Todas as Salas" },
+    "1": { nome: "Sala 1", rotulo: "Sala 1" },
+    "2": { nome: "Sala 2", rotulo: "Sala 2" },
+    "3": { nome: "Sala 3", rotulo: "Sala 3" },
+    "4": { nome: "Sala 4", rotulo: "Sala 4" },
+    "5": { nome: "Sala de Bateria", rotulo: "Sala de Bateria" }
+};
+
+function abrirDropdownSalas() {
+    const trigger = document.getElementById("btnDropdownSalaTrigger");
+    const opcoes = document.getElementById("dropdownSalasOpcoes");
+    if (!opcoes) return;
+    opcoes.classList.remove("oculto");
+    if (trigger) {
+        trigger.classList.add("aberto");
+        trigger.setAttribute("aria-expanded", "true");
+    }
+}
+
+function fecharDropdownSalas() {
+    const trigger = document.getElementById("btnDropdownSalaTrigger");
+    const opcoes = document.getElementById("dropdownSalasOpcoes");
+    if (!opcoes) return;
+    opcoes.classList.add("oculto");
+    if (trigger) {
+        trigger.classList.remove("aberto");
+        trigger.setAttribute("aria-expanded", "false");
+    }
+}
+
+function alternarDropdownSalas() {
+    const opcoes = document.getElementById("dropdownSalasOpcoes");
+    if (!opcoes) return;
+    if (opcoes.classList.contains("oculto")) {
+        abrirDropdownSalas();
+    } else {
+        fecharDropdownSalas();
+    }
+}
+
+function configurarFiltroSalas() {
+    const trigger = document.getElementById("btnDropdownSalaTrigger");
+    if (trigger) {
+        trigger.addEventListener("click", (e) => {
+            e.stopPropagation();
+            alternarDropdownSalas();
+        });
+    }
+
+    const itens = document.querySelectorAll(".dropdown-item-sala");
+    itens.forEach(item => {
+        item.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const sala = item.getAttribute("data-sala");
+            definirSalaSelecionada(sala);
+            fecharDropdownSalas();
+        });
+    });
+
+    // Fechar ao clicar fora do dropdown
+    document.addEventListener("click", (e) => {
+        const menu = document.getElementById("dropdownMenuSala");
+        if (menu && !menu.contains(e.target)) {
+            fecharDropdownSalas();
+        }
+    });
+
+    // Fechar ao pressionar Escape
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+            fecharDropdownSalas();
+        }
+    });
+}
+
+function definirSalaSelecionada(sala) {
+    salaSelecionada = sala || "todas";
+
+    // Destaca o item ativo no menu dropdown
+    const itens = document.querySelectorAll(".dropdown-item-sala");
+    itens.forEach(item => {
+        const dataSala = item.getAttribute("data-sala");
+        if (dataSala === salaSelecionada) {
+            item.classList.add("active");
+        } else {
+            item.classList.remove("active");
+        }
+    });
+
+    // Atualiza botão trigger do dropdown
+    const meta = METADADOS_SALAS[salaSelecionada] || { nome: `Sala ${salaSelecionada}`, rotulo: `Sala ${salaSelecionada}` };
+    const elTexto = document.getElementById("textoSalaSelecionada");
+    const trigger = document.getElementById("btnDropdownSalaTrigger");
+
+    if (elTexto) elTexto.textContent = meta.nome;
+
+    if (trigger) {
+        if (salaSelecionada === "5") {
+            trigger.classList.add("bateria-ativa");
+        } else {
+            trigger.classList.remove("bateria-ativa");
+        }
+    }
+
+    // Atualiza indicador textual de sala ativa
+    const indicador = document.getElementById("indicadorSalaAtual");
+    if (indicador) {
+        if (salaSelecionada === "5") {
+            indicador.classList.add("bateria");
+        } else {
+            indicador.classList.remove("bateria");
+        }
+        indicador.innerHTML = `Exibindo: <strong>${meta.rotulo}</strong>`;
+    }
+
+    atualizarContadoresSalas();
+    renderizarCalendario();
+    renderizarAgendaDia(dataSelecionada);
+}
+
+function atualizarContadoresSalas() {
+    const contagens = {
+        todas: 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+    };
+
+    aulas.forEach(a => {
+        contagens.todas++;
+        const s = String(a.sala).trim().toLowerCase();
+        if (s === "1") contagens["1"]++;
+        else if (s === "2") contagens["2"]++;
+        else if (s === "3") contagens["3"]++;
+        else if (s === "4") contagens["4"]++;
+        else if (s === "5" || s.includes("bateria")) contagens["5"]++;
+    });
+
+    const elTodas = document.getElementById("countSalaTodas");
+    if (elTodas) elTodas.textContent = contagens.todas;
+
+    const el1 = document.getElementById("countSala1");
+    if (el1) el1.textContent = contagens["1"];
+
+    const el2 = document.getElementById("countSala2");
+    if (el2) el2.textContent = contagens["2"];
+
+    const el3 = document.getElementById("countSala3");
+    if (el3) el3.textContent = contagens["3"];
+
+    const el4 = document.getElementById("countSala4");
+    if (el4) el4.textContent = contagens["4"];
+
+    const el5 = document.getElementById("countSala5");
+    if (el5) el5.textContent = contagens["5"];
+
+    const elCountSelecionada = document.getElementById("countSalaSelecionada");
+    if (elCountSelecionada) {
+        elCountSelecionada.textContent = contagens[salaSelecionada] ?? contagens.todas;
+    }
+}
+
+// Retorna as aulas visíveis de acordo com a sala selecionada e o perfil do usuário
+function obterAulasVisiveis() {
+    let lista = [...aulas];
+
+    // Se o usuário for Aluno, vê SOMENTE as suas próprias aulas
+    if (isAluno()) {
+        lista = lista.filter(a => {
+            if (a.aluno_usuario_id && Number(a.aluno_usuario_id) === Number(usuarioAtivo.id)) return true;
+            return true; // O backend já realizou o filtro estrito
+        });
+        return lista;
+    }
+
+    // Se o usuário for Staff (Owner, Admin, Professor), aplica o filtro por sala
+    if (salaSelecionada && salaSelecionada !== "todas") {
+        lista = lista.filter(a => aulaPertenceASala(a, salaSelecionada));
+    }
+
+    return lista;
+}
+
+// Carregamento de aulas
 async function carregarAulas() {
     try {
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
@@ -227,20 +508,20 @@ async function carregarAulas() {
         if (dados.sucesso && Array.isArray(dados.aulas)) {
             aulas = dados.aulas;
         } else {
-            aulas = aulasFallback;
+            aulas = isAluno() ? aulasFallback.filter(a => a.aluno_usuario_id === usuarioAtivo.id) : aulasFallback;
         }
     } catch (e) {
-        console.warn("API de aulas indisponível, usando dados locais de demonstração:", e.message);
-        aulas = aulasFallback;
+        console.warn("API de aulas indisponível, usando fallback:", e.message);
+        aulas = isAluno() ? aulasFallback.filter(a => a.aluno_usuario_id === usuarioAtivo.id) : aulasFallback;
     }
 
+    atualizarContadoresSalas();
     renderizarCalendario();
     renderizarAgendaDia(dataSelecionada);
 }
 
 // Navegação do calendário
 function configurarNavegacao() {
-    // Navegação Desktop
     const btnAnt = document.getElementById("btnAnterior");
     if (btnAnt) {
         btnAnt.addEventListener("click", () => {
@@ -257,7 +538,6 @@ function configurarNavegacao() {
         });
     }
 
-    // Navegação Mobile (Topbar estilo app)
     const btnMobPrev = document.getElementById("btnMobPrev");
     if (btnMobPrev) {
         btnMobPrev.addEventListener("click", () => {
@@ -274,7 +554,6 @@ function configurarNavegacao() {
         });
     }
 
-    // Botão Hoje Mobile (ícone com o número do dia de hoje)
     const btnMobHoje = document.getElementById("btnMobHoje");
     if (btnMobHoje) {
         btnMobHoje.addEventListener("click", () => {
@@ -286,31 +565,6 @@ function configurarNavegacao() {
         });
     }
 
-    // Botão Adicionar Aula no Topo Mobile / Tablet
-    const btnNovaMob = document.getElementById("btnNovaAulaMobile");
-    if (btnNovaMob) {
-        btnNovaMob.addEventListener("click", () => {
-            if (isPrivilegiado()) {
-                abrirNovoAgendamento();
-            } else {
-                alert("Modo de Leitura: Apenas administradores e professores autorizados podem agendar novas aulas.");
-            }
-        });
-    }
-
-    // Botão Inferior Mobile: "Adic. em [dia] de [mês] +"
-    const btnMobAdd = document.getElementById("btnMobAdicionarAula");
-    if (btnMobAdd) {
-        btnMobAdd.addEventListener("click", () => {
-            if (isPrivilegiado()) {
-                abrirNovoAgendamento();
-            } else {
-                alert("Modo de Leitura: Apenas administradores e professores autorizados podem agendar novas aulas.");
-            }
-        });
-    }
-
-    // Campo de Busca Rápida Mobile
     const btnMobBusca = document.getElementById("btnMobBusca");
     const barraBusca = document.getElementById("barraBuscaMobile");
     const inputBusca = document.getElementById("inputBuscaMob");
@@ -356,16 +610,20 @@ function filtrarAulasBusca(termo) {
         return;
     }
 
-    const filtradas = aulas.filter(a => {
+    const aulasVisiveis = obterAulasVisiveis();
+    const filtradas = aulasVisiveis.filter(a => {
+        const nomeSala = formatarNomeSala(a.sala).toLowerCase();
         return (a.titulo && a.titulo.toLowerCase().includes(termo)) ||
                (a.instrumento && a.instrumento.toLowerCase().includes(termo)) ||
-               (a.professor && a.professor.toLowerCase().includes(termo));
+               (a.professor && a.professor.toLowerCase().includes(termo)) ||
+               (a.aluno_nome && a.aluno_nome.toLowerCase().includes(termo)) ||
+               nomeSala.includes(termo);
     });
 
     if (filtradas.length === 0) {
         agenda.innerHTML = `
             <div class="mob-empty-state">
-                <p>Nenhuma aula encontrada para "${termo}".</p>
+                <p>Nenhuma aula encontrada para "${escapeHtml(termo)}".</p>
             </div>
         `;
         return;
@@ -374,53 +632,58 @@ function filtrarAulasBusca(termo) {
     agenda.innerHTML = filtradas.map(aula => {
         const dataBr = aula.data ? aula.data.split("-").reverse().join("/") : "";
         const idSanitizado = Number(aula.id) || 0;
+        const nomeSala = formatarNomeSala(aula.sala);
+        const ehBateria = String(aula.sala) === "5" || String(aula.sala).toLowerCase().includes("bateria");
+        const alunoInfo = (aula.aluno_nome && aula.aluno_nome !== "Não vinculado" && !isAluno())
+            ? `<span>• Aluno: ${escapeHtml(aula.aluno_nome)}</span>`
+            : "";
+
         return `
             <div class="evento-card ${escapeHtml(aula.tipo)}" onclick="abrirResumo(${idSanitizado}, null)">
                 <div class="evento-card-header">
                     <strong>${escapeHtml(aula.hora || "")} — ${escapeHtml(aula.titulo)}</strong>
                     <span class="evento-badge-tipo ${escapeHtml(aula.tipo)}">${escapeHtml(aula.tipo)}</span>
                 </div>
-                <span>${dataBr} • ${escapeHtml(aula.instrumento)} | Sala ${escapeHtml(aula.sala)} | Prof: ${escapeHtml(aula.professor || "A definir")}</span>
+                <div class="evento-card-detalhes">
+                    <span class="badge-sala-tag ${ehBateria ? 'tag-bateria' : ''}">${escapeHtml(nomeSala)}</span>
+                    <span>• ${dataBr}</span>
+                    <span>• ${escapeHtml(aula.instrumento || 'Música')}</span>
+                    <span>• Prof: ${escapeHtml(aula.professor || 'A definir')}</span>
+                    ${alunoInfo}
+                </div>
             </div>
         `;
     }).join("");
 }
 
-// Renderização do calendário
+// Renderização do Calendário Mensal
 function renderizarCalendario() {
     const ano = dataAtual.getFullYear();
     const mes = dataAtual.getMonth();
 
-    // Nome completo do mês sem abreviar tanto no desktop quanto no mobile/tablet (Ex: "Outubro 2026")
     const nomeMes = new Date(ano, mes).toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
     const nomeMesCapitalizado = nomeMes.charAt(0).toUpperCase() + nomeMes.slice(1);
 
     const elMesAtual = document.getElementById("mesAtual");
-    if (elMesAtual) {
-        elMesAtual.textContent = nomeMesCapitalizado;
-    }
+    if (elMesAtual) elMesAtual.textContent = nomeMesCapitalizado;
 
     const elMesMob = document.getElementById("mesMobTitulo");
-    if (elMesMob) {
-        // Nome sem abreviação no mobile
-        elMesMob.textContent = nomeMesCapitalizado;
-    }
+    if (elMesMob) elMesMob.textContent = nomeMesCapitalizado;
 
-    // Atualiza ícone do dia de hoje (Ex: "9")
     const hoje = new Date();
     const elIconeHoje = document.getElementById("iconeDiaHoje");
-    if (elIconeHoje) {
-        elIconeHoje.textContent = hoje.getDate();
-    }
+    if (elIconeHoje) elIconeHoje.textContent = hoje.getDate();
 
-    const primeiroDiaSemana = new Date(ano, mes, 1).getDay(); // 0 (Dom) a 6 (Sáb)
+    const primeiroDiaSemana = new Date(ano, mes, 1).getDay();
     const ultimoDia = new Date(ano, mes + 1, 0).getDate();
     const ultimoDiaMesAnterior = new Date(ano, mes, 0).getDate();
 
     const grade = document.getElementById("gradeAtual");
     let htmlDias = "";
 
-    // Dias do mês anterior para preencher a primeira semana
+    const aulasVisiveis = obterAulasVisiveis();
+
+    // Dias do mês anterior
     for (let i = 0; i < primeiroDiaSemana; i++) {
         const diaNum = ultimoDiaMesAnterior - primeiroDiaSemana + 1 + i;
         const clsDom = (i === 0) ? "dia-domingo" : "";
@@ -436,11 +699,11 @@ function renderizarCalendario() {
         const dataObj = new Date(ano, mes, dia);
         const diaSemana = dataObj.getDay();
         const dataFormatada = `${ano}-${String(mes + 1).padStart(2, "0")}-${String(dia).padStart(2, "0")}`;
-        const aulasDoDia = aulas.filter(a => a.data === dataFormatada);
+        const aulasDoDia = aulasVisiveis.filter(a => a.data === dataFormatada);
         const isSelecionado = dataFormatada === formatarData(dataSelecionada) ? "selecionado" : "";
         const clsDomingo = diaSemana === 0 ? "dia-domingo" : "";
 
-        // Indicadores visuais mobile (barras horizontais coloridas como no modelo)
+        // Indicadores mobile coloridos
         let indicadoresMobileHtml = "";
         if (aulasDoDia.length > 0) {
             const temNormal = aulasDoDia.some(a => a.tipo === "normal");
@@ -454,9 +717,10 @@ function renderizarCalendario() {
             indicadoresMobileHtml += `</div>`;
         }
 
-        // Itens de aula para desktop
+        // Mini-aulas desktop (com indicação da sala)
         const htmlAulasDesktop = aulasDoDia.slice(0, 3).map(aula => {
-            const rotuloAula = `${aula.hora ? aula.hora + ' ' : ''}${aula.titulo || 'Aula'}`;
+            const salaTag = formatarNomeSalaCurto(aula.sala);
+            const rotuloAula = `${aula.hora ? aula.hora + ' ' : ''}${aula.titulo || 'Aula'} [${salaTag}]`;
             return `<div class="mini-aula ${aula.tipo}" onclick="abrirResumo(${aula.id}, event)" title="${rotuloAula}">${rotuloAula}</div>`;
         }).join("");
 
@@ -472,7 +736,7 @@ function renderizarCalendario() {
         `;
     }
 
-    // Dias do mês seguinte para completar as linhas da grade
+    // Dias do mês seguinte
     const totalCelulas = primeiroDiaSemana + ultimoDia;
     const celulasFaltantes = (totalCelulas % 7 === 0) ? 0 : 7 - (totalCelulas % 7);
     for (let j = 1; j <= celulasFaltantes; j++) {
@@ -488,11 +752,12 @@ function renderizarCalendario() {
     grade.innerHTML = htmlDias;
 }
 
+// Renderização da Agenda do Dia Selecionado
 function renderizarAgendaDia(dataObj) {
     const dataStr = formatarData(dataObj);
-    const aulasDoDia = aulas.filter(a => a.data === dataStr);
+    const aulasVisiveis = obterAulasVisiveis();
+    const aulasDoDia = aulasVisiveis.filter(a => a.data === dataStr);
 
-    // Texto desktop original
     const elTextoDesk = document.getElementById("textoDataSelecionada");
     if (elTextoDesk) {
         elTextoDesk.textContent = dataObj.toLocaleDateString("pt-BR", {
@@ -502,7 +767,6 @@ function renderizarAgendaDia(dataObj) {
         });
     }
 
-    // Cabeçalho Mobile no modelo do usuário (Ex: "9 SEX.")
     const diasSemanaAbrev = ["DOM.", "SEG.", "TER.", "QUA.", "QUI.", "SEX.", "SÁB."];
     const mesesAbrevLower = ["jan.", "fev.", "mar.", "abr.", "mai.", "jun.", "jul.", "ago.", "set.", "out.", "nov.", "dez."];
     const diaNum = dataObj.getDate();
@@ -513,7 +777,6 @@ function renderizarAgendaDia(dataObj) {
     if (elMobDiaNum) elMobDiaNum.textContent = diaNum;
     if (elMobDiaSem) elMobDiaSem.textContent = diaSem;
 
-    // Atualiza texto do botão de ação mobile: "Adicionar aula em 9 de out."
     const elTextoBtn = document.getElementById("textoBtnMobAdicionar");
     if (elTextoBtn) {
         elTextoBtn.textContent = `Adicionar aula em ${diaNum} de ${mesesAbrevLower[dataObj.getMonth()]}`;
@@ -523,6 +786,10 @@ function renderizarAgendaDia(dataObj) {
     if (!agenda) return;
 
     if (aulasDoDia.length === 0) {
+        const mensagemVazio = (isStaff() && salaSelecionada !== "todas")
+            ? `Nenhuma aula agendada na ${formatarNomeSala(salaSelecionada)} para este dia.`
+            : "Nenhuma aula programada para este dia.";
+
         agenda.innerHTML = `
             <div class="mob-empty-state">
                 <div class="mob-empty-icon">
@@ -533,21 +800,34 @@ function renderizarAgendaDia(dataObj) {
                         <line x1="15" y1="9" x2="15.01" y2="9"></line>
                     </svg>
                 </div>
-                <p>Nenhuma aula programada para este dia.</p>
+                <p>${mensagemVazio}</p>
             </div>
         `;
         return;
     }
 
-    agenda.innerHTML = aulasDoDia.map(aula => `
-        <div class="evento-card ${aula.tipo}" onclick="abrirResumo(${aula.id}, null)">
-            <div class="evento-card-header">
-                <strong>${aula.hora || ""} — ${aula.titulo}</strong>
-                <span class="evento-badge-tipo ${aula.tipo}">${aula.tipo}</span>
+    agenda.innerHTML = aulasDoDia.map(aula => {
+        const nomeSala = formatarNomeSala(aula.sala);
+        const ehBateria = String(aula.sala) === "5" || String(aula.sala).toLowerCase().includes("bateria");
+        const alunoInfo = (aula.aluno_nome && aula.aluno_nome !== "Não vinculado" && !isAluno())
+            ? `<span>• Aluno: ${escapeHtml(aula.aluno_nome)}</span>`
+            : "";
+
+        return `
+            <div class="evento-card ${escapeHtml(aula.tipo)}" onclick="abrirResumo(${aula.id}, null)">
+                <div class="evento-card-header">
+                    <strong>${escapeHtml(aula.hora || "")} — ${escapeHtml(aula.titulo)}</strong>
+                    <span class="evento-badge-tipo ${escapeHtml(aula.tipo)}">${escapeHtml(aula.tipo)}</span>
+                </div>
+                <div class="evento-card-detalhes">
+                    <span class="badge-sala-tag ${ehBateria ? 'tag-bateria' : ''}">${escapeHtml(nomeSala)}</span>
+                    <span>• ${escapeHtml(aula.instrumento || 'Música')}</span>
+                    <span>• Prof: ${escapeHtml(aula.professor || 'A definir')}</span>
+                    ${alunoInfo}
+                </div>
             </div>
-            <span>${aula.instrumento} | Sala ${aula.sala} | Prof: ${aula.professor || "A definir"}</span>
-        </div>
-    `).join("");
+        `;
+    }).join("");
 }
 
 function selecionarDia(dataStr) {
@@ -557,12 +837,11 @@ function selecionarDia(dataStr) {
     renderizarAgendaDia(dataSelecionada);
 }
 
-// Modais e formulário
 function fecharModal(id) {
     document.getElementById(id).classList.add("oculto");
 }
 
-// 1. Resumo da Aula (Somente exibe lápis se for ADMIN)
+// 1. Resumo da Aula (Modal de Leitura)
 function abrirResumo(id, evento) {
     if (evento) evento.stopPropagation();
     const aula = aulas.find(a => a.id === id);
@@ -578,13 +857,17 @@ function abrirResumo(id, evento) {
     }
 
     const dataFormatadaBR = aula.data ? aula.data.split("-").reverse().join("/") : "";
+    const nomeSala = formatarNomeSala(aula.sala);
+    const ehBateria = String(aula.sala) === "5" || String(aula.sala).toLowerCase().includes("bateria");
+    const nomeAluno = aula.aluno_nome && aula.aluno_nome !== "Não vinculado" ? aula.aluno_nome : "Aula em Grupo / Sem aluno vinculado";
 
     document.getElementById("detalhesAulaConteudo").innerHTML = `
         <p><strong>Título:</strong> ${escapeHtml(aula.titulo)}</p>
-        <p><strong>Instrumento:</strong> ${escapeHtml(aula.instrumento)}</p>
+        <p><strong>Instrumento:</strong> ${escapeHtml(aula.instrumento || "Música")}</p>
         <p><strong>Professor:</strong> ${escapeHtml(aula.professor || "A definir")}</p>
+        <p><strong>Aluno:</strong> ${escapeHtml(nomeAluno)}</p>
         <p><strong>Data/Hora:</strong> ${dataFormatadaBR} às ${escapeHtml(aula.hora || "")}</p>
-        <p><strong>Sala:</strong> Sala ${escapeHtml(aula.sala)}</p>
+        <p><strong>Sala:</strong> <span class="badge-sala-info ${ehBateria ? 'tag-bateria' : ''}">${escapeHtml(nomeSala)}</span></p>
         <p><strong>Status:</strong> <span class="evento-badge-tipo ${escapeHtml(aula.tipo)}" style="text-transform: capitalize; display: inline-block;">${escapeHtml(aula.tipo)}</span></p>
         <p><strong>Observações:</strong> ${escapeHtml(aula.observacoes || "Nenhuma observação registrada.")}</p>
     `;
@@ -592,7 +875,7 @@ function abrirResumo(id, evento) {
     document.getElementById("modalResumo").classList.remove("oculto");
 }
 
-// 2. Novo Agendamento (Apenas Admin e Owner)
+// 2. Novo Agendamento (Admin e Owner)
 function abrirNovoAgendamento() {
     if (!isPrivilegiado()) {
         alert("Apenas administradores podem agendar aulas.");
@@ -605,10 +888,26 @@ function abrirNovoAgendamento() {
     document.getElementById("tituloModalForm").textContent = "Agendar Nova Aula";
     document.getElementById("btnLixeira").classList.add("oculto");
 
+    const selectSala = document.getElementById("formSala");
+    if (selectSala) {
+        if (salaSelecionada && salaSelecionada !== "todas") {
+            selectSala.value = salaSelecionada;
+        } else {
+            selectSala.value = "1";
+        }
+    }
+
+    if (salaSelecionada === "5") {
+        document.getElementById("formInstrumento").value = "Bateria";
+    }
+
+    const selectAluno = document.getElementById("formAluno");
+    if (selectAluno) selectAluno.value = "";
+
     document.getElementById("modalFormulario").classList.remove("oculto");
 }
 
-// 3. Edição de Aula (Apenas Admin e Owner)
+// 3. Edição de Aula (Admin e Owner)
 function abrirEdicao(id) {
     if (!isPrivilegiado()) {
         alert("Apenas administradores podem editar aulas.");
@@ -620,12 +919,14 @@ function abrirEdicao(id) {
     if (!aula) return;
 
     document.getElementById("aulaId").value = aula.id;
-    document.getElementById("formTitulo").value = aula.titulo;
-    document.getElementById("formInstrumento").value = aula.instrumento;
-    document.getElementById("formData").value = aula.data;
-    document.getElementById("formHora").value = aula.hora;
-    document.getElementById("formSala").value = aula.sala;
-    document.getElementById("formTipo").value = aula.tipo;
+    document.getElementById("formTitulo").value = aula.titulo || "";
+    document.getElementById("formInstrumento").value = aula.instrumento || "";
+    document.getElementById("formData").value = aula.data || "";
+    document.getElementById("formHora").value = aula.hora || "";
+    
+    const salaVal = (String(aula.sala).toLowerCase().includes("bateria") || String(aula.sala) === "5") ? "5" : (aula.sala || "1");
+    document.getElementById("formSala").value = salaVal;
+    document.getElementById("formTipo").value = aula.tipo || "normal";
     document.getElementById("formObs").value = aula.observacoes || "";
 
     const selectProf = document.getElementById("formProfessor");
@@ -633,7 +934,6 @@ function abrirEdicao(id) {
         if (aula.professor_idprofessor) {
             selectProf.value = aula.professor_idprofessor;
         } else {
-            // Tenta selecionar pelo nome
             for (let opt of selectProf.options) {
                 if (opt.text.toLowerCase().includes(String(aula.professor).toLowerCase())) {
                     selectProf.value = opt.value;
@@ -643,13 +943,18 @@ function abrirEdicao(id) {
         }
     }
 
+    const selectAluno = document.getElementById("formAluno");
+    if (selectAluno) {
+        selectAluno.value = aula.aluno_idaluno || "";
+    }
+
     document.getElementById("tituloModalForm").textContent = "Editar Aula";
     document.getElementById("btnLixeira").classList.remove("oculto");
 
     document.getElementById("modalFormulario").classList.remove("oculto");
 }
 
-// 4. Salvar Aula via API (Criação e Edição - Apenas Admin e Owner)
+// 4. Salvar Aula via API (Admin e Owner)
 async function salvarAula(e) {
     e.preventDefault();
 
@@ -663,14 +968,22 @@ async function salvarAula(e) {
     const profId = selectProf ? selectProf.value : "1";
     const profNome = selectProf && selectProf.selectedIndex >= 0 ? selectProf.options[selectProf.selectedIndex].text.split("(")[0].trim() : "Professor";
 
+    const selectAluno = document.getElementById("formAluno");
+    const alunoId = selectAluno && selectAluno.value ? parseInt(selectAluno.value, 10) : null;
+    const alunoNome = selectAluno && selectAluno.selectedIndex > 0 ? selectAluno.options[selectAluno.selectedIndex].text.split("(")[0].trim() : "";
+
+    const salaSelecionadaForm = parseInt(document.getElementById("formSala").value, 10) || 1;
+
     const dadosForm = {
         titulo: document.getElementById("formTitulo").value.trim(),
         instrumento: document.getElementById("formInstrumento").value.trim(),
         professor_idprofessor: profId,
         professor: profNome,
+        aluno_idaluno: alunoId,
+        aluno_nome: alunoNome,
         data: document.getElementById("formData").value,
         hora: document.getElementById("formHora").value,
-        sala: parseInt(document.getElementById("formSala").value, 10),
+        sala: salaSelecionadaForm,
         tipo: document.getElementById("formTipo").value,
         observacoes: document.getElementById("formObs").value.trim(),
     };
@@ -698,7 +1011,6 @@ async function salvarAula(e) {
             alert(retorno.mensagem || "Não foi possível salvar a aula.");
         }
     } catch (err) {
-        // Fallback local se o backend não responder
         console.warn("Falha de rede ao salvar na API. Atualizando localmente:", err.message);
         if (idAtual) {
             const idx = aulas.findIndex(a => a.id == idAtual);
@@ -708,12 +1020,13 @@ async function salvarAula(e) {
             aulas.push({ id: novoId, ...dadosForm });
         }
         fecharModal("modalFormulario");
+        atualizarContadoresSalas();
         renderizarCalendario();
         renderizarAgendaDia(dataSelecionada);
     }
 }
 
-// 5. Exclusão e Cancelamento Dinâmicos via API (Apenas Admin e Owner)
+// 5. Exclusão e Cancelamento
 async function processarExclusao(acao) {
     if (!isPrivilegiado()) {
         alert("Ação restrita a administradores.");
@@ -765,7 +1078,6 @@ async function processarExclusao(acao) {
     await carregarAulas();
 }
 
-// Formatação de data
 function formatarData(data) {
     return `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, "0")}-${String(data.getDate()).padStart(2, "0")}`;
 }

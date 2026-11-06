@@ -114,7 +114,7 @@ const instrumentosOficiais = [
         nome: "Bateria",
         categoria: "Percussão & Ritmo",
         icone: "",
-        imagem_url: "../images/Bateria.png",
+        imagem_url: "../images/bateria.png",
         descricao: "O coração rítmico da música contemporânea. Aulas focadas em coordenação motora, precisão de tempo, grooves e dinâmica musical.",
         disponivel_aulas: 1,
         disponivel_eventos: 1,

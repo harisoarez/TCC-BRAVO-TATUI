@@ -175,7 +175,16 @@ a {
     max-width: 88%;
     max-height: 380px;
     border-radius: 16px;
-    transition: transform 0.4s ease;
+    transition: transform 0.4s ease, filter 0.4s ease;
+    filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.75));
+}
+
+.div1 img[src*="clarinete" i] {
+    transform: rotate(-15deg) scale(1.06);
+}
+
+.div1:hover img[src*="clarinete" i] {
+    transform: rotate(-15deg) scale(1.10);
 }
 
 .div1:hover img {

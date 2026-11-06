@@ -50,7 +50,7 @@
         "7": "../images/saxofone.png",
         "8": "../images/clarinete.png",
         "9": "../images/trompete.png",
-        "10": "../images/Bateria.png"
+        "10": "../images/bateria.png"
     };
 
     function resolverImagemInstrumento(id, nome, imagemCadastrada) {
@@ -73,7 +73,7 @@
         if (n.includes("sax")) return "../images/saxofone.png";
         if (n.includes("clarinete")) return "../images/clarinete.png";
         if (n.includes("trompete")) return "../images/trompete.png";
-        if (n.includes("bateria") || n.includes("percussão")) return "../images/Bateria.png";
+        if (n.includes("bateria") || n.includes("percussão")) return "../images/bateria.png";
         return "../images/exemplo_bravo.jpg";
     }
 
@@ -145,7 +145,7 @@
             id_instrumento: 10,
             nome: "Bateria",
             categoria: "Percussão & Ritmo",
-            imagem_url: "../images/Bateria.png",
+            imagem_url: "../images/bateria.png",
             descricao: "O coração rítmico da música contemporânea. Aulas focadas em coordenação motora, precisão de tempo, grooves e dinâmica musical."
         }
     };

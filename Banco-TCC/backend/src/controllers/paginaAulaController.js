@@ -34,7 +34,13 @@ async function paginaFormCadastro(req, res) {
         titulo: "Nova Aula",
         alunos,
         professores,
-        salas: [1, 2, 3, 4],
+        salas: [
+            { id: 1, nome: "Sala 1" },
+            { id: 2, nome: "Sala 2" },
+            { id: 3, nome: "Sala 3" },
+            { id: 4, nome: "Sala 4" },
+            { id: 5, nome: "Sala de Bateria" }
+        ],
     });
 }
 
